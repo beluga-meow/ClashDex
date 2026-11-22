@@ -1,5 +1,17 @@
+
 (() => {
-  const client = window.supabaseClient;
+  const SUPABASE_URL =
+    "https://hrloxvshgehvkmpnnbyz.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_eIE7cZwu8FE1727c-Vd1KA_v2CRIYX2";
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  window.supabaseClient = client;
 
   const $ = (id) => document.getElementById(id);
 
@@ -11,7 +23,7 @@
   let mode = "signup";
 
   function showMessage(text) {
-    message.textContent = text;
+    if (message) message.textContent = text;
   }
 
   function updateMode() {
@@ -57,17 +69,17 @@
   function updateSession(session) {
     const user = session?.user;
 
-    loggedOut.hidden = !!user;
-    loggedIn.hidden = !user;
+    if (loggedOut) loggedOut.hidden = !!user;
+    if (loggedIn) loggedIn.hidden = !user;
 
-    if (user) {
+    if (user && $("authUserEmail")) {
       $("authUserEmail").textContent =
         `Signed in as ${user.email}`;
     }
   }
 
-  if (!client) {
-    showMessage("Supabase connection could not be initialized.");
+  if (!form || !loggedOut || !loggedIn) {
+    showMessage("Authentication HTML elements are missing.");
     return;
   }
 
@@ -107,6 +119,7 @@
         } else {
           mode = "login";
           updateMode();
+
           showMessage(
             "Registration received! Check your email to confirm your account, then sign in."
           );
@@ -128,8 +141,11 @@
       }
 
       form.reset();
+
     } catch (error) {
+      console.error("Authentication error:", error);
       showMessage(error.message || "Something went wrong.");
+
     } finally {
       $("authSubmit").disabled = false;
     }
@@ -167,4 +183,6 @@
 
   updateMode();
   initializeAuth();
+
+  console.log("ClashVault authentication initialized.");
 })();
