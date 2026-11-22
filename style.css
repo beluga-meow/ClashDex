@@ -1528,21 +1528,31 @@ button,input,select,textarea {
   }
 
   .main-nav {
-    display: none;
+    display: flex;
     position: absolute;
     top: 66px;
     left: 0;
     right: 0;
-    background: #fffdf8;
+    background: #10251a;
     padding: 14px 22px 20px;
-    box-shadow: 0 15px 20px #142b2015;
+    box-shadow: 0 15px 28px rgba(0,0,0,.28);
     flex-direction: column;
     align-items: stretch;
     gap: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-12px) scale(.985);
+    transform-origin: top center;
+    transition: opacity .24s ease, transform .24s ease, visibility .24s ease;
+    z-index: 50;
   }
 
   .main-nav.open {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
   }
 
   .main-nav a {
@@ -2576,197 +2586,265 @@ body {
   }
 }
 
+
+
 /* ==========================================
-   CLASHVAULT — HERO ROSTER
-   PHASE 1: ANIMATED HERO CARDS
+   LIVING KINGDOM LOBBY + MICRO INTERACTIONS
 ========================================== */
 
-.heroes-section {
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-roster {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
-  margin-top: 35px;
-}
-
-.hero-card {
-  position: relative;
+.hero-art {
   isolation: isolate;
-  overflow: hidden;
-  min-height: 350px;
-  padding: 18px;
-  border: 1px solid rgba(233,185,79,.3);
-  border-radius: 20px;
-  background: linear-gradient(160deg, #294d35, #13281d 75%);
-  box-shadow: 0 15px 35px rgba(0,0,0,.25);
-  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
 }
 
-.hero-card:hover {
-  transform: translateY(-10px);
-  border-color: #f5d17a;
-  box-shadow: 0 20px 45px rgba(0,0,0,.4), 0 0 22px rgba(233,185,79,.12);
-}
-
-.hero-card-glow {
+.lobby-troops {
   position: absolute;
-  z-index: -1;
-  width: 210px;
-  height: 210px;
-  top: 5px;
+  z-index: 5;
   left: 50%;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(233,185,79,.25), transparent 70%);
-  animation: heroGlow 4s ease-in-out infinite alternate;
-}
-
-.hero-card-art {
-  position: relative;
+  bottom: 22px;
+  width: min(90%, 440px);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 190px;
-  margin: -5px -5px 15px;
-  border-radius: 15px;
-  background: radial-gradient(circle at 50% 45%, rgba(255,255,255,.12), transparent 65%);
+  align-items: flex-end;
+  justify-content: space-between;
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
-.hero-card-art span {
-  display: block;
-  font-size: 100px;
+.lobby-troop {
+  display: inline-block;
+  font-size: clamp(27px, 4vw, 43px);
   line-height: 1;
-  filter: drop-shadow(0 12px 12px rgba(0,0,0,.4));
-  animation: heroFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 7px 5px rgba(0,0,0,.45));
+  animation: lobbyTroopIdle 3s ease-in-out infinite;
 }
 
-.hero-card-art b {
-  position: absolute;
-  right: 22%;
-  bottom: 25px;
-  font-size: 32px;
-  animation: heroSparkle 2s ease-in-out infinite alternate;
+.troop-one { animation-delay: 0s; }
+.troop-two {
+  animation-delay: .65s;
+  font-size: clamp(31px, 4.5vw, 48px);
+}
+.troop-three { animation-delay: 1.25s; }
+
+@keyframes lobbyTroopIdle {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-9px) rotate(3deg); }
 }
 
-.king-art {
-  background: radial-gradient(circle, rgba(226,158,53,.24), transparent 70%);
+/* Press, hover and keyboard feedback */
+button,
+.button,
+.filter-chip,
+.small-action,
+.header-cta,
+.icon-button,
+.mobile-menu {
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform .18s ease,
+    filter .18s ease,
+    box-shadow .18s ease,
+    background-color .18s ease;
 }
 
-.queen-art {
-  background: radial-gradient(circle, rgba(214,116,158,.2), transparent 70%);
+button:active,
+.button:active,
+.filter-chip:active,
+.small-action:active,
+.header-cta:active,
+.icon-button:active {
+  transform: translateY(2px) scale(.97);
+  filter: brightness(1.1);
 }
 
-.warden-art {
-  background: radial-gradient(circle, rgba(91,157,220,.23), transparent 70%);
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
 }
 
-.champion-art {
-  background: radial-gradient(circle, rgba(126,190,126,.22), transparent 70%);
+.button:hover,
+.header-cta:hover,
+.icon-button:hover {
+  box-shadow: 0 7px 18px rgba(18,39,30,.18);
 }
 
-.hero-card-info {
-  position: relative;
-  z-index: 2;
+.mobile-menu {
+  border-radius: 9px;
+  cursor: pointer;
 }
 
-.hero-rank {
-  color: var(--gold);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 2px;
+.mobile-menu:active {
+  transform: rotate(10deg) scale(.92);
 }
 
-.hero-card-info h3 {
-  margin: 8px 0;
-  color: #fff0c9;
-  font-size: 19px;
+.main-nav a {
+  transition:
+    color .2s ease,
+    padding-left .2s ease,
+    background-color .2s ease;
 }
 
-.hero-card-info p {
-  margin: 0;
-  color: #c5d1c1;
-  font-size: 13px;
-  line-height: 1.6;
-}
+@media (max-width: 760px) {
+  .main-nav a {
+    border-bottom: 1px solid rgba(233,185,79,.2);
+    border-radius: 8px;
+  }
 
-.hero-card-number {
-  position: absolute;
-  top: 15px;
-  right: 17px;
-  color: rgba(255,255,255,.16);
-  font-size: 27px;
-  font-weight: 900;
-}
+  .main-nav a:hover,
+  .main-nav a:focus-visible {
+    padding-left: 10px;
+    background: rgba(233,185,79,.08);
+  }
 
-@keyframes heroFloat {
-  0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-12px) rotate(2deg); }
-}
+  .main-nav.open a {
+    animation: menuItemIn .28s ease both;
+  }
 
-@keyframes heroGlow {
-  from { opacity: .45; transform: translateX(-50%) scale(.9); }
-  to { opacity: 1; transform: translateX(-50%) scale(1.15); }
-}
+  .main-nav.open a:nth-child(1) { animation-delay: .02s; }
+  .main-nav.open a:nth-child(2) { animation-delay: .045s; }
+  .main-nav.open a:nth-child(3) { animation-delay: .07s; }
+  .main-nav.open a:nth-child(4) { animation-delay: .095s; }
+  .main-nav.open a:nth-child(5) { animation-delay: .12s; }
+  .main-nav.open a:nth-child(6) { animation-delay: .145s; }
+  .main-nav.open a:nth-child(7) { animation-delay: .17s; }
 
-@keyframes heroSparkle {
-  from { opacity: .5; transform: scale(.85) rotate(-8deg); }
-  to { opacity: 1; transform: scale(1.15) rotate(8deg); }
-}
+  .lobby-troops {
+    bottom: 15px;
+    width: 95%;
+  }
 
-/* TABLET */
-@media (max-width: 1000px) {
-  .hero-roster {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .lobby-troop {
+    font-size: 27px;
+  }
+
+  .troop-two {
+    font-size: 32px;
   }
 }
 
-/* MOBILE */
-@media (max-width: 560px) {
-  .hero-roster {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .hero-card {
-    min-height: 285px;
-    padding: 12px;
-  }
-
-  .hero-card-art {
-    height: 145px;
-  }
-
-  .hero-card-art span {
-    font-size: 72px;
-  }
-
-  .hero-card-art b {
-    right: 12%;
-    bottom: 18px;
-    font-size: 24px;
-  }
-
-  .hero-card-info h3 {
-    font-size: 15px;
-  }
-
-  .hero-card-info p {
-    font-size: 11px;
-  }
-
-  .hero-rank {
-    font-size: 9px;
-  }
+@keyframes menuItemIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-card-art span,
-  .hero-card-art b,
-  .hero-card-glow {
+  .lobby-troop {
     animation: none !important;
+  }
+
+  .main-nav,
+  .main-nav a,
+  button,
+  .button,
+  .filter-chip,
+  .small-action {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+
+/* =========================================
+   CLASHVAULT - BUILDER CARD UPGRADE
+   ========================================= */
+
+.builder-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.builder-card {
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  background: rgba(24,55,43,.75);
+  transition: transform .25s ease, border-color .25s ease;
+}
+
+.builder-card:hover {
+  transform: translateY(-4px);
+  border-color: #d8ae55;
+}
+
+.builder-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.builder-avatar {
+  font-size: 28px;
+}
+
+.builder-status {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.builder-status.available {
+  color: #73d69b;
+}
+
+.builder-status.busy {
+  color: #e8bd65;
+}
+
+.builder-card h4 {
+  margin: 15px 0 6px;
+}
+
+.builder-card p {
+  margin: 0 0 15px;
+  color: #c6cfc8;
+  font-size: 13px;
+}
+
+.builder-progress-track {
+  width: 100%;
+  height: 7px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: rgba(255,255,255,.12);
+}
+
+.builder-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg,#65b982,#e6bd62);
+  transition: width .5s ease;
+}
+
+.builder-progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 11px;
+}
+
+.builder-progress-label strong {
+  color: #f1ca75;
+}
+
+@media(max-width:700px) {
+  .builder-cards {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 10px;
+  }
+
+  .builder-card {
+    padding: 14px;
+  }
+}
+
+@media(max-width:380px) {
+  .builder-cards {
+    grid-template-columns: 1fr;
   }
 }
