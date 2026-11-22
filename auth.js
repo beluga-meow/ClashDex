@@ -31,11 +31,6 @@
         : "Welcome back, Chief";
     }
 
-    if ($("authName")) {
-      $("authName").hidden = !signup || otpSent;
-      $("authName").required = signup && !otpSent;
-    }
-
     if ($("authEmail")) {
       $("authEmail").disabled = otpSent;
     }
@@ -72,24 +67,19 @@
     pendingEmail = "";
 
     if ($("authOtp")) $("authOtp").value = "";
-
     if ($("authEmail")) $("authEmail").disabled = false;
 
     updateMode();
   }
 
   async function createProfile(user) {
-    const displayName =
-      user.user_metadata?.display_name ||
-      user.email?.split("@")[0] ||
-      "ClashVault Member";
-
     const { error } = await client
       .from("profiles")
       .upsert(
         {
           id: user.id,
-          display_name: displayName
+          display_name:
+            user.email?.split("@")[0] || "ClashVault Member"
         },
         { onConflict: "id" }
       );
@@ -99,22 +89,54 @@
     }
   }
 
+  async function loadPlayerProfile(user) {
+    const { data, error } = await client
+      .from("profiles")
+      .select("player_tag, player_name, player_tag_verified")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Player profile:", error);
+      return;
+    }
+
+    if ($("authPlayerTag")) {
+      $("authPlayerTag").value = data?.player_tag || "";
+    }
+
+    if ($("authPlayerStatus")) {
+      if (data?.player_name && data?.player_tag_verified) {
+        $("authPlayerStatus").textContent =
+          `Connected player: ${data.player_name}`;
+      } else if (data?.player_tag) {
+        $("authPlayerStatus").textContent =
+          `Player Tag saved: ${data.player_tag}. In-game name verification is not connected yet.`;
+      } else {
+        $("authPlayerStatus").textContent =
+          "Enter your Player Tag to save your Clash of Clans profile.";
+      }
+    }
+  }
+
   function updateSession(session) {
     const user = session?.user;
 
     if (loggedOut) loggedOut.hidden = !!user;
     if (loggedIn) loggedIn.hidden = !user;
 
-    if (user && $("authUserEmail")) {
-      $("authUserEmail").textContent =
-        `Signed in as ${user.email}`;
-    }
+    if (user) {
+      if ($("authUserEmail")) {
+        $("authUserEmail").textContent =
+          `Signed in as ${user.email}`;
+      }
 
-    if (user && $("authUserName")) {
-      $("authUserName").textContent =
-        user.user_metadata?.display_name ||
-        user.email?.split("@")[0] ||
-        "ClashVault Member";
+      if ($("authUserName")) {
+        $("authUserName").textContent =
+          "Welcome to ClashVault!";
+      }
+
+      loadPlayerProfile(user);
     }
   }
 
@@ -141,23 +163,17 @@
 
   async function sendCode() {
     const email = $("authEmail")?.value.trim().toLowerCase();
-    const name = $("authName")?.value.trim() || "";
 
     if (!email || !/^[^\s@]+@gmail\.com$/i.test(email)) {
-      throw new Error("Please enter a valid Gmail address ending in @gmail.com.");
-    }
-
-    if (mode === "signup" && !name) {
-      throw new Error("Please enter your display name.");
+      throw new Error(
+        "Please enter a valid Gmail address ending in @gmail.com."
+      );
     }
 
     const { error } = await client.auth.signInWithOtp({
       email,
       options: {
-        shouldCreateUser: mode === "signup",
-        data: {
-          display_name: name
-        }
+        shouldCreateUser: mode === "signup"
       }
     });
 
@@ -180,6 +196,10 @@
 
     if (!pendingEmail || !token) {
       throw new Error("Enter the verification code sent to your Gmail.");
+    }
+
+    if (!/^\d{6}$/.test(token)) {
+      throw new Error("Please enter the 6-digit verification code.");
     }
 
     const { data, error } = await client.auth.verifyOtp({
@@ -210,7 +230,9 @@
     if (submitButton) submitButton.disabled = true;
 
     showMessage(
-      otpSent ? "Verifying your code..." : "Sending verification code..."
+      otpSent
+        ? "Verifying your code..."
+        : "Sending verification code..."
     );
 
     try {
@@ -230,6 +252,10 @@
   if ($("authResend")) {
     $("authResend").addEventListener("click", async () => {
       try {
+        if (!pendingEmail) {
+          throw new Error("Please request a verification code first.");
+        }
+
         showMessage("Sending another verification code...");
 
         const { error } = await client.auth.signInWithOtp({
@@ -244,6 +270,74 @@
         showMessage("A new verification code has been sent.");
       } catch (error) {
         showMessage(error.message || "Unable to resend code.");
+      }
+    });
+  }
+
+  const playerForm = $("playerLinkForm");
+
+  if (playerForm) {
+    playerForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const { data: sessionData } = await client.auth.getSession();
+      const user = sessionData.session?.user;
+
+      if (!user) {
+        showMessage("Please sign in first.");
+        return;
+      }
+
+      const tag = $("authPlayerTag")?.value
+        .trim()
+        .toUpperCase()
+        .replace(/\s/g, "");
+
+      if (!tag || !/^#?[0289PYLQGRJCUV]{3,15}$/.test(tag)) {
+        if ($("authPlayerStatus")) {
+          $("authPlayerStatus").textContent =
+            "Please enter a valid-looking Clash of Clans Player Tag.";
+        }
+        return;
+      }
+
+      const playerTag = tag.startsWith("#") ? tag : `#${tag}`;
+      const button = $("authLinkPlayer");
+
+      try {
+        if (button) button.disabled = true;
+
+        if ($("authPlayerStatus")) {
+          $("authPlayerStatus").textContent = "Saving Player Tag...";
+        }
+
+        const { error } = await client
+          .from("profiles")
+          .upsert(
+            {
+              id: user.id,
+              player_tag: playerTag,
+              player_name: null,
+              player_tag_verified: false
+            },
+            { onConflict: "id" }
+          );
+
+        if (error) throw error;
+
+        if ($("authPlayerStatus")) {
+          $("authPlayerStatus").textContent =
+            `Player Tag ${playerTag} saved. In-game name verification will be available after API integration.`;
+        }
+      } catch (error) {
+        console.error("Player Tag save:", error);
+
+        if ($("authPlayerStatus")) {
+          $("authPlayerStatus").textContent =
+            error.message || "Unable to save Player Tag.";
+        }
+      } finally {
+        if (button) button.disabled = false;
       }
     });
   }
@@ -280,5 +374,5 @@
   updateMode();
   initializeAuth();
 
-  console.log("ClashVault OTP authentication initialized.");
+  console.log("ClashVault authentication initialized.");
 })();
