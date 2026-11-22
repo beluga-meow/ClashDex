@@ -1,17 +1,14 @@
 
 (() => {
-  const SUPABASE_URL =
-    "https://hrloxvshgehvkmpnnbyz.supabase.co";
+  // Use the shared Supabase client from supabase-config.js
+  const client = window.supabaseClient;
 
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_eIE7cZwu8FE1727c-Vd1KA_v2CRIYX2";
-
-  const client = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
-
-  window.supabaseClient = client;
+  if (!client) {
+    console.error(
+      "Supabase client not initialized. Check supabase-config.js."
+    );
+    return;
+  }
 
   const $ = (id) => document.getElementById(id);
 
@@ -29,20 +26,28 @@
   function updateMode() {
     const signup = mode === "signup";
 
-    $("authTitle").textContent = signup
-      ? "Create your account"
-      : "Welcome back";
+    if ($("authTitle")) {
+      $("authTitle").textContent = signup
+        ? "Create your account"
+        : "Welcome back";
+    }
 
-    $("authName").hidden = !signup;
-    $("authName").required = signup;
+    if ($("authName")) {
+      $("authName").hidden = !signup;
+      $("authName").required = signup;
+    }
 
-    $("authSubmit").textContent = signup
-      ? "Create account"
-      : "Sign in";
+    if ($("authSubmit")) {
+      $("authSubmit").textContent = signup
+        ? "Create account"
+        : "Sign in";
+    }
 
-    $("authToggle").textContent = signup
-      ? "Already have an account? Sign in"
-      : "New here? Create an account";
+    if ($("authToggle")) {
+      $("authToggle").textContent = signup
+        ? "Already have an account? Sign in"
+        : "New here? Create an account";
+    }
   }
 
   async function createProfile(user) {
@@ -76,27 +81,45 @@
       $("authUserEmail").textContent =
         `Signed in as ${user.email}`;
     }
+
+    if (user && $("authUserName")) {
+      $("authUserName").textContent =
+        user.user_metadata?.display_name ||
+        user.email?.split("@")[0] ||
+        "ClashVault Member";
+    }
   }
 
   if (!form || !loggedOut || !loggedIn) {
     showMessage("Authentication HTML elements are missing.");
+    console.error("Check the authentication element IDs in index.html.");
     return;
   }
 
-  $("authToggle").addEventListener("click", () => {
-    mode = mode === "signup" ? "login" : "signup";
-    showMessage("");
-    updateMode();
-  });
+  if ($("authToggle")) {
+    $("authToggle").addEventListener("click", () => {
+      mode = mode === "signup" ? "login" : "signup";
+      showMessage("");
+      updateMode();
+    });
+  }
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const email = $("authEmail").value.trim();
-    const password = $("authPassword").value;
-    const name = $("authName").value.trim();
+    const email = $("authEmail")?.value.trim();
+    const password = $("authPassword")?.value;
+    const name = $("authName")?.value.trim() || "";
 
-    $("authSubmit").disabled = true;
+    if (!email || !password) {
+      showMessage("Please enter your email and password.");
+      return;
+    }
+
+    const submitButton = $("authSubmit");
+
+    if (submitButton) submitButton.disabled = true;
+
     showMessage("Please wait...");
 
     try {
@@ -147,20 +170,22 @@
       showMessage(error.message || "Something went wrong.");
 
     } finally {
-      $("authSubmit").disabled = false;
+      if (submitButton) submitButton.disabled = false;
     }
   });
 
-  $("authLogout").addEventListener("click", async () => {
-    const { error } = await client.auth.signOut();
+  if ($("authLogout")) {
+    $("authLogout").addEventListener("click", async () => {
+      const { error } = await client.auth.signOut();
 
-    if (error) {
-      showMessage(error.message);
-      return;
-    }
+      if (error) {
+        showMessage(error.message);
+        return;
+      }
 
-    showMessage("You have signed out.");
-  });
+      showMessage("You have signed out.");
+    });
+  }
 
   client.auth.onAuthStateChange((_event, session) => {
     updateSession(session);
