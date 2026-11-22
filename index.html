@@ -111,6 +111,7 @@
     </section>
 
   
+
 <!-- ACCOUNT -->
 <section class="section" id="account">
   <div class="section-heading">
@@ -118,7 +119,7 @@
       <div class="eyebrow">JOIN THE KINGDOM</div>
       <h2>Your <span>ClashVault Account</span></h2>
       <p class="section-subtitle">
-        Sign in with your Gmail and verify your email.
+        Sign in with Gmail and connect your Clash of Clans profile.
       </p>
     </div>
     <span class="section-badge">COMMUNITY</span>
@@ -126,20 +127,11 @@
 
   <div class="auth-panel">
 
+    <!-- LOGGED OUT -->
     <div id="authLoggedOut">
       <h3 id="authTitle">Create your ClashVault account</h3>
 
       <form id="authForm">
-
-        <input
-          id="authName"
-          type="text"
-          placeholder="Your player display name"
-          maxlength="40"
-          autocomplete="nickname"
-          required
-        >
-
         <input
           id="authEmail"
           type="email"
@@ -166,7 +158,6 @@
         >
           Send verification code
         </button>
-
       </form>
 
       <button class="small-action" id="authToggle" type="button">
@@ -187,10 +178,40 @@
       </p>
     </div>
 
+    <!-- LOGGED IN -->
     <div id="authLoggedIn" hidden>
-      <h3>Welcome to ClashVault!</h3>
-      <p id="authUserName"></p>
+      <h3 id="authUserName">Welcome to ClashVault!</h3>
       <p id="authUserEmail"></p>
+
+      <div class="player-link-panel">
+        <h3>Connect your Clash of Clans account</h3>
+        <p class="form-note">
+          Enter your Player Tag to prepare your profile connection.
+        </p>
+
+        <form id="playerLinkForm">
+          <input
+            id="authPlayerTag"
+            type="text"
+            placeholder="Player Tag (e.g. #2PP)"
+            maxlength="15"
+            autocomplete="off"
+            required
+          >
+
+          <button
+            class="button button-green"
+            id="authLinkPlayer"
+            type="submit"
+          >
+            Save Player Tag
+          </button>
+        </form>
+
+        <p id="authPlayerStatus" class="form-note" aria-live="polite">
+          Your in-game name will appear after official API verification is connected.
+        </p>
+      </div>
 
       <button
         class="button button-green"
@@ -202,10 +223,8 @@
     </div>
 
     <p class="form-note" id="authMessage" aria-live="polite"></p>
-
   </div>
 </section>
-
 
     <!-- PLAYER FINDER -->
     <section class="section player-section" id="player-finder">
