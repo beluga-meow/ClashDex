@@ -1951,3 +1951,118 @@ button,input,select,textarea {
     font-size: 21px;
   }
 }
+
+
+/* =================================
+   CLASHVAULT LOGIN METHOD SCREENS
+================================= */
+
+#account .auth-panel [hidden] {
+  display: none !important;
+}
+
+#account .auth-emblem {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #234b39, #34734b);
+  color: #f2c66d;
+  font-size: 32px;
+  box-shadow: 0 10px 25px rgba(24, 55, 43, 0.2);
+}
+
+#account .auth-panel > div[id$="Screen"] {
+  text-align: center;
+}
+
+#account .auth-choice {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  text-align: left;
+  padding: 18px;
+  margin: 14px 0;
+  border-radius: 14px;
+}
+
+#account .auth-choice > span:first-child {
+  font-size: 25px;
+}
+
+#account .auth-choice strong,
+#account .auth-choice small {
+  display: block;
+}
+
+#account .auth-choice small {
+  margin-top: 5px;
+  opacity: 0.8;
+  font-size: 12px;
+}
+
+#account .auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 22px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#account .auth-divider::before,
+#account .auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+#account #authOtp {
+  text-align: center;
+  letter-spacing: 10px;
+  font-size: 24px;
+  font-weight: 700;
+  padding: 16px;
+}
+
+#account .auth-pending-email {
+  display: block;
+  margin: 12px 0 20px;
+  color: var(--green);
+  overflow-wrap: anywhere;
+}
+
+#account .auth-status {
+  margin-top: 18px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+#account .auth-choice:hover {
+  transform: translateY(-2px);
+}
+
+#account .auth-panel button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  #account .auth-panel {
+    padding: 22px 16px;
+  }
+
+  #account .auth-choice {
+    padding: 15px;
+  }
+
+  #account #authOtp {
+    letter-spacing: 7px;
+  }
+}
+
