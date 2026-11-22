@@ -110,121 +110,119 @@
       <div><span class="stat-icon">⏱️</span><strong>Village tracker</strong><small>Stay on upgrade schedule</small></div>
     </section>
 
-  
+    <!-- ACCOUNT -->
+    <section class="section" id="account">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">JOIN THE KINGDOM</div>
+          <h2>Your <span>ClashVault Account</span></h2>
+          <p class="section-subtitle">
+            Sign in with Gmail and connect your Clash of Clans profile.
+          </p>
+        </div>
+        <span class="section-badge">COMMUNITY</span>
+      </div>
 
-<!-- ACCOUNT -->
-<section class="section" id="account">
-  <div class="section-heading">
-    <div>
-      <div class="eyebrow">JOIN THE KINGDOM</div>
-      <h2>Your <span>ClashVault Account</span></h2>
-      <p class="section-subtitle">
-        Sign in with Gmail and connect your Clash of Clans profile.
-      </p>
-    </div>
-    <span class="section-badge">COMMUNITY</span>
-  </div>
+      <div class="auth-panel">
 
-  <div class="auth-panel">
+        <!-- LOGGED OUT -->
+        <div id="authLoggedOut">
+          <h3 id="authTitle">Create your ClashVault account</h3>
 
-    <!-- LOGGED OUT -->
-    <div id="authLoggedOut">
-      <h3 id="authTitle">Create your ClashVault account</h3>
+          <form id="authForm">
+            <input
+              id="authEmail"
+              type="email"
+              placeholder="Your Gmail address"
+              autocomplete="email"
+              required
+            >
 
-      <form id="authForm">
-        <input
-          id="authEmail"
-          type="email"
-          placeholder="Your Gmail address"
-          autocomplete="email"
-          required
-        >
+            <input
+              id="authOtp"
+              type="text"
+              placeholder="Enter 6-digit verification code"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              maxlength="6"
+              pattern="[0-9]{6}"
+              hidden
+            >
 
-        <input
-          id="authOtp"
-          type="text"
-          placeholder="Enter 6-digit verification code"
-          inputmode="numeric"
-          autocomplete="one-time-code"
-          maxlength="6"
-          pattern="[0-9]{6}"
-          hidden
-        >
+            <button
+              class="button button-green"
+              id="authSubmit"
+              type="submit"
+            >
+              Send verification code
+            </button>
+          </form>
 
-        <button
-          class="button button-green"
-          id="authSubmit"
-          type="submit"
-        >
-          Send verification code
-        </button>
-      </form>
+          <button class="small-action" id="authToggle" type="button">
+            Already have an account? Sign in
+          </button>
 
-      <button class="small-action" id="authToggle" type="button">
-        Already have an account? Sign in
-      </button>
+          <button class="small-action" id="authResend" type="button" hidden>
+            Resend verification code
+          </button>
 
-      <button class="small-action" id="authResend" type="button" hidden>
-        Resend verification code
-      </button>
+          <button class="small-action" id="authBack" type="button" hidden>
+            Change email address
+          </button>
 
-      <button class="small-action" id="authBack" type="button" hidden>
-        Change email address
-      </button>
+          <p class="form-note">
+            We'll send a one-time verification code to your Gmail.
+            Never share your code with anyone.
+          </p>
+        </div>
 
-      <p class="form-note">
-        We'll send a one-time verification code to your Gmail.
-        Never share your code with anyone.
-      </p>
-    </div>
+        <!-- LOGGED IN -->
+        <div id="authLoggedIn" hidden>
+          <h3 id="authUserName">Welcome to ClashVault!</h3>
+          <p id="authUserEmail"></p>
 
-    <!-- LOGGED IN -->
-    <div id="authLoggedIn" hidden>
-      <h3 id="authUserName">Welcome to ClashVault!</h3>
-      <p id="authUserEmail"></p>
+          <div class="player-link-panel">
+            <h3>Connect your Clash of Clans account</h3>
+            <p class="form-note">
+              Enter your Player Tag to prepare your profile connection.
+            </p>
 
-      <div class="player-link-panel">
-        <h3>Connect your Clash of Clans account</h3>
-        <p class="form-note">
-          Enter your Player Tag to prepare your profile connection.
-        </p>
+            <form id="playerLinkForm">
+              <input
+                id="authPlayerTag"
+                type="text"
+                placeholder="Player Tag (e.g. #2PP)"
+                maxlength="15"
+                autocomplete="off"
+                required
+              >
 
-        <form id="playerLinkForm">
-          <input
-            id="authPlayerTag"
-            type="text"
-            placeholder="Player Tag (e.g. #2PP)"
-            maxlength="15"
-            autocomplete="off"
-            required
-          >
+              <button
+                class="button button-green"
+                id="authLinkPlayer"
+                type="submit"
+              >
+                Save Player Tag
+              </button>
+            </form>
+
+            <p id="authPlayerStatus" class="form-note" aria-live="polite">
+              Your in-game name will appear after official API verification is connected.
+            </p>
+          </div>
 
           <button
             class="button button-green"
-            id="authLinkPlayer"
-            type="submit"
+            id="authLogout"
+            type="button"
           >
-            Save Player Tag
+            Sign out
           </button>
-        </form>
+        </div>
 
-        <p id="authPlayerStatus" class="form-note" aria-live="polite">
-          Your in-game name will appear after official API verification is connected.
-        </p>
+        <p class="form-note" id="authMessage" aria-live="polite"></p>
       </div>
-
-      <button
-        class="button button-green"
-        id="authLogout"
-        type="button"
-      >
-        Sign out
-      </button>
-    </div>
-
-    <p class="form-note" id="authMessage" aria-live="polite"></p>
-  </div>
-</section>
+    </section>
 
     <!-- PLAYER FINDER -->
     <section class="section player-section" id="player-finder">
