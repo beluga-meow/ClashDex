@@ -1789,3 +1789,165 @@ button,input,select,textarea {
     padding: 20px;
   }
 }
+
+
+/* =================================
+   CLASHVAULT PREMIUM ACCOUNT DESIGN
+================================= */
+
+#account .auth-panel {
+  position: relative;
+  max-width: 760px;
+  margin: 35px auto;
+  padding: 38px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 165, 91, .35);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(156,198,107,.16), transparent 40%),
+    linear-gradient(145deg, #18372b, #10271e 75%);
+  box-shadow: 0 25px 60px rgba(0,0,0,.22);
+  color: #f7f2e7;
+}
+
+#account .auth-panel::before {
+  content: "♛";
+  position: absolute;
+  right: 25px;
+  top: 5px;
+  font-size: 110px;
+  color: rgba(242,198,109,.07);
+  pointer-events: none;
+}
+
+#account .auth-panel h3 {
+  position: relative;
+  margin: 0 0 18px;
+  color: #f2c66d;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+#account .auth-panel p {
+  position: relative;
+}
+
+#account .auth-panel form {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+#account .auth-panel input {
+  width: 100%;
+  min-height: 54px;
+  padding: 15px 17px;
+  border: 1px solid rgba(242,198,109,.3);
+  border-radius: 12px;
+  outline: none;
+  background: rgba(255,255,255,.07);
+  color: #fffdf8;
+  font: inherit;
+  transition: .2s ease;
+}
+
+#account .auth-panel input::placeholder {
+  color: rgba(255,255,255,.55);
+}
+
+#account .auth-panel input:focus {
+  border-color: #f2c66d;
+  box-shadow: 0 0 0 3px rgba(242,198,109,.13);
+}
+
+#account .auth-panel .button-green {
+  min-height: 52px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #d9a747, #f2c66d);
+  color: #18372b;
+  font-weight: 800;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+#account .auth-panel .button-green:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 8px 22px rgba(242,198,109,.2);
+}
+
+#account .auth-panel .button-green:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#account .auth-panel .small-action {
+  position: relative;
+  margin: 14px 10px 0 0;
+  color: #f2c66d;
+}
+
+#account .auth-panel .form-note {
+  color: rgba(255,253,248,.7);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* PLAYER CONNECTION CARD */
+
+#account .player-link-panel {
+  position: relative;
+  margin: 28px 0 22px;
+  padding: 25px;
+  border: 1px solid rgba(242,198,109,.25);
+  border-radius: 18px;
+  background: rgba(255,255,255,.055);
+}
+
+#account .player-link-panel h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+#account #authUserName {
+  color: #fffdf8;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+#account #authUserEmail {
+  color: rgba(255,255,255,.65);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+#account #authPlayerStatus {
+  padding: 12px 14px;
+  margin-top: 15px;
+  border-radius: 10px;
+  background: rgba(156,198,107,.09);
+  border: 1px solid rgba(156,198,107,.18);
+}
+
+#account #authLogout {
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  #account .auth-panel {
+    padding: 25px 18px;
+    margin: 22px auto;
+    border-radius: 18px;
+  }
+
+  #account .player-link-panel {
+    padding: 18px;
+  }
+
+  #account .auth-panel h3 {
+    font-size: 21px;
+  }
+}
