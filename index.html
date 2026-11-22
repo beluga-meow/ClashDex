@@ -24,10 +24,9 @@
       <span class="brand-mark">⚔</span>
       <span>CLASH<span class="brand-accent">VAULT</span><small>YOUR KINGDOM COMPANION</small></span>
     </a>
-    <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+    <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
     <nav class="main-nav" id="mainNav">
       <a class="active" href="#home">Home</a>
-      <a href="#heroes">Heroes</a>
       <a href="#player-finder">Player Finder</a>
       <a href="#bases">Base Library</a>
       <a href="#attacks">Attack Academy</a>
@@ -70,6 +69,11 @@
           <div class="castle-base"></div>
         </div>
         <div class="hero-ground"></div>
+        <div class="lobby-troops" aria-hidden="true">
+          <span class="lobby-troop troop-one">⚔️</span>
+          <span class="lobby-troop troop-two">🏹</span>
+          <span class="lobby-troop troop-three">🧙</span>
+        </div>
         <div class="floating-tag tag-bottom">✨ <span>Build your kingdom</span></div>
         <div class="hero-spark spark-one">✦</div>
         <div class="hero-spark spark-two">✧</div>
@@ -83,44 +87,7 @@
       <div><span class="stat-icon">⏱️</span><strong>Village tracker</strong><small>Stay on upgrade schedule</small></div>
     </section>
 
-    <!-- HERO ROSTER -->
-    <section class="section heroes-section" id="heroes">
-      <div class="section-heading">
-        <div>
-          <div class="eyebrow">THE GUARDIANS OF YOUR KINGDOM</div>
-          <h2>Meet the <span>Heroes</span></h2>
-          <p class="section-subtitle">A legendary roster to bring the ClashVault kingdom to life.</p>
-        </div>
-        <span class="section-badge">HERO ROSTER</span>
-      </div>
-      <div class="hero-roster">
-        <article class="hero-card king-card">
-          <div class="hero-card-glow"></div>
-          <div class="hero-card-art king-art" aria-hidden="true"><span>👑</span><b>⚔️</b></div>
-          <div class="hero-card-info"><span class="hero-rank">THE MIGHTY</span><h3>Barbarian King</h3><p>Lead the charge and break through enemy defenses.</p></div>
-          <span class="hero-card-number">01</span>
-        </article>
-        <article class="hero-card queen-card">
-          <div class="hero-card-glow"></div>
-          <div class="hero-card-art queen-art" aria-hidden="true"><span>🏹</span><b>✨</b></div>
-          <div class="hero-card-info"><span class="hero-rank">THE ROYAL</span><h3>Archer Queen</h3><p>Strike from a distance with precision and power.</p></div>
-          <span class="hero-card-number">02</span>
-        </article>
-        <article class="hero-card warden-card">
-          <div class="hero-card-glow"></div>
-          <div class="hero-card-art warden-art" aria-hidden="true"><span>🧙</span><b>🔮</b></div>
-          <div class="hero-card-info"><span class="hero-rank">THE WISE</span><h3>Grand Warden</h3><p>Support your army with powerful protective magic.</p></div>
-          <span class="hero-card-number">03</span>
-        </article>
-        <article class="hero-card champion-card">
-          <div class="hero-card-glow"></div>
-          <div class="hero-card-art champion-art" aria-hidden="true"><span>🛡️</span><b>⚡</b></div>
-          <div class="hero-card-info"><span class="hero-rank">THE FEARLESS</span><h3>Royal Champion</h3><p>Find the opening and take down key defenses.</p></div>
-          <span class="hero-card-number">04</span>
-        </article>
-      </div>
-      <p class="section-footnote">Decorative placeholder artwork for this fan-made interface.</p>
-    </section>
+    
 
     <!-- ACCOUNT -->
     <section class="section" id="account">
