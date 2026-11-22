@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172b22">
+  <meta name="description" content="ClashDex — your Clash of Clans companion for player lookup, base ideas, attack guides and village progress.">
+  <title>ClashDex — Your Kingdom Companion</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="season-effects" id="seasonEffects" aria-hidden="true"></div>
+  <div class="announcement" id="announcement">
+    <span class="announcement-dot"></span>
+    <span id="announcementText">Welcome to ClashDex — your kingdom companion.</span>
+    <button class="announcement-close" id="closeAnnouncement" aria-label="Dismiss announcement">×</button>
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="ClashDex home">
+      <span class="brand-mark">⚔</span>
+      <span>CLASH<span class="brand-accent">DEX</span><small>YOUR KINGDOM COMPANION</small></span>
+    </a>
+    <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+    <nav class="main-nav" id="mainNav">
+      <a class="active" href="#home">Home</a>
+      <a href="#player-finder">Player Finder</a>
+      <a href="#bases">Base Library</a>
+      <a href="#attacks">Attack Academy</a>
+      <a href="#tracker">Builder Tracker</a>
+      <a href="#events">Events</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-button" id="themeButton" title="Change seasonal theme" aria-label="Change seasonal theme">🌙</button>
+      <a class="header-cta" href="#player-finder">Find a player <span>↗</span></a>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-star">✦</span> THE ULTIMATE CLASH COMPANION</div>
+        <h1>Your village.<br><span>Your strategy.</span><br>Your legacy.</h1>
+        <p class="hero-text">Explore player profiles, discover powerful base layouts, sharpen your attacks and keep every builder busy.</p>
+        <div class="hero-buttons">
+          <a class="button button-gold" href="#player-finder">Explore ClashDex <span>→</span></a>
+          <a class="button button-ghost" href="#bases">Browse base layouts</a>
+        </div>
+        <div class="hero-proof">
+          <div class="proof-avatars"><span>👑</span><span>🛡️</span><span>⚔️</span></div>
+          <div><strong>Made for Chiefs</strong><small>One place for your Clash journey</small></div>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Fantasy kingdom illustration">
+        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+        <div class="hero-sun"></div>
+        <div class="floating-tag tag-top">🏆 <span>Plan your next win</span></div>
+        <div class="castle">
+          <div class="castle-flag">⚑</div>
+          <div class="tower tower-left"><i></i></div><div class="tower tower-right"><i></i></div>
+          <div class="castle-roof"></div><div class="castle-body"><div class="castle-door"></div><div class="castle-window"></div></div>
+          <div class="castle-base"></div>
+        </div>
+        <div class="hero-ground"></div>
+        <div class="floating-tag tag-bottom">✨ <span>Build your kingdom</span></div>
+        <div class="hero-spark spark-one">✦</div><div class="hero-spark spark-two">✧</div>
+      </div>
+    </section>
+
+    <section class="quick-stats" aria-label="ClashDex features">
+      <div><span class="stat-icon">🔎</span><strong>Player lookup</strong><small>Explore public profiles</small></div>
+      <div><span class="stat-icon">🏰</span><strong>Base library</strong><small>Find your next layout</small></div>
+      <div><span class="stat-icon">⚔️</span><strong>Attack guides</strong><small>Learn new strategies</small></div>
+      <div><span class="stat-icon">⏱️</span><strong>Village tracker</strong><small>Stay on upgrade schedule</small></div>
+    </section>
+
+    <section class="section player-section" id="player-finder">
+      <div class="section-heading">
+        <div><div class="eyebrow">KNOW YOUR RIVALS & ALLIES</div><h2>Player <span>Finder</span></h2></div>
+        <span class="section-badge">PLAYER INTEL</span>
+      </div>
+      <div class="finder-panel">
+        <div class="finder-copy"><div class="finder-emblem">🔍</div><div><h3>Search a Chief</h3><p>Enter a Clash of Clans player tag to look up a public player profile.</p></div></div>
+        <form id="playerSearchForm" class="search-form">
+          <label class="sr-only" for="playerTag">Player tag</label>
+          <span class="tag-prefix">#</span><input id="playerTag" maxlength="15" placeholder="Enter player tag (e.g. 2PP)" autocomplete="off">
+          <button class="button button-green" type="submit">Search player <span>→</span></button>
+        </form>
+        <p class="form-note" id="playerSearchMessage">Player lookup requires a secure official API connection. This starter homepage validates your tag and is ready for backend integration.</p>
+        <div class="player-result" id="playerResult" hidden></div>
+      </div>
+    </section>
+
+    <section class="section" id="bases">
+      <div class="section-heading">
+        <div><div class="eyebrow">DESIGNED TO DEFEND</div><h2>Base <span>Library</span></h2><p class="section-subtitle">Find a layout that fits your Town Hall and your goal.</p></div>
+        <a class="text-link" href="#bases">Explore layouts <span>→</span></a>
+      </div>
+      <div class="filter-row" id="baseFilters">
+        <button class="filter-chip selected" data-filter="All">All bases</button>
+        <button class="filter-chip" data-filter="War">War</button>
+        <button class="filter-chip" data-filter="Farming">Farming</button>
+        <button class="filter-chip" data-filter="Trophy">Trophy</button>
+        <button class="filter-chip" data-filter="Hybrid">Hybrid</button>
+      </div>
+      <div class="card-grid" id="baseGrid">
+        <article class="content-card base-card" data-type="War"><div class="card-art base-art art-war"><span>🛡️</span><b>WAR DEFENSE</b></div><div class="card-body"><div class="card-meta"><span>TH 17</span><span>WAR</span></div><h3>Anti 3-Star Fortress</h3><p>A defensive concept built to protect key structures.</p><div class="card-footer"><span>☆ Community rating coming soon</span><button class="small-action" data-detail="War base · TH17">Details ↗</button></div></div></article>
+        <article class="content-card base-card" data-type="Farming"><div class="card-art base-art art-farm"><span>🌾</span><b>RESOURCE PROTECTION</b></div><div class="card-body"><div class="card-meta"><span>TH 16</span><span>FARMING</span></div><h3>Resource Keeper</h3><p>Keep your storages protected while you progress.</p><div class="card-footer"><span>☆ Community rating coming soon</span><button class="small-action" data-detail="Farming base · TH16">Details ↗</button></div></div></article>
+        <article class="content-card base-card" data-type="Trophy"><div class="card-art base-art art-trophy"><span>🏆</span><b>TROPHY PUSH</b></div><div class="card-body"><div class="card-meta"><span>TH 15</span><span>TROPHY</span></div><h3>Champion's Ring</h3><p>A layout concept for players pushing trophies.</p><div class="card-footer"><span>☆ Community rating coming soon</span><button class="small-action" data-detail="Trophy base · TH15">Details ↗</button></div></div></article>
+      </div>
+      <p class="section-footnote">Starter examples only. Community submissions, copy links, ratings and verified layouts can be added when the base database is connected.</p>
+    </section>
+
+    <section class="section attack-section" id="attacks">
+      <div class="section-heading">
+        <div><div class="eyebrow">MASTER THE BATTLEFIELD</div><h2>Attack <span>Academy</span></h2><p class="section-subtitle">Learn an army composition and understand when to use it.</p></div>
+        <span class="section-badge">STRATEGY HUB</span>
+      </div>
+      <div class="attack-grid">
+        <article class="attack-feature"><div class="attack-visual"><span class="attack-flame">🔥</span><span class="attack-label">AIR STRATEGY</span><div class="army-icons">🐉 🐉 ⚡ 🦇</div></div><div class="attack-info"><div class="card-meta"><span>BEGINNER FRIENDLY</span><span>TH 12+</span></div><h3>Electro Dragon Push</h3><p>A straightforward air strategy concept. Adapt spells and funneling to the base layout.</p><div class="attack-bottom"><span>Army guide · Video links to be curated</span><button class="small-action" data-detail="Electro Dragon Push · Air strategy">View guide ↗</button></div></div></article>
+        <article class="attack-feature"><div class="attack-visual visual-ground"><span class="attack-flame">⚔️</span><span class="attack-label">GROUND STRATEGY</span><div class="army-icons">🪓 🛡️ 🧙 🦸</div></div><div class="attack-info"><div class="card-meta"><span>TACTICAL</span><span>TH 13+</span></div><h3>Root Rider Ground Push</h3><p>Explore pathing, funneling and support choices for ground-based attacks.</p><div class="attack-bottom"><span>Army guide · Video links to be curated</span><button class="small-action" data-detail="Root Rider Ground Push · Ground strategy">View guide ↗</button></div></div></article>
+      </div>
+      <p class="section-footnote">Attack recommendations and creator videos will be matched to the current game balance and Town Hall level. Creator names and videos will be linked with attribution.</p>
+    </section>
+
+    <section class="section tracker-section" id="tracker">
+      <div class="section-heading">
+        <div><div class="eyebrow">KEEP YOUR BUILDERS BUSY</div><h2>Village <span>Tracker</span></h2><p class="section-subtitle">Add upgrades and track their finish times on this device.</p></div>
+        <span class="section-badge">LOCAL TRACKER</span>
+      </div>
+      <div class="tracker-panel">
+        <div class="tracker-top"><div><h3>Builder status</h3><p id="builderSummary">No upgrades tracked yet. Add your first upgrade.</p></div><div class="builder-count"><strong id="activeCount">0</strong><small>ACTIVE</small></div></div>
+        <form class="upgrade-form" id="upgradeForm">
+          <input id="upgradeName" required maxlength="40" placeholder="Upgrade name (e.g. Archer Tower)">
+          <select id="builderSelect" aria-label="Builder number"><option value="Builder 1">Builder 1</option><option value="Builder 2">Builder 2</option><option value="Builder 3">Builder 3</option><option value="Builder 4">Builder 4</option><option value="Builder 5">Builder 5</option><option value="Builder 6">Builder 6</option></select>
+          <label class="duration-label">Duration <input id="upgradeHours" type="number" min="0.1" max="1000" step="0.1" value="8" required> <span>hours</span></label>
+          <button class="button button-green" type="submit">＋ Add upgrade</button>
+        </form>
+        <div class="upgrade-list" id="upgradeList"><div class="empty-state">🛠️<strong>Your builders are ready.</strong><span>Add an upgrade above to start a countdown.</span></div></div>
+      </div>
+      <p class="section-footnote">This is a manual tracker saved in your browser. It does not read live upgrade timers from Supercell servers.</p>
+    </section>
+
+    <section class="section events-section" id="events">
+      <div class="section-heading"><div><div class="eyebrow">WHAT'S HAPPENING IN THE KINGDOM</div><h2>Events & <span>Updates</span></h2><p class="section-subtitle">A home for seasonal news, challenges and game updates.</p></div><span class="section-badge">KINGDOM NEWS</span></div>
+      <div class="event-grid">
+        <article class="event-card event-season"><div class="event-symbol">🎉</div><div><span class="event-kicker">SEASONAL SPOTLIGHT</span><h3>Seasonal celebrations</h3><p>Event-themed ClashDex visuals can change with the season.</p><button class="small-action" id="previewSeason">Preview theme ↗</button></div></article>
+        <article class="event-card event-news"><div class="event-symbol">📜</div><div><span class="event-kicker">GAME NEWS</span><h3>Official updates</h3><p>Connect official news sources here to show verified announcements.</p><a class="small-action" href="https://supercell.com/en/games/clashofclans/" target="_blank" rel="noopener">Visit Clash of Clans ↗</a></div></article>
+      </div>
+    </section>
+
+    <section class="store-banner" id="store">
+      <div class="store-emblem">💎</div><div><div class="eyebrow">THE KINGDOM MARKET</div><h2>Skins, scenery & special offers.</h2><p>Browse official offers and the Supercell Store. Purchases are completed through official channels.</p></div><a class="button button-gold" href="https://store.supercell.com/clashofclans" target="_blank" rel="noopener">Visit official store ↗</a>
+    </section>
+  </main>
+
+  <footer class="site-footer"><a class="brand footer-brand" href="#home"><span class="brand-mark">⚔</span><span>CLASH<span class="brand-accent">DEX</span><small>YOUR KINGDOM COMPANION</small></span></a><p>Fan-made companion concept. Not affiliated with, endorsed, sponsored or specifically approved by Supercell.</p><div class="footer-links"><a href="#home">Back to top ↑</a><a href="https://supercell.com/en/" target="_blank" rel="noopener">Supercell</a></div><small class="copyright">© <span id="year"></span> ClashDex. All game trademarks belong to their respective owners.</small></footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal-backdrop" id="modalBackdrop" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" id="modalClose" aria-label="Close dialog">×</button><div class="modal-icon">🏰</div><h2 id="modalTitle">ClashDex</h2><p id="modalText"></p><button class="button button-green" id="modalOk">Got it</button></div></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
