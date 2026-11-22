@@ -110,119 +110,162 @@
       <div><span class="stat-icon">⏱️</span><strong>Village tracker</strong><small>Stay on upgrade schedule</small></div>
     </section>
 
-    <!-- ACCOUNT -->
-    <section class="section" id="account">
-      <div class="section-heading">
-        <div>
-          <div class="eyebrow">JOIN THE KINGDOM</div>
-          <h2>Your <span>ClashVault Account</span></h2>
-          <p class="section-subtitle">
-            Sign in with Gmail and connect your Clash of Clans profile.
-          </p>
-        </div>
-        <span class="section-badge">COMMUNITY</span>
-      </div>
+  
+<!-- ACCOUNT -->
+<section class="section" id="account">
+  <div class="section-heading">
+    <div>
+      <div class="eyebrow">JOIN THE KINGDOM</div>
+      <h2>Your <span>ClashVault Account</span></h2>
+      <p class="section-subtitle">
+        Your gaming community starts here.
+      </p>
+    </div>
+    <span class="section-badge">COMMUNITY</span>
+  </div>
 
-      <div class="auth-panel">
+  <div class="auth-panel">
 
-        <!-- LOGGED OUT -->
-        <div id="authLoggedOut">
-          <h3 id="authTitle">Create your ClashVault account</h3>
+    <!-- LOGIN METHOD -->
+    <div id="authMethodScreen">
+      <div class="auth-emblem">♛</div>
+      <h3>Welcome to ClashVault</h3>
+      <p>Choose how you want to access your account.</p>
 
-          <form id="authForm">
-            <input
-              id="authEmail"
-              type="email"
-              placeholder="Your Gmail address"
-              autocomplete="email"
-              required
-            >
+      <button class="button button-green auth-choice"
+        id="authGameButton" type="button">
+        <span>🎮</span>
+        <span>
+          <strong>Open with a game</strong>
+          <small>Supercell connection coming soon</small>
+        </span>
+      </button>
 
-            <input
-              id="authOtp"
-              type="text"
-              placeholder="Enter 6-digit verification code"
-              inputmode="numeric"
-              autocomplete="one-time-code"
-              maxlength="6"
-              pattern="[0-9]{6}"
-              hidden
-            >
+      <div class="auth-divider"><span>OR</span></div>
 
-            <button
-              class="button button-green"
-              id="authSubmit"
-              type="submit"
-            >
-              Send verification code
-            </button>
-          </form>
+      <button class="button button-green auth-choice"
+        id="authEmailButton" type="button">
+        <span>✉️</span>
+        <span>
+          <strong>Log in with email</strong>
+          <small>Receive a ClashVault verification code</small>
+        </span>
+      </button>
 
-          <button class="small-action" id="authToggle" type="button">
-            Already have an account? Sign in
-          </button>
+      <p class="form-note">
+        Email verification is handled by ClashVault.
+        It is separate from your Supercell ID.
+      </p>
+    </div>
 
-          <button class="small-action" id="authResend" type="button" hidden>
-            Resend verification code
-          </button>
+    <!-- EMAIL SCREEN -->
+    <div id="authEmailScreen" hidden>
+      <button class="small-action" id="authEmailBack" type="button">
+        ← Back
+      </button>
 
-          <button class="small-action" id="authBack" type="button" hidden>
-            Change email address
-          </button>
+      <h3 id="authTitle">Welcome back!</h3>
+      <p>Enter your Gmail address to continue.</p>
 
-          <p class="form-note">
-            We'll send a one-time verification code to your Gmail.
-            Never share your code with anyone.
-          </p>
-        </div>
+      <form id="authEmailForm">
+        <input
+          id="authEmail"
+          type="email"
+          placeholder="Enter your Gmail address"
+          autocomplete="email"
+          required
+        >
 
-        <!-- LOGGED IN -->
-        <div id="authLoggedIn" hidden>
-          <h3 id="authUserName">Welcome to ClashVault!</h3>
-          <p id="authUserEmail"></p>
+        <button class="button button-green"
+          id="authEmailSubmit" type="submit">
+          Continue with email
+        </button>
+      </form>
 
-          <div class="player-link-panel">
-            <h3>Connect your Clash of Clans account</h3>
-            <p class="form-note">
-              Enter your Player Tag to prepare your profile connection.
-            </p>
+      <button class="small-action" id="authModeToggle" type="button">
+        New here? Create an account
+      </button>
+    </div>
 
-            <form id="playerLinkForm">
-              <input
-                id="authPlayerTag"
-                type="text"
-                placeholder="Player Tag (e.g. #2PP)"
-                maxlength="15"
-                autocomplete="off"
-                required
-              >
+    <!-- OTP SCREEN -->
+    <div id="authOtpScreen" hidden>
+      <div class="auth-emblem">✉️</div>
+      <h3>Almost there!</h3>
+      <p>
+        We sent a 6-digit ClashVault verification code to:
+      </p>
 
-              <button
-                class="button button-green"
-                id="authLinkPlayer"
-                type="submit"
-              >
-                Save Player Tag
-              </button>
-            </form>
+      <strong id="authPendingEmail" class="auth-pending-email"></strong>
 
-            <p id="authPlayerStatus" class="form-note" aria-live="polite">
-              Your in-game name will appear after official API verification is connected.
-            </p>
-          </div>
+      <form id="authOtpForm">
+        <input
+          id="authOtp"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="6"
+          pattern="[0-9]{6}"
+          placeholder="000000"
+          required
+        >
 
-          <button
-            class="button button-green"
-            id="authLogout"
-            type="button"
+        <button class="button button-green"
+          id="authVerifyButton" type="submit">
+          Continue
+        </button>
+      </form>
+
+      <button class="small-action" id="authResend" type="button">
+        Didn't receive a code? Resend
+      </button>
+
+      <button class="small-action" id="authOtpBack" type="button">
+        ← Go back
+      </button>
+    </div>
+
+    <!-- LOGGED IN -->
+    <div id="authLoggedIn" hidden>
+      <h3 id="authUserName">Welcome to ClashVault!</h3>
+      <p id="authUserEmail"></p>
+
+      <div class="player-link-panel">
+        <h3>Connect your Clash of Clans account</h3>
+        <p class="form-note">
+          Enter your Player Tag to save your profile connection.
+        </p>
+
+        <form id="playerLinkForm">
+          <input
+            id="authPlayerTag"
+            type="text"
+            placeholder="Player Tag (e.g. #2PP)"
+            maxlength="15"
+            autocomplete="off"
+            required
           >
-            Sign out
-          </button>
-        </div>
 
-        <p class="form-note" id="authMessage" aria-live="polite"></p>
+          <button class="button button-green"
+            id="authLinkPlayer" type="submit">
+            Save Player Tag
+          </button>
+        </form>
+
+        <p id="authPlayerStatus" class="form-note" aria-live="polite">
+          Your in-game name will appear after official API verification is connected.
+        </p>
       </div>
-    </section>
+
+      <button class="button button-green"
+        id="authLogout" type="button">
+        Sign out
+      </button>
+    </div>
+
+    <p class="auth-status" id="authMessage" aria-live="polite"></p>
+  </div>
+</section>
+
 
     <!-- PLAYER FINDER -->
     <section class="section player-section" id="player-finder">
