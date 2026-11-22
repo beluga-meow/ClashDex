@@ -9,57 +9,25 @@
 
   const $ = (id) => document.getElementById(id);
 
-  const loggedOut = $("authLoggedOut");
+  const methodScreen = $("authMethodScreen");
+  const emailScreen = $("authEmailScreen");
+  const otpScreen = $("authOtpScreen");
   const loggedIn = $("authLoggedIn");
-  const form = $("authForm");
   const message = $("authMessage");
 
-  let mode = "signup";
   let otpSent = false;
   let pendingEmail = "";
+  let mode = "signup";
 
   function showMessage(text) {
     if (message) message.textContent = text;
   }
 
-  function updateMode() {
-    const signup = mode === "signup";
-
-    if ($("authTitle")) {
-      $("authTitle").textContent = signup
-        ? "Create your ClashVault account"
-        : "Welcome back, Chief";
-    }
-
-    if ($("authEmail")) {
-      $("authEmail").disabled = otpSent;
-    }
-
-    if ($("authOtp")) {
-      $("authOtp").hidden = !otpSent;
-      $("authOtp").required = otpSent;
-    }
-
-    if ($("authSubmit")) {
-      $("authSubmit").textContent = otpSent
-        ? "Verify code"
-        : "Send verification code";
-    }
-
-    if ($("authToggle")) {
-      $("authToggle").hidden = otpSent;
-      $("authToggle").textContent = signup
-        ? "Already have an account? Sign in"
-        : "New here? Create an account";
-    }
-
-    if ($("authResend")) {
-      $("authResend").hidden = !otpSent;
-    }
-
-    if ($("authBack")) {
-      $("authBack").hidden = !otpSent;
-    }
+  function showScreen(screen) {
+    if (methodScreen) methodScreen.hidden = screen !== "method";
+    if (emailScreen) emailScreen.hidden = screen !== "email";
+    if (otpScreen) otpScreen.hidden = screen !== "otp";
+    if (loggedIn) loggedIn.hidden = screen !== "loggedIn";
   }
 
   function resetOtp() {
@@ -69,7 +37,7 @@
     if ($("authOtp")) $("authOtp").value = "";
     if ($("authEmail")) $("authEmail").disabled = false;
 
-    updateMode();
+    showScreen("email");
   }
 
   async function createProfile(user) {
@@ -122,240 +90,255 @@
   function updateSession(session) {
     const user = session?.user;
 
-    if (loggedOut) loggedOut.hidden = !!user;
-    if (loggedIn) loggedIn.hidden = !user;
-
-    if (user) {
-      if ($("authUserEmail")) {
-        $("authUserEmail").textContent =
-          `Signed in as ${user.email}`;
-      }
-
-      if ($("authUserName")) {
-        $("authUserName").textContent =
-          "Welcome to ClashVault!";
-      }
-
-      loadPlayerProfile(user);
-    }
-  }
-
-  if (!form || !loggedOut || !loggedIn) {
-    showMessage("Authentication HTML elements are missing.");
-    console.error("Check authentication IDs in index.html.");
-    return;
-  }
-
-  if ($("authToggle")) {
-    $("authToggle").addEventListener("click", () => {
-      mode = mode === "signup" ? "login" : "signup";
-      resetOtp();
-      showMessage("");
-    });
-  }
-
-  if ($("authBack")) {
-    $("authBack").addEventListener("click", () => {
-      resetOtp();
-      showMessage("Enter your email to request a new code.");
-    });
-  }
-
-  async function sendCode() {
-    const email = $("authEmail")?.value.trim().toLowerCase();
-
-    if (!email || !/^[^\s@]+@gmail\.com$/i.test(email)) {
-      throw new Error(
-        "Please enter a valid Gmail address ending in @gmail.com."
-      );
+    if (!user) {
+      showScreen("method");
+      return;
     }
 
-    const { error } = await client.auth.signInWithOtp({
-      email,
-      options: {
-        shouldCreateUser: mode === "signup"
-      }
-    });
+    showScreen("loggedIn");
 
-    if (error) throw error;
+    if ($("authUserEmail")) {
+      $("authUserEmail").textContent =
+        `Signed in as ${user.email}`;
+    }
 
-    pendingEmail = email;
-    otpSent = true;
+    if ($("authUserName")) {
+      $("authUserName").textContent = "Welcome to ClashVault!";
+    }
 
-    if ($("authOtp")) $("authOtp").value = "";
+    loadPlayerProfile(user);
+  }
 
-    updateMode();
-
+  // OPEN WITH A GAME
+  $("authGameButton")?.addEventListener("click", () => {
     showMessage(
-      `A verification code has been sent to ${email}. Check your inbox and spam folder.`
+      "Game sign-in is coming soon. For now, use your email to access ClashVault."
     );
-  }
+  });
 
-  async function verifyCode() {
-    const token = $("authOtp")?.value.trim();
+  // EMAIL LOGIN SCREEN
+  $("authEmailButton")?.addEventListener("click", () => {
+    showScreen("email");
+    showMessage("");
+  });
 
-    if (!pendingEmail || !token) {
-      throw new Error("Enter the verification code sent to your Gmail.");
-    }
+  $("authEmailBack")?.addEventListener("click", () => {
+    showScreen("method");
+    showMessage("");
+  });
 
-    if (!/^\d{6}$/.test(token)) {
-      throw new Error("Please enter the 6-digit verification code.");
-    }
+  $("authModeToggle")?.addEventListener("click", () => {
+    mode = mode === "signup" ? "login" : "signup";
 
-    const { data, error } = await client.auth.verifyOtp({
-      email: pendingEmail,
-      token,
-      type: "email"
-    });
+    $("authTitle").textContent =
+      mode === "signup" ? "Create your account" : "Welcome back!";
 
-    if (error) throw error;
+    $("authModeToggle").textContent =
+      mode === "signup"
+        ? "Already have an account? Sign in"
+        : "New here? Create an account";
 
-    if (!data.user) {
-      throw new Error("Verification succeeded, but no user was returned.");
-    }
+    showMessage("");
+  });
 
-    await createProfile(data.user);
-
-    showMessage("Email verified! Welcome to ClashVault.");
-
-    form.reset();
-    resetOtp();
-  }
-
-  form.addEventListener("submit", async (event) => {
+  // SEND EMAIL CODE
+  $("authEmailForm")?.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const submitButton = $("authSubmit");
+    const email = $("authEmail")?.value.trim().toLowerCase();
+    const button = $("authEmailSubmit");
 
-    if (submitButton) submitButton.disabled = true;
-
-    showMessage(
-      otpSent
-        ? "Verifying your code..."
-        : "Sending verification code..."
-    );
+    if (!email || !/^[^\s@]+@gmail\.com$/i.test(email)) {
+      showMessage("Please enter a valid Gmail address ending in @gmail.com.");
+      return;
+    }
 
     try {
-      if (otpSent) {
-        await verifyCode();
-      } else {
-        await sendCode();
-      }
+      if (button) button.disabled = true;
+
+      showMessage("Sending your verification code...");
+
+      const { error } = await client.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: mode === "signup"
+        }
+      });
+
+      if (error) throw error;
+
+      pendingEmail = email;
+      otpSent = true;
+
+      $("authPendingEmail").textContent = email;
+      $("authEmail").disabled = true;
+      $("authOtp").value = "";
+
+      showScreen("otp");
+      showMessage("Verification code sent. Check your Gmail inbox and spam folder.");
     } catch (error) {
-      console.error("ClashVault authentication:", error);
-      showMessage(error.message || "Something went wrong.");
+      console.error("Email OTP:", error);
+      showMessage(error.message || "Unable to send verification code.");
     } finally {
-      if (submitButton) submitButton.disabled = false;
+      if (button) button.disabled = false;
     }
   });
 
-  if ($("authResend")) {
-    $("authResend").addEventListener("click", async () => {
-      try {
-        if (!pendingEmail) {
-          throw new Error("Please request a verification code first.");
-        }
+  // VERIFY OTP
+  $("authOtpForm")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-        showMessage("Sending another verification code...");
+    const token = $("authOtp")?.value.trim();
+    const button = $("authVerifyButton");
 
-        const { error } = await client.auth.signInWithOtp({
-          email: pendingEmail,
-          options: {
-            shouldCreateUser: false
-          }
-        });
+    if (!pendingEmail || !/^\d{6}$/.test(token || "")) {
+      showMessage("Please enter the 6-digit verification code.");
+      return;
+    }
 
-        if (error) throw error;
+    try {
+      if (button) button.disabled = true;
 
-        showMessage("A new verification code has been sent.");
-      } catch (error) {
-        showMessage(error.message || "Unable to resend code.");
-      }
-    });
-  }
+      showMessage("Verifying your code...");
 
-  const playerForm = $("playerLinkForm");
+      const { data, error } = await client.auth.verifyOtp({
+        email: pendingEmail,
+        token,
+        type: "email"
+      });
 
-  if (playerForm) {
-    playerForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
+      if (error) throw error;
 
-      const { data: sessionData } = await client.auth.getSession();
-      const user = sessionData.session?.user;
-
-      if (!user) {
-        showMessage("Please sign in first.");
-        return;
+      if (!data.user) {
+        throw new Error("Verification succeeded, but no user was returned.");
       }
 
-      const tag = $("authPlayerTag")?.value
-        .trim()
-        .toUpperCase()
-        .replace(/\s/g, "");
+      await createProfile(data.user);
 
-      if (!tag || !/^#?[0289PYLQGRJCUV]{3,15}$/.test(tag)) {
-        if ($("authPlayerStatus")) {
-          $("authPlayerStatus").textContent =
-            "Please enter a valid-looking Clash of Clans Player Tag.";
+      otpSent = false;
+      pendingEmail = "";
+
+      showMessage("Email verified! Welcome to ClashVault.");
+      updateSession(data.session);
+    } catch (error) {
+      console.error("OTP verification:", error);
+      showMessage(error.message || "Verification failed. Please try again.");
+    } finally {
+      if (button) button.disabled = false;
+    }
+  });
+
+  // GO BACK TO EMAIL
+  $("authOtpBack")?.addEventListener("click", () => {
+    showScreen("email");
+    showMessage("You can change your email address or request another code.");
+    $("authEmail").disabled = false;
+  });
+
+  // RESEND OTP
+  $("authResend")?.addEventListener("click", async () => {
+    if (!pendingEmail) {
+      showMessage("Please enter your email address again.");
+      showScreen("email");
+      return;
+    }
+
+    try {
+      const button = $("authResend");
+      if (button) button.disabled = true;
+
+      showMessage("Sending another verification code...");
+
+      const { error } = await client.auth.signInWithOtp({
+        email: pendingEmail,
+        options: {
+          shouldCreateUser: false
         }
-        return;
-      }
+      });
 
-      const playerTag = tag.startsWith("#") ? tag : `#${tag}`;
-      const button = $("authLinkPlayer");
+      if (error) throw error;
 
-      try {
-        if (button) button.disabled = true;
+      showMessage("A new verification code has been sent.");
+    } catch (error) {
+      console.error("Resend OTP:", error);
+      showMessage(error.message || "Unable to resend code.");
+    } finally {
+      if ($("authResend")) $("authResend").disabled = false;
+    }
+  });
 
-        if ($("authPlayerStatus")) {
-          $("authPlayerStatus").textContent = "Saving Player Tag...";
-        }
+  // SAVE PLAYER TAG
+  $("playerLinkForm")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-        const { error } = await client
-          .from("profiles")
-          .upsert(
-            {
-              id: user.id,
-              player_tag: playerTag,
-              player_name: null,
-              player_tag_verified: false
-            },
-            { onConflict: "id" }
-          );
+    const { data: sessionData } = await client.auth.getSession();
+    const user = sessionData.session?.user;
 
-        if (error) throw error;
+    if (!user) {
+      showMessage("Please sign in first.");
+      return;
+    }
 
-        if ($("authPlayerStatus")) {
-          $("authPlayerStatus").textContent =
-            `Player Tag ${playerTag} saved. In-game name verification will be available after API integration.`;
-        }
-      } catch (error) {
-        console.error("Player Tag save:", error);
+    const tag = $("authPlayerTag")?.value
+      .trim()
+      .toUpperCase()
+      .replace(/\s/g, "");
 
-        if ($("authPlayerStatus")) {
-          $("authPlayerStatus").textContent =
-            error.message || "Unable to save Player Tag.";
-        }
-      } finally {
-        if (button) button.disabled = false;
-      }
-    });
-  }
+    if (!tag || !/^#?[0289PYLQGRJCUV]{3,15}$/.test(tag)) {
+      $("authPlayerStatus").textContent =
+        "Please enter a valid-looking Clash of Clans Player Tag.";
+      return;
+    }
 
-  if ($("authLogout")) {
-    $("authLogout").addEventListener("click", async () => {
+    const playerTag = tag.startsWith("#") ? tag : `#${tag}`;
+    const button = $("authLinkPlayer");
+
+    try {
+      if (button) button.disabled = true;
+
+      $("authPlayerStatus").textContent = "Saving Player Tag...";
+
+      const { error } = await client
+        .from("profiles")
+        .upsert(
+          {
+            id: user.id,
+            player_tag: playerTag,
+            player_name: null,
+            player_tag_verified: false
+          },
+          { onConflict: "id" }
+        );
+
+      if (error) throw error;
+
+      $("authPlayerStatus").textContent =
+        `Player Tag ${playerTag} saved. In-game name verification will be available after API integration.`;
+    } catch (error) {
+      console.error("Player Tag save:", error);
+
+      $("authPlayerStatus").textContent =
+        error.message || "Unable to save Player Tag.";
+    } finally {
+      if (button) button.disabled = false;
+    }
+  });
+
+  // SIGN OUT
+  $("authLogout")?.addEventListener("click", async () => {
+    try {
       const { error } = await client.auth.signOut();
 
-      if (error) {
-        showMessage(error.message);
-        return;
-      }
+      if (error) throw error;
 
-      resetOtp();
       showMessage("You have signed out.");
-    });
-  }
+      showScreen("method");
+    } catch (error) {
+      showMessage(error.message || "Unable to sign out.");
+    }
+  });
 
+  // AUTH STATE
   client.auth.onAuthStateChange((_event, session) => {
     updateSession(session);
   });
@@ -371,7 +354,6 @@
     updateSession(data.session);
   }
 
-  updateMode();
   initializeAuth();
 
   console.log("ClashVault authentication initialized.");
