@@ -2066,3 +2066,513 @@ button,input,select,textarea {
   }
 }
 
+
+/* ==========================================
+   CLASHVAULT — KINGDOM REDESIGN
+   PHASE 1: VISUAL UPGRADE
+========================================== */
+
+:root {
+  --forest: #10291f;
+  --forest-2: #183d2c;
+  --green: #34734b;
+  --lime: #a4cf70;
+  --gold: #e9b94f;
+  --gold-light: #ffe09a;
+  --parchment: #f2ead7;
+  --stone: #d8c9a8;
+  --kingdom-bg: #101d18;
+}
+
+/* GLOBAL ATMOSPHERE */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, #254c35 0%, transparent 48%),
+    linear-gradient(180deg, #14271e, #0d1914 75%);
+  color: var(--parchment);
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--forest);
+}
+
+/* HEADER */
+
+.site-header {
+  background: rgba(12, 29, 21, .94);
+  border-bottom: 1px solid rgba(233, 185, 79, .25);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 30px rgba(0,0,0,.22);
+}
+
+.brand {
+  color: #fff4d9;
+}
+
+.brand-accent {
+  color: var(--gold);
+}
+
+.brand-mark {
+  background: linear-gradient(145deg, #e9b94f, #9c6825);
+  color: #172b20;
+  box-shadow: 0 0 20px rgba(233,185,79,.25);
+}
+
+.main-nav a {
+  color: #d9ddcf;
+  transition: color .2s ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--gold-light);
+}
+
+.header-cta {
+  background: linear-gradient(135deg, #f2ca6b, #bd872d);
+  color: #1a3022;
+  border-radius: 9px;
+  box-shadow: 0 5px 18px rgba(233,185,79,.16);
+}
+
+.icon-button,
+.mobile-menu {
+  color: var(--gold-light);
+}
+
+/* HERO KINGDOM */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 78% 45%, rgba(111,155,73,.25), transparent 38%),
+    linear-gradient(110deg, #142e20, #1e4930 55%, #172e21);
+  border-bottom: 1px solid rgba(233,185,79,.2);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .16;
+  background-image:
+    radial-gradient(circle, #f5d68b 1px, transparent 1.5px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent);
+  animation: kingdomStars 18s linear infinite;
+}
+
+.hero h1 {
+  color: #fff4d9;
+  text-shadow: 0 5px 25px rgba(0,0,0,.35);
+}
+
+.hero h1 span {
+  color: var(--gold-light);
+}
+
+.hero-text {
+  color: #d4ddce;
+}
+
+.eyebrow {
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+
+.eyebrow-star {
+  color: var(--gold-light);
+}
+
+.button-gold {
+  background: linear-gradient(135deg, #f4d17a, #c28a31);
+  color: #1b3021;
+  border: 1px solid #ffe3a1;
+  box-shadow: 0 7px 22px rgba(233,185,79,.2);
+}
+
+.button-gold:hover {
+  filter: brightness(1.1);
+  transform: translateY(-3px);
+}
+
+.button-ghost {
+  color: #f5e9cc;
+  border: 1px solid rgba(255,224,154,.4);
+  background: rgba(255,255,255,.06);
+}
+
+.hero-proof {
+  color: #fff1cf;
+}
+
+.hero-proof small {
+  color: #c3d0bd;
+}
+
+/* CASTLE ANIMATION */
+
+.castle {
+  filter: drop-shadow(0 15px 25px rgba(0,0,0,.3));
+  animation: castleFloat 5s ease-in-out infinite;
+}
+
+.castle-flag {
+  color: var(--gold-light);
+  animation: flagWave 2s ease-in-out infinite alternate;
+}
+
+.hero-sun {
+  background: radial-gradient(circle, #ffe6a1, #e8b34e 45%, transparent 72%);
+  opacity: .8;
+  animation: sunPulse 4s ease-in-out infinite;
+}
+
+.hero-orbit {
+  border-color: rgba(255,224,154,.2);
+}
+
+.floating-tag {
+  background: rgba(14,34,24,.85);
+  border: 1px solid rgba(233,185,79,.45);
+  color: var(--gold-light);
+  box-shadow: 0 8px 25px rgba(0,0,0,.22);
+  backdrop-filter: blur(8px);
+}
+
+.hero-spark {
+  color: var(--gold-light);
+  animation: sparkGlow 2.5s ease-in-out infinite alternate;
+}
+
+/* QUICK STATS */
+
+.quick-stats {
+  background: #10251a;
+  border-top: 1px solid rgba(233,185,79,.15);
+  border-bottom: 1px solid rgba(233,185,79,.2);
+}
+
+.quick-stats > div {
+  color: #fff1d2;
+  transition: transform .25s ease;
+}
+
+.quick-stats > div:hover {
+  transform: translateY(-5px);
+}
+
+.quick-stats strong {
+  color: var(--gold-light);
+}
+
+.quick-stats small {
+  color: #bdcbbd;
+}
+
+/* GENERAL SECTIONS */
+
+.section {
+  background: transparent;
+}
+
+.section-heading h2 {
+  color: #fff2d6;
+}
+
+.section-heading h2 span {
+  color: var(--gold);
+}
+
+.section-subtitle,
+.section-footnote {
+  color: #bdcabb;
+}
+
+.section-badge {
+  background: rgba(233,185,79,.1);
+  color: var(--gold-light);
+  border: 1px solid rgba(233,185,79,.3);
+  border-radius: 30px;
+}
+
+/* CONTENT CARDS */
+
+.content-card,
+.attack-feature,
+.finder-panel,
+.tracker-panel,
+.event-card {
+  background: linear-gradient(145deg, #1d3929, #14291e);
+  color: #f4ead5;
+  border: 1px solid rgba(233,185,79,.2);
+  border-radius: 17px;
+  box-shadow: 0 12px 35px rgba(0,0,0,.17);
+  transition: transform .25s ease, border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.content-card:hover,
+.attack-feature:hover,
+.event-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(233,185,79,.55);
+  box-shadow: 0 18px 40px rgba(0,0,0,.27);
+}
+
+.card-body h3,
+.attack-info h3,
+.event-card h3 {
+  color: #ffe6ad;
+}
+
+.card-body p,
+.attack-info p,
+.event-card p {
+  color: #c6d0c2;
+}
+
+.card-meta {
+  color: var(--gold);
+}
+
+.card-footer,
+.attack-bottom {
+  border-color: rgba(233,185,79,.2);
+}
+
+/* FILTER BUTTONS */
+
+.filter-chip {
+  background: #1b3727;
+  color: #e7dfc9;
+  border: 1px solid rgba(233,185,79,.25);
+}
+
+.filter-chip:hover,
+.filter-chip.selected {
+  background: linear-gradient(135deg, #e9b94f, #c58c34);
+  color: #172c20;
+  border-color: var(--gold-light);
+}
+
+/* PLAYER FINDER */
+
+.finder-panel {
+  background:
+    radial-gradient(circle at top right, rgba(233,185,79,.1), transparent 40%),
+    linear-gradient(145deg, #1d3929, #12271c);
+}
+
+.finder-panel h3 {
+  color: var(--gold-light);
+}
+
+.finder-panel p {
+  color: #c7d2c2;
+}
+
+.search-form {
+  background: rgba(255,255,255,.05);
+  border-color: rgba(233,185,79,.3);
+}
+
+.search-form input {
+  color: #fff5dc;
+  background: transparent;
+}
+
+.search-form input::placeholder {
+  color: #b6c2b3;
+}
+
+.tag-prefix {
+  color: var(--gold);
+}
+
+/* TRACKER */
+
+.tracker-panel {
+  background:
+    radial-gradient(circle at top right, rgba(164,207,112,.1), transparent 38%),
+    linear-gradient(145deg, #1d3929, #12271c);
+}
+
+.tracker-top h3 {
+  color: var(--gold-light);
+}
+
+.tracker-top p,
+.builder-count small {
+  color: #bdcabb;
+}
+
+.builder-count strong {
+  color: var(--gold-light);
+}
+
+.upgrade-form input,
+.upgrade-form select {
+  background: #10271c;
+  border: 1px solid rgba(233,185,79,.3);
+  color: #fff2d6;
+}
+
+.upgrade-form input:focus,
+.upgrade-form select:focus {
+  border-color: var(--gold);
+  outline: none;
+}
+
+.upgrade-item {
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(233,185,79,.18);
+  border-radius: 12px;
+  color: #f5ead5;
+}
+
+/* EVENTS */
+
+.event-card {
+  background:
+    radial-gradient(circle at top right, rgba(233,185,79,.13), transparent 45%),
+    linear-gradient(145deg, #1d3929, #14291e);
+}
+
+.event-symbol {
+  filter: drop-shadow(0 4px 12px rgba(233,185,79,.25));
+}
+
+.event-kicker {
+  color: var(--gold);
+}
+
+/* STORE BANNER */
+
+.store-banner {
+  background:
+    radial-gradient(circle at 80% 20%, rgba(233,185,79,.2), transparent 40%),
+    linear-gradient(110deg, #254b32, #12291c);
+  border: 1px solid rgba(233,185,79,.4);
+  border-radius: 22px;
+  box-shadow: 0 18px 45px rgba(0,0,0,.23);
+}
+
+.store-banner h2 {
+  color: #fff0ce;
+}
+
+.store-banner p {
+  color: #cbd7c6;
+}
+
+.store-emblem {
+  filter: drop-shadow(0 5px 15px rgba(233,185,79,.35));
+}
+
+/* FOOTER */
+
+.site-footer {
+  background: #0b1912;
+  border-top: 1px solid rgba(233,185,79,.2);
+  color: #c5d0c2;
+}
+
+.site-footer p {
+  color: #aebdad;
+}
+
+.footer-links a {
+  color: var(--gold-light);
+}
+
+/* BUTTONS */
+
+.button-green {
+  background: linear-gradient(135deg, #3e8050, #245b38);
+  color: white;
+  border: 1px solid rgba(164,207,112,.35);
+}
+
+.button-green:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+/* SEASONAL EFFECTS */
+
+.season-effects {
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* ANIMATIONS */
+
+@keyframes castleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+@keyframes flagWave {
+  from { transform: rotate(-5deg); }
+  to { transform: rotate(6deg); }
+}
+
+@keyframes sunPulse {
+  0%, 100% { transform: scale(1); opacity: .65; }
+  50% { transform: scale(1.08); opacity: .9; }
+}
+
+@keyframes sparkGlow {
+  from { opacity: .35; transform: scale(.8); }
+  to { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes kingdomStars {
+  from { background-position: 0 0; }
+  to { background-position: 42px 84px; }
+}
+
+/* MOBILE MENU */
+
+@media (max-width: 760px) {
+  .main-nav {
+    background: #10251a;
+    border-bottom: 1px solid rgba(233,185,79,.3);
+  }
+
+  .main-nav a {
+    color: #f2e8d1;
+  }
+
+  .hero {
+    background:
+      radial-gradient(ellipse at 50% 65%, rgba(111,155,73,.23), transparent 48%),
+      linear-gradient(180deg, #193a27, #10251a);
+  }
+}
+
+/* ACCESSIBILITY: REDUCE MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
