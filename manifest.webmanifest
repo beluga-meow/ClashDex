@@ -1,5 +1,6 @@
+
 {
-  "name": "ClashDex \u2014 Your Kingdom Companion",
+  "name": "ClashDex — Your Kingdom Companion",
   "short_name": "ClashDex",
   "description": "A fan-made Clash of Clans companion.",
   "start_url": "./index.html",
@@ -8,7 +9,7 @@
   "theme_color": "#18372b",
   "icons": [
     {
-      "src": "assets/icon-192.svg",
+      "src": "./icon-192.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any"
