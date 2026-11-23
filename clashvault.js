@@ -514,6 +514,119 @@ html.cx .event-symbol img.mul{mix-blend-mode:multiply}
     }
   }
 
+  /* ============ Seasons (the DEVELOPER controls these in season.json) ============
+     Visitors have no switch. The page picks the season by date, or you force one:
+       season.json -> "mode": "auto" (by dates) | "off" | "christmas" | "halloween" | ...
+     Without season.json the default dates below are used. */
+  // <season-pure>
+  const DEFAULT_CFG = {
+    mode: "auto",
+    allowPreview: false,
+    seasons: {
+      christmas: { start: "12-01", end: "12-31", message: "🎄 Winter Festival is here! Happy holidays, Chiefs!", title: "Winter Festival", text: "Snow is falling on the kingdom. Enjoy the holidays and good luck with your attacks!" },
+      newyear:   { start: "01-01", end: "01-03", message: "🎆 Happy New Year, Chiefs!", title: "New Year", text: "A new year, new upgrades. Plan your goals for the year ahead." },
+      valentine: { start: "02-07", end: "02-14", message: "💖 Happy Valentine's Day from ClashVault!", title: "Valentine's Week", text: "Show some love to your clanmates this week." },
+      lunar:     { start: "2027-02-06", end: "2027-02-20", message: "🏮 Happy Lunar New Year, Chiefs!", title: "Lunar New Year", text: "Wishing you luck and fortune in every battle." },
+      summer:    { start: "07-01", end: "08-15", message: "☀️ Summer is here! Enjoy the sun, Chiefs!", title: "Summer Kingdom", text: "Sun's out. Time to push those trophies." },
+      halloween: { start: "10-18", end: "11-01", message: "🎃 Spooky season has arrived in the kingdom!", title: "Haunted Kingdom", text: "Watch out for bats and pumpkins. Happy Halloween, Chiefs!" }
+    }
+  };
+  const pad2 = n => String(n).padStart(2, "0");
+  const todayStr = d => d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+  function inRange(def, now) {
+    const a = String(def && def.start || ""), b = String(def && def.end || "");
+    const full = /^\d{4}-\d{2}-\d{2}$/, md = /^\d{2}-\d{2}$/;
+    const t = todayStr(now);
+    if (full.test(a) && full.test(b)) return t >= a && t <= b;
+    if (md.test(a) && md.test(b)) {
+      const m = t.slice(5);
+      return a <= b ? (m >= a && m <= b) : (m >= a || m <= b);   // also works across New Year
+    }
+    return false;
+  }
+  function pickSeason(cfg, now, known, search) {
+    const seasons = (cfg && cfg.seasons) || {};
+    if (cfg && cfg.allowPreview === true) {
+      const q = new URLSearchParams(search || "").get("season");
+      if (q && known.indexOf(q) !== -1) return q;
+    }
+    const mode = cfg && cfg.mode;
+    if (mode === "off") return null;
+    if (mode && mode !== "auto") return known.indexOf(mode) !== -1 ? mode : null;
+    // A season with exact dates (like Lunar New Year) wins over a yearly one when they overlap.
+    const exact = k => /^\d{4}-/.test(String(seasons[k] && seasons[k].start || ""));
+    const ids = Object.keys(seasons).sort((x, y) => Number(exact(y)) - Number(exact(x)));
+    for (let i = 0; i < ids.length; i++) {
+      const def = seasons[ids[i]];
+      if (def && def.enabled !== false && known.indexOf(ids[i]) !== -1 && inRange(def, now)) return ids[i];
+    }
+    return null;
+  }
+  // </season-pure>
+
+  const mkSeason = (id, p) =>
+    "html.cx.season-" + id + " body{background:" + p.body + "}" +
+    "html.cx.season-" + id + " .hero{background:" + p.hero + "}" +
+    "html.cx.season-" + id + " .hero::after{background:" + p.ground + "}" +
+    "html.cx.season-" + id + " .announcement{background:" + p.bar + ";border-bottom-color:" + p.barLine + "}" +
+    (p.head ? "html.cx.season-" + id + " .site-header{background:" + p.head + "}" : "");
+  const SEASON_STYLES = {
+    christmas: { icons: ["❄️", "❅", "✨"], css: mkSeason("christmas", { body: "#1d4f8c linear-gradient(180deg,#5ab0e8 0,#2f78c2 560px,#1d4f8c 1500px,#14386a 100%)", hero: "radial-gradient(ellipse at 82% 18%,rgba(255,255,255,.6),transparent 40%),linear-gradient(180deg,#2a6fb5,#6fb8ee 60%,#cfe8fa)", ground: "linear-gradient(#fff,#e3f0fb 50%,#c9def2)", bar: "linear-gradient(#2f9a47,#17652b)", barLine: "#0c3a18", head: "linear-gradient(#b3281d,#7d1810 58%,#5d130c)" }) },
+    newyear:   { icons: ["🎆", "✨", "🎉"], css: mkSeason("newyear", { body: "#0a1338 linear-gradient(180deg,#0f1c4d 0,#0a1338 560px,#060b25 1500px,#03061a 100%)", hero: "radial-gradient(ellipse at 50% 20%,rgba(255,231,120,.35),transparent 45%),linear-gradient(180deg,#0a1338,#1c2f7a 65%,#3a52b0)", ground: "linear-gradient(#2c3c8f,#1a2670 50%,#0f1a4d)", bar: "linear-gradient(#f7b823,#c98611)", barLine: "#5a3300", head: "linear-gradient(#26388a,#17245f 58%,#0f1a4d)" }) },
+    valentine: { icons: ["💖", "💗", "💕"], css: mkSeason("valentine", { body: "#8f2b5e linear-gradient(180deg,#f48fb1 0,#c2477a 560px,#8f2b5e 1500px,#5e1a3f 100%)", hero: "linear-gradient(180deg,#d65a94,#f7a1c4 60%,#ffd3e4)", ground: "linear-gradient(#f9b3cf,#e27fab 50%,#b94d82)", bar: "linear-gradient(#e8578f,#b32a63)", barLine: "#6b1038", head: "linear-gradient(#c2477a,#8f2b5e 58%,#5e1a3f)" }) },
+    lunar:     { icons: ["🏮", "🧧", "✨"], css: mkSeason("lunar", { body: "#5d130c linear-gradient(180deg,#b3281d 0,#8f1c14 560px,#5d130c 1500px,#3d0c08 100%)", hero: "radial-gradient(ellipse at 82% 18%,rgba(255,220,120,.5),transparent 40%),linear-gradient(180deg,#8f1c14,#d6402f 60%,#f2a33a)", ground: "linear-gradient(#f7b823,#c98611 50%,#8a4f05)", bar: "linear-gradient(#f7b823,#c98611)", barLine: "#5a3300", head: "linear-gradient(#c0301f,#8f1c14 58%,#5d130c)" }) },
+    summer:    { icons: ["☀️", "🌴", "🌊"], css: mkSeason("summer", { body: "#0e4d80 linear-gradient(180deg,#26b5e8 0,#1a8fd0 560px,#136aa8 1500px,#0e4d80 100%)", hero: "linear-gradient(180deg,#14a0e0,#5fd0f5 60%,#b8ecff)", ground: "linear-gradient(#f6e0a0,#e6c070 50%,#c99a45)", bar: "linear-gradient(#ff9a2e,#d9650a)", barLine: "#6b3200" }) },
+    halloween: { icons: ["🎃", "🦇", "👻"], css: mkSeason("halloween", { body: "#120820 linear-gradient(180deg,#2a1442 0,#1c0d30 560px,#120820 1500px,#0b0514 100%)", hero: "radial-gradient(ellipse at 82% 18%,rgba(255,170,60,.45),transparent 38%),linear-gradient(180deg,#1b0c33,#3b1a5c 60%,#6a2c7a)", ground: "linear-gradient(#5a2a7a,#34154f 50%,#1d0b33)", bar: "linear-gradient(#f08a1c,#b8560a)", barLine: "#5a2a00", head: "linear-gradient(#4a2370,#2f1550 58%,#1d0b33)" }) }
+  };
+  const FX_CSS = ".cx-fx{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}.cx-fx span{position:absolute;top:-40px;line-height:1;animation:cx-fall linear infinite;will-change:transform}@keyframes cx-fall{to{transform:translate(var(--dx,30px),112vh) rotate(360deg)}}@media(prefers-reduced-motion:reduce){.cx-fx{display:none}}";
+
+  function applySeason(id, def) {
+    const st = SEASON_STYLES[id];
+    if (!st) return;
+    document.documentElement.classList.add("season-" + id);
+    if (!$("#cx-season-style")) {
+      const s = el("style", "", "cx-season-style");
+      s.textContent = st.css + FX_CSS;
+      document.head.appendChild(s);
+    }
+    if (def && def.message) { const t = $("#announcementText"); if (t) t.textContent = String(def.message).slice(0, 140); }
+    const card = $("#events .event-season");
+    if (card && def) {
+      const h = $("h3", card), p = $("p", card);
+      if (h && def.title) h.textContent = String(def.title).slice(0, 60);
+      if (p && def.text) p.textContent = String(def.text).slice(0, 200);
+    }
+    if (!$(".cx-fx") && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+      const fx = el("div", "cx-fx");
+      fx.setAttribute("aria-hidden", "true");
+      const n = window.innerWidth < 600 ? 12 : 22;
+      for (let i = 0; i < n; i++) {
+        const sp = document.createElement("span");
+        sp.textContent = st.icons[i % st.icons.length];
+        sp.style.left = (Math.random() * 100).toFixed(1) + "%";
+        sp.style.fontSize = (14 + Math.random() * 16).toFixed(0) + "px";
+        sp.style.opacity = (0.55 + Math.random() * 0.4).toFixed(2);
+        sp.style.animationDuration = (9 + Math.random() * 9).toFixed(1) + "s";
+        sp.style.animationDelay = "-" + (Math.random() * 14).toFixed(1) + "s";
+        sp.style.setProperty("--dx", (Math.random() * 80 - 40).toFixed(0) + "px");
+        fx.appendChild(sp);
+      }
+      document.body.appendChild(fx);
+    }
+  }
+
+  async function loadSeason() {
+    // Visitors never choose a season, so remove any old theme switch.
+    $$("#themeButton,#previewSeason").forEach(n => n.remove());
+    let cfg = DEFAULT_CFG;
+    try {
+      const r = await fetch("./season.json", { cache: "no-store" });
+      if (r.ok) { const j = await r.json(); if (j && typeof j === "object") cfg = j; }
+    } catch (_) { /* no file or bad JSON: use the default dates */ }
+    const id = pickSeason(cfg, new Date(), Object.keys(SEASON_STYLES), location.search);
+    if (id) applySeason(id, (cfg.seasons && cfg.seasons[id]) || DEFAULT_CFG.seasons[id]);
+  }
+
   /* ============ Start ============ */
   function go() {
     safe("css", injectCss);
@@ -521,6 +634,7 @@ html.cx .event-symbol img.mul{mix-blend-mode:multiply}
     safe("images", decorateImages);
     safe("library", buildLibrary);
     safe("game", buildGameLogin);
+    loadSeason().catch(e => console.warn("[ClashVault v4] season skipped:", e));
     // the older script rewrites some text after load, so set the icon once more
     setTimeout(() => safe("signin2", signInCircle), 400);
     console.info("ClashVault v4 loaded.");
