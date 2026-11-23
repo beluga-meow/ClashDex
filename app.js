@@ -151,6 +151,43 @@
     throw new ApiError("not-connected", "Live search isn't connected yet. The Supabase client wasn't found on this page.");
   }
 
+  async function callEdge(body) {
+    if (SETTINGS.PROXY_BASE) {
+      throw new ApiError("no-index", "Name search without a clan tag needs the Supabase Edge Function. Add a clan tag to search live clan members.");
+    }
+    const sb = sbClient();
+    if (!sb || !sb.functions || !sb.functions.invoke) {
+      throw new ApiError("not-connected", "The Supabase client wasn't found. Check the Supabase setup.");
+    }
+    let res;
+    try {
+      res = await sb.functions.invoke(SETTINGS.EDGE_FUNCTION, { body: body });
+    } catch (_) {
+      throw new ApiError("offline", "Couldn't reach the search service. Check your connection and try again.");
+    }
+    if (res.error || !res.data || typeof res.data.status !== "number") {
+      throw new ApiError("not-connected", "The search service didn't return a valid response. Check the coc Edge Function.");
+    }
+    return res.data;
+  }
+
+  async function findInIndex(name, exact, th) {
+    const r = await callEdge({
+      action: "findPlayers",
+      name: name,
+      exact: !!exact,
+      th: th ? Number(th) : null
+    });
+    if (r.status === 200 && r.data) return r.data.items || [];
+    if (r.status === 503) {
+      throw new ApiError("no-index", "The saved player list isn't set up yet. Run the SQL step in coc-edge-function.ts, or add a clan tag to search live members.");
+    }
+    if (r.status === 400) {
+      throw new ApiError("no-index", "Update the coc Edge Function to support name search, or add a clan tag to search live members.");
+    }
+    throw new ApiError("http-" + r.status, "Player name search failed. Try again in a moment.");
+  }
+
   async function api(path) {
     const r = await rawGet(path);
     if (r.status >= 200 && r.status < 300 && r.data) return r.data;
@@ -461,6 +498,24 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
 .cx-disc a{color:var(--cx-g1);text-decoration:underline}
 @media(prefers-reduced-motion:reduce){.cx-cloud{animation:none}.cx-add b,.cx-more summary::after{transition:none}}
 @media(max-width:380px){.cx-ths{margin:0 -2px}.cx-thc{min-width:54px}.cx-add{font-size:16px}}
+
+/* Keep controls inside their cards on narrow screens. */
+html.cx .cx-app,html.cx .cx-panel,html.cx .cx-list,html.cx .cx-row,html.cx .cx-actions{min-width:0;max-width:100%}
+html.cx .cx-actions,html.cx .cx-row,html.cx .cx-actions-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+html.cx .cx-actions .cx-btn,html.cx .cx-row .cx-btn,html.cx .cx-row a.cx-btn{flex:1 1 130px;min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;text-align:center}
+html.cx .cx-row .grow{flex:1 1 100%;min-width:0;overflow-wrap:anywhere}
+html.cx .cx-search,html.cx .cx-field,html.cx .cx-crit,html.cx .cx-results{min-width:0;max-width:100%}
+html.cx .cx-field input,html.cx .cx-field select,html.cx .cx-search input{box-sizing:border-box;width:100%;min-width:0;max-width:100%}
+html.cx .cx-two{grid-template-columns:repeat(2,minmax(0,1fr))}
+html.cx .cx-tabs2{flex-wrap:wrap}
+html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-height:1.2}
+@media(max-width:520px){
+  html.cx .cx-two{grid-template-columns:minmax(0,1fr)}
+  html.cx .cx-row .cx-btn,html.cx .cx-row a.cx-btn{flex:1 1 100%;width:100%}
+  html.cx .cx-actions .cx-btn{flex:1 1 100%;width:100%}
+  html.cx .cx-tabs2 .cx-tab{flex:1 1 calc(50% - 8px);min-height:48px;padding:8px 10px;font-size:14px}
+  html.cx .cx-go{width:100%;max-width:100%}
+}
 `;
 
   function injectTheme() {
@@ -511,6 +566,71 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
     f.appendChild(p);
   }
 
+  /* Keep site text short and clear. */
+  function plainCopy() {
+    const set = (selector, value) => {
+      const node = $(selector);
+      if (node) node.textContent = value;
+    };
+    const h1 = $(".hero h1");
+    if (h1) h1.innerHTML = "Look up players.<br>Copy base links.<br>Track your builders.";
+    set(".hero-text", "Search players and clans, browse base and troop layouts, and check which builders are available.");
+
+    const heroButtons = $$(".hero-buttons .button");
+    if (heroButtons[0]) heroButtons[0].textContent = "Search a player";
+    if (heroButtons[1]) heroButtons[1].textContent = "Browse bases";
+    set(".header-cta", "Sign in");
+
+    const quick = [
+      ["Player lookup", "By tag or saved name", "#player-finder"],
+      ["Base layouts", "Browse by Town Hall", "#bases"],
+      ["Attack guides", "Browse army guides", "#attacks"],
+      ["Builder tracker", "See who's available", "#tracker"]
+    ];
+    $$(".quick-stats > div").forEach((item, index) => {
+      const data = quick[index];
+      if (!data) return;
+      const title = $("strong", item);
+      const subtitle = $("small", item);
+      if (title) title.textContent = data[0];
+      if (subtitle) subtitle.textContent = data[1];
+      item.dataset.go = data[2];
+      item.setAttribute("role", "link");
+      item.tabIndex = 0;
+    });
+
+    const quickStats = $(".quick-stats");
+    if (quickStats && !quickStats.dataset.cxWired) {
+      quickStats.dataset.cxWired = "1";
+      const go = event => {
+        const item = event.target.closest("[data-go]");
+        const target = item && document.querySelector(item.dataset.go);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+      quickStats.addEventListener("click", go);
+      quickStats.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          go(event);
+        }
+      });
+    }
+
+    const subtitles = {
+      "player-finder": "Look up a player by tag or name, or search a clan.",
+      "bases": "Choose a Town Hall and browse base or troop layouts.",
+      "attacks": "Browse the available army guides and attack plans.",
+      "tracker": "Check which builders are available or working.",
+      "events": "Clash of Clans news and ClashVault updates.",
+      "account": "Sign in to manage your ClashVault account."
+    };
+    Object.keys(subtitles).forEach(id => set("#" + id + " .section-subtitle", subtitles[id]));
+    set("#account .section-heading h2", "Account");
+    set("#events .section-heading h2", "Events & Updates");
+    set("#attacks .section-heading h2", "Attack Academy");
+    set("#events .event-season p", "No community events yet. Check back for updates.");
+  }
+
   /* ============ 7. Player + Clan finder ============ */
   const badge = c => {
     const u = c && c.badgeUrls && (c.badgeUrls.small || c.badgeUrls.medium);
@@ -545,6 +665,12 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
     " · 🏆 " + num(m.trophies) + '</small></div><span class="cx-pill">TH ' + esc(m.townHallLevel == null ? "?" : m.townHallLevel) +
     '</span><button class="cx-btn blue sm" type="button" data-view="' + esc(m.tag) + '">View</button></div>';
 
+  const playerRow = p =>
+    '<div class="cx-row"><div class="grow"><strong>' + esc(p.name) + "</strong><small>" + esc(p.tag) +
+    (p.clan ? " · " + esc(p.clan) : "") + (p.role ? " · " + esc(roleName(p.role)) : "") +
+    " · 🏆 " + num(p.trophies) + '</small></div><span class="cx-pill">TH ' + esc(p.th == null ? "?" : p.th) +
+    '</span><button class="cx-btn blue sm" type="button" data-view="' + esc(p.tag) + '">View</button></div>';
+
   function clanRow(c) {
     const type = ({ open: "Open", inviteOnly: "Invite only", closed: "Closed" }[c.type]) || "";
     const req = c.requiredTownhallLevel ? " · needs TH " + c.requiredTownhallLevel + "+" : "";
@@ -572,8 +698,8 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
         '<div class="cx-crit" id="cxPCrit" hidden>' +
           '<label class="cx-check"><input type="checkbox" id="cxExact"><span>Only players with that exact name</span></label>' +
           '<label class="cx-field"><span>Town Hall</span><select id="cxPTH">' + th + "</select></label>" +
-          '<label class="cx-field"><span>Clan tag <em>(needed to search by name)</em></span><input id="cxPClan" maxlength="16" placeholder="#CLANTAG" autocomplete="off" autocapitalize="characters"></label>' +
-          '<p class="cx-help">Supercell\'s API can\'t search every player by name, so ClashVault searches the members of the clan you enter. When several players share a name, the Town Hall filter picks the right Chief. A player tag always works on its own.</p>' +
+          '<label class="cx-field"><span>Clan tag <em>(optional)</em></span><input id="cxPClan" maxlength="16" placeholder="#CLANTAG" autocomplete="off" autocapitalize="characters"></label>' +
+          '<p class="cx-help">With a clan tag, ClashVault searches that clan\'s members live. Without one, it searches players already looked up on this site. Use Town Hall to narrow down matching names. A player tag works on its own.</p>' +
           '<button type="button" class="cx-close" data-crit-close="cxPCrit">Close</button></div>' +
         '<button class="cx-btn green cx-go" type="submit">Search player</button></form>' +
       '<form id="cxClanForm" novalidate hidden>' +
@@ -646,52 +772,75 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
       const exact = $("#cxExact", box).checked;
       const clanRaw = $("#cxPClan", box).value.trim();
       const thv = $("#cxPTH", box).value;
-      if (!q && !clanRaw) { say("Type a player name or tag first.", "err"); return; }
+      if (!q && !clanRaw) { say("Enter a player name or tag.", "err"); return; }
 
-      /* A player tag works on its own. */
+      /* A player tag is a direct lookup; no clan tag is needed. */
       if (q && isTagInput(q)) {
         lock(pForm, true);
         await loadPlayer(normTag(q));
         lock(pForm, false);
         return;
       }
+      if (q.startsWith("#")) {
+        say("That player tag doesn't look right. Check the tag and try again.", "err");
+        return;
+      }
 
-      /* A name needs a clan to search in. */
-      const clan = normTag(clanRaw);
-      if (!validTag(clan)) {
+      const clan = clanRaw ? normTag(clanRaw) : "";
+      if (clanRaw && !validTag(clan)) {
         crit("cxPCrit", true);
-        out.innerHTML = "";
-        say(clanRaw
-          ? "That clan tag doesn't look right. Clan tags look like #2PP."
-          : "To search by name, add the clan tag under Criteria. Supercell's API can't search every player by name. Have the player tag? Type it above instead.", "err");
+        say("That clan tag doesn't look right. Clan tags look like #2PP, or leave it empty.", "err");
         $("#cxPClan", box).focus();
         return;
       }
+      if (q && q.length < 2) {
+        say("Enter at least 2 letters for a player name, or use the player tag.", "err");
+        return;
+      }
+
       lock(pForm, true);
       out.innerHTML = "";
-      say("Searching clan members…");
       try {
-        const data = await api("/clans/" + encodeURIComponent(clan) + "/members");
-        const items = data.items || [];
-        const hasTH = items.some(m => m.townHallLevel != null);
-        const useTH = !!thv && hasTH;
-        const ql = q.toLowerCase();
-        const hits = items.filter(m => {
-          const n = String(m.name || "").toLowerCase();
-          const okName = !ql || (exact ? n === ql : n.indexOf(ql) !== -1);
-          return okName && (!useTH || String(m.townHallLevel) === thv);
-        });
-        if (!hits.length) say("No member matched. Check the spelling, the Town Hall filter or the clan tag.", "err");
-        else if (hits.length === 1 && ql) await loadPlayer(hits[0].tag);
-        else {
-          out.innerHTML = '<div class="cx-list">' + hits.map(memberRow).join("") + "</div>";
-          say(hits.length + (ql ? " players match." : " players in this clan.") + " Tap View on the right one. Town Hall and trophies help you tell them apart." +
-            (thv && !hasTH ? " (This clan's data has no Town Hall levels, so that filter was skipped.)" : ""), "ok");
+        let hits = [];
+        if (clan) {
+          say("Searching clan members…");
+          const data = await api("/clans/" + encodeURIComponent(clan) + "/members");
+          const items = data.items || [];
+          const hasTH = items.some(m => m.townHallLevel != null);
+          const ql = q.toLowerCase();
+          hits = items.filter(m => {
+            const n = String(m.name || "").toLowerCase();
+            const okName = !ql || (exact ? n === ql : n.indexOf(ql) !== -1);
+            return okName && (!thv || !hasTH || String(m.townHallLevel) === thv);
+          }).map(m => ({ tag:m.tag, name:m.name, th:m.townHallLevel, trophies:m.trophies, role:m.role, clan:"" }));
+          if (!hits.length) {
+            say("No member matched. Check the name or Town Hall filter.", "err");
+            return;
+          }
+        } else {
+          say("Searching players already seen on ClashVault…");
+          const saved = await findInIndex(q, exact, thv);
+          hits = saved.map(i => ({
+            tag:i.tag, name:i.name, th:i.th, trophies:i.trophies,
+            role:i.role || "", clan:i.clan_name || i.clan_tag || ""
+          }));
+          if (!hits.length) {
+            say("No saved player matched. Add a clan tag to search live inside a clan, or use the player tag.", "err");
+            return;
+          }
+        }
+
+        if (hits.length === 1 && q) {
+          await loadPlayer(hits[0].tag);
+        } else {
+          out.innerHTML = '<div class="cx-list">' + hits.map(playerRow).join("") + "</div>";
+          say(hits.length + (hits.length === 1 ? " player found." : " players found.") + " Select View to open a profile.", "ok");
         }
       } catch (err) {
         say(errText(err), "err");
+      } finally {
+        lock(pForm, false);
       }
-      lock(pForm, false);
     });
 
     cForm.addEventListener("submit", async e => {
@@ -753,7 +902,7 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
     });
 
     swapIn(sec, box);
-    setHeading(sec, null, "Search players and clans by name or tag, then narrow it down with criteria.");
+    setHeading(sec, null, "Search by player tag, player name, or clan. Filters are optional.");
   }
 
   /* ============ 8. Base + troop library ============ */
@@ -1014,7 +1163,7 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
     drawTags();
     draw();
     swapIn(sec, box);
-    setHeading(sec, null, "Pick your Town Hall, then copy a base or troop layout link.");
+    setHeading(sec, null, "Choose a Town Hall and browse base or troop layouts.");
 
     loadLayoutsFile().then(list => {
       if (!list) return;
@@ -1098,7 +1247,7 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
 
     gate();
     swapIn(sec, box);
-    setHeading(sec, 'Builder <span>Tracker</span>', "See how many builders are free and how many are working.");
+    setHeading(sec, 'Builder <span>Tracker</span>', "Check which builders are available or working.");
 
     const sb = sbClient();
     if (sb && sb.auth) {
@@ -1148,19 +1297,28 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
 
     const mobileMenu = $("#mobileMenu");
     const mainNav = $("#mainNav");
-    mobileMenu?.addEventListener("click", () => {
-      if (!mainNav) return;
-      const opened = mainNav.classList.toggle("open");
-      mobileMenu.textContent = opened ? "×" : "☰";
-      mobileMenu.setAttribute("aria-expanded", String(opened));
+    const menuIsOpen = () => !!mainNav && (mainNav.classList.contains("open") || mainNav.classList.contains("active"));
+    const setMenuOpen = open => {
+      if (!mainNav || !mobileMenu) return;
+      mainNav.classList.toggle("open", !!open);
+      mainNav.classList.toggle("active", !!open);
+      mobileMenu.textContent = open ? "×" : "☰";
+      mobileMenu.setAttribute("aria-expanded", open ? "true" : "false");
+      mobileMenu.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+    };
+    mobileMenu?.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      setMenuOpen(!menuIsOpen());
     });
-    $$(".main-nav a").forEach(link => link.addEventListener("click", () => {
-      mainNav?.classList.remove("open");
-      if (mobileMenu) {
-        mobileMenu.textContent = "☰";
-        mobileMenu.setAttribute("aria-expanded", "false");
-      }
-    }));
+    $$("#mainNav a").forEach(link => link.addEventListener("click", () => setMenuOpen(false)));
+    document.addEventListener("click", event => {
+      if (menuIsOpen() && !mainNav.contains(event.target) && !mobileMenu?.contains(event.target)) setMenuOpen(false);
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && menuIsOpen()) setMenuOpen(false);
+    });
+    if (mobileMenu && mainNav) setMenuOpen(menuIsOpen());
 
     const modal = $("#modalBackdrop");
     const closeModal = () => { if (modal) modal.hidden = true; };
@@ -1191,10 +1349,15 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
       notify("Winter Festival preview enabled.");
     });
 
-    renderPlayerFinder();
-    renderBaseLibrary();
-    renderBuilderTracker();
-    console.info("ClashVault complete redesigned app.js loaded. Authentication file was not modified.");
+    safe("theme", injectTheme);
+    safe("hero", decorateHero);
+    safe("finder", buildFinder);
+    safe("library", buildLibrary);
+    safe("tracker", buildTracker);
+    safe("tabbar", buildTabbar);
+    safe("copy", plainCopy);
+    safe("disclaimer", addDisclaimer);
+    console.info("ClashVault app.js loaded. Authentication and Supabase configuration were not changed.");
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});
   else start();
