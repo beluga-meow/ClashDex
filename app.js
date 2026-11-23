@@ -16,8 +16,9 @@
    ===================================================================== */
 (() => {
   "use strict";
-  if (window.__cxLoaded) return;
+  if (window.__cxLoaded || window.__clashVaultRedesignLoaded) return;
   window.__cxLoaded = true;
+  window.__clashVaultRedesignLoaded = true;
 
   /* ============ 1. SETTINGS you may edit ============ */
   const SETTINGS = {
@@ -580,8 +581,8 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
           '<input id="cxCName" type="search" maxlength="40" enterkeyhint="search" placeholder="Find a Clan (enter Name or #Tag)" autocomplete="off" autocapitalize="off" spellcheck="false"></label>' +
         '<div class="cx-actions-row"><button type="button" class="cx-add" data-crit="cxCCrit" aria-expanded="false" aria-controls="cxCCrit"><b aria-hidden="true">+</b>Add criteria</button></div>' +
         '<div class="cx-crit" id="cxCCrit" hidden><div class="cx-two">' +
-          '<label class="cx-field"><span>Min clan level</span><input id="cxCLvl" type="number" inputmode="numeric" min="1" max="50" placeholder="Any"></label>' +
-          '<label class="cx-field"><span>Min members</span><input id="cxCMin" type="number" inputmode="numeric" min="1" max="50" placeholder="Any"></label></div>' +
+          '<label class="cx-field"><span>Min clan level (optional)</span><input id="cxCLvl" type="number" inputmode="numeric" min="1" max="50" placeholder="Any level"></label>' +
+          '<label class="cx-field"><span>Min members (optional)</span><input id="cxCMin" type="number" inputmode="numeric" min="1" max="50" placeholder="Any number"></label></div>' +
           '<label class="cx-field"><span>Clans I can join with</span><select id="cxCTH">' + th + "</select></label>" +
           '<button type="button" class="cx-close" data-crit-close="cxCCrit">Close</button></div>' +
         '<button class="cx-btn green cx-go" type="submit">Search clan</button></form>' +
@@ -648,7 +649,7 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
       if (!q && !clanRaw) { say("Type a player name or tag first.", "err"); return; }
 
       /* A player tag works on its own. */
-      if (q && !exact && isTagInput(q)) {
+      if (q && isTagInput(q)) {
         lock(pForm, true);
         await loadPlayer(normTag(q));
         lock(pForm, false);
@@ -701,8 +702,16 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
       out.innerHTML = "";
       say("Searching clans…");
       try {
-        const lvl = parseInt($("#cxCLvl", box).value, 10) || 0;
-        const mem = parseInt($("#cxCMin", box).value, 10) || 0;
+        const lvlRaw = $("#cxCLvl", box).value.trim();
+        const memRaw = $("#cxCMin", box).value.trim();
+        const lvl = lvlRaw ? Number(lvlRaw) : 0;
+        const mem = memRaw ? Number(memRaw) : 0;
+        if ((lvlRaw && (!Number.isInteger(lvl) || lvl < 1 || lvl > 50)) ||
+            (memRaw && (!Number.isInteger(mem) || mem < 1 || mem > 50))) {
+          say("Clan level and member filters must be whole numbers from 1 to 50.", "err");
+          lock(cForm, false);
+          return;
+        }
         const thv = parseInt($("#cxCTH", box).value, 10) || 0;
         let items;
         if (isTagInput(raw)) {
@@ -1130,15 +1139,63 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
   }
 
   /* ============ 11. Start ============ */
-  function start() {
-    safe("theme", injectTheme);
-    safe("hero", decorateHero);
-    safe("finder", buildFinder);
-    safe("library", buildLibrary);
-    safe("tracker", buildTracker);
-    safe("tabbar", buildTabbar);
-    safe("disclaimer", addDisclaimer);
+  function start(){
+    // Shared site interactions
+    const year = $("#year");
+    if (year) year.textContent = new Date().getFullYear();
+
+    $("#closeAnnouncement")?.addEventListener("click", () => $("#announcement")?.remove());
+
+    const mobileMenu = $("#mobileMenu");
+    const mainNav = $("#mainNav");
+    mobileMenu?.addEventListener("click", () => {
+      if (!mainNav) return;
+      const opened = mainNav.classList.toggle("open");
+      mobileMenu.textContent = opened ? "×" : "☰";
+      mobileMenu.setAttribute("aria-expanded", String(opened));
+    });
+    $$(".main-nav a").forEach(link => link.addEventListener("click", () => {
+      mainNav?.classList.remove("open");
+      if (mobileMenu) {
+        mobileMenu.textContent = "☰";
+        mobileMenu.setAttribute("aria-expanded", "false");
+      }
+    }));
+
+    const modal = $("#modalBackdrop");
+    const closeModal = () => { if (modal) modal.hidden = true; };
+    $("#modalClose")?.addEventListener("click", closeModal);
+    $("#modalOk")?.addEventListener("click", closeModal);
+    modal?.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+    // Keep the seasonal preview control working.
+    const themeButton = $("#themeButton");
+    const themes = ["Classic Kingdom","Winter Festival","Haunted Kingdom","Lunar Celebration","Summer Kingdom"];
+    const icons = ["🌙","❄️","🎃","🏮","☀️"];
+    let themeIndex = 0;
+    themeButton?.addEventListener("click", () => {
+      themeIndex = (themeIndex + 1) % themes.length;
+      document.body.classList.remove("theme-christmas","theme-halloween","theme-lunar","theme-summer");
+      const classes = ["","theme-christmas","theme-halloween","theme-lunar","theme-summer"];
+      if (classes[themeIndex]) document.body.classList.add(classes[themeIndex]);
+      themeButton.textContent = icons[themeIndex];
+      themeButton.title = `Current theme: ${themes[themeIndex]}`;
+      notify(`${themes[themeIndex]} enabled.`);
+    });
+    $("#previewSeason")?.addEventListener("click", () => {
+      themeIndex = themeIndex === 0 ? 1 : themeIndex;
+      document.body.classList.remove("theme-christmas","theme-halloween","theme-lunar","theme-summer");
+      document.body.classList.add("theme-christmas");
+      themeButton && (themeButton.textContent = "❄️");
+      notify("Winter Festival preview enabled.");
+    });
+
+    renderPlayerFinder();
+    renderBaseLibrary();
+    renderBuilderTracker();
+    console.info("ClashVault complete redesigned app.js loaded. Authentication file was not modified.");
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});
   else start();
 })();
