@@ -180,10 +180,10 @@
     });
     if (r.status === 200 && r.data) return r.data.items || [];
     if (r.status === 503) {
-      throw new ApiError("no-index", "The saved player list isn't set up yet. Run the SQL step in coc-edge-function.ts, or add a clan tag to search live members.");
+      throw new ApiError("no-index", "The saved player index is not available yet. Check the Supabase SQL setup and deploy the latest coc Edge Function.");
     }
     if (r.status === 400) {
-      throw new ApiError("no-index", "Update the coc Edge Function to support name search, or add a clan tag to search live members.");
+      throw new ApiError("no-index", "Update the coc Edge Function to the latest version with saved-player name search.");
     }
     throw new ApiError("http-" + r.status, "Player name search failed. Try again in a moment.");
   }
@@ -677,7 +677,6 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     return '<div class="cx-row">' + badge(c) + '<div class="grow"><strong>' + esc(c.name) + "</strong><small>" + esc(c.tag) +
       " · Level " + esc(c.clanLevel == null ? "?" : c.clanLevel) + " · " + esc(c.members == null ? "?" : c.members) + "/50 members" +
       (type ? " · " + type : "") + esc(req) + "</small></div>" +
-      '<button class="cx-btn blue sm" type="button" data-members="' + esc(c.tag) + '">Find a player here</button>' +
       '<button class="cx-btn gold sm" type="button" data-copy="' + esc(c.tag) + '">Copy tag</button>' +
       '<a class="cx-btn green sm" href="' + esc(gameLink("OpenClanProfile", c.tag)) + '" target="_blank" rel="noopener noreferrer">Open</a></div>';
   }
@@ -698,8 +697,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
         '<div class="cx-crit" id="cxPCrit" hidden>' +
           '<label class="cx-check"><input type="checkbox" id="cxExact"><span>Only players with that exact name</span></label>' +
           '<label class="cx-field"><span>Town Hall</span><select id="cxPTH">' + th + "</select></label>" +
-          '<label class="cx-field"><span>Clan tag <em>(optional)</em></span><input id="cxPClan" maxlength="16" placeholder="#CLANTAG" autocomplete="off" autocapitalize="characters"></label>' +
-          '<p class="cx-help">With a clan tag, ClashVault searches that clan\'s members live. Without one, it searches players already looked up on this site. Use Town Hall to narrow down matching names. A player tag works on its own.</p>' +
+          '<p class="cx-help">Searches players saved in ClashVault. Leave Town Hall set to All to see every available Town Hall level. A player tag opens that exact profile.</p>' +
           '<button type="button" class="cx-close" data-crit-close="cxPCrit">Close</button></div>' +
         '<button class="cx-btn green cx-go" type="submit">Search player</button></form>' +
       '<form id="cxClanForm" novalidate hidden>' +
@@ -770,12 +768,12 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       e.preventDefault();
       const q = $("#cxPQ", box).value.trim();
       const exact = $("#cxExact", box).checked;
-      const clanRaw = $("#cxPClan", box).value.trim();
       const thv = $("#cxPTH", box).value;
-      if (!q && !clanRaw) { say("Enter a player name or tag.", "err"); return; }
 
-      /* A player tag is a direct lookup; no clan tag is needed. */
-      if (q && isTagInput(q)) {
+      if (!q) { say("Enter a player name or player tag.", "err"); return; }
+
+      // A player tag is always a direct live lookup.
+      if (isTagInput(q)) {
         lock(pForm, true);
         await loadPlayer(normTag(q));
         lock(pForm, false);
@@ -785,56 +783,28 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
         say("That player tag doesn't look right. Check the tag and try again.", "err");
         return;
       }
-
-      const clan = clanRaw ? normTag(clanRaw) : "";
-      if (clanRaw && !validTag(clan)) {
-        crit("cxPCrit", true);
-        say("That clan tag doesn't look right. Clan tags look like #2PP, or leave it empty.", "err");
-        $("#cxPClan", box).focus();
-        return;
-      }
-      if (q && q.length < 2) {
-        say("Enter at least 2 letters for a player name, or use the player tag.", "err");
+      if (q.length < 2) {
+        say("Enter at least 2 characters for a player name, or use the player tag.", "err");
         return;
       }
 
       lock(pForm, true);
       out.innerHTML = "";
       try {
-        let hits = [];
-        if (clan) {
-          say("Searching clan members…");
-          const data = await api("/clans/" + encodeURIComponent(clan) + "/members");
-          const items = data.items || [];
-          const hasTH = items.some(m => m.townHallLevel != null);
-          const ql = q.toLowerCase();
-          hits = items.filter(m => {
-            const n = String(m.name || "").toLowerCase();
-            const okName = !ql || (exact ? n === ql : n.indexOf(ql) !== -1);
-            return okName && (!thv || !hasTH || String(m.townHallLevel) === thv);
-          }).map(m => ({ tag:m.tag, name:m.name, th:m.townHallLevel, trophies:m.trophies, role:m.role, clan:"" }));
-          if (!hits.length) {
-            say("No member matched. Check the name or Town Hall filter.", "err");
-            return;
-          }
-        } else {
-          say("Searching players already seen on ClashVault…");
-          const saved = await findInIndex(q, exact, thv);
-          hits = saved.map(i => ({
-            tag:i.tag, name:i.name, th:i.th, trophies:i.trophies,
-            role:i.role || "", clan:i.clan_name || i.clan_tag || ""
-          }));
-          if (!hits.length) {
-            say("No saved player matched. Add a clan tag to search live inside a clan, or use the player tag.", "err");
-            return;
-          }
-        }
+        say("Searching saved players across all available Town Hall levels…");
+        const saved = await findInIndex(q, exact, thv);
+        const hits = saved.map(i => ({
+          tag: i.tag, name: i.name, th: i.th, trophies: i.trophies,
+          role: i.role || "", clan: i.clan_name || i.clan_tag || ""
+        }));
 
-        if (hits.length === 1 && q) {
-          await loadPlayer(hits[0].tag);
+        if (!hits.length) {
+          say("No saved players matched. Search a clan first to add its members to the index, then try again.", "err");
         } else {
+          // Always show name-search matches so users can choose between same-name accounts.
           out.innerHTML = '<div class="cx-list">' + hits.map(playerRow).join("") + "</div>";
-          say(hits.length + (hits.length === 1 ? " player found." : " players found.") + " Select View to open a profile.", "ok");
+          say(hits.length + (hits.length === 1 ? " matching player found." : " matching players found.") +
+            " Choose the correct account using its Town Hall, player tag and last known clan.", "ok");
         }
       } catch (err) {
         say(errText(err), "err");
@@ -890,19 +860,10 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       if (c) { toast((await copyText(c.dataset.copy)) ? "Copied " + c.dataset.copy : "Couldn't copy. Copy it by hand."); return; }
       const v = e.target.closest("[data-view]");
       if (v) { loadPlayer(v.dataset.view); return; }
-      const m = e.target.closest("[data-members]");
-      if (m) {
-        $('[data-tab="players"]', box).click();
-        $("#cxPClan", box).value = m.dataset.members;
-        $("#cxPQ", box).value = "";
-        crit("cxPCrit", true);
-        $("#cxPQ", box).focus();
-        say("Clan " + m.dataset.members + " is filled in under Criteria. Type the player name and search, or just search to list the members.");
-      }
     });
 
     swapIn(sec, box);
-    setHeading(sec, null, "Search by player tag, player name, or clan. Filters are optional.");
+    setHeading(sec, null, "Search player names across the saved player index, or open a profile by player tag. Town Hall filtering is optional.");
   }
 
   /* ============ 8. Base + troop library ============ */
