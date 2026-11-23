@@ -1,9 +1,12 @@
 /* =====================================================================
    ClashVault: Clash of Clans look + working finder, library and builders
-   File name: clashvault-redesign.js   (version 2)
+   File name: clashvault-redesign.js   (version 3)
 
-   ADD THIS ONE LINE in index.html, right before </body>, AFTER auth.js:
-     <script src="./clashvault-redesign.js?v=2"></script>
+   INSTALL: 2 steps, nothing else in your site changes
+     1) Upload this file to the repo root and replace the old one.
+     2) In index.html keep the ONE script line (after auth.js, before </body>)
+        and change the number so phones load the new file:
+          <script src="./clashvault-redesign.js?v=3"></script>
 
    Safe by design
    - It never edits app.js, auth.js, style.css or your Supabase setup.
@@ -18,30 +21,36 @@
 
   /* ============ 1. SETTINGS you may edit ============ */
   const SETTINGS = {
-    EDGE_FUNCTION: "coc",  // name of your Supabase Edge Function (see coc-edge-function.ts)
-    PROXY_BASE: "",        // optional: your own proxy URL ending in /v1 ("" = not used)
-    MAX_TOWN_HALL: 19,     // raise this when Supercell releases a new Town Hall
-    DEFAULT_BUILDERS: 5    // builders shown the first time a player opens the tracker
+    EDGE_FUNCTION: "coc",           // name of your Supabase Edge Function (see coc-edge-function.ts)
+    PROXY_BASE: "",                 // optional: your own proxy URL ending in /v1 ("" = not used)
+    LAYOUTS_URL: "./layouts.json",  // optional file with your real base + troop links (see layouts.example.json)
+    MAX_TOWN_HALL: 19,              // raise this when Supercell releases a new Town Hall
+    DEFAULT_BUILDERS: 5             // builders shown the first time a player opens the tracker
   };
 
   /* ============ 2. LAYOUTS (bases + troop/army links) ============
-     To make "Copy link" copy a REAL in-game link, paste it in `link`:
+     Easiest way to add real layouts: copy layouts.example.json to layouts.json and edit it.
+     You can also edit the list below. For "Copy link" to copy a REAL in-game link,
+     paste it in `link`:
        base : https://link.clashofclans.com/en?action=OpenLayout&id=...
        army : https://link.clashofclans.com/en?action=CopyArmy&army=...
-     Cards with an empty link show "SAMPLE" and copy this page's link instead. */
-  const LAYOUTS = [
-    { kind: "base", th: 19, cat: "War",     icon: "🛡️", name: "Anti 3-Star Fortress", note: "Split key defenses around a compact core.", link: "" },
-    { kind: "base", th: 19, cat: "Trophy",  icon: "🏆", name: "Legend Ring",          note: "Tight ring for pushing trophies.", link: "" },
-    { kind: "base", th: 18, cat: "Farming", icon: "🌾", name: "Resource Keeper",      note: "Storages protected deep inside.", link: "" },
-    { kind: "base", th: 18, cat: "War",     icon: "🏰", name: "Air Trap Maze",        note: "Built to slow Electro Dragons.", link: "" },
-    { kind: "base", th: 17, cat: "Hybrid",  icon: "⚔️", name: "Hybrid Guard",         note: "Balanced for trophies and loot.", link: "" },
-    { kind: "base", th: 16, cat: "War",     icon: "🛡️", name: "Star Saver",           note: "Makes the third star hard to get.", link: "" },
-    { kind: "base", th: 15, cat: "Trophy",  icon: "🏆", name: "Champion's Ring",      note: "Layout concept for trophy pushing.", link: "" },
-    { kind: "base", th: 14, cat: "Farming", icon: "🌾", name: "Loot Vault",           note: "Keeps Gold and Elixir safe.", link: "" },
-    { kind: "army", th: 19, cat: "Air",     icon: "🐉", name: "Electro Dragon Push",  note: "Simple air attack. Funnel first.", link: "" },
-    { kind: "army", th: 18, cat: "Ground",  icon: "🌳", name: "Root Rider Smash",     note: "Ground push backed by your heroes.", link: "" },
-    { kind: "army", th: 17, cat: "Hybrid",  icon: "🐗", name: "Miner + Hog Hybrid",   note: "Fast, flexible and beginner friendly.", link: "" },
-    { kind: "army", th: 16, cat: "Ground",  icon: "🧙", name: "Yeti + Witch Push",    note: "Strong mid-game ground army.", link: "" }
+     Optional per layout: image ("images/my-base.jpg" or https://...), views, rating (0-5),
+     added / updated ("2026-11-22").
+     Cards with an empty link show SAMPLE and copy this page's link instead. */
+  let LAYOUTS = [
+    { kind: "base", th: 19, cat: "War",           tag: "Anti 3 Stars",              icon: "🛡️", name: "Anti 3-Star Fortress", note: "Split key defenses around a compact core.", link: "" },
+    { kind: "base", th: 19, cat: "Trophy",        tag: "Legend League",             icon: "🏆", name: "Legend Ring",          note: "Tight ring for pushing trophies.", link: "" },
+    { kind: "base", th: 18, cat: "Farming",       tag: "Anti Everything",           icon: "🌾", name: "Resource Keeper",      note: "Storages protected deep inside.", link: "" },
+    { kind: "base", th: 18, cat: "War",           tag: "Anti Air / Electro Dragon", icon: "🏰", name: "Air Trap Maze",        note: "Built to slow Electro Dragons.", link: "" },
+    { kind: "base", th: 17, cat: "Hybrid",        tag: "Hybrid",                    icon: "⚔️", name: "Hybrid Guard",         note: "Balanced for trophies and loot.", link: "" },
+    { kind: "base", th: 16, cat: "Defence",       tag: "Anti 2 Stars",              icon: "🛡️", name: "Star Saver",           note: "Makes the third star hard to get.", link: "" },
+    { kind: "base", th: 15, cat: "Trophy",        tag: "Anti 3 Stars",              icon: "🏆", name: "Champion's Ring",      note: "Layout concept for trophy pushing.", link: "" },
+    { kind: "base", th: 14, cat: "Farming",       tag: "Anti Everything",           icon: "🌾", name: "Loot Vault",           note: "Keeps Gold and Elixir safe.", link: "" },
+    { kind: "base", th: 12, cat: "Troll / Funny", tag: "",                          icon: "🤡", name: "Skull Troll Base",     note: "Just for laughs.", link: "" },
+    { kind: "army", th: 19, cat: "Air",           tag: "", icon: "🐉", name: "Electro Dragon Push", note: "Simple air attack. Funnel first.", link: "" },
+    { kind: "army", th: 18, cat: "Ground",        tag: "", icon: "🌳", name: "Root Rider Smash",    note: "Ground push backed by your heroes.", link: "" },
+    { kind: "army", th: 17, cat: "Hybrid",        tag: "", icon: "🐗", name: "Miner + Hog Hybrid",  note: "Fast, flexible and beginner friendly.", link: "" },
+    { kind: "army", th: 16, cat: "Ground",        tag: "", icon: "🧙", name: "Yeti + Witch Push",   note: "Strong mid-game ground army.", link: "" }
   ];
 
   /* ============ 3. Small helpers ============ */
@@ -146,9 +155,11 @@
     if (r.status >= 200 && r.status < 300 && r.data) return r.data;
     const map = {
       400: "That search isn't valid. Check the tag or name.",
-      403: "Supercell rejected the API key. Check that the key allows the proxy IP address.",
+      403: "Supercell rejected the API key. Create the key with the proxy IP 45.79.218.79 (see README-SETUP.md).",
       404: "Not found. Double-check the tag.",
       429: "Too many searches at once. Wait a few seconds and try again.",
+      500: "ClashVault's API key isn't set up yet. Add the COC_API_TOKEN secret to the Edge Function.",
+      502: "Couldn't reach the Clash of Clans API. Try again in a moment.",
       503: "The Clash of Clans API is in maintenance. Try again later."
     };
     throw new ApiError("http-" + r.status, map[r.status] || "The Clash of Clans API had a problem (" + r.status + "). Try again in a moment.");
@@ -381,6 +392,74 @@ html.cx .quick-stats small{font-size:11px}
 html.cx .hero-copy p{font-size:15px}
 }
 @media(max-width:480px){html.cx .hero-buttons .button{flex:1 1 100%}}
+
+/* ---------- v3: more Clash feel ---------- */
+.cx-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+html.cx.cx-lock{overflow:hidden}
+html.cx .cx-panel{position:relative;background:radial-gradient(circle at 8px 8px,#ffe27a 0 2px,#9a5a0c 2px 4px,transparent 4.5px),radial-gradient(circle at calc(100% - 8px) 8px,#ffe27a 0 2px,#9a5a0c 2px 4px,transparent 4.5px),radial-gradient(circle at 8px calc(100% - 8px),#ffe27a 0 2px,#9a5a0c 2px 4px,transparent 4.5px),radial-gradient(circle at calc(100% - 8px) calc(100% - 8px),#ffe27a 0 2px,#9a5a0c 2px 4px,transparent 4.5px),radial-gradient(rgba(138,84,39,.08) 1px,transparent 1.6px) 0 0/8px 8px,linear-gradient(var(--cx-p1),var(--cx-p2))}
+.cx-tab{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.cx-tabs2{flex-wrap:nowrap}
+.cx-tabs2 .cx-tab{flex:1 1 0;min-height:52px;font-size:16px}
+.cx-search{position:relative;display:block;margin:0 0 12px}
+.cx-search i{position:absolute;z-index:1;left:15px;top:50%;transform:translateY(-50%);font-style:normal;font-size:18px;pointer-events:none}
+html.cx .cx-search input{width:100%;min-height:54px;padding:0 14px 0 46px;font-size:17px;border-radius:14px}
+.cx-actions-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 12px}
+.cx-add{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:3px 18px 3px 4px;font:400 17px var(--cx-title);letter-spacing:.3px;color:#fff;text-shadow:var(--cx-ols);background:linear-gradient(var(--cx-n1),var(--cx-n2) 55%,#4a9a1d);border:3px solid var(--cx-line);border-radius:999px;box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 4px 0 var(--cx-n3);cursor:pointer}
+.cx-add b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#fff;border:3px solid var(--cx-n3);color:#3a8a1e;font:400 26px/1 var(--cx-title);text-shadow:none;transition:transform .15s}
+.cx-add[aria-expanded="true"] b{transform:rotate(45deg)}
+.cx-add:active{transform:translateY(2px)}
+.cx-close{display:block;margin:4px 0 0 auto;min-height:44px;padding:0 10px;border:0;background:none;color:#6b4a26;font:400 17px var(--cx-title);letter-spacing:.8px;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.cx-go{width:100%}
+.cx-label{display:block;margin:0 0 4px;font-size:14px;font-weight:800;color:#6b4a26}
+.cx-ths{display:flex;gap:8px;margin:0 -4px 6px;padding:4px 4px 12px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.cx-ths::-webkit-scrollbar{display:none}
+.cx-thc{flex:none;scroll-snap-align:start;display:grid;place-items:center;align-content:center;min-width:58px;min-height:58px;padding:4px 8px;font-family:var(--cx-title);line-height:1;color:#ffeab8;text-shadow:0 2px 0 var(--cx-w4);background:linear-gradient(var(--cx-w1),var(--cx-w2));border:3px solid var(--cx-w4);border-radius:12px;box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 3px 0 var(--cx-w4);cursor:pointer}
+.cx-thc small{font-size:11px;letter-spacing:.6px}
+.cx-thc b{font-weight:400;font-size:24px}
+.cx-thc.all{min-width:68px}
+.cx-thc.all b{font-size:20px}
+.cx-thc.on{color:#4a2c12;text-shadow:0 1px 0 rgba(255,255,255,.5);background:linear-gradient(var(--cx-g1),var(--cx-g2));border-color:#5a3300;box-shadow:inset 0 2px 0 rgba(255,255,255,.6),0 3px 0 var(--cx-g3)}
+.cx-chip.tag{min-height:40px;padding:6px 12px;font-size:14px}
+.cx-more{margin:0 0 12px;border:2px dashed #b98a4e;border-radius:14px;background:rgba(255,255,255,.4)}
+.cx-more summary{display:flex;align-items:center;justify-content:space-between;min-height:48px;padding:0 14px;font:400 17px var(--cx-title);color:var(--cx-ink);cursor:pointer;list-style:none}
+.cx-more summary::-webkit-details-marker{display:none}
+.cx-more summary::after{content:"▾";transition:transform .15s}
+.cx-more[open] summary::after{transform:rotate(180deg)}
+.cx-more-body{padding:0 12px 6px}
+.cx-count{margin:6px 0 0;font-size:14px;font-weight:800;color:var(--cx-ink2)}
+.cx-art{width:100%;padding:0;border:0;border-bottom:3px solid var(--cx-w2);color:inherit;font-family:inherit;cursor:pointer;overflow:hidden}
+.cx-art::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.12) 0 2px,transparent 2px 22px),repeating-linear-gradient(-45deg,rgba(0,0,0,.1) 0 2px,transparent 2px 22px)}
+.cx-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cx-emo{position:relative;z-index:1;filter:drop-shadow(0 3px 2px rgba(0,0,0,.35))}
+.cx-badges{position:absolute;z-index:2;top:8px;right:8px;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}
+.cx-bdg{padding:3px 9px;border-radius:8px;border:2px solid var(--cx-w4);background:#6b4423;color:#fff;font:400 12px/1.2 var(--cx-title);font-style:normal;text-shadow:var(--cx-ols)}
+.cx-bdg.blue{background:#2f7cc8;border-color:#153f73}
+.cx-bdg.orange{background:#ee7a1c;border-color:#7d3a06}
+.cx-meta2{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px;font-weight:800;color:var(--cx-ink2)}
+.cx-stars{font-size:17px;letter-spacing:1px;background:linear-gradient(90deg,#f7b823 var(--r,0%),#d8c7a0 var(--r,0%));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.cx-sheet{position:fixed;inset:0;z-index:3000;display:flex;align-items:flex-end;justify-content:center;background:rgba(14,10,6,.72)}
+.cx-sheet[hidden]{display:none}
+.cx-sheet-card{position:relative;width:min(100%,520px);max-height:92vh;overflow:auto;padding:14px 14px calc(16px + env(safe-area-inset-bottom,0px));background:linear-gradient(var(--cx-p1),var(--cx-p2));border:4px solid var(--cx-w2);border-bottom:0;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.45);color:var(--cx-ink)}
+.cx-sheet-x{position:absolute;z-index:3;top:20px;right:20px;width:44px;height:44px;border-radius:12px;border:2px solid var(--cx-line);background:linear-gradient(var(--cx-r1),var(--cx-r2));color:#fff;font:400 20px var(--cx-title);text-shadow:var(--cx-ols);box-shadow:0 3px 0 var(--cx-r3);cursor:pointer}
+.cx-sheet-art{position:relative;display:grid;place-items:center;min-height:190px;margin:0 0 12px;overflow:hidden;font-size:84px;border:3px solid var(--cx-w2);border-radius:16px;background:radial-gradient(circle at 50% 38%,#9ad25a,#4f9a2a 60%,#2f6e1b)}
+.cx-sheet-art.army{background:radial-gradient(circle at 50% 38%,#7fb8f0,#2f6fb4 62%,#1b4a85)}
+.cx-sheet-art::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.12) 0 2px,transparent 2px 22px),repeating-linear-gradient(-45deg,rgba(0,0,0,.1) 0 2px,transparent 2px 22px)}
+.cx-sheet-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cx-sheet-art .cx-badges{right:auto;left:8px}
+.cx-sheet h3{margin:0 0 8px;font:400 26px/1.1 var(--cx-title);color:var(--cx-ink)}
+.cx-sheet-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 10px}
+.cx-sheet .cx-btn.big{display:flex;width:100%;margin:0 0 8px}
+@media(min-width:700px){.cx-sheet{align-items:center}.cx-sheet-card{border-bottom:4px solid var(--cx-w2);border-radius:22px;max-height:88vh}}
+.cx-tree{position:absolute;z-index:0;bottom:10px;font-size:38px;line-height:1;pointer-events:none;filter:drop-shadow(0 3px 0 rgba(0,0,0,.25))}
+.cx-t1{left:4%}
+.cx-t2{left:15%;bottom:6px;font-size:28px}
+.cx-t3{right:5%}
+.cx-t4{right:16%;bottom:5px;font-size:28px}
+html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;width:auto;height:auto;min-height:165px;border-radius:0;background:linear-gradient(145deg,#2f6fb4,#17427a)}
+.cx-disc{max-width:760px;margin:14px auto 0;padding:0 16px 8px;font-size:12px;line-height:1.55;text-align:center;color:rgba(233,212,168,.88)}
+.cx-disc a{color:var(--cx-g1);text-decoration:underline}
+@media(prefers-reduced-motion:reduce){.cx-cloud{animation:none}.cx-add b,.cx-more summary::after{transition:none}}
+@media(max-width:380px){.cx-ths{margin:0 -2px}.cx-thc{min-width:54px}.cx-add{font-size:16px}}
 `;
 
   function injectTheme() {
@@ -400,7 +479,7 @@ html.cx .hero-copy p{font-size:15px}
     }
   }
 
-  /* ============ 6. Hero clouds ============ */
+  /* ============ 6. Hero clouds + trees, footer notice ============ */
   function decorateHero() {
     const hero = $(".hero");
     if (!hero || $(".cx-cloud", hero)) return;
@@ -410,6 +489,25 @@ html.cx .hero-copy p{font-size:15px}
       s.setAttribute("aria-hidden", "true");
       hero.appendChild(s);
     });
+    [["cx-t1", "🌳"], ["cx-t2", "🌿"], ["cx-t3", "🌲"], ["cx-t4", "🌿"]].forEach(t => {
+      const s = document.createElement("span");
+      s.className = "cx-tree " + t[0];
+      s.textContent = t[1];
+      s.setAttribute("aria-hidden", "true");
+      hero.appendChild(s);
+    });
+  }
+
+  /* Supercell's Fan Content Policy asks fan sites to show this notice. */
+  function addDisclaimer() {
+    const f = $(".site-footer") || $("footer");
+    if (!f || $(".cx-disc", f)) return;
+    if (/not endorsed by supercell/i.test(f.textContent || "")) return;
+    const p = document.createElement("p");
+    p.className = "cx-disc";
+    p.innerHTML = 'This material is unofficial and is not endorsed by Supercell. For more information see Supercell\'s Fan Content Policy: ' +
+      '<a href="https://www.supercell.com/fan-content-policy/" target="_blank" rel="noopener noreferrer">www.supercell.com/fan-content-policy</a>.';
+    f.appendChild(p);
   }
 
   /* ============ 7. Player + Clan finder ============ */
@@ -460,37 +558,38 @@ html.cx .hero-copy p{font-size:15px}
   function buildFinder() {
     const sec = $("#player-finder");
     if (!sec) return;
-    const th = thOptions("Any Town Hall");
+    const th = thOptions("All Town Halls");
     const box = div("cx-panel cx-app", "cxFinder");
     box.innerHTML =
-      '<div class="cx-tabs" role="tablist" aria-label="Search type">' +
-        '<button type="button" class="cx-tab on" data-tab="players" role="tab" aria-selected="true">👤 Players</button>' +
-        '<button type="button" class="cx-tab" data-tab="clans" role="tab" aria-selected="false">🛡️ Clans</button></div>' +
+      '<div class="cx-tabs cx-tabs2" role="tablist" aria-label="Search type">' +
+        '<button type="button" class="cx-tab on" data-tab="players" role="tab" aria-selected="true"><span aria-hidden="true">👤</span>Search players</button>' +
+        '<button type="button" class="cx-tab" data-tab="clans" role="tab" aria-selected="false"><span aria-hidden="true">🛡️</span>Search clans</button></div>' +
       '<form id="cxPlayerForm" novalidate>' +
-        '<div class="cx-seg" role="group" aria-label="Search player by">' +
-          '<button type="button" class="cx-chip on" data-mode="tag">Player tag</button>' +
-          '<button type="button" class="cx-chip" data-mode="name">Player name</button></div>' +
-        '<label class="cx-field" data-m="name" hidden><span>Player name</span><input id="cxPName" maxlength="30" placeholder="Enter player name" autocomplete="off"></label>' +
-        '<label class="cx-field" data-m="tag"><span>Player tag</span><input id="cxPTag" maxlength="16" placeholder="#2PP" autocomplete="off" autocapitalize="characters"></label>' +
-        '<div class="cx-crit" data-m="name" hidden><h4>Criteria</h4>' +
-          '<label class="cx-field"><span>Clan tag <em>(the clan to search in)</em></span><input id="cxPClan" maxlength="16" placeholder="#CLANTAG" autocomplete="off" autocapitalize="characters"></label>' +
-          '<label class="cx-field"><span>Town Hall</span><select id="cxPTH">' + th + "</select></label>" +
+        '<label class="cx-search"><span class="cx-sr">Player name or tag</span><i aria-hidden="true">🔍</i>' +
+          '<input id="cxPQ" type="search" maxlength="30" enterkeyhint="search" placeholder="Find a Player (enter Name or #Tag)" autocomplete="off" autocapitalize="off" spellcheck="false"></label>' +
+        '<div class="cx-actions-row"><button type="button" class="cx-add" data-crit="cxPCrit" aria-expanded="false" aria-controls="cxPCrit"><b aria-hidden="true">+</b>Add criteria</button></div>' +
+        '<div class="cx-crit" id="cxPCrit" hidden>' +
           '<label class="cx-check"><input type="checkbox" id="cxExact"><span>Only players with that exact name</span></label>' +
-          '<p class="cx-help">Supercell\'s API can\'t search every player by name, so ClashVault searches the members of the clan you enter. When names match, the Town Hall filter picks the right Chief. Don\'t know the clan tag? Use the Clans tab.</p></div>' +
-        '<button class="cx-btn green" type="submit">Search player</button></form>' +
+          '<label class="cx-field"><span>Town Hall</span><select id="cxPTH">' + th + "</select></label>" +
+          '<label class="cx-field"><span>Clan tag <em>(needed to search by name)</em></span><input id="cxPClan" maxlength="16" placeholder="#CLANTAG" autocomplete="off" autocapitalize="characters"></label>' +
+          '<p class="cx-help">Supercell\'s API can\'t search every player by name, so ClashVault searches the members of the clan you enter. When several players share a name, the Town Hall filter picks the right Chief. A player tag always works on its own.</p>' +
+          '<button type="button" class="cx-close" data-crit-close="cxPCrit">Close</button></div>' +
+        '<button class="cx-btn green cx-go" type="submit">Search player</button></form>' +
       '<form id="cxClanForm" novalidate hidden>' +
-        '<label class="cx-field"><span>Clan name or tag</span><input id="cxCName" maxlength="40" placeholder="Name (3+ letters) or #TAG" autocomplete="off"></label>' +
-        '<div class="cx-crit"><h4>Criteria</h4><div class="cx-two">' +
+        '<label class="cx-search"><span class="cx-sr">Clan name or tag</span><i aria-hidden="true">🔍</i>' +
+          '<input id="cxCName" type="search" maxlength="40" enterkeyhint="search" placeholder="Find a Clan (enter Name or #Tag)" autocomplete="off" autocapitalize="off" spellcheck="false"></label>' +
+        '<div class="cx-actions-row"><button type="button" class="cx-add" data-crit="cxCCrit" aria-expanded="false" aria-controls="cxCCrit"><b aria-hidden="true">+</b>Add criteria</button></div>' +
+        '<div class="cx-crit" id="cxCCrit" hidden><div class="cx-two">' +
           '<label class="cx-field"><span>Min clan level</span><input id="cxCLvl" type="number" inputmode="numeric" min="1" max="50" placeholder="Any"></label>' +
           '<label class="cx-field"><span>Min members</span><input id="cxCMin" type="number" inputmode="numeric" min="1" max="50" placeholder="Any"></label></div>' +
-          '<label class="cx-field"><span>Clans I can join with</span><select id="cxCTH">' + th + "</select></label></div>" +
-        '<button class="cx-btn green" type="submit">Search clan</button></form>' +
-      '<p class="cx-msg" id="cxMsg" aria-live="polite">Search a player by tag, or by name inside a clan.</p>' +
+          '<label class="cx-field"><span>Clans I can join with</span><select id="cxCTH">' + th + "</select></label>" +
+          '<button type="button" class="cx-close" data-crit-close="cxCCrit">Close</button></div>' +
+        '<button class="cx-btn green cx-go" type="submit">Search clan</button></form>' +
+      '<p class="cx-msg" id="cxMsg" aria-live="polite">Type a player name or tag. Add criteria to narrow it down.</p>' +
       '<div class="cx-results" id="cxOut"></div>';
 
     const msg = $("#cxMsg", box), out = $("#cxOut", box);
     const pForm = $("#cxPlayerForm", box), cForm = $("#cxClanForm", box);
-    let mode = "tag";
     const say = (t, kind) => { msg.textContent = t; msg.className = "cx-msg" + (kind ? " " + kind : ""); };
     const lock = (form, on) => {
       const b = $("button[type=submit]", form);
@@ -499,6 +598,24 @@ html.cx .hero-copy p{font-size:15px}
       b.disabled = on;
       b.textContent = on ? "Searching…" : b.dataset.l;
     };
+    const crit = (id, open) => {
+      const el = $("#" + id, box);
+      if (!el) return;
+      el.hidden = !open;
+      const b = $('[data-crit="' + id + '"]', box);
+      if (b) b.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+
+    box.addEventListener("click", e => {
+      const a = e.target.closest("[data-crit]");
+      if (a) { const el = $("#" + a.dataset.crit, box); if (el) crit(a.dataset.crit, el.hidden); return; }
+      const c = e.target.closest("[data-crit-close]");
+      if (c) {
+        crit(c.dataset.critClose, false);
+        const o = $('[data-crit="' + c.dataset.critClose + '"]', box);
+        if (o) o.focus();
+      }
+    });
 
     $$(".cx-tab", box).forEach(b => b.addEventListener("click", () => {
       $$(".cx-tab", box).forEach(x => { const on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-selected", on ? "true" : "false"); });
@@ -506,14 +623,7 @@ html.cx .hero-copy p{font-size:15px}
       pForm.hidden = !players;
       cForm.hidden = players;
       out.innerHTML = "";
-      say(players ? "Search a player by tag, or by name inside a clan." : "Search a clan by name or tag, then narrow it down with the criteria.");
-    }));
-    $$("[data-mode]", box).forEach(b => b.addEventListener("click", () => {
-      mode = b.dataset.mode;
-      $$("[data-mode]", box).forEach(x => x.classList.toggle("on", x === b));
-      $$("[data-m]", box).forEach(x => { x.hidden = x.dataset.m !== mode; });
-      out.innerHTML = "";
-      say(mode === "tag" ? "Enter a player tag like #2PP." : "Enter the player name and the clan tag to search in.");
+      say(players ? "Type a player name or tag. Add criteria to narrow it down." : "Type a clan name (3+ letters) or tag. Add criteria to narrow it down.");
     }));
 
     async function loadPlayer(tag) {
@@ -522,6 +632,7 @@ html.cx .hero-copy p{font-size:15px}
         const p = await api("/players/" + encodeURIComponent(tag));
         out.innerHTML = playerCard(p);
         say("Found " + (p.name || "player") + ".", "ok");
+        try { out.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch (_) {}
       } catch (e) {
         out.innerHTML = "";
         say(errText(e), "err");
@@ -530,35 +641,51 @@ html.cx .hero-copy p{font-size:15px}
 
     pForm.addEventListener("submit", async e => {
       e.preventDefault();
-      if (mode === "tag") {
-        const tag = normTag($("#cxPTag", box).value);
-        if (!validTag(tag)) { say("Enter a valid player tag, like #2PP. Tags only use 0289PYLQGRJCUV.", "err"); return; }
+      const q = $("#cxPQ", box).value.trim();
+      const exact = $("#cxExact", box).checked;
+      const clanRaw = $("#cxPClan", box).value.trim();
+      const thv = $("#cxPTH", box).value;
+      if (!q && !clanRaw) { say("Type a player name or tag first.", "err"); return; }
+
+      /* A player tag works on its own. */
+      if (q && !exact && isTagInput(q)) {
         lock(pForm, true);
-        await loadPlayer(tag);
+        await loadPlayer(normTag(q));
         lock(pForm, false);
         return;
       }
-      const name = $("#cxPName", box).value.trim();
-      const clan = normTag($("#cxPClan", box).value);
-      if (!name) { say("Enter the player name.", "err"); return; }
-      if (!validTag(clan)) { say("Enter the clan tag to search in, like #2PP. Don't know it? Use the Clans tab.", "err"); return; }
+
+      /* A name needs a clan to search in. */
+      const clan = normTag(clanRaw);
+      if (!validTag(clan)) {
+        crit("cxPCrit", true);
+        out.innerHTML = "";
+        say(clanRaw
+          ? "That clan tag doesn't look right. Clan tags look like #2PP."
+          : "To search by name, add the clan tag under Criteria. Supercell's API can't search every player by name. Have the player tag? Type it above instead.", "err");
+        $("#cxPClan", box).focus();
+        return;
+      }
       lock(pForm, true);
       out.innerHTML = "";
       say("Searching clan members…");
       try {
         const data = await api("/clans/" + encodeURIComponent(clan) + "/members");
-        const q = name.toLowerCase();
-        const thv = $("#cxPTH", box).value;
-        const exact = $("#cxExact", box).checked;
-        const hits = (data.items || []).filter(m => {
+        const items = data.items || [];
+        const hasTH = items.some(m => m.townHallLevel != null);
+        const useTH = !!thv && hasTH;
+        const ql = q.toLowerCase();
+        const hits = items.filter(m => {
           const n = String(m.name || "").toLowerCase();
-          return (exact ? n === q : n.indexOf(q) !== -1) && (!thv || String(m.townHallLevel) === thv);
+          const okName = !ql || (exact ? n === ql : n.indexOf(ql) !== -1);
+          return okName && (!useTH || String(m.townHallLevel) === thv);
         });
         if (!hits.length) say("No member matched. Check the spelling, the Town Hall filter or the clan tag.", "err");
-        else if (hits.length === 1) await loadPlayer(hits[0].tag);
+        else if (hits.length === 1 && ql) await loadPlayer(hits[0].tag);
         else {
           out.innerHTML = '<div class="cx-list">' + hits.map(memberRow).join("") + "</div>";
-          say(hits.length + " players match. Tap View on the right one. Town Hall and trophies help you tell them apart.", "ok");
+          say(hits.length + (ql ? " players match." : " players in this clan.") + " Tap View on the right one. Town Hall and trophies help you tell them apart." +
+            (thv && !hasTH ? " (This clan's data has no Town Hall levels, so that filter was skipped.)" : ""), "ok");
         }
       } catch (err) {
         say(errText(err), "err");
@@ -608,82 +735,289 @@ html.cx .hero-copy p{font-size:15px}
       const m = e.target.closest("[data-members]");
       if (m) {
         $('[data-tab="players"]', box).click();
-        $('[data-mode="name"]', box).click();
         $("#cxPClan", box).value = m.dataset.members;
-        $("#cxPName", box).focus();
-        say("Clan " + m.dataset.members + " is filled in. Enter the player name and search.");
+        $("#cxPQ", box).value = "";
+        crit("cxPCrit", true);
+        $("#cxPQ", box).focus();
+        say("Clan " + m.dataset.members + " is filled in under Criteria. Type the player name and search, or just search to list the members.");
       }
     });
 
     swapIn(sec, box);
-    setHeading(sec, null, "Search players and clans by tag, name or criteria.");
+    setHeading(sec, null, "Search players and clans by name or tag, then narrow it down with criteria.");
   }
 
   /* ============ 8. Base + troop library ============ */
+  const isImg = s => typeof s === "string" &&
+    (/^https:\/\/[^\s"'<>]+$/.test(s) || /^(?!.*\.\.)[\w\-./]+\.(png|jpe?g|webp|gif|avif)$/i.test(s));
+
+  function cleanLayout(x) {
+    if (!x || typeof x !== "object") return null;
+    const kind = x.kind === "army" ? "army" : "base";
+    const th = parseInt(x.th, 10);
+    const name = String(x.name || "").trim().slice(0, 60);
+    if (!name || !(th >= 1 && th <= 99)) return null;
+    return {
+      kind: kind, th: th, name: name,
+      cat: String(x.cat || (kind === "army" ? "Ground" : "War")).slice(0, 24),
+      tag: String(x.tag || "").slice(0, 40),
+      icon: String(x.icon || (kind === "army" ? "⚔️" : "🏰")).slice(0, 8),
+      note: String(x.note || "").slice(0, 140),
+      link: isGameLink(x.link) ? x.link : "",
+      image: isImg(x.image) ? x.image : "",
+      views: Math.max(0, Number(x.views) || 0),
+      rating: Math.max(0, Math.min(5, Number(x.rating) || 0)),
+      added: String(x.added || ""),
+      updated: String(x.updated || "")
+    };
+  }
+
+  /* Optional: layouts.json next to index.html replaces the sample cards. */
+  async function loadLayoutsFile() {
+    if (!SETTINGS.LAYOUTS_URL) return null;
+    try {
+      const r = await fetch(SETTINGS.LAYOUTS_URL, { cache: "no-store" });
+      if (!r.ok) return null;
+      const raw = await r.json();
+      const list = (Array.isArray(raw) ? raw : (raw && raw.layouts)) || [];
+      const clean = list.map(cleanLayout).filter(Boolean);
+      return clean.length ? clean : null;
+    } catch (_) { return null; }
+  }
+
   function buildLibrary() {
     const sec = $("#bases");
     if (!sec) return;
-    const CATS = { base: ["All", "War", "Farming", "Trophy", "Hybrid"], army: ["All", "Air", "Ground", "Hybrid"] };
-    let kind = "base", cat = "All", th = "";
+    let kind = "base", cat = "All", th = "", tag = "", sort = "date", shown = [];
+    const CAT_ORDER = ["War", "Farming", "Defence", "Trophy", "Hybrid", "Troll / Funny", "Air", "Ground"];
+    const SORTS = [["date", "Date"], ["views", "Views"], ["rating", "Rating"], ["updated", "Updated"]];
+    const ts = s => { const t = Date.parse(s); return isNaN(t) ? 0 : t; };
+    const CMP = {
+      date: (a, b) => ts(b.added) - ts(a.added),
+      views: (a, b) => (b.views || 0) - (a.views || 0),
+      rating: (a, b) => (b.rating || 0) - (a.rating || 0),
+      updated: (a, b) => ts(b.updated || b.added) - ts(a.updated || a.added)
+    };
+
     const box = div("cx-panel cx-app", "cxLibrary");
     box.innerHTML =
-      '<div class="cx-tabs" role="tablist" aria-label="Library">' +
-        '<button type="button" class="cx-tab on" data-k="base" role="tab" aria-selected="true">🏰 Base layouts</button>' +
-        '<button type="button" class="cx-tab" data-k="army" role="tab" aria-selected="false">⚔️ Troop layouts</button></div>' +
-      '<label class="cx-field"><span>Town Hall</span><select id="cxLTH">' + thOptions("All Town Halls") + "</select></label>" +
+      '<div class="cx-tabs cx-tabs2" role="tablist" aria-label="Library">' +
+        '<button type="button" class="cx-tab on" data-k="base" role="tab" aria-selected="true"><span aria-hidden="true">🏰</span>Base layouts</button>' +
+        '<button type="button" class="cx-tab" data-k="army" role="tab" aria-selected="false"><span aria-hidden="true">⚔️</span>Troop layouts</button></div>' +
+      '<span class="cx-label" id="cxThLabel">Town Hall</span>' +
+      '<div class="cx-ths" id="cxThs" role="group" aria-labelledby="cxThLabel"></div>' +
       '<div class="cx-seg" id="cxCats" role="group" aria-label="Layout type"></div>' +
+      '<details class="cx-more" id="cxMore"><summary>Tags &amp; sort</summary><div class="cx-more-body">' +
+        '<div id="cxTagsWrap"><span class="cx-label">Tags</span><div class="cx-seg" id="cxTags" role="group" aria-label="Tags"></div></div>' +
+        '<label class="cx-field"><span>Sort by</span><select id="cxSort">' +
+          SORTS.map(s => '<option value="' + s[0] + '">' + s[1] + "</option>").join("") + "</select></label></div></details>" +
+      '<p class="cx-count" id="cxCount" aria-live="polite"></p>' +
       '<div class="cx-grid" id="cxGrid"></div>' +
-      '<p class="cx-help">Cards marked SAMPLE are placeholders. Cards marked READY copy a real in-game link you can paste into Clash of Clans.</p>';
-    const grid = $("#cxGrid", box), cats = $("#cxCats", box);
+      '<p class="cx-help">Cards marked SAMPLE are placeholders. Cards marked WITH LINK copy a real in-game link for Clash of Clans.</p>';
+    const grid = $("#cxGrid", box), cats = $("#cxCats", box), tags = $("#cxTags", box), ths = $("#cxThs", box), count = $("#cxCount", box);
 
-    const card = x => {
-      const real = isGameLink(x.link);
-      return '<article class="cx-lay"><div class="cx-art ' + x.kind + '">' + x.icon + "<i" + (real ? ' class="ok">READY' : ">SAMPLE") + "</i></div>" +
-        '<div class="cx-lay-body"><div class="cx-lay-meta"><span class="cx-pill">TH ' + esc(x.th) + '</span><span class="cx-pill">' + esc(x.cat) + "</span></div>" +
-        "<h3>" + esc(x.name) + "</h3><p>" + esc(x.note) + "</p>" +
-        '<button class="cx-btn green sm" type="button" data-i="' + LAYOUTS.indexOf(x) + '">Copy link</button></div></article>';
+    /* ----- small render helpers ----- */
+    const stars = r => '<span class="cx-stars" style="--r:' + Math.round((r / 5) * 100) + '%" role="img" aria-label="Rated ' + r.toFixed(1) + ' out of 5">★★★★★</span>';
+    const compact = n => (n >= 1000 ? (Math.round(n / 100) / 10) + "K" : String(n));
+    const year = x => { const t = ts(x.added); return t ? String(new Date(t).getFullYear()) : ""; };
+    const metaLine = x => (x.rating ? stars(x.rating) : "") + (x.views ? "<span>👁 " + compact(x.views) + "</span>" : "");
+    const artHtml = x => (x.image
+      ? '<img src="' + esc(x.image) + '" alt="" loading="lazy" decoding="async">'
+      : '<span class="cx-emo" aria-hidden="true">' + esc(x.icon) + "</span>");
+    const badgesHtml = x => '<span class="cx-badges">' + (isGameLink(x.link) ? '<em class="cx-bdg blue">WITH LINK</em>' : '<em class="cx-bdg">SAMPLE</em>') +
+      (year(x) ? '<em class="cx-bdg orange">' + year(x) + "</em>" : "") + "</span>";
+    const card = x =>
+      '<article class="cx-lay"><button type="button" class="cx-art ' + x.kind + '" data-o="' + shown.indexOf(x) + '" aria-label="Open ' + esc(x.name) + '">' +
+        artHtml(x) + badgesHtml(x) + "</button>" +
+      '<div class="cx-lay-body"><div class="cx-lay-meta"><span class="cx-pill">TH ' + esc(x.th) + '</span><span class="cx-pill">' + esc(x.cat) + "</span></div>" +
+      "<h3>" + esc(x.name) + "</h3>" + (x.note ? "<p>" + esc(x.note) + "</p>" : "") +
+      (metaLine(x) ? '<div class="cx-meta2">' + metaLine(x) + "</div>" : "") +
+      '<button class="cx-btn green sm" type="button" data-i="' + LAYOUTS.indexOf(x) + '">Copy link</button></div></article>';
+
+    const markOn = (wrap, attr, val) => $$("[" + attr + "]", wrap).forEach(b => {
+      const on = b.getAttribute(attr) === val;
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    const drawThs = () => {
+      let h = '<button type="button" class="cx-thc all" data-th="" aria-pressed="false"><b>All</b></button>';
+      for (let n = SETTINGS.MAX_TOWN_HALL; n >= 1; n--) {
+        h += '<button type="button" class="cx-thc" data-th="' + n + '" aria-pressed="false"><small>TH</small><b>' + n + "</b></button>";
+      }
+      ths.innerHTML = h;
+      markOn(ths, "data-th", th);
+    };
+    const catsFor = () => {
+      const set = {};
+      LAYOUTS.forEach(x => { if (x.kind === kind && x.cat) set[x.cat] = 1; });
+      return ["All"].concat(CAT_ORDER.filter(c => set[c]), Object.keys(set).filter(c => CAT_ORDER.indexOf(c) === -1).sort());
+    };
+    const tagsFor = () => {
+      const set = {};
+      LAYOUTS.forEach(x => { if (x.kind === kind && x.tag) set[x.tag] = 1; });
+      return Object.keys(set);
     };
     const drawCats = () => {
-      cats.innerHTML = CATS[kind].map(c => '<button type="button" class="cx-chip' + (c === cat ? " on" : "") + '" data-c="' + c + '">' + c + "</button>").join("");
+      const list = catsFor();
+      if (list.indexOf(cat) === -1) cat = "All";
+      cats.innerHTML = list.map(c => '<button type="button" class="cx-chip" data-c="' + esc(c) + '" aria-pressed="false">' + esc(c) + "</button>").join("");
+      markOn(cats, "data-c", cat);
+    };
+    const drawTags = () => {
+      const list = tagsFor();
+      if (list.indexOf(tag) === -1) tag = "";
+      tags.innerHTML = list.map(t => '<button type="button" class="cx-chip tag" data-t="' + esc(t) + '" aria-pressed="false">◆ ' + esc(t) + "</button>").join("");
+      $("#cxTagsWrap", box).hidden = !list.length;
+      markOn(tags, "data-t", tag);
     };
     const draw = () => {
-      const list = LAYOUTS.filter(x => x.kind === kind && (!th || String(x.th) === th) && (cat === "All" || x.cat === cat));
-      grid.innerHTML = list.length ? list.map(card).join("")
+      shown = LAYOUTS.filter(x => x.kind === kind && (!th || String(x.th) === th) && (cat === "All" || x.cat === cat) && (!tag || x.tag === tag)).sort(CMP[sort]);
+      grid.innerHTML = shown.length ? shown.map(card).join("")
         : '<p class="cx-msg" style="grid-column:1/-1">No ' + (kind === "base" ? "base" : "troop") + " layouts for this filter yet.</p>";
+      count.textContent = shown.length + (shown.length === 1 ? " layout" : " layouts");
     };
 
-    $$(".cx-tab", box).forEach(b => b.addEventListener("click", () => {
-      kind = b.dataset.k;
-      cat = "All";
-      $$(".cx-tab", box).forEach(x => { const on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-selected", on ? "true" : "false"); });
-      drawCats();
-      draw();
-    }));
-    cats.addEventListener("click", e => {
-      const b = e.target.closest("[data-c]");
-      if (!b) return;
-      cat = b.dataset.c;
-      drawCats();
-      draw();
-    });
-    $("#cxLTH", box).addEventListener("change", e => { th = e.target.value; draw(); });
-    grid.addEventListener("click", async e => {
-      const b = e.target.closest("[data-i]");
-      if (!b) return;
-      const x = LAYOUTS[Number(b.dataset.i)];
+    async function copyLayout(x) {
       if (!x) return;
       if (isGameLink(x.link)) {
-        toast((await copyText(x.link)) ? "Link copied. Paste it in Clash of Clans." : "Couldn't copy. Try again.");
+        toast((await copyText(x.link)) ? "Link copied. Paste it in your browser to open Clash of Clans." : "Couldn't copy. Try again.");
         return;
       }
       const page = location.origin + location.pathname + "#bases";
       toast((await copyText(page)) ? "Page link copied. This sample has no in-game link yet." : "Couldn't copy the link.");
+    }
+
+    /* ----- detail sheet (tap a card picture) ----- */
+    let sheet = null, at = 0, opener = null;
+    const onKey = e => {
+      if (e.key === "Escape") closeSheet();
+      else if (e.key === "ArrowLeft") go(-1);
+      else if (e.key === "ArrowRight") go(1);
+    };
+    function fillSheet() {
+      const x = shown[at];
+      if (!x) return;
+      const real = isGameLink(x.link);
+      const art = $("#cxSheetArt", sheet);
+      art.className = "cx-sheet-art " + x.kind;
+      art.innerHTML = artHtml(x) + badgesHtml(x);
+      $("#cxSheetBody", sheet).innerHTML =
+        '<h3 id="cxSheetT">' + esc(x.name) + "</h3>" +
+        '<div class="cx-lay-meta"><span class="cx-pill">TH ' + esc(x.th) + '</span><span class="cx-pill">' + esc(x.cat) + "</span>" +
+          (x.tag ? '<span class="cx-pill">' + esc(x.tag) + "</span>" : "") + "</div>" +
+        (x.note ? '<p class="cx-help" style="font-size:15px">' + esc(x.note) + "</p>" : "") +
+        (metaLine(x) ? '<div class="cx-meta2" style="margin-top:8px">' + metaLine(x) + "</div>" : "") +
+        '<p class="cx-help">' + (real
+          ? "Copy the link and open it on the phone that has Clash of Clans, or tap Open in game."
+          : "This is a sample. Add a real in-game link to this layout and the button will copy it.") + "</p>";
+      $("#cxSheetCopy", sheet).textContent = x.kind === "army" ? "Copy army link" : "Copy base link";
+      const open = $("#cxSheetOpen", sheet);
+      open.hidden = !real;
+      if (real) open.href = x.link;
+      $$("[data-nav]", sheet).forEach(b => { b.disabled = shown.length < 2; });
+    }
+    function go(d) {
+      if (!sheet || sheet.hidden || !shown.length) return;
+      at = (at + d + shown.length) % shown.length;
+      fillSheet();
+    }
+    function openSheet(i, from) {
+      if (!shown[i]) return;
+      if (!sheet) {
+        sheet = div("cx-sheet", "cxSheet");
+        sheet.hidden = true;
+        sheet.setAttribute("role", "dialog");
+        sheet.setAttribute("aria-modal", "true");
+        sheet.setAttribute("aria-labelledby", "cxSheetT");
+        sheet.innerHTML =
+          '<div class="cx-sheet-card"><button type="button" class="cx-sheet-x" data-x aria-label="Close">✕</button>' +
+          '<div class="cx-sheet-art" id="cxSheetArt"></div><div id="cxSheetBody"></div>' +
+          '<div class="cx-sheet-nav"><button type="button" class="cx-btn blue sm" data-nav="-1">‹ Previous</button><button type="button" class="cx-btn blue sm" data-nav="1">Next ›</button></div>' +
+          '<button type="button" class="cx-btn gold big" id="cxSheetCopy">Copy link</button>' +
+          '<a class="cx-btn green big" id="cxSheetOpen" target="_blank" rel="noopener noreferrer" hidden>Open in game</a></div>';
+        sheet.addEventListener("click", e => {
+          if (e.target === sheet || e.target.closest("[data-x]")) { closeSheet(); return; }
+          const n = e.target.closest("[data-nav]");
+          if (n) { go(Number(n.dataset.nav)); return; }
+          if (e.target.closest("#cxSheetCopy")) copyLayout(shown[at]);
+        });
+        document.body.appendChild(sheet);
+      }
+      at = i;
+      opener = from || null;
+      fillSheet();
+      sheet.hidden = false;
+      document.documentElement.classList.add("cx-lock");
+      document.addEventListener("keydown", onKey);
+      const x = $("[data-x]", sheet);
+      if (x) x.focus();
+    }
+    function closeSheet() {
+      if (!sheet || sheet.hidden) return;
+      sheet.hidden = true;
+      document.documentElement.classList.remove("cx-lock");
+      document.removeEventListener("keydown", onKey);
+      if (opener && opener.focus) { try { opener.focus(); } catch (_) {} }
+    }
+
+    /* ----- events ----- */
+    $$(".cx-tab", box).forEach(b => b.addEventListener("click", () => {
+      kind = b.dataset.k;
+      cat = "All";
+      tag = "";
+      $$(".cx-tab", box).forEach(x => { const on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-selected", on ? "true" : "false"); });
+      drawCats();
+      drawTags();
+      draw();
+    }));
+    ths.addEventListener("click", e => {
+      const b = e.target.closest("[data-th]");
+      if (!b) return;
+      th = b.getAttribute("data-th");
+      markOn(ths, "data-th", th);
+      draw();
+    });
+    cats.addEventListener("click", e => {
+      const b = e.target.closest("[data-c]");
+      if (!b) return;
+      cat = b.getAttribute("data-c");
+      markOn(cats, "data-c", cat);
+      draw();
+    });
+    tags.addEventListener("click", e => {
+      const b = e.target.closest("[data-t]");
+      if (!b) return;
+      const t = b.getAttribute("data-t");
+      tag = tag === t ? "" : t;
+      markOn(tags, "data-t", tag);
+      draw();
+    });
+    $("#cxSort", box).addEventListener("change", e => { sort = e.target.value; draw(); });
+    grid.addEventListener("click", e => {
+      const o = e.target.closest("[data-o]");
+      if (o) { openSheet(Number(o.dataset.o), o); return; }
+      const b = e.target.closest("[data-i]");
+      if (b) copyLayout(LAYOUTS[Number(b.dataset.i)]);
     });
 
+    drawThs();
     drawCats();
+    drawTags();
     draw();
     swapIn(sec, box);
     setHeading(sec, null, "Pick your Town Hall, then copy a base or troop layout link.");
+
+    loadLayoutsFile().then(list => {
+      if (!list) return;
+      LAYOUTS = list;
+      th = "";
+      cat = "All";
+      tag = "";
+      markOn(ths, "data-th", th);
+      drawCats();
+      drawTags();
+      draw();
+    });
   }
 
   /* ============ 9. Builder tracker (sign in to see builders) ============ */
@@ -803,6 +1137,7 @@ html.cx .hero-copy p{font-size:15px}
     safe("library", buildLibrary);
     safe("tracker", buildTracker);
     safe("tabbar", buildTabbar);
+    safe("disclaimer", addDisclaimer);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
   else start();
