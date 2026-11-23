@@ -59,8 +59,9 @@
     </nav>
 
     <div class="header-actions">
-      <a class="header-cta" href="#account">
-        Join ClashVault <span>↗</span>
+      <!-- Sign in: white circle with a person icon (styled by clashvault-v4.js) -->
+      <a class="header-cta cx-circle" href="#account" aria-label="Sign in" title="Sign in">
+        <span aria-hidden="true">👤</span>
       </a>
     </div>
 
@@ -114,7 +115,7 @@
 
       </div>
 
-      <!-- KINGDOM ART -->
+      <!-- KINGDOM ART (the Barbarian, Wizard and Goblin are added by clashvault-v4.js) -->
       <div class="hero-art" aria-label="ClashVault kingdom illustration">
 
         <div class="hero-orbit orbit-one"></div>
@@ -726,7 +727,7 @@
             <span>🎮</span>
             <span>
               <strong>Open with a game</strong>
-              <small>Supercell connection coming soon</small>
+              <small>Verify with your Player Tag</small>
             </span>
           </button>
 
@@ -977,11 +978,12 @@
 
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPTS (keep this order) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./supabase-config.js"></script>
   <script src="./app.js"></script>
   <script src="./auth.js"></script>
+  <script src="./clashvault-v4.js?v=4"></script>
 
 </body>
 </html>
