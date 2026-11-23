@@ -4,80 +4,100 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#18372b">
-  <meta name="description" content="ClashVault — your Clash of Clans companion for player lookup, base ideas, attack guides and village progress.">
-  <title>ClashVault — Your Kingdom Companion</title>
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <meta name="description" content="ClashVault: player and clan lookup, base library, attack tutorials, defense guides and a hero skin encyclopedia for Clash of Clans.">
+  <title>ClashVault | Clash of Clans Companion</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%B0%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./vault.css">
 </head>
 <body>
+  <div class="announcement"><span class="announcement-dot"></span><span id="announcementText">New hero skins land every month. Browse them all in the Hero Vault.</span><button class="announcement-close" type="button" aria-label="Close announcement">&times;</button></div>
+  <header class="site-header">
+    <a class="brand" href="#home"><span class="brand-mark">🏰</span><span>Clash<span class="brand-accent">Vault</span></span></a>
+    <nav class="main-nav" id="mainNav" aria-label="Sections">
+      <a href="#player-finder">Players</a><a href="#bases">Bases</a><a href="#attacks">Attack</a><a href="#defense">Defense</a><a href="#tracker">Heroes</a><a href="#events">Events</a>
+    </nav>
+    <div class="header-actions"><a class="header-cta" href="#account">Sign in</a><button class="mobile-menu" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false">☰</button></div>
+  </header>
+
   <main id="home">
-    <section class="section" id="player-finder">
-      <h2>Player Finder</h2>
-      <form id="playerSearchForm" class="search-form">
-        <label class="sr-only" for="playerTag">Player tag</label>
-        <input id="playerTag" maxlength="15" placeholder="Enter player tag" autocomplete="off">
-        <button type="submit">Search player</button>
-      </form>
-      <p id="playerSearchMessage" aria-live="polite"></p>
-      <div id="playerResult" hidden></div>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Clash of Clans companion</span>
+        <h1>Know every <span>hero, skin</span> and strategy.</h1>
+        <p>Look up players and clans, copy bases, learn every attack, build anti-attack defenses and browse every hero skin ever released.</p>
+        <div class="hero-buttons"><a class="button button-gold" href="#tracker">Open Hero Vault</a><a class="button button-ghost" href="#player-finder">Find a player</a></div>
+        <div class="hero-proof"><span>Free</span><span>Works on phone</span><span>Opens in game</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="castle"><div class="castle-body"></div><div class="castle-roof"></div><div class="tower tower-left"></div><div class="tower tower-right"></div><div class="castle-door"></div><div class="castle-window"></div><div class="castle-base"></div><div class="castle-flag"></div></div>
+        <div class="hero-ground"></div>
+      </div>
     </section>
-    <section class="section" id="bases">
-      <h2>Base Library</h2>
-      <div id="baseFilters"></div>
-      <div id="baseGrid"></div>
-    </section>
-    <section class="section" id="attacks">
-      <h2>Attack Academy</h2>
-    </section>
-    <section class="section" id="tracker">
-      <h2>Builder Tracker</h2>
-      <div id="upgradeList"></div>
-    </section>
+    <div class="quick-stats">
+      <div><span class="stat-icon">🦸</span><span><strong data-stat="heroes">8</strong><small>Heroes</small></span></div>
+      <div><span class="stat-icon">🎨</span><span><strong data-stat="skins">0</strong><small>Skins listed</small></span></div>
+      <div><span class="stat-icon">⚔️</span><span><strong data-stat="attacks">0</strong><small>Attack guides</small></span></div>
+      <div><span class="stat-icon">🛡️</span><span><strong data-stat="defense">0</strong><small>Anti guides</small></span></div>
+    </div>
+
+    <section class="section" id="player-finder"><div class="section-heading"><div><h2>Player &amp; Clan Finder</h2><p class="section-subtitle">Search by tag or name. Tap a clan member to open their profile.</p></div></div></section>
+    <section class="section" id="bases"><div class="section-heading"><div><h2>Base Library</h2><p class="section-subtitle">Bases, armies, Builder Base and Clan Capital layouts you can copy into the game.</p></div></div></section>
+    <section class="section" id="attacks"><div class="section-heading"><div><h2>Attack Academy</h2><p class="section-subtitle">Every attack type with steps and video tutorials.</p></div></div></section>
+    <section class="section" id="defense"><div class="section-heading"><div><h2>Defense Guide</h2><p class="section-subtitle">Every anti-attack base type: what it stops and how to build it.</p></div></div></section>
+    <section class="section" id="tracker"><div class="section-heading"><div><h2>Hero Vault</h2><p class="section-subtitle">Every hero and every skin: release date and price.</p></div></div></section>
     <section class="section" id="events">
-      <h2>Events &amp; Updates</h2>
+      <div class="section-heading"><div><h2>Events &amp; Updates</h2></div></div>
+      <div class="event-grid">
+        <article class="event-card event-season"><div class="event-symbol">🏆</div><div><span class="event-kicker">This season</span><h3>Clash Season</h3><p>Check the in-game Season Challenges for the current Gold Pass skin.</p></div></article>
+        <article class="event-card event-news"><div class="event-symbol">🎨</div><div><span class="event-kicker">Skins</span><h3>New hero skins</h3><p>Browse every skin with release dates in the Hero Vault.</p><a class="text-link" href="#tracker">Open Hero Vault</a></div></article>
+      </div>
     </section>
+
     <section class="section" id="account">
-      <h2>Your ClashVault Account</h2>
-      <div id="authMethodScreen">
-        <button id="authGameButton" type="button">Open with a game</button>
-        <button id="authEmailButton" type="button">Log in with email</button>
+      <div class="section-heading"><div><h2>Your ClashVault Account</h2></div></div>
+      <div class="auth-panel">
+        <div id="authMethodScreen">
+          <h3>Welcome, Chief!</h3>
+          <p>Open the game or sign in with your email.</p>
+          <a id="authGameButton" class="button button-gold" href="https://link.clashofclans.com/en?action=OpenMoreSettings">Open with a game</a>
+          <button id="authEmailButton" class="button button-green" type="button">Log in with email</button>
+        </div>
+        <div id="authEmailScreen" hidden>
+          <button id="authEmailBack" class="small-action" type="button">Back</button>
+          <h3 id="authTitle">Create your account</h3>
+          <form id="authEmailForm">
+            <input id="authEmail" type="email" placeholder="Email address" autocomplete="email" required>
+            <button id="authEmailSubmit" class="button button-green" type="submit">Send my code</button>
+          </form>
+          <button id="authModeToggle" class="text-link" type="button">Already have an account? Sign in</button>
+        </div>
+        <div id="authOtpScreen" hidden>
+          <h3>Enter your ClashVault code</h3>
+          <p>We sent a 6-digit code to <strong id="authPendingEmail"></strong>.</p>
+          <form id="authOtpForm">
+            <input id="authOtp" inputmode="numeric" maxlength="6" placeholder="6-digit code" autocomplete="one-time-code" required>
+            <button id="authVerifyButton" class="button button-green" type="submit">Verify</button>
+          </form>
+          <div class="cv-actions"><button id="authResend" class="small-action" type="button">Resend code</button><button id="authOtpBack" class="small-action" type="button">Change email</button></div>
+        </div>
+        <div id="authLoggedIn" hidden>
+          <h3 id="authUserName"></h3>
+          <p id="authUserEmail"></p>
+          <button id="authLogout" class="button button-ghost" type="button">Sign out</button>
+        </div>
+        <p class="auth-status" id="authMessage" aria-live="polite"></p>
       </div>
-      <div id="authEmailScreen" hidden>
-        <button id="authEmailBack" type="button">Back</button>
-        <h3 id="authTitle">Create your account</h3>
-        <form id="authEmailForm">
-          <input id="authEmail" type="email" placeholder="Gmail address" autocomplete="email" required>
-          <button id="authEmailSubmit" type="submit">Continue</button>
-        </form>
-        <button id="authModeToggle" type="button">Already have an account? Sign in</button>
-      </div>
-      <div id="authOtpScreen" hidden>
-        <strong id="authPendingEmail"></strong>
-        <form id="authOtpForm">
-          <input id="authOtp" inputmode="numeric" maxlength="6" autocomplete="one-time-code" required>
-          <button id="authVerifyButton" type="submit">Verify</button>
-        </form>
-        <button id="authResend" type="button">Resend code</button>
-        <button id="authOtpBack" type="button">Back</button>
-      </div>
-      <div id="authLoggedIn" hidden>
-        <h3 id="authUserName"></h3>
-        <p id="authUserEmail"></p>
-        <form id="playerLinkForm">
-          <input id="authPlayerTag" maxlength="15" placeholder="Player Tag" required>
-          <button id="authLinkPlayer" type="submit">Save Player Tag</button>
-        </form>
-        <p id="authPlayerStatus" aria-live="polite"></p>
-        <button id="authLogout" type="button">Sign out</button>
-      </div>
-      <p id="authMessage" aria-live="polite"></p>
     </section>
   </main>
+
+  <footer class="site-footer"><div class="footer-brand">🏰 ClashVault</div><p class="copyright">Fan-made. Not affiliated with Supercell. Clash of Clans is a trademark of Supercell.</p></footer>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./supabase-config.js"></script>
+  <script src="./data.js"></script>
   <script src="./app.js"></script>
   <script src="./auth.js"></script>
-  <script src="./clashvault-v4.js?v=4"></script>
+  <script src="./vault.js"></script>
 </body>
 </html>
