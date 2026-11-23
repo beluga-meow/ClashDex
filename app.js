@@ -249,7 +249,7 @@
         (x.views ? "<span>👁 " + num(x.views) + "</span>" : "") + (x.rating ? "<span>★ " + esc(x.rating) + "</span>" : "") +
         (date ? "<span>" + date + "</span>" : "") + (x.copies ? "<span>📋 " + x.copies + "</span>" : "") + "</div>" +
         '<div class="card-footer">' + (ok
-          ? '<button type="button" class="small-action" data-copy="' + esc(x.link) + '">Copy link</button><a class="small-action" href="' + esc(x.link) + '" target="_blank" rel="noopener noreferrer">Open in game</a>'
+          ? '<button type="button" class="small-action" data-copy="' + esc(x.link) + '" data-id="' + esc(x.id) + '">Copy link</button><a class="small-action" href="' + esc(x.link) + '" target="_blank" rel="noopener noreferrer">Open in game</a>'
           : '<span class="cv-sample">Sample · no official link</span>') +
         (mine ? '<button type="button" class="small-action cv-danger" data-del="' + esc(x.id) + '">Delete</button>' : "") +
         "</div></div></article>";
@@ -284,7 +284,7 @@
         '<label>Short description <em>(optional)</em><input id="aNote" maxlength="140"></label>' +
         '<label>Official game link<input id="aLink" inputmode="url" placeholder="https://link.clashofclans.com/en?action=' + (kind === "army" ? "CopyArmy&army=…" : "OpenLayout&id=…") + '"></label>' +
         '<small class="cv-hint">' + esc(K().hint) + "</small>" +
-        '<label>Image URL <em>(optional, https)</em><input id="aImg" inputmode="url" placeholder="https://…"></label>' +
+        '<label>Screenshot <em>(optional, max 2 MB)</em><input id="aImg" type="file" accept="image/png,image/jpeg,image/webp"></label>' +
         '<p class="cv-msg err" id="aErr"></p><div class="cv-actions"><button type="submit" class="button button-green" id="aSave">Submit layout</button>' +
         '<button type="button" class="button button-ghost cv-cancel" id="aCancel">Cancel</button></div>';
       $("#aCancel").onclick = () => { form.hidden = true; };
@@ -301,15 +301,27 @@
       if (!v("aLvl")) return err("Choose a " + K().lvl.toLowerCase() + ".");
       if (v("aName").length < 3) return err("Give the layout a name (3+ characters).");
       if (!validLayoutLink(v("aLink"), kind)) return err("Paste the official link copied from the game (link.clashofclans.com).");
-      if (v("aImg") && !isHttps(v("aImg"))) return err("Image URL must start with https://");
+      const file = $("#aImg").files[0];
+      if (file && (!/^image\/(png|jpeg|webp)$/.test(file.type) || file.size > 2 * 1024 * 1024)) return err("Screenshot must be PNG, JPG or WebP, under 2 MB.");
       saving = true; $("#aSave").disabled = true; err("");
-      const { error } = await c.from("layouts").insert({
-        kind, level: Number(v("aLvl")), cat: v("aCat"), name: v("aName"), note: v("aNote") || null,
-        link: v("aLink"), image_url: v("aImg") || null, user_id: s.user.id
-      });
-      saving = false; $("#aSave").disabled = false;
-      if (error) { console.warn(error); return err(error.message || "Couldn't save. Try again."); }
-      form.hidden = true; toast("Layout submitted"); load();
+      try {
+        let image_url = null;
+        if (file) {
+          const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
+          const path = s.user.id + "/" + Date.now() + "." + ext;
+          const up = await c.storage.from("layout-images").upload(path, file, { contentType: file.type });
+          if (up.error) throw up.error;
+          image_url = c.storage.from("layout-images").getPublicUrl(path).data.publicUrl;
+        }
+        const { data, error } = await c.from("layouts").insert({
+          kind, level: Number(v("aLvl")), cat: v("aCat"), name: v("aName"), note: v("aNote") || null,
+          link: v("aLink"), image_url, user_id: s.user.id
+        }).select().single();
+        if (error) throw error;
+        items.unshift(data); state = "ok"; level = ""; cat = ""; filters();
+        form.hidden = true; toast("Layout published"); draw();
+      } catch (ex) { console.warn(ex); err(ex.message || "Couldn't save. Try again."); }
+      finally { saving = false; $("#aSave").disabled = false; }
     });
 
     $("#cvTabs").addEventListener("click", e => {
@@ -324,7 +336,13 @@
     $("#addBtn").onclick = () => { fillForm(); form.hidden = !form.hidden; if (!form.hidden) form.scrollIntoView({ block: "nearest" }); };
     grid.addEventListener("click", async e => {
       const cp = e.target.closest("[data-copy]");
-      if (cp) { toast((await copyText(cp.dataset.copy)) ? "Link copied" : "Couldn't copy"); return; }
+      if (cp) {
+        const ok = await copyText(cp.dataset.copy);
+        toast(ok ? "Link copied. Open it on the phone that has Clash of Clans." : "Couldn't copy");
+        const it = ok && items.find(i => String(i.id) === cp.dataset.id);
+        if (it) { it.copies = (it.copies || 0) + 1; draw(); try { sb().rpc("bump_layout_copies", { p_id: it.id }).then(() => {}, () => {}); } catch (_) {} }
+        return;
+      }
       const d = e.target.closest("[data-del]");
       if (d && confirm("Delete your layout?")) {
         const { error } = await sb().from("layouts").delete().eq("id", d.dataset.del);
@@ -413,15 +431,11 @@
       b.disabled = true; say("Verifying with Supercell…");
       try {
         const { data, error } = await c.functions.invoke(CFG.GAME_FN, { body: { tag, token } });
-        if (error || !data) throw new Error("Game sign-in failed. Check the tag and token.");
-        if (data.access_token && data.refresh_token) {
-          const r = await c.auth.setSession({ access_token: data.access_token, refresh_token: data.refresh_token });
-          if (r.error) throw r.error;
-        } else if (data.token_hash) {
-          const r = await c.auth.verifyOtp({ token_hash: data.token_hash, type: data.type || "magiclink" });
-          if (r.error) throw r.error;
-        } else throw new Error(data.error || "Token not accepted. Generate a new one in the game.");
-        say("Signed in!"); $("#cvGTok").value = "";
+        if (error || !data) throw new Error('Game sign-in isn\'t connected yet. Deploy the "' + CFG.GAME_FN + '" Edge Function.');
+        if (!data.ok) throw new Error(data.error || "Verification failed. Check the tag and token.");
+        const r = await c.auth.verifyOtp({ token_hash: data.token_hash, type: "magiclink" });
+        if (r.error) throw r.error;
+        say("Welcome, " + (data.name || "Chief") + "!"); $("#cvGTok").value = "";
       } catch (er) { say(er.message || "Game sign-in failed."); }
       finally { b.disabled = false; }
     });
@@ -494,8 +508,45 @@ body{padding-bottom:68px}
     document.head.appendChild(s);
   }
 
+  /* seasons: set by you in season.json (mode: "auto" | "off" | season name). Text only, no theme changes. */
+  const SEASONS = {
+    christmas: { start: "12-01", end: "12-31", message: "🎄 Winter Festival is here! Happy holidays, Chiefs!", title: "Winter Festival", text: "Enjoy the holidays and good luck with your attacks!" },
+    newyear: { start: "01-01", end: "01-03", message: "🎆 Happy New Year, Chiefs!", title: "New Year", text: "A new year, new upgrades." },
+    valentine: { start: "02-07", end: "02-14", message: "💖 Happy Valentine's Day from ClashVault!", title: "Valentine's Week", text: "Show some love to your clanmates." },
+    lunar: { start: "2027-02-06", end: "2027-02-20", message: "🏮 Happy Lunar New Year, Chiefs!", title: "Lunar New Year", text: "Wishing you luck in every battle." },
+    summer: { start: "07-01", end: "08-15", message: "☀️ Summer is here, Chiefs!", title: "Summer Kingdom", text: "Time to push those trophies." },
+    halloween: { start: "10-18", end: "11-01", message: "🎃 Spooky season has arrived!", title: "Haunted Kingdom", text: "Happy Halloween, Chiefs!" }
+  };
+  async function initSeason() {
+    let cfg = { mode: "auto", seasons: SEASONS };
+    try { const r = await fetch("./season.json", { cache: "no-store" }); if (r.ok) { const j = await r.json(); if (j && typeof j === "object") cfg = j; } } catch (_) {}
+    const seasons = cfg.seasons || SEASONS, pad = n => String(n).padStart(2, "0"), d = new Date();
+    const full = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()), md = full.slice(5);
+    const inR = x => {
+      const a = String(x.start || ""), b = String(x.end || "");
+      if (/^\d{4}-/.test(a) && /^\d{4}-/.test(b)) return full >= a && full <= b;
+      return a <= b ? md >= a && md <= b : md >= a || md <= b;
+    };
+    let id = null;
+    if (cfg.mode === "off") id = null;
+    else if (cfg.mode && cfg.mode !== "auto") id = seasons[cfg.mode] ? cfg.mode : null;
+    else id = Object.keys(seasons).sort((x, y) => /^\d{4}-/.test(seasons[y].start) - /^\d{4}-/.test(seasons[x].start)).find(k => seasons[k].enabled !== false && inR(seasons[k])) || null;
+    const def = id && seasons[id];
+    if (!def) return;
+    const t = $("#announcementText"); if (t && def.message) t.textContent = String(def.message).slice(0, 140);
+    const card = $("#events .event-season");
+    if (card) { const h = $("h3", card), p = $("p", card); if (h && def.title) h.textContent = def.title; if (p && def.text) p.textContent = def.text; }
+  }
+  function fixGameEmail() {
+    const m = $("#authUserEmail");
+    if (!m || !("MutationObserver" in window)) return;
+    const fix = () => { if (/@players\.clashvault\.app/i.test(m.textContent)) m.textContent = "Signed in with Clash of Clans"; };
+    new MutationObserver(fix).observe(m, { childList: true, characterData: true, subtree: true }); fix();
+  }
+
   function init() {
     injectCss();
+    initSeason().catch(() => {}); fixGameEmail();
     [initFinder, initLibrary, initHeroVault, initGameLogin, initNav].forEach(fn => {
       try { fn(); } catch (e) { console.warn("[ClashVault]", fn.name, e); }
     });
