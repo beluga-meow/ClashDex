@@ -3,10 +3,10 @@
   "allowPreview": false,
   "seasons": {
     "christmas": { "start": "12-01", "end": "12-31", "message": "🎄 Winter Festival is here! Happy holidays, Chiefs!", "title": "Winter Festival", "text": "Snow is falling on the kingdom. Enjoy the holidays and good luck with your attacks!" },
-    "newyear":   { "start": "01-01", "end": "01-03", "message": "🎆 Happy New Year, Chiefs!", "title": "New Year", "text": "A new year, new upgrades. Plan your goals for the year ahead." },
+    "newyear": { "start": "01-01", "end": "01-03", "message": "🎆 Happy New Year, Chiefs!", "title": "New Year", "text": "A new year, new upgrades. Plan your goals for the year ahead." },
     "valentine": { "start": "02-07", "end": "02-14", "message": "💖 Happy Valentine's Day from ClashVault!", "title": "Valentine's Week", "text": "Show some love to your clanmates this week." },
-    "lunar":     { "start": "2027-02-06", "end": "2027-02-20", "message": "🏮 Happy Lunar New Year, Chiefs!", "title": "Lunar New Year", "text": "Wishing you luck and fortune in every battle." },
-    "summer":    { "start": "07-01", "end": "08-15", "message": "☀️ Summer is here! Enjoy the sun, Chiefs!", "title": "Summer Kingdom", "text": "Sun's out. Time to push those trophies." },
+    "lunar": { "start": "2027-02-06", "end": "2027-02-20", "message": "🏮 Happy Lunar New Year, Chiefs!", "title": "Lunar New Year", "text": "Wishing you luck and fortune in every battle." },
+    "summer": { "start": "07-01", "end": "08-15", "message": "☀️ Summer is here! Enjoy the sun, Chiefs!", "title": "Summer Kingdom", "text": "Sun's out. Time to push those trophies." },
     "halloween": { "start": "10-18", "end": "11-01", "message": "🎃 Spooky season has arrived in the kingdom!", "title": "Haunted Kingdom", "text": "Watch out for bats and pumpkins. Happy Halloween, Chiefs!" }
   }
 }
