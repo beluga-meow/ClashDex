@@ -678,6 +678,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     return '<div class="cx-row">' + badge(c) + '<div class="grow"><strong>' + esc(c.name) + "</strong><small>" + esc(c.tag) +
       " · Level " + esc(c.clanLevel == null ? "?" : c.clanLevel) + " · " + esc(c.members == null ? "?" : c.members) + "/50 members" +
       (type ? " · " + type : "") + esc(req) + "</small></div>" +
+      '<button class="cx-btn blue sm" type="button" data-members="' + esc(c.tag) + '">Members</button>' +
       '<button class="cx-btn gold sm" type="button" data-copy="' + esc(c.tag) + '">Copy tag</button>' +
       '<a class="cx-btn green sm" href="' + esc(gameLink("OpenClanProfile", c.tag)) + '" target="_blank" rel="noopener noreferrer">Open</a></div>';
   }
@@ -698,7 +699,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
         '<div class="cx-crit" id="cxPCrit" hidden>' +
           '<label class="cx-check"><input type="checkbox" id="cxExact"><span>Only players with that exact name</span></label>' +
           '<label class="cx-field"><span>Town Hall</span><select id="cxPTH">' + th + "</select></label>" +
-          '<p class="cx-help">Searches players saved in ClashVault. Leave Town Hall set to All to see every available Town Hall level. A player tag opens that exact profile.</p>' +
+          '<p class="cx-help">Searches all player records currently available in the PekkaDex index. Saved status does not affect ranking. Use a player tag to open an exact live profile.</p>' +
           '<button type="button" class="cx-close" data-crit-close="cxPCrit">Close</button></div>' +
         '<button class="cx-btn green cx-go" type="submit">Search player</button></form>' +
       '<form id="cxClanForm" novalidate hidden>' +
@@ -792,20 +793,35 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       lock(pForm, true);
       out.innerHTML = "";
       try {
-        say("Searching saved players across all available Town Hall levels…");
-        const saved = await findInIndex(q, exact, thv);
-        const hits = saved.map(i => ({
+        say("Searching all available indexed player records…");
+        const indexed = await findInIndex(q, exact, thv);
+        const hits = indexed.map(i => ({
           tag: i.tag, name: i.name, th: i.th, trophies: i.trophies,
-          role: i.role || "", clan: i.clan_name || i.clan_tag || ""
+          role: i.role || "", clan: (i.clan_memberships || []).map(c => c.clan_name || c.clan_tag).filter(Boolean).join(", ") || i.clan_name || i.clan_tag || ""
         }));
 
+        // Neutral ordering: saved status is never considered. Sort by name-match
+        // quality, then alphabetically so equal matches have a predictable order.
+        const foldName = value => String(value || "").normalize("NFKC").toLocaleLowerCase();
+        const queryName = foldName(q);
+        const matchScore = name => {
+          const candidate = foldName(name);
+          if (candidate === queryName) return 0;
+          if (candidate.startsWith(queryName)) return 1;
+          if (candidate.includes(queryName)) return 2;
+          return 3;
+        };
+        hits.sort((a, b) => matchScore(a.name) - matchScore(b.name) ||
+          String(a.name || "").localeCompare(String(b.name || ""), undefined, { sensitivity: "base" }) ||
+          String(a.tag || "").localeCompare(String(b.tag || "")));
+
         if (!hits.length) {
-          say("No saved players matched. Search a clan first to add its members to the index, then try again.", "err");
+          say("No indexed players matched. Search a clan and open its Members list to add those players to the shared directory.", "err");
         } else {
-          // Always show name-search matches so users can choose between same-name accounts.
+          // Display every result returned by the index; no saved-player preference.
           out.innerHTML = '<div class="cx-list">' + hits.map(playerRow).join("") + "</div>";
           say(hits.length + (hits.length === 1 ? " matching player found." : " matching players found.") +
-            " Choose the correct account using its Town Hall, player tag and last known clan.", "ok");
+            " Results are ordered by name match, not saved status. Compare Town Hall, player tag and clan to identify the right account.", "ok");
         }
       } catch (err) {
         say(errText(err), "err");
@@ -838,10 +854,14 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
           items = [await api("/clans/" + encodeURIComponent(normTag(raw)))];
         } else {
           if (raw.length < 3) throw new ApiError("input", "Clan names need at least 3 letters.");
-          const qs = ["name=" + encodeURIComponent(raw), "limit=20"];
-          if (lvl) qs.push("minClanLevel=" + lvl);
-          if (mem) qs.push("minMembers=" + mem);
-          items = (await api("/clans?" + qs.join("&"))).items || [];
+          const result = await callEdge({
+            action: "findClans", name: raw, limit: 50,
+            minClanLevel: lvl || null, minMembers: mem || null
+          });
+          if (result.status < 200 || result.status >= 300) {
+            throw new ApiError("http-" + result.status, "Clan search failed. Try another name or search again shortly.");
+          }
+          items = result.data && Array.isArray(result.data.items) ? result.data.items : [];
         }
         items = items.filter(c => (!lvl || c.clanLevel >= lvl) && (!mem || c.members >= mem) &&
           (!thv || !c.requiredTownhallLevel || c.requiredTownhallLevel <= thv));
@@ -857,6 +877,28 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     });
 
     out.addEventListener("click", async e => {
+      const memberButton = e.target.closest("[data-members]");
+      if (memberButton) {
+        const clanTag = memberButton.dataset.members;
+        say("Loading clan members and updating the shared directory…");
+        try {
+          const result = await callEdge({ action: "getClanMembers", clanTag: clanTag });
+          if (result.status < 200 || result.status >= 300) {
+            throw new ApiError("http-" + result.status, "Could not load this clan's members. Try again in a moment.");
+          }
+          const members = result.data && Array.isArray(result.data.items) ? result.data.items : [];
+          if (!members.length) {
+            out.innerHTML = "";
+            say("No members were returned for this clan.", "err");
+          } else {
+            out.innerHTML = '<div class="cx-list">' + members.map(memberRow).join("") + "</div>";
+            say(members.length + " clan members loaded and added to the shared directory.", "ok");
+          }
+        } catch (err) {
+          say(errText(err), "err");
+        }
+        return;
+      }
       const c = e.target.closest("[data-copy]");
       if (c) { toast((await copyText(c.dataset.copy)) ? "Copied " + c.dataset.copy : "Couldn't copy. Copy it by hand."); return; }
       const v = e.target.closest("[data-view]");
@@ -864,7 +906,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     });
 
     swapIn(sec, box);
-    setHeading(sec, null, "Search player names across the saved player index, or open a profile by player tag. Town Hall filtering is optional.");
+    setHeading(sec, null, "Search player names across the shared public index without saved-player priority, or open a profile by player tag. Open a clan Members list to add its players for everyone.");
   }
 
   /* ============ 8. Base + troop library ============ */
