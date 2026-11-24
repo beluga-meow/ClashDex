@@ -3,25 +3,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#18372b">
-  <meta name="description" content="ClashVault — your Clash of Clans companion for player lookup, base ideas, attack guides and village progress.">
-  <title>ClashVault — Your Kingdom Companion</title>
+  <meta name="description" content="PekkaDex — your Clash of Clans companion for player lookup, base ideas, attack guides and village progress.">
+  <title>PekkaDex — Your Kingdom Companion</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css?v=8">
+  <link rel="stylesheet" href="./style.css?v=9">
 </head>
 <body>
   <div class="season-effects" id="seasonEffects" aria-hidden="true"></div>
 
   <div class="announcement" id="announcement">
     <span class="announcement-dot"></span>
-    <span id="announcementText">Welcome to ClashVault — your kingdom companion.</span>
+    <span id="announcementText">Welcome to PekkaDex — your kingdom companion.</span>
     <button class="announcement-close" id="closeAnnouncement" aria-label="Dismiss announcement">×</button>
   </div>
 
   <header class="site-header">
-    <a class="brand" href="#home" aria-label="ClashVault home">
+    <a class="brand" href="#home" aria-label="PekkaDex home">
       <span class="brand-mark">⚔</span>
-      <span>CLASH<span class="brand-accent">VAULT</span><small>YOUR KINGDOM COMPANION</small></span>
+      <span>PEKKA<span class="brand-accent">DEX</span><small>YOUR KINGDOM COMPANION</small></span>
     </a>
     <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
     <nav class="main-nav" id="mainNav">
@@ -37,7 +37,7 @@
     </nav>
     <div class="header-actions">
       <button class="icon-button" id="themeButton" title="Change seasonal theme" aria-label="Change seasonal theme">🌙</button>
-      <a class="header-cta" href="#account">Join ClashVault <span>↗</span></a>
+      <a class="header-cta" href="#account">Join PekkaDex <span>↗</span></a>
     </div>
   </header>
 
@@ -48,7 +48,7 @@
         <h1>Your village.<br><span>Your strategy.</span><br>Your legacy.</h1>
         <p class="hero-text">Explore player profiles, discover powerful base layouts, sharpen your attacks and keep every builder busy.</p>
         <div class="hero-buttons">
-          <a class="button button-gold" href="#player-finder">Explore ClashVault <span>→</span></a>
+          <a class="button button-gold" href="#player-finder">Explore PekkaDex <span>→</span></a>
           <a class="button button-ghost" href="#bases">Browse base layouts</a>
         </div>
         <div class="hero-proof">
@@ -81,7 +81,7 @@
       </div>
     </section>
 
-    <section class="quick-stats" aria-label="ClashVault features">
+    <section class="quick-stats" aria-label="PekkaDex features">
       <div><span class="stat-icon">🔎</span><strong>Player lookup</strong><small>Explore public profiles</small></div>
       <div><span class="stat-icon">🏰</span><strong>Base library</strong><small>Find your next layout</small></div>
       <div><span class="stat-icon">⚔️</span><strong>Attack guides</strong><small>Learn new strategies</small></div>
@@ -95,7 +95,7 @@
       <div class="section-heading">
         <div>
           <div class="eyebrow">JOIN THE KINGDOM</div>
-          <h2>Your <span>ClashVault Account</span></h2>
+          <h2>Your <span>PekkaDex Account</span></h2>
           <p class="section-subtitle">Your gaming community starts here.</p>
         </div>
         <span class="section-badge">COMMUNITY</span>
@@ -103,16 +103,16 @@
       <div class="auth-panel">
         <div id="authMethodScreen">
           <div class="auth-emblem">♛</div>
-          <h3>Welcome to ClashVault</h3>
+          <h3>Welcome to PekkaDex</h3>
           <p>Choose how you want to access your account.</p>
           <button class="button button-green auth-choice" id="authGameButton" type="button">
             <span>🎮</span><span><strong>Open with a game</strong><small>Supercell connection coming soon</small></span>
           </button>
           <div class="auth-divider"><span>OR</span></div>
           <button class="button button-green auth-choice" id="authEmailButton" type="button">
-            <span>✉️</span><span><strong>Log in with email</strong><small>Receive a ClashVault verification code</small></span>
+            <span>✉️</span><span><strong>Log in with email</strong><small>Receive a PekkaDex verification code</small></span>
           </button>
-          <p class="form-note">Email verification is handled by ClashVault. It is separate from your Supercell ID.</p>
+          <p class="form-note">Email verification is handled by PekkaDex. It is separate from your Supercell ID.</p>
         </div>
 
         <div id="authEmailScreen" hidden>
@@ -129,7 +129,7 @@
         <div id="authOtpScreen" hidden>
           <div class="auth-emblem">✉️</div>
           <h3>Almost there!</h3>
-          <p>We sent a 6-digit ClashVault verification code to:</p>
+          <p>We sent a 6-digit PekkaDex verification code to:</p>
           <strong id="authPendingEmail" class="auth-pending-email"></strong>
           <form id="authOtpForm">
             <input id="authOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required>
@@ -140,7 +140,7 @@
         </div>
 
         <div id="authLoggedIn" hidden>
-          <h3 id="authUserName">Welcome to ClashVault!</h3>
+          <h3 id="authUserName">Welcome to PekkaDex!</h3>
           <p id="authUserEmail"></p>
           <div class="player-link-panel">
             <h3>Connect your Clash of Clans account</h3>
@@ -285,7 +285,7 @@
       <div class="event-grid">
         <article class="event-card event-season">
           <div class="event-symbol">🎉</div>
-          <div><span class="event-kicker">SEASONAL SPOTLIGHT</span><h3>Seasonal celebrations</h3><p>Event-themed ClashVault visuals can change with the season.</p><button class="small-action" id="previewSeason">Preview theme ↗</button></div>
+          <div><span class="event-kicker">SEASONAL SPOTLIGHT</span><h3>Seasonal celebrations</h3><p>Event-themed PekkaDex visuals can change with the season.</p><button class="small-action" id="previewSeason">Preview theme ↗</button></div>
         </article>
         <article class="event-card event-news">
           <div class="event-symbol">📜</div>
@@ -301,14 +301,14 @@
   <footer class="site-footer">
     <a class="brand footer-brand" href="#home">
       <span class="brand-mark">⚔</span>
-      <span>CLASH<span class="brand-accent">VAULT</span><small>YOUR KINGDOM COMPANION</small></span>
+      <span>PEKKA<span class="brand-accent">DEX</span><small>YOUR KINGDOM COMPANION</small></span>
     </a>
     <p>Fan-made companion concept. Not affiliated with, endorsed, sponsored or specifically approved by Supercell.</p>
     <div class="footer-links">
       <a href="#home">Back to top ↑</a>
       <a href="https://supercell.com/en/" target="_blank" rel="noopener">Supercell</a>
     </div>
-    <small class="copyright">© <span id="year"></span> ClashVault. All game trademarks belong to their respective owners.</small>
+    <small class="copyright">© <span id="year"></span> PekkaDex. All game trademarks belong to their respective owners.</small>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -316,19 +316,19 @@
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <button class="modal-close" id="modalClose" aria-label="Close dialog">×</button>
       <div class="modal-icon">🏰</div>
-      <h2 id="modalTitle">ClashVault</h2>
+      <h2 id="modalTitle">PekkaDex</h2>
       <p id="modalText"></p>
       <button class="button button-green" id="modalOk">Got it</button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./supabase-config.js?v=8"></script>
-  <script src="./app.js?v=8"></script>
-  <script src="./auth.js?v=8"></script>
-  <script src="./vault.js?v=8"></script>
+  <script src="./supabase-config.js?v=9"></script>
+  <script src="./app.js?v=9"></script>
+  <script src="./auth.js?v=9"></script>
+  <script src="./vault.js?v=9"></script>
   <script>
-  if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=8").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
+  if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=9").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
   </script>
 </body>
 </html>
