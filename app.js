@@ -45,6 +45,11 @@
     { kind: "base", th: 15, cat: "Trophy",        tag: "Anti 3 Stars",              icon: "🏆", name: "Champion's Ring",      note: "Layout concept for trophy pushing.", link: "" },
     { kind: "base", th: 14, cat: "Farming",       tag: "Anti Everything",           icon: "🌾", name: "Loot Vault",           note: "Keeps Gold and Elixir safe.", link: "" },
     { kind: "base", th: 12, cat: "Troll / Funny", tag: "",                          icon: "🤡", name: "Skull Troll Base",     note: "Just for laughs.", link: "" },
+    { kind: "base", v: "builder", th: 10, cat: "War",  tag: "", icon: "🔨", name: "BH10 Star Keeper",   note: "Builder Hall 10 versus layout.", link: "" },
+    { kind: "base", v: "builder", th: 9,  cat: "Trophy", tag: "", icon: "🏆", name: "BH9 Trophy Wall",   note: "Compact trophy pusher.", link: "" },
+    { kind: "base", v: "builder", th: 6,  cat: "Hybrid", tag: "", icon: "⚔️", name: "BH6 Balanced Base", note: "Mid Builder Hall layout.", link: "" },
+    { kind: "base", v: "capital", th: 10, cat: "Defence", tag: "", icon: "🏯", name: "Capital Hall 10 Fortress", note: "Clan Capital district layout.", link: "" },
+    { kind: "base", v: "capital", th: 8,  cat: "Defence", tag: "", icon: "🏯", name: "Capital Hall 8 Guard",    note: "Capital Peak defense idea.", link: "" },
     { kind: "army", th: 19, cat: "Air",           tag: "", icon: "🐉", name: "Electro Dragon Push", note: "Simple air attack. Funnel first.", link: "" },
     { kind: "army", th: 18, cat: "Ground",        tag: "", icon: "🌳", name: "Root Rider Smash",    note: "Ground push backed by your heroes.", link: "" },
     { kind: "army", th: 17, cat: "Hybrid",        tag: "", icon: "🐗", name: "Miner + Hog Hybrid",  note: "Fast, flexible and beginner friendly.", link: "" },
@@ -642,7 +647,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
 
     const subtitles = {
       "player-finder": "Look up a player by tag or name, or search a clan.",
-      "bases": "Choose a Town Hall and browse base or troop layouts.",
+      "bases": "Pick a village, then open Level, tags & sort to filter.",
       "attacks": "Browse the available army guides and attack plans.",
       "heroes": "Explore heroes, skins, equipment and their in-game details.",
       "events": "Clash of Clans news and PekkaDex updates.",
@@ -943,7 +948,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     const name = String(x.name || "").trim().slice(0, 60);
     if (!name || !(th >= 1 && th <= 99)) return null;
     return {
-      kind: kind, th: th, name: name,
+      kind: kind, th: th, name: name, v: (x.v === "builder" || x.v === "capital") ? x.v : "home",
       cat: String(x.cat || (kind === "army" ? "Ground" : "War")).slice(0, 24),
       tag: String(x.tag || "").slice(0, 40),
       icon: String(x.icon || (kind === "army" ? "⚔️" : "🏰")).slice(0, 8),
@@ -973,7 +978,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
   function buildLibrary() {
     const sec = $("#bases");
     if (!sec) return;
-    let kind = "base", cat = "All", th = "", tag = "", sort = "date", shown = [];
+    let kind = "base", village = "home", cat = "All", th = "", tag = "", sort = "date", shown = [];
     const CAT_ORDER = ["War", "Farming", "Defence", "Trophy", "Hybrid", "Troll / Funny", "Air", "Ground"];
     const SORTS = [["date", "Date"], ["views", "Views"], ["rating", "Rating"], ["updated", "Updated"]];
     const ts = s => { const t = Date.parse(s); return isNaN(t) ? 0 : t; };
@@ -989,10 +994,10 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       '<div class="cx-tabs cx-tabs2" role="tablist" aria-label="Library">' +
         '<button type="button" class="cx-tab on" data-k="base" role="tab" aria-selected="true"><span aria-hidden="true">🏰</span>Base layouts</button>' +
         '<button type="button" class="cx-tab" data-k="army" role="tab" aria-selected="false"><span aria-hidden="true">⚔️</span>Troop layouts</button></div>' +
-      '<span class="cx-label" id="cxThLabel">Town Hall</span>' +
-      '<div class="cx-ths" id="cxThs" role="group" aria-labelledby="cxThLabel"></div>' +
+      '<div class="cx-seg" id="cxVill" role="group" aria-label="Village"></div>' +
       '<div class="cx-seg" id="cxCats" role="group" aria-label="Layout type"></div>' +
-      '<details class="cx-more" id="cxMore"><summary>Tags &amp; sort</summary><div class="cx-more-body">' +
+      '<details class="cx-more" id="cxMore"><summary>Level, tags &amp; sort</summary><div class="cx-more-body">' +
+        '<div id="cxThWrap"><span class="cx-label" id="cxThLabel">Town Hall</span><div class="cx-seg" id="cxThs" role="group" aria-labelledby="cxThLabel"></div></div>' +
         '<div id="cxTagsWrap"><span class="cx-label">Tags</span><div class="cx-seg" id="cxTags" role="group" aria-label="Tags"></div></div>' +
         '<label class="cx-field"><span>Sort by</span><select id="cxSort">' +
           SORTS.map(s => '<option value="' + s[0] + '">' + s[1] + "</option>").join("") + "</select></label></div></details>" +
@@ -1014,7 +1019,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     const card = x =>
       '<article class="cx-lay"><button type="button" class="cx-art ' + x.kind + '" data-o="' + shown.indexOf(x) + '" aria-label="Open ' + esc(x.name) + '">' +
         artHtml(x) + badgesHtml(x) + "</button>" +
-      '<div class="cx-lay-body"><div class="cx-lay-meta"><span class="cx-pill">TH ' + esc(x.th) + '</span><span class="cx-pill">' + esc(x.cat) + "</span></div>" +
+      '<div class="cx-lay-body"><div class="cx-lay-meta"><span class="cx-pill">' + (x.kind === "base" ? pre(x.v) : "TH ") + esc(x.th) + '</span><span class="cx-pill">' + esc(x.cat) + "</span></div>" +
       "<h3>" + esc(x.name) + "</h3>" + (x.note ? "<p>" + esc(x.note) + "</p>" : "") +
       (metaLine(x) ? '<div class="cx-meta2">' + metaLine(x) + "</div>" : "") +
       '<button class="cx-btn green sm" type="button" data-i="' + LAYOUTS.indexOf(x) + '">Copy link</button></div></article>';
@@ -1025,21 +1030,25 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       b.setAttribute("aria-pressed", on ? "true" : "false");
     });
     const TH_IMAGE_EXT = {1:"svg",2:"png",3:"png",4:"png",5:"png",6:"png",7:"png",8:"png",9:"png",10:"webp",11:"webp",12:"png",13:"webp",14:"png",15:"png",16:"webp",17:"webp",18:"webp",19:"webp"};
+    const VILL = [["home", "🏰 Home Village"], ["builder", "🔨 Builder Hall"], ["capital", "🏯 Clan Capital"]];
+    const pre = v => v === "builder" ? "BH " : v === "capital" ? "CH " : "TH ";
+    const drawVill = () => {
+      const w = $("#cxVill", box);
+      w.hidden = kind !== "base";
+      w.innerHTML = VILL.map(v => '<button type="button" class="cx-chip" data-v="' + v[0] + '" aria-pressed="false">' + v[1] + "</button>").join("");
+      markOn(w, "data-v", village);
+    };
     const drawThs = () => {
-      let h = '<button type="button" class="cx-thc all" data-th="" aria-pressed="false"><b>ALL</b><small>Town Halls</small></button>';
-      for (let n = SETTINGS.MAX_TOWN_HALL; n >= 1; n--) {
-        const ext = TH_IMAGE_EXT[n];
-        const art = ext
-          ? '<img src="./assets/buildings/townhalls/th-' + n + '.' + ext + '" alt="Town Hall ' + n + '" loading="lazy" decoding="async">'
-          : '<span class="cx-th-placeholder" aria-hidden="true">🏠</span>';
-        h += '<button type="button" class="cx-thc" data-th="' + n + '" aria-label="Show Town Hall ' + n + ' layouts" aria-pressed="false">' + art + '<small>TH</small><b>' + n + '</b></button>';
-      }
+      const max = village === "builder" ? 10 : village === "capital" ? 10 : SETTINGS.MAX_TOWN_HALL;
+      $("#cxThLabel", box).textContent = village === "builder" ? "Builder Hall level" : village === "capital" ? "Capital Hall level" : "Town Hall level";
+      let h = '<button type="button" class="cx-chip" data-th="" aria-pressed="false">All</button>';
+      for (let n = max; n >= 1; n--) h += '<button type="button" class="cx-chip" data-th="' + n + '" aria-pressed="false">' + pre(village).trim() + n + "</button>";
       ths.innerHTML = h;
       markOn(ths, "data-th", th);
     };
     const catsFor = () => {
       const set = {};
-      LAYOUTS.forEach(x => { if (x.kind === kind && x.cat) set[x.cat] = 1; });
+      LAYOUTS.forEach(x => { if (x.kind === kind && (kind !== "base" || (x.v || "home") === village) && x.cat) set[x.cat] = 1; });
       return ["All"].concat(CAT_ORDER.filter(c => set[c]), Object.keys(set).filter(c => CAT_ORDER.indexOf(c) === -1).sort());
     };
     const tagsFor = () => {
@@ -1061,7 +1070,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       markOn(tags, "data-t", tag);
     };
     const draw = () => {
-      shown = LAYOUTS.filter(x => x.kind === kind && (!th || String(x.th) === th) && (cat === "All" || x.cat === cat) && (!tag || x.tag === tag)).sort(CMP[sort]);
+      shown = LAYOUTS.filter(x => x.kind === kind && (kind !== "base" || (x.v || "home") === village) && (!th || String(x.th) === th) && (cat === "All" || x.cat === cat) && (!tag || x.tag === tag)).sort(CMP[sort]);
       grid.innerHTML = shown.length ? shown.map(card).join("")
         : '<p class="cx-msg" style="grid-column:1/-1">No ' + (kind === "base" ? "base" : "troop") + " layouts for this filter yet.</p>";
       count.textContent = shown.length + (shown.length === 1 ? " layout" : " layouts");
@@ -1093,7 +1102,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       art.innerHTML = artHtml(x) + badgesHtml(x);
       $("#cxSheetBody", sheet).innerHTML =
         '<h3 id="cxSheetT">' + esc(x.name) + "</h3>" +
-        '<div class="cx-lay-meta"><span class="cx-pill">TH ' + esc(x.th) + '</span><span class="cx-pill">' + esc(x.cat) + "</span>" +
+        '<div class="cx-lay-meta"><span class="cx-pill">' + (x.kind === "base" ? pre(x.v) : "TH ") + esc(x.th) + '</span><span class="cx-pill">' + esc(x.cat) + "</span>" +
           (x.tag ? '<span class="cx-pill">' + esc(x.tag) + "</span>" : "") + "</div>" +
         (x.note ? '<p class="cx-help" style="font-size:15px">' + esc(x.note) + "</p>" : "") +
         (metaLine(x) ? '<div class="cx-meta2" style="margin-top:8px">' + metaLine(x) + "</div>" : "") +
@@ -1153,13 +1162,24 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     /* ----- events ----- */
     $$(".cx-tab", box).forEach(b => b.addEventListener("click", () => {
       kind = b.dataset.k;
+      if (kind !== "base") village = "home";
+      th = "";
       cat = "All";
       tag = "";
       $$(".cx-tab", box).forEach(x => { const on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-selected", on ? "true" : "false"); });
+      drawVill();
+      drawThs();
       drawCats();
       drawTags();
       draw();
     }));
+    $("#cxVill", box).addEventListener("click", e => {
+      const b = e.target.closest("[data-v]");
+      if (!b) return;
+      village = b.getAttribute("data-v"); th = ""; cat = "All"; tag = "";
+      markOn($("#cxVill", box), "data-v", village);
+      drawThs(); drawCats(); drawTags(); draw();
+    });
     ths.addEventListener("click", e => {
       const b = e.target.closest("[data-th]");
       if (!b) return;
@@ -1190,12 +1210,13 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       if (b) copyLayout(LAYOUTS[Number(b.dataset.i)]);
     });
 
+    drawVill();
     drawThs();
     drawCats();
     drawTags();
     draw();
     swapIn(sec, box);
-    setHeading(sec, null, "Choose a Town Hall and browse base or troop layouts.");
+    setHeading(sec, null, "Pick a village, then open Level, tags & sort to filter.");
 
     loadLayoutsFile().then(list => {
       if (!list) return;
