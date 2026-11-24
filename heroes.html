@@ -1,66 +1,90 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#7a4a22"><title>Clash Heroes — PekkaDex</title>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#7a4a22">
+<title>Clash Heroes Encyclopedia — PekkaDex</title>
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
 <style>
-:root{--title:"Lilita One",Impact,"Arial Black",system-ui,sans-serif;--ink:#4a2c12;--mute:#6f5130;--p1:#fdf1d2;--p2:#f3dda8;--p3:#d6b270;--w1:#b57a3d;--w2:#8a5427;--w3:#5c3517;--g1:#ffe778;--g2:#f7b823}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(#1a5ca8,#2f7cc8 60%,#4a9be0) fixed;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:40px;min-height:100vh}
-header{position:sticky;top:0;z-index:5;background:linear-gradient(var(--w1),var(--w2));border-bottom:4px solid #1b0f05;display:flex;align-items:center;gap:12px;padding:12px 16px}
-header a{color:#fff;font:400 18px var(--title);text-decoration:none;text-shadow:-1px -1px 0 #1b0f05,1px -1px 0 #1b0f05,-1px 1px 0 #1b0f05,1px 1px 0 #1b0f05}header b{flex:1;font:400 22px var(--title);color:var(--g1);text-shadow:-1px -1px 0 #1b0f05,1px -1px 0 #1b0f05,-1px 1px 0 #1b0f05,1px 1px 0 #1b0f05}
-main{max-width:900px;margin:auto;padding:16px;display:grid;gap:16px}
-h1,h2,h3{margin:0;font:400 28px var(--title);color:var(--ink)}p{margin:0;color:var(--mute)}
-.pick{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px}
-.pick button{flex:none;display:grid;justify-items:center;gap:2px;min-width:96px;padding:10px 12px;background:linear-gradient(var(--w1),var(--w2));border:3px solid #1b0f05;border-radius:16px;box-shadow:0 4px 0 #34190a;color:#fff;font:400 14px var(--title);cursor:pointer}
-.pick button span{font-size:30px}.pick button.on{background:linear-gradient(var(--g1),var(--g2));color:var(--ink)}
-.top,.it{background:linear-gradient(var(--p1),var(--p2));border:4px solid var(--w2);border-radius:22px;box-shadow:0 4px 0 var(--w3)}
-.top{display:flex;gap:14px;align-items:center;padding:16px}.top .ic{font-size:56px}.top small{color:var(--w2);font-weight:800}
-.tabs{display:flex;gap:8px}.tabs button{flex:1;padding:12px;border-radius:16px;background:linear-gradient(var(--w1),var(--w2));color:#fff;border:3px solid #1b0f05;box-shadow:0 4px 0 #34190a;font:400 17px var(--title);cursor:pointer}.tabs button.on{background:linear-gradient(var(--g1),var(--g2));color:var(--ink)}
-.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
-.it{padding:14px;display:flex;gap:12px;align-items:center}
-.it.epic{border-color:#a855f7}.it.common{border-color:#8a8f98}.it i{font-size:28px;font-style:normal}.it b{font:400 18px var(--title)}.it small{color:var(--mute)}
-.empty{border:3px dashed var(--p3);border-radius:20px;padding:22px;text-align:center;color:#fff}
-.note{font-size:13px;color:#e6f0ff}
-</style></head><body>
-<header><a href="./index.html#heroes">← Back</a><b>Clash Heroes</b></header>
+:root{--title:"Lilita One",Impact,"Arial Black",system-ui,sans-serif;--ink:#4a2c12;--mute:#6f5130;--p1:#fff5dc;--p2:#f1dba9;--w1:#b8793b;--w2:#805027;--w3:#49290f;--g1:#ffe778;--g2:#f7b823;--blue:#1769ad}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;padding-bottom:35px;background:linear-gradient(#195a9f,#2879bf 60%,#3e91d1) fixed;color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+.sitebar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:11px max(16px,calc((100% - 1120px)/2));background:linear-gradient(var(--w1),var(--w2));border-bottom:5px solid #2b1708;box-shadow:0 5px 12px #102d4b66}
+.sitebar a{color:#fff;text-decoration:none;font:20px var(--title);text-shadow:2px 2px #291506}.sitebar strong{margin-left:auto;color:var(--g1);font:clamp(16px,2.8vw,24px) var(--title);text-shadow:2px 2px #291506}
+main{width:min(1120px,calc(100% - 24px));margin:18px auto;display:grid;gap:15px}
+.panel{background:linear-gradient(145deg,var(--p1),var(--p2));border:5px solid var(--w2);border-radius:22px;box-shadow:0 6px 0 var(--w3),inset 0 2px #fff9;padding:15px}
+h1,h2,h3{margin:0;font-family:var(--title);font-weight:400}h1{font-size:clamp(27px,5vw,42px);color:#fff;text-align:center;text-shadow:3px 4px #201106,-1px -1px #201106}h2{font-size:25px}p{margin:4px 0;color:var(--mute)}
+.sub{color:#fff;text-align:center;text-shadow:1px 2px #173a61;margin:0 0 4px}
+.primary-tabs,.subtabs{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+.primary-tabs button,.subtabs button,.action{border:3px solid #271507;border-radius:14px;padding:10px 18px;background:linear-gradient(var(--w1),var(--w2));color:#fff;box-shadow:0 4px 0 #321a09;font:17px var(--title);cursor:pointer}
+.primary-tabs button.on,.subtabs button.on{background:linear-gradient(var(--g1),var(--g2));color:var(--ink)}
+.hero-picks{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}
+.hero-pick{min-width:0;border:3px solid #6f4827;border-radius:13px;background:linear-gradient(#fff8e7,#ead39f);padding:7px 4px;color:var(--ink);cursor:pointer;font:14px var(--title);box-shadow:0 3px #44260f}
+.hero-pick.on{outline:3px solid #ffcf35;background:linear-gradient(#ffe990,#f5bb32)}
+.portrait{display:grid;place-items:center;width:58px;height:58px;margin:0 auto 4px;border-radius:12px;background:radial-gradient(circle,#a65af1,#39227f);border:2px solid #49317b;font-size:34px}
+.hero-pick small{display:block;line-height:1.15}
+.hero-summary{display:flex;gap:15px;align-items:center}
+.hero-avatar{flex:0 0 92px;height:92px;display:grid;place-items:center;border-radius:18px;background:radial-gradient(circle,#a85af3,#342075);border:4px solid #53347d;color:#fff;font-size:55px}
+.hero-summary h2{font-size:29px}.role{display:inline-block;margin-top:4px;padding:3px 10px;border-radius:20px;background:#f7c64e;border:2px solid #805027;font:14px var(--title)}
+.content-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:12px}
+.item{overflow:hidden;border:4px solid #86522a;border-radius:17px;background:linear-gradient(#fff0c7,#f2d99f);box-shadow:0 4px #4b2b11;min-width:0}
+.item .art{height:145px;display:grid;place-items:center;background:linear-gradient(145deg,#8d37ca,#3e1c80);color:#fff;font-size:70px;text-shadow:0 3px 8px #1118;position:relative}
+.item .info{padding:10px}.item h3{font-size:18px}.item p{font-size:13px}.item .meta{font-weight:800;color:#4c2d14}
+.item.scenery{border-color:#159bd2;background:linear-gradient(#b8edff,#b7dded)}.item.scenery .art{background:linear-gradient(145deg,#25a8dc,#07558e)}
+.item.skin{border-color:#b14ad9}.item.skin .art{background:linear-gradient(145deg,#c95af4,#7625a8)}
+.item.legendary{border-color:#e7b82d}.item.legendary .art{background:linear-gradient(145deg,#ffd35b,#b76a12)}
+.card-action{display:inline-flex;align-items:center;gap:5px;margin-top:7px;padding:6px 10px;border:2px solid #583414;border-radius:9px;background:linear-gradient(#fff,#e8d5ad);color:#4a2c12;font:14px var(--title);cursor:pointer}
+.level-note{padding:12px;border:2px dashed #b18b4d;border-radius:13px;background:#fff7e4;color:#67451f;font-size:14px}
+.hidden{display:none!important}.empty{padding:24px;text-align:center;border:3px dashed #c3a56d;border-radius:16px;color:#6f5130;background:#fff8e7}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:5px 3px 12px}.filters button{flex:none;border:2px solid #805027;border-radius:11px;padding:8px 12px;background:#fff1cb;color:#4a2c12;font:14px var(--title)}.filters button.on{background:linear-gradient(var(--g1),var(--g2))}
+.note{font-size:13px;color:#e6f0ff;text-align:center}
+@media(max-width:650px){main{width:calc(100% - 16px);margin:12px auto}.panel{padding:11px;border-width:4px}.hero-picks{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.hero-pick .portrait{width:52px;height:52px}.hero-summary{align-items:flex-start}.hero-avatar{flex-basis:70px;height:70px;font-size:42px}.hero-summary h2{font-size:23px}.content-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.item .art{height:118px}.primary-tabs button,.subtabs button{flex:1;padding:10px 8px;font-size:15px}.sitebar{padding:10px 12px}.sitebar a{font-size:17px}}
+@media(max-width:380px){.content-grid{grid-template-columns:1fr}.hero-pick{font-size:12px}}
+</style>
+</head>
+<body>
+<header class="sitebar"><a href="./index.html#heroes">← PekkaDex</a><strong>CLASH HEROES ENCYCLOPEDIA</strong></header>
 <main>
-<div class="pick" id="pick"></div>
-<div id="view"></div>
-<p class="note">Fan-made encyclopedia. Always confirm exact stats and unlock levels in the game. Not affiliated with Supercell.</p>
+<section><h1>CLASH HEROES ENCYCLOPEDIA</h1><p class="sub">Heroes • Equipment • Skins • Sceneries</p></section>
+<nav class="primary-tabs" aria-label="Encyclopedia sections">
+<button class="on" data-main="heroes">⚔ Heroes</button><button data-main="equipment">🛠 Equipment</button><button data-main="cosmetics">🎨 Cosmetics</button>
+</nav>
+<section id="heroArea" class="panel">
+<div class="hero-picks" id="heroPicks"></div>
+<div class="hero-summary" style="margin:16px 0"><div class="hero-avatar" id="heroAvatar">👑</div><div><h2 id="heroName">Barbarian King</h2><span class="role" id="heroRole">Ground tank</span><p id="heroDesc">Frontline hero for ground attacks.</p></div></div>
+<div class="subtabs" id="heroTabs"><button class="on" data-hero-tab="overview">Overview</button><button data-hero-tab="equipment">Equipment</button><button data-hero-tab="skins">Skins</button></div>
+<div id="heroContent" style="margin-top:14px"></div>
+</section>
+<section id="equipmentArea" class="panel hidden"><h2>Hero Equipment</h2><p>Choose a hero to browse equipment.</p><div class="hero-picks" id="equipmentPicks" style="margin:14px 0"></div><div id="equipmentContent"></div></section>
+<section id="cosmeticsArea" class="panel hidden"><h2 style="text-align:center">Cosmetics</h2><div class="subtabs" style="margin:12px 0"><button class="on" data-cosmetic="skins">Skins</button><button data-cosmetic="sceneries">Sceneries</button></div><div id="skinFilters" class="filters"></div><div id="cosmeticContent"></div></section>
+<p class="note">Fan-made reference. Exact prices, release dates and equipment level stats are shown only after verification. Not affiliated with Supercell.</p>
 </main>
 <script>
-const H=[
-{id:"barbarian-king",n:"Barbarian King",i:"👑",r:"Ground tank",a:"Frontline hero that leads ground attacks and tanks for your troops.",
- eq:[["Barbarian Puppet","common"],["Rage Vial","common"],["Earthquake Boots","common"],["Vampstache","epic"],["Giant Gauntlet","epic"],["Spiky Ball","epic"]],
- sk:[["Gladiator King",""],["King Barbarian","The Awesome Quest season skin"]]},
-{id:"archer-queen",n:"Archer Queen",i:"🏹",r:"Ranged damage",a:"Long-range hero for precise funneling and taking out key defenses.",
- eq:[["Archer Puppet","common"],["Invisibility Vial","common"],["Giant Arrow","epic"],["Healer Puppet","epic"],["Frozen Arrow","epic"],["Magic Mirror","epic"]],
- sk:[["Elven Archer","The Awesome Quest season skin"]]},
-{id:"grand-warden",n:"Grand Warden",i:"🧙",r:"Support",a:"Support hero whose abilities protect nearby troops at critical moments.",
- eq:[["Eternal Tome","common"],["Life Gem","common"],["Rage Gem","epic"],["Healing Tome","epic"],["Fireball","epic"],["Lavaloon Puppet","epic"]],
- sk:[["Grand Mage","The Awesome Quest season skin"]]},
-{id:"royal-champion",n:"Royal Champion",i:"🛡️",r:"Defense hunter",a:"Mobile hero that hunts defenses and supports late-stage attacks.",
- eq:[["Seeking Shield","common"],["Royal Gem","common"],["Hog Rider Puppet","common"],["Haste Vial","epic"],["Rocket Spear","epic"],["Electro Boots","epic"]],
- sk:[["Tempest Champion","The Awesome Quest season skin"]]},
-{id:"minion-prince",n:"Minion Prince",i:"🦇",r:"Air support",a:"Airborne hero that adds pressure and support to many armies.",
- eq:[["Henchmen Puppet","common"],["Dark Orb","epic"],["Metal Pants","epic"]],
- sk:[["Lich Prince","The Awesome Quest season skin"],["Anime Fury Prince","Anime Fury season skin"]]},
-{id:"dragon-duke",n:"Dragon Duke",i:"🐲",r:"Melee brawler (TH15+)",a:"The sixth hero. A melee fighter that slashes and breathes fire, and works best fighting on his own.",
- eq:[["Rocket Backpack",""],["Flame Blower",""],["Electro Fangs","common"],["Heart of Fire",""],["Shock Blast",""]],
- sk:[["Drakan Duke","The Awesome Quest season skin"],["Hydra Duke","Barbarian's Odyssey season skin"],["Kane","WWE crossover skin"],["Anime Fury Dragon Duke","Anime Fury season skin"]]}
+const HEROES=[
+{id:"barbarian-king",name:"Barbarian King",icon:"👑",role:"Ground tank",desc:"Frontline hero that leads ground attacks and tanks for nearby troops.",equipment:[["Barbarian Puppet","common"],["Rage Vial","common"],["Earthquake Boots","common"],["Vampstache","epic"],["Giant Gauntlet","epic"],["Spiky Ball","epic"]],skins:[["Gladiator King","🎖️"],["King Barbarian","⚔️"]]},
+{id:"archer-queen",name:"Archer Queen",icon:"🏹",role:"Ranged damage",desc:"Long-range hero for precise funneling and key defensive targets.",equipment:[["Archer Puppet","common"],["Invisibility Vial","common"],["Giant Arrow","epic"],["Healer Puppet","epic"],["Frozen Arrow","epic"],["Magic Mirror","epic"]],skins:[["Elven Archer","🏹"]]},
+{id:"grand-warden",name:"Grand Warden",icon:"🧙",role:"Support",desc:"Support hero whose abilities protect nearby troops at critical moments.",equipment:[["Eternal Tome","common"],["Life Gem","common"],["Rage Gem","epic"],["Healing Tome","epic"],["Fireball","epic"],["Lavaloon Puppet","epic"]],skins:[["Grand Mage","✨"]]},
+{id:"royal-champion",name:"Royal Champion",icon:"🛡️",role:"Defense hunter",desc:"Mobile hero that hunts defenses and supports late-stage attacks.",equipment:[["Seeking Shield","common"],["Royal Gem","common"],["Hog Rider Puppet","common"],["Haste Vial","epic"],["Rocket Spear","epic"],["Electro Boots","epic"]],skins:[["Tempest Champion","⚡"]]},
+{id:"minion-prince",name:"Minion Prince",icon:"🦇",role:"Air support",desc:"Airborne hero that adds pressure and support to many armies.",equipment:[["Henchmen Puppet","common"],["Dark Orb","epic"],["Metal Pants","epic"]],skins:[["Lich Prince","💀"],["Anime Fury Prince","🌟"]]},
+{id:"dragon-duke",name:"Dragon Duke",icon:"🐲",role:"Melee brawler",desc:"A melee hero who fights up close with powerful fire-based attacks.",equipment:[["Rocket Backpack","🔧"],["Flame Blower","🔥"],["Electro Fangs","⚡"],["Heart of Fire","❤️"],["Shock Blast","💥"]],skins:[["Drakan Duke","🐉"],["Hydra Duke","🐲"],["Kane","⭐"],["Anime Fury Dragon Duke","🔥"]]}
 ];
-const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let cur=H[0].id,tab="equipment";
-function parse(){const m=location.hash.match(/^#([\w-]+)(?:\/(skins|equipment))?/);if(m&&H.some(h=>h.id===m[1])){cur=m[1];tab=m[2]||"equipment"}}
-function draw(){
- const h=H.find(x=>x.id===cur);
- $("#pick").innerHTML=H.map(x=>`<button data-id="${x.id}" class="${x.id===cur?"on":""}"><span>${x.i}</span>${x.n}</button>`).join("");
- const eq=h.eq.map(e=>`<div class="it ${e[1]}"><i>${e[1]==="epic"?"✨":"🔧"}</i><div><b>${esc(e[0])}</b><br><small>${e[1]?e[1][0].toUpperCase()+e[1].slice(1)+" equipment":"Equipment"}</small></div></div>`).join("");
- const sk=h.sk.length?h.sk.map(s=>`<div class="it"><i>🎨</i><div><b>${esc(s[0])}</b><br><small>${esc(s[1]||"Hero skin")}</small></div></div>`).join(""):"";
- $("#view").innerHTML=`<div style="display:grid;gap:14px"><div class="top"><span class="ic">${h.i}</span><div><h1>${h.n}</h1><small style="color:var(--g)">${h.r}</small><p style="margin-top:4px">${esc(h.a)}</p></div></div>
- <div class="tabs"><button data-t="equipment" class="${tab==="equipment"?"on":""}">🎒 Equipment (${h.eq.length})</button><button data-t="skins" class="${tab==="skins"?"on":""}">🎨 Skins (${h.sk.length})</button></div>
- <div class="grid">${tab==="equipment"?eq:sk}</div>${tab==="skins"&&!sk?'<div class="empty">No skins listed yet.</div>':""}</div>`;
-}
-document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.id)location.hash=b.dataset.id+"/"+tab;if(b.dataset.t)location.hash=cur+"/"+b.dataset.t});
-addEventListener("hashchange",()=>{parse();draw();scrollTo(0,0)});parse();draw();
-</script></body></html>
+const SCENERIES=[
+{name:"Year of the Snake",art:"🐍",price:"Price not verified",note:"Scenery catalog entry"},
+{name:"Clash of Dragons",art:"🐉",price:"Price not verified",note:"Scenery catalog entry"},
+{name:"Wasteland Scenery",art:"🏜️",price:"Price not verified",note:"Scenery catalog entry"},
+{name:"Ruined Kingdom Wasteland",art:"🏰",price:"Price not verified",note:"Scenery catalog entry"}
+];
+const $=s=>document.querySelector(s),safe=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let selected=HEROES[0].id,heroTab="overview",mainTab="heroes",cosmeticTab="skins",skinFilter="all";
+function hero(){return HEROES.find(h=>h.id===selected)||HEROES[0]}
+function heroButtons(target){$(target).innerHTML=HEROES.map(h=>'<button class="hero-pick '+(h.id===selected?'on':'')+'" data-hero="'+h.id+'"><span class="portrait">'+h.icon+'</span><small>'+h.name+'</small></button>').join("")}
+function equipmentCards(h){return '<div class="content-grid">'+h.equipment.map(e=>'<article class="item"><div class="art">🛠️</div><div class="info"><h3>'+safe(e[0])+'</h3><p class="meta">'+safe(e[1].toUpperCase())+' equipment</p><p>Level 1–maximum stat table is awaiting verified values.</p></div></article>').join("")+'</div>'}
+function skinCards(h){return h.skins.length?'<div class="content-grid">'+h.skins.map(s=>'<article class="item skin"><div class="art">'+s[1]+'</div><div class="info"><h3>'+safe(s[0])+'</h3><p>Hero skin • '+safe(h.name)+'</p><p class="meta">Release date / price: not yet verified</p></div></article>').join("")+'</div>':'<div class="empty">No skin entries listed.</div>'}
+function drawHero(){const h=hero();heroButtons("#heroPicks");$("#heroAvatar").textContent=h.icon;$("#heroName").textContent=h.name;$("#heroRole").textContent=h.role;$("#heroDesc").textContent=h.desc;$("#heroTabs").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.heroTab===heroTab));let html=heroTab==="equipment"?equipmentCards(h):heroTab==="skins"?skinCards(h):'<div class="level-note"><b>'+h.name+'</b><br>'+h.desc+'<br><br>Select Equipment or Skins to explore this hero.</div>';$("#heroContent").innerHTML=html}
+function drawEquipment(){heroButtons("#equipmentPicks");$("#equipmentContent").innerHTML=equipmentCards(hero())}
+function drawCosmetics(){let filters='<button class="'+(skinFilter==="all"?"on":"")+'" data-filter="all">All Heroes</button>'+HEROES.map(h=>'<button class="'+(skinFilter===h.id?"on":"")+'" data-filter="'+h.id+'">'+h.icon+' '+h.name+'</button>').join("");$("#skinFilters").innerHTML=cosmeticTab==="skins"?filters:"";document.querySelectorAll("[data-cosmetic]").forEach(b=>b.classList.toggle("on",b.dataset.cosmetic===cosmeticTab));if(cosmeticTab==="skins"){let list=HEROES.filter(h=>skinFilter==="all"||h.id===skinFilter).flatMap(h=>h.skins.map(s=>({hero:h,skin:s})));$("#cosmeticContent").innerHTML=list.length?'<div class="content-grid">'+list.map(x=>'<article class="item skin"><div class="art">'+x.skin[1]+'</div><div class="info"><h3>'+safe(x.skin[0])+'</h3><p>'+safe(x.hero.name)+'</p><p class="meta">Price / release date: not verified</p></div></article>').join("")+'</div>':'<div class="empty">No listed skins for this filter.</div>'}else{$("#cosmeticContent").innerHTML='<div class="content-grid">'+SCENERIES.map(s=>'<article class="item scenery"><div class="art">'+s.art+'</div><div class="info"><h3>'+safe(s.name)+'</h3><p>'+safe(s.note)+'</p><p class="meta">'+safe(s.price)+'</p></div></article>').join("")+'</div>'}}
+function switchMain(name){mainTab=name;document.querySelectorAll("[data-main]").forEach(b=>b.classList.toggle("on",b.dataset.main===name));$("#heroArea").classList.toggle("hidden",name!=="heroes");$("#equipmentArea").classList.toggle("hidden",name!=="equipment");$("#cosmeticsArea").classList.toggle("hidden",name!=="cosmetics");if(name==="equipment")drawEquipment();if(name==="cosmetics")drawCosmetics()}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.main)switchMain(b.dataset.main);if(b.dataset.hero){selected=b.dataset.hero;drawHero();drawEquipment();if(mainTab==="cosmetics")drawCosmetics()}if(b.dataset.heroTab){heroTab=b.dataset.heroTab;drawHero()}if(b.dataset.cosmetic){cosmeticTab=b.dataset.cosmetic;drawCosmetics()}if(b.dataset.filter){skinFilter=b.dataset.filter;drawCosmetics()}});
+drawHero();drawEquipment();drawCosmetics();
+</script>
+</body></html>
