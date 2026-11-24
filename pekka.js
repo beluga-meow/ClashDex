@@ -1,68 +1,106 @@
-/* pekka.js black + gold theme (loaded after app.js styles) */
-:root{--cx-p1:#16130c;--cx-p2:#1d180d;--cx-p3:#4a3a14;--cx-w1:#2a2312;--cx-w2:#1c170b;--cx-w3:#120f07;--cx-w4:#0b0905;
---cx-ink:#f6ecd0;--cx-ink2:#c4b07a;--cx-line:#000;--cx-n1:#ffe778;--cx-n2:#f7b823;--cx-n3:#8a5a05;
---g:#ffd21f;--g2:#f7b823;--bg:#0b0b0b;--card:#121212;--ln:#4a3a14}
-html,body{background:#0b0b0b!important;color:#f6ecd0}
-html.cx body{background:radial-gradient(900px 500px at 15% -5%,#2b2208,transparent 60%),#0b0b0b!important}
-html.cx .season-effects,html.cx .hero-art,html.cx .cx-clouds,html.cx .cx-trees{opacity:.35}
-html.cx .site-header,html.cx .site-footer,html.cx .announcement,html.cx .cx-tabbar{background:#111!important;border-color:var(--ln)!important;color:#f6ecd0}
-html.cx .cx-panel,html.cx .auth-panel,html.cx .content-card,html.cx .modal,html.cx .cx-sheet{background:var(--card)!important;border:1px solid var(--ln)!important;color:#f6ecd0!important}
-html.cx h1,html.cx h2,html.cx h3,html.cx h4{color:var(--g)!important;text-shadow:none!important}
-html.cx p,html.cx small,html.cx label,html.cx .form-note,html.cx .section-subtitle{color:#c9bb92!important}
-html.cx input,html.cx select,html.cx textarea{background:#0b0b0b!important;color:#f6ecd0!important;border:1px solid var(--ln)!important;border-radius:14px}
-html.cx input::placeholder{color:#7d6f4a}
-html.cx .button-green,html.cx .cx-btn.green,html.cx .button-gold,html.cx .header-cta{background:linear-gradient(#ffe778,#f7b823)!important;color:#1a1200!important;border:0!important;text-shadow:none!important;border-radius:999px;font-weight:800}
-html.cx .cx-btn.blue,html.cx .small-action,html.cx .button-ghost{background:#17130a!important;color:var(--g)!important;border:1px solid var(--g)!important;border-radius:999px}
-html.cx .filter-chip,html.cx .cx-chip{background:#17130a!important;color:#e9d9a4!important;border:1px solid var(--ln)!important}
-html.cx .filter-chip.selected,html.cx .cx-chip.on,html.cx .cx-chip.sel{background:var(--g)!important;color:#1a1200!important}
-html.cx .cx-th{background:linear-gradient(#ffe778,#f7b823)!important;border-color:#8a5a05!important}
-html.cx .cx-tabbar a{color:#c9bb92}html.cx .cx-tabbar a.on{color:var(--g)}
-/* shared vault components */
-.v-wrap{display:grid;gap:18px}
-.v-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
-.v-card{background:var(--card);border:1px solid var(--ln);border-top:3px solid var(--g);border-radius:22px;padding:16px;display:grid;gap:12px}
-.v-rank{background:var(--g);color:#1a1200;font-weight:900;border-radius:999px;padding:3px 10px;font-size:13px}
-.v-head{display:flex;align-items:center;gap:10px}.v-head h3{margin:0;flex:1;font-size:19px}
-.v-score{color:#c9bb92;font-weight:700}.v-score:before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444;margin-right:6px}
-.v-troops{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.v-troop{aspect-ratio:1;border-radius:14px;background:#0b0b0b;border:2px solid var(--ln);display:grid;place-items:center;text-align:center;font-size:26px;padding:2px}
-.v-troop small{font-size:10px;line-height:1.1;color:#c9bb92!important;display:block}
-.v-troop.epic{border-color:#a855f7}.v-troop.rare{border-color:#f97316}
-.v-perf{background:#0b0b0b;border-radius:18px;padding:12px;display:grid;gap:10px}
-.v-perf-h{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ln);padding-bottom:8px}
-.v-perf-h b{color:var(--g)}.v-ai{background:#2a2208;color:#ffd21f;border-radius:999px;padding:3px 10px;font-size:12px}
-.v-row{display:flex;justify-content:space-between;font-weight:800;font-size:13px;color:#e9d9a4}
-.v-bar{height:7px;border-radius:9px;background:#222;overflow:hidden;margin-top:5px}.v-bar i{display:block;height:100%;width:0;border-radius:9px;transition:width .9s cubic-bezier(.2,.9,.3,1.2)}
-.v-GODLY{color:#ffd21f}.v-GREAT{color:#4ade80}.v-GOOD{color:#38bdf8}.v-MEDIOCRE{color:#fb923c}
-.v-btn{justify-self:end;background:#17130a;color:var(--g);border:1px solid var(--g);border-radius:999px;padding:12px 20px;font-weight:800;cursor:pointer;font-size:15px}
-.v-btn:active{transform:scale(.96)}
-/* sceneries */
-.v-scene{position:relative;min-height:190px;border-radius:24px;overflow:hidden;border:1px solid var(--ln);cursor:pointer;padding:0;color:#fff;text-align:left;display:flex;align-items:flex-end;transition:transform .25s,box-shadow .25s}
-.v-scene:hover,.v-scene:focus-visible{transform:translateY(-4px) scale(1.02);box-shadow:0 12px 30px rgba(255,210,31,.25)}
-.v-scene:active{transform:scale(.97)}
-.v-scene span{position:relative;padding:14px;font:800 20px system-ui;background:linear-gradient(transparent,#000c);width:100%}
-.v-scene em{position:absolute;top:12px;left:14px;font-size:44px;font-style:normal;animation:vfloat 3s ease-in-out infinite}
-@keyframes vfloat{50%{transform:translateY(-8px)}}
-.v-pop{position:fixed;inset:0;z-index:90;background:#000b;display:grid;place-items:center;padding:16px;animation:vfade .25s}
-.v-pop>div{width:min(460px,100%);background:#121212;border:2px solid var(--g);border-radius:26px;overflow:hidden;animation:vpop .45s cubic-bezier(.2,1.4,.4,1)}
-.v-pop .art{height:180px;display:grid;place-items:center;font-size:84px}.v-pop .art b{animation:vfloat 2.4s infinite}
-.v-pop .bd{padding:18px;display:grid;gap:10px}
-@keyframes vpop{from{transform:scale(.6) rotate(-3deg);opacity:0}}@keyframes vfade{from{opacity:0}}
-/* hero pages */
-.v-page{position:fixed;inset:0;z-index:80;background:#0b0b0b;overflow:auto;padding:16px 16px 90px;animation:vfade .2s}
-.v-page .in{max-width:900px;margin:auto;display:grid;gap:16px}
-.v-tabs{display:flex;gap:8px}.v-tabs button{flex:1;padding:12px;border-radius:999px;background:#17130a;color:#c9bb92;border:1px solid var(--ln);font-weight:800;font-size:15px}
-.v-tabs button.on{background:var(--g);color:#1a1200}
-.v-hero-top{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--ln);border-radius:24px;padding:16px}
-.v-hero-top .ic{font-size:54px}.v-eq{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
-.v-eqi{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:14px;display:flex;gap:10px;align-items:center}
-.v-eqi.epic{border-color:#a855f7}.v-eqi i{font-size:28px;font-style:normal}
-.v-empty{border:2px dashed var(--ln);border-radius:20px;padding:22px;text-align:center;color:#c9bb92}
-/* cartoony loader */
-.v-load{position:absolute;inset:0;z-index:5;background:#121212f2;border-radius:inherit;display:none;place-content:center;gap:14px;text-align:center;padding:20px}
-.v-load.on{display:grid}.v-load b{color:var(--g);font:900 20px system-ui}
-.v-track{width:min(280px,70vw);height:26px;border:3px solid #000;border-radius:999px;background:#2a2208;overflow:hidden;box-shadow:0 3px 0 #8a5a05;position:relative;margin:auto}
-.v-track i{position:absolute;inset:0;width:40%;border-radius:999px;background:repeating-linear-gradient(-45deg,#ffe778 0 12px,#f7b823 12px 24px);animation:vslide 1.1s ease-in-out infinite alternate;border-right:3px solid #000}
-@keyframes vslide{from{left:0}to{left:60%}}
-.auth-panel{position:relative}
-@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+/* ClashVault v7: gold theme, Armies, Heroes pages, Sceneries, OTP loader */
+(() => {
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const toast=m=>{const t=$("#toast");if(!t)return alert(m);t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2400)};
+const copy=async txt=>{try{await navigator.clipboard.writeText(txt)}catch(_){const a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove()}};
+
+/* ---- theme css, appended last so it wins ---- */
+const l=document.createElement("link");l.rel="stylesheet";l.href="./vault.css?v=7";document.head.appendChild(l);
+
+/* ---- DATA (edit freely) ---- */
+const ARMIES=[
+ {name:"Electro Dragon Mass",th:"TH 12+",rate:4.3,code:"u23x8-u7x2-u10x4",s:"s0x4-s5x2",troops:[["⚡","E-Drag","epic"],["💚","Healer","rare"],["🐲","Baby Drag","epic"],["🦇","Bat Spell","rare"],["⚡","Lightning","epic"],["❄️","Freeze","epic"],["🏰","CC",""],["🛠️","Siege",""]],perf:{Attack:["GREAT",86],Defense:["MEDIOCRE",50],Synergy:["GREAT",84],Versatility:["GOOD",68],"F2P Score":["GOOD",64]}},
+ {name:"Dragon Mass",th:"TH 10+",rate:4.0,code:"u8x10-u7x2",s:"s2x3-s1x2-s5x1",troops:[["🐉","Dragon","epic"],["💚","Healer","rare"],["😡","Rage","epic"],["💗","Heal","rare"],["❄️","Freeze","epic"],["🏰","CC",""],["🎈","Balloon",""],["🧙","Wizard",""]],perf:{Attack:["GOOD",72],Defense:["MEDIOCRE",48],Synergy:["GREAT",80],Versatility:["GREAT",78],"F2P Score":["GREAT",82]}},
+ {name:"Miner Healer",th:"TH 10+",rate:3.9,code:"u11x14-u7x3",s:"s1x4-s3x2-s5x2",troops:[["⛏️","Miner","epic"],["💚","Healer","rare"],["💗","Heal","rare"],["🦘","Jump","epic"],["❄️","Freeze","epic"],["🏰","CC",""],["🧙","Wizard",""],["🐲","Baby Drag",""]],perf:{Attack:["GOOD",70],Defense:["MEDIOCRE",52],Synergy:["GREAT",83],Versatility:["GOOD",66],"F2P Score":["GODLY",92]}},
+ {name:"Giant Healer",th:"TH 8+",rate:3.4,code:"u3x14-u7x4",s:"s1x3-s2x2",troops:[["💪","Giant","rare"],["💚","Healer","rare"],["💗","Heal","rare"],["😡","Rage","epic"],["🧙","Wizard",""],["💣","W.Breaker",""],["🏰","CC",""],["🏹","Archer",""]],perf:{Attack:["MEDIOCRE",52],Defense:["MEDIOCRE",50],Synergy:["GREAT",80],Versatility:["GREAT",76],"F2P Score":["GODLY",95]}}
+];
+const HEROES=[
+ {id:"barbarian-king",name:"Barbarian King",role:"Ground tank",icon:"👑",about:"Frontline hero that leads ground attacks and tanks for your troops.",eq:[["Barbarian Puppet",""],["Rage Vial",""],["Earthquake Boots",""],["Vampstache","epic"],["Giant Gauntlet","epic"],["Spiky Ball","epic"]]},
+ {id:"archer-queen",name:"Archer Queen",role:"Ranged damage",icon:"🏹",about:"Long-range hero for precise funneling and taking out key defenses.",eq:[["Archer Puppet",""],["Invisibility Vial",""],["Giant Arrow","epic"],["Healer Puppet","epic"],["Frozen Arrow","epic"],["Magic Mirror","epic"]]},
+ {id:"grand-warden",name:"Grand Warden",role:"Support",icon:"🧙",about:"Support hero whose abilities protect nearby troops at critical moments.",eq:[["Eternal Tome",""],["Life Gem",""],["Rage Gem","epic"],["Healing Tome","epic"],["Fireball","epic"],["Lavaloon Puppet","epic"]]},
+ {id:"royal-champion",name:"Royal Champion",role:"Defense hunter",icon:"🛡️",about:"Mobile hero that hunts defenses and supports late-stage attacks.",eq:[["Seeking Shield",""],["Royal Gem",""],["Hog Rider Puppet",""],["Haste Vial","epic"],["Rocket Spear","epic"],["Electro Boots","epic"]]},
+ {id:"minion-prince",name:"Minion Prince",role:"Air support",icon:"🦇",about:"Airborne hero that adds pressure and support to many armies.",eq:[["Henchmen Puppet",""],["Dark Orb","epic"],["Metal Pants","epic"]]}
+];
+/* Skins: add real entries here or in skins.json as {"barbarian-king":[{"name":"...","note":"..."}]} */
+let SKINS={};
+const SCENES=[
+ {n:"Classic Village",e:"🏰",c:"#2f6b1f,#8bc34a",d:"The original green village backdrop every Chief starts with."},
+ {n:"Winter Wonderland",e:"⛄",c:"#1e3a5f,#bfe3ff",d:"Snow-covered base with festive lights."},
+ {n:"Pirate Cove",e:"🏴‍☠️",c:"#0f3b57,#e0b25c",d:"Sandy shores and ships around your village."},
+ {n:"Spooky Hollow",e:"🎃",c:"#2a1240,#ff7a18",d:"Dark skies, pumpkins and bats."},
+ {n:"Sunny Summer",e:"🏖️",c:"#0c6b8a,#ffd36b",d:"Bright beach-day look for your base."},
+ {n:"Lunar Lanterns",e:"🏮",c:"#6b0f1a,#ffb703",d:"Red and gold festival decorations."}
+];
+
+/* ---- ARMIES ---- */
+function armyLink(a){return "https://link.clashofclans.com/en?action=CopyArmy&army="+a.code+"-"+a.s}
+function buildArmies(){
+ const sec=$("#armies");if(!sec)return;
+ sec.innerHTML='<div class="section-heading"><div><h2>🔥 Trending <span>Armies</span></h2><p class="section-subtitle">Top attack armies with performance analysis.</p></div></div><div class="v-grid" id="vArmies"></div>';
+ $("#vArmies").innerHTML=ARMIES.map((a,i)=>'<article class="v-card"><div class="v-head"><span class="v-rank">#'+(i+1)+'</span><h3>'+esc(a.name)+'</h3><span class="v-score">'+a.rate+'</span></div>'+
+ '<div class="v-troops">'+a.troops.map(t=>'<div class="v-troop '+t[2]+'"><div>'+t[0]+'<small>'+esc(t[1])+'</small></div></div>').join("")+'</div>'+
+ '<div class="v-perf"><div class="v-perf-h"><b>📊 ARMY PERFORMANCE</b><span class="v-ai">AI Analyzed</span></div>'+
+ Object.entries(a.perf).map(([k,[w,p]])=>'<div><div class="v-row"><span>'+k+'</span><span class="v-'+w+'">'+w+'</span></div><div class="v-bar"><i data-w="'+p+'" style="background:currentColor" class="v-'+w+'"></i></div></div>').join("")+'</div>'+
+ '<button class="v-btn" data-i="'+i+'">📋 Copy link · Open in game</button></article>').join("");
+ $("#vArmies").addEventListener("click",async e=>{const b=e.target.closest(".v-btn");if(!b)return;const a=ARMIES[b.dataset.i],u=armyLink(a);await copy(u);toast("Army link copied. Opening Clash of Clans…");setTimeout(()=>{location.href=u},500)});
+ const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){$$("i[data-w]",x.target).forEach(i=>i.style.width=i.dataset.w+"%");io.unobserve(x.target)}}),{threshold:.2});
+ $$(".v-perf",sec).forEach(p=>io.observe(p));
+}
+
+/* ---- SCENERIES ---- */
+function buildScenes(){
+ const sec=$("#sceneries");if(!sec)return;
+ sec.innerHTML='<div class="section-heading"><div><h2>Choose Your <span>Scenery</span></h2><p class="section-subtitle">Tap a scenery to see its details.</p></div></div><div class="v-grid" id="vScenes"></div>';
+ $("#vScenes").innerHTML=SCENES.map((s,i)=>{const[c1,c2]=s.c.split(",");return '<button class="v-scene" data-i="'+i+'" style="background:linear-gradient(145deg,'+c1+','+c2+')"><em>'+s.e+'</em><span>'+esc(s.n)+'</span></button>'}).join("");
+ $("#vScenes").addEventListener("click",e=>{const b=e.target.closest(".v-scene");if(!b)return;const s=SCENES[b.dataset.i],[c1,c2]=s.c.split(",");
+  const p=document.createElement("div");p.className="v-pop";p.innerHTML='<div><div class="art" style="background:linear-gradient(145deg,'+c1+','+c2+')"><b>'+s.e+'</b></div><div class="bd"><h3>'+esc(s.n)+'</h3><p>'+esc(s.d)+'</p><button class="v-btn" style="justify-self:stretch">Close</button></div></div>';
+  p.addEventListener("click",ev=>{if(ev.target===p||ev.target.classList.contains("v-btn"))p.remove()});document.body.appendChild(p)});
+}
+
+/* ---- HEROES (grid + separate pages via #hero/<id>) ---- */
+function buildHeroes(){
+ const sec=$("#heroes");if(!sec)return;
+ $$(":scope > :not(.section-heading)",sec).forEach(n=>n.remove());
+ const g=document.createElement("div");g.className="v-grid";
+ g.innerHTML=HEROES.map(h=>'<a class="v-card" href="#hero/'+h.id+'" style="text-decoration:none"><div class="v-head"><span style="font-size:44px">'+h.icon+'</span><div><h3>'+h.name+'</h3><small>'+h.role+'</small></div></div><small>'+h.eq.length+' equipment · Skins</small></a>').join("");
+ sec.appendChild(g);
+}
+function heroPage(id,tab){
+ let pg=$("#vHeroPage");if(pg)pg.remove();
+ const h=HEROES.find(x=>x.id===id);if(!h)return;
+ const sk=SKINS[h.id]||[];
+ pg=document.createElement("div");pg.id="vHeroPage";pg.className="v-page";
+ const body=tab==="skins"?(sk.length?'<div class="v-grid">'+sk.map(s=>'<div class="v-card"><h3>'+esc(s.name)+'</h3><small>'+esc(s.note||"")+'</small></div>').join("")+'</div>':'<div class="v-empty">No skins added for '+h.name+' yet.<br><small>Add them in skins.json and they appear here.</small></div>'):
+  '<div class="v-eq">'+h.eq.map(e=>'<div class="v-eqi '+e[1]+'"><i>'+(e[1]?"✨":"🔧")+'</i><div><b>'+esc(e[0])+'</b><br><small>'+(e[1]?"Epic":"Common")+' equipment</small></div></div>').join("")+'</div>';
+ pg.innerHTML='<div class="in"><button class="v-btn" style="justify-self:start" id="vBack">← All heroes</button><div class="v-hero-top"><span class="ic">'+h.icon+'</span><div><h2 style="margin:0">'+h.name+'</h2><p style="margin:4px 0 0">'+esc(h.about)+'</p></div></div><div class="v-tabs"><button data-t="skins" class="'+(tab==="skins"?"on":"")+'">🎨 Skins</button><button data-t="equipment" class="'+(tab!=="skins"?"on":"")+'">🎒 Equipment</button></div>'+body+'</div>';
+ document.body.appendChild(pg);document.body.style.overflow="hidden";
+ $("#vBack",pg).onclick=()=>{location.hash="heroes"};
+ $$(".v-tabs button",pg).forEach(b=>b.onclick=()=>{location.hash="hero/"+id+"/"+b.dataset.t});
+}
+function route(){
+ const m=location.hash.match(/^#hero\/([\w-]+)(?:\/(skins|equipment))?/);
+ if(m)heroPage(m[1],m[2]||"equipment");else{$("#vHeroPage")?.remove();document.body.style.overflow=""}
+}
+window.addEventListener("hashchange",route);
+
+/* ---- OTP cartoony loader ---- */
+function authLoader(){
+ const panel=$(".auth-panel"),form=$("#authEmailForm");if(!panel||!form)return;
+ const ld=document.createElement("div");ld.className="v-load";ld.innerHTML='<b>Sending your code…</b><div class="v-track"><i></i></div><small>Hang tight, Chief!</small>';panel.appendChild(ld);
+ const off=()=>ld.classList.remove("on");
+ form.addEventListener("submit",()=>{const v=$("#authEmail").value.trim();if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))ld.classList.add("on")});
+ $("#authResend")?.addEventListener("click",()=>{if(!$("#authResend").disabled)ld.classList.add("on")});
+ new MutationObserver(off).observe($("#authOtpScreen"),{attributes:true,attributeFilter:["hidden"]});
+ new MutationObserver(()=>{const t=$("#authMessage").textContent;if(t&&!/sending/i.test(t))off()}).observe($("#authMessage"),{childList:true,characterData:true,subtree:true});
+ setInterval(()=>{if(ld.classList.contains("on")&&!ld.dataset.t){ld.dataset.t=1;setTimeout(()=>{off();delete ld.dataset.t},15000)}},1000);
+}
+
+function init(){
+ buildArmies();buildScenes();buildHeroes();authLoader();route();
+ fetch("./skins.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(j=>{SKINS=j;route()}).catch(()=>{});
+}
+/* run after app.js has built its UI */
+window.addEventListener("load",()=>setTimeout(init,150));
+})();
