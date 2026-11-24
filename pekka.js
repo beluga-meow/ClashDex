@@ -7,7 +7,7 @@ const toast=m=>{const t=$("#toast");if(!t)return alert(m);t.textContent=m;t.clas
 const copy=async txt=>{try{await navigator.clipboard.writeText(txt)}catch(_){const a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove()}};
 
 /* ---- theme css, appended last so it wins ---- */
-const l=document.createElement("link");l.rel="stylesheet";l.href="./vault.css?v=9";document.head.appendChild(l);
+const l=document.createElement("link");l.rel="stylesheet";l.href="./vault.css?v=11";document.head.appendChild(l);
 
 /* ---- DATA (edit freely) ---- */
 const ARMIES=[
@@ -105,7 +105,7 @@ function buildEvents(){
  const sec=$("#events");if(!sec)return;
  sec.innerHTML='<div class="section-heading"><div><h2>Recurring <span>In-Game Events</span></h2><p class="section-subtitle">Live countdowns. Times follow UTC schedules.</p></div></div><div class="v-grid" id="vEv" style="grid-template-columns:repeat(2,1fr)"></div><p class="form-note">Based on the usual schedule. Supercell can change dates, so check in-game.</p>'+
  '<div class="v-card" style="margin-top:16px"><div class="v-head"><span style="font-size:36px">💎</span><div><h3 style="margin:0">Supercell Store</h3><small>Skins, scenery and offers. Purchases happen on the official store.</small></div></div><a class="v-btn" style="text-decoration:none;justify-self:stretch;text-align:center" href="https://store.supercell.com/clashofclans" target="_blank" rel="noopener">Visit official store</a></div>';
- const draw=()=>{$("#vEv").innerHTML=schedule().map(e=>'<div class="v-card" style="text-align:center;gap:4px"><b style="color:var(--g)">'+e[0]+(e[2]?' <span class="v-GREAT">(Active)</span>':'')+'</b><span style="font:800 20px system-ui">'+fmt(e[1]-Date.now())+'</span></div>').join("")};
+ const draw=()=>{$("#vEv").innerHTML=schedule().map(e=>'<div class="v-card" style="text-align:center;gap:4px"><b style="color:var(--cx-ink,#4a2c12)">'+e[0]+(e[2]?' <span class="v-GREAT">(Active)</span>':'')+'</b><span style="font:400 22px var(--cx-title,Impact)">'+fmt(e[1]-Date.now())+'</span></div>').join("")};
  draw();setInterval(draw,30000);
 }
 
