@@ -7,7 +7,7 @@ const toast=m=>{const t=$("#toast");if(!t)return alert(m);t.textContent=m;t.clas
 const copy=async txt=>{try{await navigator.clipboard.writeText(txt)}catch(_){const a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove()}};
 
 /* ---- theme css, appended last so it wins ---- */
-const l=document.createElement("link");l.rel="stylesheet";l.href="./vault.css?v=7";document.head.appendChild(l);
+const l=document.createElement("link");l.rel="stylesheet";l.href="./vault.css?v=8";document.head.appendChild(l);
 
 /* ---- DATA (edit freely) ---- */
 const ARMIES=[
@@ -21,7 +21,8 @@ const HEROES=[
  {id:"archer-queen",name:"Archer Queen",role:"Ranged damage",icon:"🏹",about:"Long-range hero for precise funneling and taking out key defenses.",eq:[["Archer Puppet",""],["Invisibility Vial",""],["Giant Arrow","epic"],["Healer Puppet","epic"],["Frozen Arrow","epic"],["Magic Mirror","epic"]]},
  {id:"grand-warden",name:"Grand Warden",role:"Support",icon:"🧙",about:"Support hero whose abilities protect nearby troops at critical moments.",eq:[["Eternal Tome",""],["Life Gem",""],["Rage Gem","epic"],["Healing Tome","epic"],["Fireball","epic"],["Lavaloon Puppet","epic"]]},
  {id:"royal-champion",name:"Royal Champion",role:"Defense hunter",icon:"🛡️",about:"Mobile hero that hunts defenses and supports late-stage attacks.",eq:[["Seeking Shield",""],["Royal Gem",""],["Hog Rider Puppet",""],["Haste Vial","epic"],["Rocket Spear","epic"],["Electro Boots","epic"]]},
- {id:"minion-prince",name:"Minion Prince",role:"Air support",icon:"🦇",about:"Airborne hero that adds pressure and support to many armies.",eq:[["Henchmen Puppet",""],["Dark Orb","epic"],["Metal Pants","epic"]]}
+ {id:"minion-prince",name:"Minion Prince",role:"Air support",icon:"🦇",about:"Airborne hero that adds pressure and support to many armies.",eq:[["Henchmen Puppet",""],["Dark Orb","epic"],["Metal Pants","epic"]]},
+ {id:"dragon-duke",name:"Dragon Duke",role:"Melee brawler",icon:"🐲",about:"The sixth hero, for TH15+.",eq:[["Rocket Backpack",""],["Flame Blower",""],["Electro Fangs",""],["Heart of Fire",""],["Shock Blast",""]]}
 ];
 /* Skins: add real entries here or in skins.json as {"barbarian-king":[{"name":"...","note":"..."}]} */
 let SKINS={};
@@ -64,7 +65,7 @@ function buildHeroes(){
  const sec=$("#heroes");if(!sec)return;
  $$(":scope > :not(.section-heading)",sec).forEach(n=>n.remove());
  const g=document.createElement("div");g.className="v-grid";
- g.innerHTML=HEROES.map(h=>'<a class="v-card" href="#hero/'+h.id+'" style="text-decoration:none"><div class="v-head"><span style="font-size:44px">'+h.icon+'</span><div><h3>'+h.name+'</h3><small>'+h.role+'</small></div></div><small>'+h.eq.length+' equipment · Skins</small></a>').join("");
+ g.innerHTML=HEROES.map(h=>'<a class="v-card" href="heroes.html#'+h.id+'" style="text-decoration:none"><div class="v-head"><span style="font-size:44px">'+h.icon+'</span><div><h3>'+h.name+'</h3><small>'+h.role+'</small></div></div><small>'+h.eq.length+' equipment · Skins</small></a>').join("");
  sec.appendChild(g);
 }
 function heroPage(id,tab){
@@ -79,11 +80,34 @@ function heroPage(id,tab){
  $("#vBack",pg).onclick=()=>{location.hash="heroes"};
  $$(".v-tabs button",pg).forEach(b=>b.onclick=()=>{location.hash="hero/"+id+"/"+b.dataset.t});
 }
-function route(){
+function route(){return;
  const m=location.hash.match(/^#hero\/([\w-]+)(?:\/(skins|equipment))?/);
  if(m)heroPage(m[1],m[2]||"equipment");else{$("#vHeroPage")?.remove();document.body.style.overflow=""}
 }
 window.addEventListener("hashchange",route);
+
+
+/* ---- EVENTS + STORE (live countdowns, UTC rules) ---- */
+function nextMonthDay(d,day,h,m){let t=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),day,h,m);if(t<=d)t=Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,day,h,m);return t}
+function lastMonday(y,mo,h){const e=new Date(Date.UTC(y,mo+1,0,h));e.setUTCDate(e.getUTCDate()-((e.getUTCDay()+6)%7));return e.getTime()}
+function nextWeekly(d,dow,h){const t=new Date(d);t.setUTCHours(h,0,0,0);t.setUTCDate(t.getUTCDate()+((dow-t.getUTCDay()+7)%7));if(t<=d)t.setUTCDate(t.getUTCDate()+7);return t.getTime()}
+function schedule(){
+ const n=new Date(),y=n.getUTCFullYear(),mo=n.getUTCMonth(),now=+n;
+ const cgS=Date.UTC(y,mo,22,8),cgE=Date.UTC(y,mo,28,8),cgActive=now>=cgS&&now<cgE;
+ const cgNext=cgActive?cgE:(now<cgS?cgS:Date.UTC(y,mo+1,22,8));
+ const rwS=nextWeekly(n,5,7),rwEnd=rwS-7*864e5+3*864e5,rwActive=now<rwEnd&&now>=rwEnd-3*864e5;
+ let lr=lastMonday(y,mo,5);if(lr<=now)lr=lastMonday(y,mo+1,5);
+ const cwlS=Date.UTC(y,mo,1,8),cwlE=Date.UTC(y,mo,11,8),cwlActive=now>=cwlS&&now<cwlE;
+ return[["Trader Refresh",nextWeekly(n,1,8),0],["Raid Weekend",rwActive?rwEnd:rwS,rwActive],["Clan Games",cgNext,cgActive],["League Reset",lr,0],["Season End",nextMonthDay(n,1,8,0),0],["CWL",cwlActive?cwlE:nextMonthDay(n,1,8,0),cwlActive]];
+}
+const fmt=ms=>{const s=Math.max(0,Math.floor(ms/1000)),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);return(d?d+"d ":"")+h+"h "+m+"m"};
+function buildEvents(){
+ const sec=$("#events");if(!sec)return;
+ sec.innerHTML='<div class="section-heading"><div><h2>Recurring <span>In-Game Events</span></h2><p class="section-subtitle">Live countdowns. Times follow UTC schedules.</p></div></div><div class="v-grid" id="vEv" style="grid-template-columns:repeat(2,1fr)"></div><p class="form-note">Based on the usual schedule. Supercell can change dates, so check in-game.</p>'+
+ '<div class="v-card" style="margin-top:16px"><div class="v-head"><span style="font-size:36px">💎</span><div><h3 style="margin:0">Supercell Store</h3><small>Skins, scenery and offers. Purchases happen on the official store.</small></div></div><a class="v-btn" style="text-decoration:none;justify-self:stretch;text-align:center" href="https://store.supercell.com/clashofclans" target="_blank" rel="noopener">Visit official store</a></div>';
+ const draw=()=>{$("#vEv").innerHTML=schedule().map(e=>'<div class="v-card" style="text-align:center;gap:4px"><b style="color:var(--g)">'+e[0]+(e[2]?' <span class="v-GREAT">(Active)</span>':'')+'</b><span style="font:800 20px system-ui">'+fmt(e[1]-Date.now())+'</span></div>').join("")};
+ draw();setInterval(draw,30000);
+}
 
 /* ---- OTP cartoony loader ---- */
 function authLoader(){
@@ -98,7 +122,7 @@ function authLoader(){
 }
 
 function init(){
- buildArmies();buildScenes();buildHeroes();authLoader();route();
+ buildArmies();buildScenes();buildHeroes();authLoader();buildEvents();
  fetch("./skins.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(j=>{SKINS=j;route()}).catch(()=>{});
 }
 /* run after app.js has built its UI */
