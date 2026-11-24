@@ -230,6 +230,8 @@
   .atk-card ol{margin:7px 0 0;padding-left:17px;font-size:12px;line-height:1.5;color:#5c3f1f}
   .atk-card ol li{margin-bottom:4px}
   .atk-risk{margin:0;font-size:12px;line-height:1.45;color:#8a3a24;background:#ffe9e2;border:2px solid #e5b0a0;border-radius:9px;padding:6px 8px}
+  .atk-copy{justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 12px;border:2px solid #5a3300;border-radius:10px;background:linear-gradient(var(--cx-g1),var(--cx-g2));color:#4a2c12;font:400 14px var(--cx-title);box-shadow:0 3px 0 var(--cx-g3);cursor:pointer}
+  .atk-copy:active{transform:translateY(2px);box-shadow:0 1px 0 var(--cx-g3)}
   .atk-list{display:grid;gap:10px}
   .atk-row{display:grid;gap:5px;padding:10px 11px;border:2px solid #d6b270;border-radius:12px;background:#fffaf0;min-width:0}
   .atk-row-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -330,6 +332,7 @@
           ${extra || ""}
           <details><summary>Attack plan</summary><ol>${a.plan.map(step => `<li>${esc(step)}</li>`).join("")}</ol></details>
           <p class="atk-risk"><b>Watch out:</b> ${esc(a.risks.join(" ") || "No major counter listed.")}</p>
+          <button type="button" class="atk-copy" data-plan="${esc(a.id)}">⧉ Copy attack plan</button>
         </div>
       </article>`;
     };
@@ -434,6 +437,35 @@
       renderThs();
       renderAll();
       $("#atkPicksTitle").textContent = "3 · Best, hot and recommended for Town Hall " + th;
+    });
+    box.addEventListener("click", async event => {
+      const button = event.target.closest("[data-plan]");
+      if (!button) return;
+      const army = ARMIES.find(a => a.id === button.dataset.plan);
+      if (!army) return;
+      const text = [
+        army.name + " — TH " + army.minTh + "+" + (army.maxTh ? "–" + army.maxTh : "") + " · " + army.type + " · " + army.difficulty,
+        "Army: " + army.comp,
+        "Spells: " + army.spells,
+        "Heroes: " + army.heroes,
+        "Plan:",
+        ...army.plan.map((step, i) => (i + 1) + ". " + step),
+        "Watch out: " + army.risks.join(" ")
+      ].join("\n");
+      let ok = false;
+      try { await navigator.clipboard.writeText(text); ok = true; } catch (_) {
+        try {
+          const area = document.createElement("textarea");
+          area.value = text;
+          area.setAttribute("readonly", "");
+          area.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+          document.body.appendChild(area);
+          area.select();
+          ok = document.execCommand("copy");
+          area.remove();
+        } catch (_) { ok = false; }
+      }
+      document.dispatchEvent(new CustomEvent("pdx:toast", { detail: ok ? "Attack plan copied — paste it in clan chat." : "Couldn't copy. Select the plan text and copy it by hand." }));
     });
     document.getElementById("atkArmySelect").addEventListener("change", event => { armyId = event.target.value; renderAll(); });
     document.getElementById("atkTraitSelect").addEventListener("change", event => { trait = event.target.value; renderAll(); });

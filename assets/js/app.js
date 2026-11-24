@@ -173,14 +173,35 @@
     return res.data;
   }
 
+  /* Full-width letters and small-caps "fonts" are common in game names. Fold
+     them on this side too, so a search works even if the deployed search
+     function is older than the normalization below. */
+  const SMALL_CAPS = "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢꜰꜱ";
+  const SMALL_CAPS_PLAIN = "abcdefghijklmnopqrstuvwxyzfs";
+  function foldName(value) {
+    const chars = Array.from(String(value == null ? "" : value), ch => {
+      const i = SMALL_CAPS.indexOf(ch);
+      return i === -1 ? ch : SMALL_CAPS_PLAIN.charAt(i);
+    }).join("");
+    return chars.normalize("NFKD").replace(/\p{M}/gu, "").toLocaleLowerCase();
+  }
+  function normalizeNameQuery(value) {
+    const converted = Array.from(String(value == null ? "" : value), ch => {
+      const i = SMALL_CAPS.indexOf(ch);
+      return i === -1 ? ch : SMALL_CAPS_PLAIN.charAt(i);
+    }).join("");
+    return converted.normalize("NFKC").trim().replace(/\s+/g, " ");
+  }
+
   async function findInIndex(name, exact, th) {
     const r = await callEdge({
       action: "findPlayers",
       name: name,
       exact: !!exact,
-      th: th ? Number(th) : null
+      th: th ? Number(th) : null,
+      limit: 1000
     });
-    if (r.status === 200 && r.data) return r.data.items || [];
+    if (r.status === 200 && r.data) return r.data;
     if (r.status === 503) {
       throw new ApiError("no-index", "The saved player index is not available yet. Check the Supabase SQL setup and deploy the latest coc Edge Function.");
     }
@@ -381,6 +402,10 @@ html.cx .cx-check input{flex:none;width:26px;height:26px;min-height:0;accent-col
 .cx-bar i{display:block;height:100%;background:linear-gradient(var(--cx-n1),var(--cx-n2))}
 .cx-actions{display:flex;flex-wrap:wrap;gap:8px;padding:0 12px 14px}
 .cx-list{display:grid;gap:10px;margin-top:14px}
+.cx-more-results{display:grid;gap:8px;margin-top:14px;padding:12px;border:2px dashed #b98a4e;border-radius:14px;background:rgba(255,255,255,.45)}
+.cx-more-results p{margin:0;font-size:13px;font-weight:800;color:#5c3f1f;line-height:1.45}
+.cx-more-results .cx-help{font-weight:600;color:#6f5130}
+.cx-more-results .cx-btn{justify-self:start}
 .cx-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;background:#fffaf0;border:2px solid var(--cx-p3);border-radius:14px}
 .cx-row img{width:40px;height:48px;object-fit:contain}
 .cx-row .grow{flex:1;min-width:150px}
@@ -557,13 +582,15 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
 html.cx .site-header{height:auto!important;min-height:78px;flex-wrap:nowrap;gap:10px;padding-top:8px;padding-bottom:8px}
 html.cx .brand{flex:0 0 auto}
 html.cx .brand small{white-space:nowrap}
-html.cx .main-nav{flex-wrap:nowrap!important;gap:2px!important;min-width:0}
-html.cx .main-nav a{white-space:nowrap;padding:7px 9px;font-size:14px;line-height:1.1}
-html.cx .header-actions{gap:8px;margin-left:4px;flex:0 0 auto}
+html.cx .site-header{justify-content:flex-start}
+html.cx .main-nav{margin-left:auto;flex-wrap:nowrap!important;gap:2px!important;min-width:0}
+html.cx .main-nav a{display:inline-flex;align-items:center;white-space:nowrap;padding:7px 9px;font-size:14px;line-height:1.1}
+html.cx .main-nav a .nav-ico{display:inline-block;margin-right:5px;font-size:15px;line-height:1}
+/* Profile button sits right next to the nav instead of floating away from it. */
+html.cx .header-actions{gap:8px;margin-left:10px;margin-right:0;flex:0 0 auto}
 @media(max-width:1260px){html.cx .brand small{display:none}html.cx .main-nav a{font-size:13px;padding:6px 7px}}
-@media(max-width:1060px){html.cx .main-nav a{font-size:12px;padding:6px 5px;letter-spacing:0}}
-@media(max-width:980px){html.cx .main-nav a:nth-child(7){display:none}}
-@media(max-width:880px){html.cx .main-nav a:nth-child(6){display:none}}
+@media(max-width:1180px){html.cx .main-nav a{padding:6px 6px;font-size:13px}html.cx .main-nav a .nav-ico{margin-right:3px;font-size:14px}}
+@media(max-width:1060px){html.cx .main-nav a{font-size:12px;padding:6px 4px;letter-spacing:0}html.cx .main-nav a .nav-ico{margin-right:2px;font-size:13px}}
 @media(max-width:760px){html.cx .site-header{height:66px;min-height:66px}html.cx .main-nav{flex-wrap:wrap!important;gap:0!important}html.cx .main-nav a{font-size:17px!important;padding:13px 8px!important;white-space:normal}}
 
 /* ---------- Clash Heroes archive card ---------- */
@@ -838,9 +865,37 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
       }
     }
 
+    /* ---- shared result helpers: one search can span several index pages ---- */
+    let lastSearch = null;
+    const toHits = items => (items || []).map(i => ({
+      tag: i.tag, name: i.name, th: i.th, trophies: i.trophies,
+      role: i.role || "", match: i.match_type || "",
+      clan: (i.clan_memberships || []).map(c => c.clan_name || c.clan_tag).filter(Boolean).join(", ") || i.clan_name || i.clan_tag || ""
+    }));
+    const sortHits = (hits, q) => {
+      // Neutral ordering: saved status is never considered. Name-match quality
+      // first, then alphabetically so equal matches have a predictable order.
+      const queryName = foldName(q).replace(/[^\p{L}\p{N}]/gu, "");
+      const matchScore = name => {
+        const candidate = foldName(name).replace(/[^\p{L}\p{N}]/gu, "");
+        if (candidate === queryName) return 0;
+        if (candidate.startsWith(queryName)) return 1;
+        if (candidate.includes(queryName)) return 2;
+        return 3;
+      };
+      hits.sort((a, b) => matchScore(a.name) - matchScore(b.name) ||
+        String(a.name || "").localeCompare(String(b.name || ""), undefined, { sensitivity: "base" }) ||
+        String(a.tag || "").localeCompare(String(b.tag || "")));
+      return hits;
+    };
+    const paintHits = (hits, q, note) => {
+      out.innerHTML = '<div class="cx-list">' + hits.map(playerRow).join("") + "</div>" + (note || "");
+    };
+
     pForm.addEventListener("submit", async e => {
       e.preventDefault();
-      const q = $("#cxPQ", box).value.trim();
+      const typed = $("#cxPQ", box).value.trim();
+      const q = normalizeNameQuery(typed);
       const exact = $("#cxExact", box).checked;
       const thv = $("#cxPTH", box).value;
 
@@ -857,50 +912,86 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
         say("That player tag doesn't look right. Check the tag and try again.", "err");
         return;
       }
-      if (q.length < 2) {
-        say("Enter at least 2 characters for a player name, or use the player tag.", "err");
+      // Emoji, symbols and small-caps fonts are folded out for the match,
+      // so "⚡ᴄʜɪᴇꜰ" and "chief" reach the same players.
+      const folded = foldName(q).replace(/[^\p{L}\p{N}]/gu, "");
+      if (!folded) {
+        say("That search has no letters or numbers. Add the player name or a player tag.", "err");
         return;
       }
 
       lock(pForm, true);
       out.innerHTML = "";
+      lastSearch = null;
       try {
-        say("Searching all available indexed player records…");
-        const indexed = await findInIndex(q, exact, thv);
-        const hits = indexed.map(i => ({
-          tag: i.tag, name: i.name, th: i.th, trophies: i.trophies,
-          role: i.role || "", clan: (i.clan_memberships || []).map(c => c.clan_name || c.clan_tag).filter(Boolean).join(", ") || i.clan_name || i.clan_tag || ""
-        }));
-
-        // Neutral ordering: saved status is never considered. Sort by name-match
-        // quality, then alphabetically so equal matches have a predictable order.
-        const foldName = value => String(value || "").normalize("NFKC").toLocaleLowerCase();
-        const queryName = foldName(q);
-        const matchScore = name => {
-          const candidate = foldName(name);
-          if (candidate === queryName) return 0;
-          if (candidate.startsWith(queryName)) return 1;
-          if (candidate.includes(queryName)) return 2;
-          return 3;
-        };
-        hits.sort((a, b) => matchScore(a.name) - matchScore(b.name) ||
-          String(a.name || "").localeCompare(String(b.name || ""), undefined, { sensitivity: "base" }) ||
-          String(a.tag || "").localeCompare(String(b.tag || "")));
+        say("Searching every player record in the shared index…");
+        const data = await findInIndex(q, exact, thv);
+        const items = (data && data.items) || [];
+        const total = Number(data && data.total);
+        const found = Number.isFinite(total) ? total : items.length;
+        const hits = sortHits(toHits(items), q);
 
         if (!hits.length) {
-          say("No indexed players matched. Search a clan and open its Members list to add those players to the shared directory.", "err");
-        } else {
-          // Display every result returned by the index; no saved-player preference.
-          out.innerHTML = '<div class="cx-list">' + hits.map(playerRow).join("") + "</div>";
-          say(hits.length + (hits.length === 1 ? " matching player found." : " matching players found.") +
-            " Results are ordered by name match, not saved status. Compare Town Hall, player tag and clan to identify the right account.", "ok");
+          say("No players in the shared index matched \"" + q + "\". Try fewer letters, a different spelling, or open a clan and add its Members to the index.", "err");
+          return;
         }
+
+        const more = found > hits.length;
+        lastSearch = { q, exact, thv, found };
+        const note = more
+          ? '<div class="cx-more-results"><p>' + found + ' players match, but one page of the index stops at ' + hits.length + '.</p>' +
+            '<button type="button" class="cx-btn blue" id="cxLoadAll">Load all ' + found + ' matches</button>' +
+            '<p class="cx-help">Loads every Town Hall page and merges the results. It can take a few seconds.</p></div>'
+          : "";
+        paintHits(hits, q, note);
+        say((more ? "Showing " + hits.length + " of " + found : String(found)) +
+          (found === 1 ? " matching player found." : " matching players found.") +
+          " Matches are name-folded: capitals, small letters, full-width fonts and emoji are ignored, and numbers still count." +
+          (more ? " Load all to see every match." : ""), "ok");
       } catch (err) {
         say(errText(err), "err");
       } finally {
         lock(pForm, false);
       }
     });
+
+    /* The index returns at most 100 rows per call. When more players match,
+       ask again one Town Hall at a time and merge the pages, so a name can be
+       traced across the whole directory instead of the first 100 rows. */
+    async function loadAllMatches(button) {
+      if (!lastSearch) return;
+      const { q, exact, thv, found } = lastSearch;
+      if (thv) {
+        say("That Town Hall filter already returns every match the index can serve in one page. Remove the filter or add more letters to narrow it down.", "err");
+        return;
+      }
+      const label = button.textContent;
+      button.disabled = true;
+      button.textContent = "Loading every match…";
+      const seen = new Map();
+      const levels = Array.from({ length: 19 }, (_, i) => 19 - i);
+      let failed = 0;
+      try {
+        for (let i = 0; i < levels.length; i += 4) {
+          const batch = levels.slice(i, i + 4);
+          const pages = await Promise.all(batch.map(n => findInIndex(q, exact, n).catch(() => null)));
+          pages.forEach(page => {
+            if (!page) { failed++; return; }
+            toHits(page.items).forEach(hit => { if (hit.tag) seen.set(hit.tag, hit); });
+          });
+          say("Loading every match… " + Math.min(i + 4, levels.length) + "/19 Town Halls, " + seen.size + " found so far.");
+        }
+        const hits = sortHits([...seen.values()], q);
+        out.innerHTML = '<div class="cx-list">' + hits.map(playerRow).join("") + "</div>";
+        say("Loaded " + hits.length + " of " + found + " matching players across every Town Hall." +
+          (hits.length < found ? " A single Town Hall can still hold more than one page; narrow the search with fewer common letters." : "") +
+          (failed ? " " + failed + " page(s) timed out — search again to fill the gap." : ""), "ok");
+      } catch (err) {
+        button.disabled = false;
+        button.textContent = label;
+        say(errText(err), "err");
+      }
+    }
 
     cForm.addEventListener("submit", async e => {
       e.preventDefault();
@@ -971,6 +1062,8 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
         }
         return;
       }
+      const loadAll = e.target.closest("#cxLoadAll");
+      if (loadAll) { loadAllMatches(loadAll); return; }
       const c = e.target.closest("[data-copy]");
       if (c) { toast((await copyText(c.dataset.copy)) ? "Copied " + c.dataset.copy : "Couldn't copy. Copy it by hand."); return; }
       const v = e.target.closest("[data-view]");
@@ -1067,7 +1160,7 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
       '<div class="cx-lay-body"><div class="cx-lay-meta"><span class="cx-pill">' + (x.kind === "base" ? pre(x.v) : "TH ") + esc(x.th) + '</span><span class="cx-pill">' + esc(x.cat) + "</span></div>" +
       "<h3>" + esc(x.name) + "</h3>" + (x.note ? "<p>" + esc(x.note) + "</p>" : "") +
       (metaLine(x) ? '<div class="cx-meta2">' + metaLine(x) + "</div>" : "") +
-      '<button class="cx-btn green sm" type="button" data-i="' + LAYOUTS.indexOf(x) + '">Copy link</button></div></article>';
+      '<button class="cx-btn green sm" type="button" data-i="' + LAYOUTS.indexOf(x) + '">Copy layout</button></div></article>';
 
     const markOn = (wrap, attr, val) => $$("[" + attr + "]", wrap).forEach(b => {
       const on = b.getAttribute(attr) === val;
@@ -1139,12 +1232,18 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
 
     async function copyLayout(x) {
       if (!x) return;
-      if (isGameLink(x.link)) {
-        toast((await copyText(x.link)) ? "Link copied. Paste it in your browser to open Clash of Clans." : "Couldn't copy. Try again.");
-        return;
-      }
       const page = location.origin + location.pathname + "#bases";
-      toast((await copyText(page)) ? "Page link copied. This sample has no in-game link yet." : "Couldn't copy the link.");
+      const label = x.kind === "army" ? "Army layout" : "Base layout";
+      const text = [
+        label + ": " + x.name,
+        (x.kind === "base" ? pre(x.v) : "TH ") + x.th + " · " + x.cat + (x.tag ? " · " + x.tag : ""),
+        x.note || "",
+        isGameLink(x.link) ? x.link : "PekkaDex: " + page
+      ].filter(Boolean).join("\n");
+      const ok = await copyText(text);
+      toast(ok
+        ? label + " copied — paste it in clan chat or a notes app."
+        : "Couldn't copy. Select the layout text and copy it by hand.");
     }
 
     /* ----- detail sheet (tap a card picture) ----- */
@@ -1170,7 +1269,7 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
         '<p class="cx-help">' + (real
           ? "Copy the link and open it on the phone that has Clash of Clans, or tap Open in game."
           : "This is a sample. Add a real in-game link to this layout and the button will copy it.") + "</p>";
-      $("#cxSheetCopy", sheet).textContent = x.kind === "army" ? "Copy army link" : "Copy base link";
+      $("#cxSheetCopy", sheet).textContent = x.kind === "army" ? "Copy army layout" : "Copy base layout";
       const open = $("#cxSheetOpen", sheet);
       open.hidden = !real;
       if (real) open.href = x.link;
@@ -1193,7 +1292,7 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
           '<div class="cx-sheet-card"><button type="button" class="cx-sheet-x" data-x aria-label="Close">✕</button>' +
           '<div class="cx-sheet-art" id="cxSheetArt"></div><div id="cxSheetBody"></div>' +
           '<div class="cx-sheet-nav"><button type="button" class="cx-btn blue sm" data-nav="-1">‹ Previous</button><button type="button" class="cx-btn blue sm" data-nav="1">Next ›</button></div>' +
-          '<button type="button" class="cx-btn gold big" id="cxSheetCopy">Copy link</button>' +
+          '<button type="button" class="cx-btn gold big" id="cxSheetCopy">Copy layout</button>' +
           '<a class="cx-btn green big" id="cxSheetOpen" target="_blank" rel="noopener noreferrer" hidden>Open in game</a></div>';
         sheet.addEventListener("click", e => {
           if (e.target === sheet || e.target.closest("[data-x]")) { closeSheet(); return; }
@@ -1345,8 +1444,8 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
   /* ============ 10. Mobile bottom menu (game style) ============ */
   function buildTabbar() {
     if ($(".cx-tabbar")) return;
-    const items = [["home", "🏠", "Home"], ["player-finder", "🔍", "Players"], ["bases", "🏰", "Bases"],
-      ["attacks", "⚔️", "Attack"], ["heroes", "🦸", "Heroes"], ["account", "👤", "Account"]];
+    const items = [["home", "🏰", "Home"], ["player-finder", "🔍", "Players"], ["bases", "🏡", "Bases"],
+      ["attacks", "⚔️", "Attack"], ["heroes", "📖", "Heroes"], ["account", "👤", "Account"]];
     const nav = document.createElement("nav");
     nav.className = "cx-tabbar";
     nav.setAttribute("aria-label", "Quick navigation");
@@ -1420,6 +1519,8 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
     safe("tabbar", buildTabbar);
     safe("copy", plainCopy);
     safe("disclaimer", addDisclaimer);
+    /* Other page scripts can ask for the same toast with a pdx:toast event. */
+    document.addEventListener("pdx:toast", event => toast(String((event && event.detail) || "")));
     console.info("PekkaDex app.js loaded. Authentication and Supabase configuration were not changed.");
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});

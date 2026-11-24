@@ -41,6 +41,8 @@
   }
 
   /* ------------------------------------------------------------ game UI */
+  const GAME_LOGIN = "https://id.supercell.com/";
+
   function buildGameScreen() {
     if (!panel || $("authGameScreen")) return;
     const s = document.createElement("div");
@@ -49,24 +51,23 @@
     s.innerHTML =
       '<button class="small-action" id="gameBack" type="button">← Back</button>' +
       '<h3>Open with a game</h3>' +
-      '<p>Sign in with your Clash of Clans account. Your Player Tag is public; the API token is only used once to prove the account is yours.</p>' +
+      '<p>One click opens the official Clash of Clans login. Sign in with your Supercell ID there and come back to PekkaDex.</p>' +
       '<div class="game-hero" aria-hidden="true">🎮</div>' +
-      '<form id="gameForm" novalidate>' +
-        '<label class="cx-field"><span>Your Player Tag</span><input id="gameTag" type="text" placeholder="#2PP..." maxlength="15" autocomplete="off" autocapitalize="characters" required></label>' +
-        '<label class="cx-field"><span>API Token <em>(from the game settings)</em></span><input id="gameToken" type="password" placeholder="Paste your API token" autocomplete="off" spellcheck="false"></label>' +
-        '<p class="form-note">In Clash of Clans: Settings → More Settings → API Token → Show. It is used once and never stored.</p>' +
-        '<button class="button button-green" id="gameVerify" type="submit">Verify and sign in</button>' +
-      '</form>' +
-      '<div class="auth-divider"><span>OR</span></div>' +
-      '<button class="small-action" id="gameTagOnly" type="button">Continue with Player Tag only</button>' +
-      '<p class="form-note">Player Tag only creates a profile on this device. Stats stay visible, but the account is marked as unverified.</p>';
+      '<a class="button button-green" id="gameOpen" href="' + GAME_LOGIN + '" target="_blank" rel="noopener noreferrer">Open Clash of Clans login ↗</a>' +
+      '<p class="form-note">That page belongs to Supercell. PekkaDex never asks for your Supercell password or an API token.</p>' +
+      '<div class="auth-divider"><span>BACK IN PEKKADEX</span></div>' +
+      '<button class="button button-green" id="gameContinue" type="button">Continue with PekkaDex</button>' +
+      '<button class="small-action" id="gameEmail" type="button">Use an email code instead</button>' +
+      '<p class="form-note" id="gameNote">Supercell does not share game logins with fan sites, so the PekkaDex account keeps its own sign-in. Your profile stays private.</p>';
     panel.insertBefore(s, $("authMessage") || null);
 
     $("gameBack").addEventListener("click", () => { show("method"); say(""); });
-    $("gameTagOnly").addEventListener("click", () => runTagOnly($("gameTagOnly")));
-    $("gameForm").addEventListener("submit", event => {
-      event.preventDefault();
-      verifyGame($("gameVerify"));
+    $("gameEmail").addEventListener("click", () => { show("email"); say(""); });
+    $("gameContinue").addEventListener("click", () => {
+      const local = window.PDXIdentity && window.PDXIdentity.read();
+      if (local) { location.href = "./profile.html"; return; }
+      show("email");
+      say("Choose a PekkaDex sign-in to finish your account. The game login opens in its own tab.");
     });
   }
 
@@ -83,81 +84,6 @@
       throw new Error("Clash of Clans returned an error (" + res.data.status + "). Try again in a moment.");
     }
     return res.data.data;
-  }
-
-  async function runTagOnly(button) {
-    const tag = normTag($("gameTag") ? $("gameTag").value : "");
-    if (!tag || !validTag(tag)) { say("Enter a valid Player Tag, for example #2PP."); return; }
-    if (button) button.disabled = true;
-    say("Looking up " + tag + "…");
-    try {
-      const player = await playerLookup(tag);
-      window.PDXIdentity.write({ tag: player.tag || tag, name: player.name || tag, kind: "local", townHall: player.townHallLevel || null });
-      say("Profile saved on this device. Opening your profile…");
-      window.setTimeout(() => { location.href = "./profile.html"; }, 450);
-    } catch (error) {
-      say(error.message || "Could not load that player.");
-    } finally {
-      if (button) button.disabled = false;
-    }
-  }
-
-  async function verifyGame(button) {
-    const tag = normTag($("gameTag").value);
-    const token = $("gameToken").value.trim();
-    if (!validTag(tag)) { say("Enter a valid Player Tag, for example #2PP."); return; }
-    if (!token) { say("Paste the API token from the game settings, or continue with Player Tag only."); return; }
-    if (button) button.disabled = true;
-    say("Checking with Clash of Clans…");
-    try {
-      const player = await playerLookup(tag);
-      const res = await withTimeout(
-        client.functions.invoke("game-login", { body: { tag: tag, token: token } }),
-        25000,
-        'Game verification is taking too long. Try again, or use "Continue with Player Tag only".'
-      );
-      if (res.error || !res.data) throw new Error('Game verification is unavailable right now. Use "Continue with Player Tag only" or try again later.');
-      if (!res.data.ok) throw new Error(res.data.error || "The API token didn't match that account.");
-
-      /* The token already proved the account. Turning the server's one-time hash
-         into a Supabase session is a bonus (syncing the profile), so a stale or
-         already-used link must never cancel a successful verification. */
-      let sessionNote = "";
-      if (res.data.token_hash) {
-        try {
-          const verify = await client.auth.verifyOtp({ token_hash: res.data.token_hash, type: "magiclink" });
-          if (verify.error) sessionNote = " Signed in on this device — the email link had expired, so cloud sync is off until you sign in again.";
-        } catch (_) {
-          sessionNote = " Signed in on this device — the email link had expired, so cloud sync is off until you sign in again.";
-        }
-      }
-
-      $("gameToken").value = "";
-      const name = player.name || res.data.name || tag;
-      window.PDXIdentity.write({ tag: player.tag || tag, name: name, kind: "verified", townHall: player.townHallLevel || null });
-
-      const { data: sessionData } = await client.auth.getSession();
-      const activeSession = sessionData && sessionData.session;
-      if (activeSession && activeSession.user) {
-        try {
-          await client.from("profiles").upsert({
-            id: activeSession.user.id,
-            display_name: name,
-            player_tag: player.tag || tag,
-            player_name: name,
-            player_tag_verified: true
-          }, { onConflict: "id" });
-        } catch (_) { /* profile row is optional; the local identity is what the site reads */ }
-      }
-
-      say("Verified. Welcome, " + name + "!" + sessionNote);
-      show("in");
-      session(activeSession);
-    } catch (error) {
-      say(error.message || "Couldn't verify that account. Try again.");
-    } finally {
-      if (button) button.disabled = false;
-    }
   }
 
   /* --------------------------------------------------------- email flow */
@@ -210,7 +136,12 @@
   }
 
   buildGameScreen();
-  $("authGameButton").addEventListener("click", () => { show("game"); say(""); });
+  $("authGameButton").addEventListener("click", () => {
+    show("game");
+    say("");
+    /* A direct click is allowed to open the game login in its own tab. */
+    try { window.open(GAME_LOGIN, "_blank", "noopener"); } catch (_) {}
+  });
   $("authEmailButton").addEventListener("click", () => { show("email"); say(""); });
   $("authEmailBack").addEventListener("click", () => { show("method"); say(""); });
   $("authModeToggle").addEventListener("click", () => {

@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/heroes.css?v=5">
+  <link rel="stylesheet" href="./assets/css/heroes.css?v=7">
 </head>
 <body class="heroes-page">
   <header class="sitebar">
@@ -28,7 +28,7 @@
     <section class="intro">
       <p class="eyebrow">THE GRAND WARDEN'S ARCHIVE</p>
       <h1>Clash Heroes Encyclopedia</h1>
-      <p>Every hero, their gear, their skins and the sceneries you can collect. Pick a portrait to open its entry.</p>
+      <p>Every hero, their gear, their skins and the sceneries you can collect — written out below, entry by entry.</p>
     </section>
 
     <nav class="primary-tabs" role="tablist" aria-label="Encyclopedia sections">
@@ -40,26 +40,10 @@
     <!-- HEROES -->
     <section id="heroArea" class="paper-panel" role="tabpanel">
       <div class="panel-heading">
-        <div><p class="eyebrow">CHOOSE YOUR CHAMPION</p><h2>Hero Collection</h2></div>
-        <p class="muted">Tap a hero portrait to view its profile.</p>
+        <div><p class="eyebrow">THE GRAND WARDEN'S ARCHIVE</p><h2>Hero Encyclopedia</h2></div>
+        <p class="muted">Every hero in one archive — no picker, just the entries.</p>
       </div>
-      <div class="hero-picks" id="heroPicks" role="group" aria-label="Choose a hero"></div>
-      <div class="hero-summary">
-        <div class="hero-avatar" id="heroAvatar" aria-hidden="true"></div>
-        <div class="hero-summary-copy">
-          <p class="eyebrow">HERO PROFILE</p>
-          <h2 id="heroName">Barbarian King</h2>
-          <span class="role-pill" id="heroRole">Ground tank</span>
-          <p id="heroDesc"></p>
-          <div class="hero-meta" id="heroMeta"></div>
-        </div>
-      </div>
-      <div class="subtabs" id="heroTabs" role="tablist" aria-label="Hero details">
-        <button class="subtab is-active" type="button" data-hero-tab="overview" role="tab" aria-selected="true">Overview</button>
-        <button class="subtab" type="button" data-hero-tab="equipment" role="tab" aria-selected="false">Equipment</button>
-        <button class="subtab" type="button" data-hero-tab="skins" role="tab" aria-selected="false">Skins</button>
-      </div>
-      <div id="heroContent" class="content-area" aria-live="polite"></div>
+      <div id="heroContent" class="hero-entries"></div>
     </section>
 
     <!-- EQUIPMENT -->
@@ -98,6 +82,7 @@
   <script src="./assets/js/supabase-config.js?v=13"></script>
   <script src="./assets/js/profile-nav.js?v=3"></script>
   <script src="./assets/js/art-data.js?v=2"></script>
-  <script src="./assets/js/heroes.js?v=8"></script>
+  <script src="./assets/js/equipment-levels.js?v=1"></script>
+  <script src="./assets/js/heroes.js?v=9"></script>
 </body>
 </html>

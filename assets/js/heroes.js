@@ -261,22 +261,46 @@
       </div>`).join("")}</div>`;
   }
 
-  /* Equipment level caps: Commons upgrade to 18, Epics to 27. Only the real
-     level ranges are shown — per-level damage differs per piece and is not
-     published in the game, so we do not invent a number for it. */
+  /* Equipment level caps: Commons upgrade to 18, Epics to 27. */
   const EQ_CAPS = { Common: 18, Epic: 27 };
   const eqMax = rarity => EQ_CAPS[rarity] || EQ_CAPS.Common;
+
+  /* Real per-level boosts and ore costs, generated from the Clash of Clans
+     Wiki by tools/fetch-equipment-levels.py. Nothing here is estimated: the
+     table above each piece is exactly what the game's upgrade screen shows. */
+  const EQ_LEVELS = (window.PDX_EQ_LEVELS && window.PDX_EQ_LEVELS.items) || {};
+
+  function eqLevelTable(name) {
+    const data = EQ_LEVELS[name];
+    if (!data || !data.rows || !data.rows.length) {
+      return `<p class="eq-missing">Level-by-level boosts and ore costs for this piece are not published in the wiki yet, so only its level range is shown.</p>`;
+    }
+    const ore = data.columns.map(c => /ore/i.test(c));
+    const head = data.columns.map(c => `<th scope="col">${esc(c)}</th>`).join("");
+    const body = data.rows.map(row => `<tr>${row.map((v, i) =>
+      `<td${ore[i] ? ' class="eq-ore"' : ""}>${esc(v)}</td>`).join("")}</tr>`).join("");
+    return `<details class="eq-table">
+      <summary>DPS, boosts &amp; ore cost per level <span>${data.rows.length} levels</span></summary>
+      <div class="eq-table-scroll">
+        <table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>
+      </div>
+      <p class="eq-source">Every number comes from the <a href="https://clashofclans.fandom.com/wiki/${encodeURIComponent(name.replace(/ /g, "_"))}" target="_blank" rel="noopener noreferrer">Clash of Clans Wiki</a>. “—” means the upgrade costs no ore of that type.</p>
+    </details>`;
+  }
 
   function equipmentMarkup(h) {
     return `<div class="equipment-grid">${h.equipment.map(([name, rarity, icon, desc]) => `
       <article class="equipment-card" data-rarity="${rarity}">
-        <span class="eq-icon" aria-hidden="true">${icon}${dropIn("equipment", name, name)}</span>
-        <div>
-          <b>${esc(name)}</b>
-          <span class="rarity ${rarity.toLowerCase()}">${esc(rarity)}</span>
-          <span class="eq-levels">Lv 1–${eqMax(rarity)}</span>
-          <small>${esc(desc)}</small>
+        <div class="eq-head">
+          <span class="eq-icon" aria-hidden="true">${icon}${dropIn("equipment", name, name)}</span>
+          <div class="eq-info">
+            <b>${esc(name)}</b>
+            <span class="rarity ${rarity.toLowerCase()}">${esc(rarity)}</span>
+            <span class="eq-levels">Lv 1–${eqMax(rarity)}</span>
+            <small>${esc(desc)}</small>
+          </div>
         </div>
+        ${eqLevelTable(name)}
       </article>`).join("")}</div>`;
   }
 
@@ -300,37 +324,42 @@
     return `<div class="skin-grid">${h.skins.map((skin, i) => skinCardMarkup(h, skin, i === 0)).join("")}</div>`;
   }
 
+  /* The Heroes tab is the encyclopedia itself: one full entry per hero, in
+     page order, with no portrait picker squeezed above it. */
+  function equipmentChips(h) {
+    return `<div class="eq-chip-list">${h.equipment.map(([name, rarity, icon]) =>
+      `<span class="eq-chip ${rarity.toLowerCase()}"><span aria-hidden="true">${icon}</span>${esc(name)}</span>`).join("")}</div>`;
+  }
+
   function renderProfile() {
-    const h = heroById(selected);
-    $("#heroAvatar").innerHTML = portrait(h);
-    $("#heroName").textContent = h.name;
-    $("#heroRole").textContent = h.role;
-    $("#heroDesc").textContent = h.bio;
-    $("#heroMeta").innerHTML = `<span>Unlocked at ${esc(h.unlock)}</span><span>Targets: ${esc(h.target)}</span><span>Speed: ${esc(h.speed)}</span>`;
-    $$("[data-hero-tab]").forEach(b => {
-      const on = b.dataset.heroTab === heroTab;
-      b.classList.toggle("is-active", on);
-      b.setAttribute("aria-selected", String(on));
-    });
     const content = $("#heroContent");
-    if (heroTab === "equipment") {
-      content.innerHTML = `<h3 class="section-title">Equipment available to ${esc(h.name)}</h3>${equipmentMarkup(h)}
-        <div class="level-note"><h3>How equipment works</h3><p>Each hero can carry two pieces of equipment. Commons start unlocked, Epics are earned through events and the shop. A piece can be upgraded from level 1 up to its cap — 18 for Commons, 27 for Epics — and every level improves that piece's own stats in game.</p></div>`;
-    } else if (heroTab === "skins") {
-      content.innerHTML = `<h3 class="section-title">${esc(h.name)} skins</h3>${heroSkinCards(h)}
-        <p class="muted" style="margin-top:12px">Prices shown are shop reference values and change with events and region. Cosmetics never affect hero stats.</p>`;
-    } else {
-      content.innerHTML = `
-        <h3 class="section-title">Strengths</h3>
-        ${statsMarkup(h)}
+    if (!content) return;
+    content.innerHTML = HEROES.map(h => `
+      <article class="hero-entry" id="hero-${h.id}">
+        <div class="hero-entry-head">
+          <span class="hero-avatar">${portrait(h)}</span>
+          <div class="hero-summary-copy">
+            <p class="eyebrow">${esc(h.role)} · ${esc(h.unlock)}</p>
+            <h2>${esc(h.name)}</h2>
+            <div class="hero-meta">
+              <span>Targets: ${esc(h.target)}</span>
+              <span>Speed: ${esc(h.speed)}</span>
+              <span>${h.equipment.length} equipment</span>
+              <span>${h.skins.length} skins</span>
+            </div>
+            <p>${esc(h.bio)}</p>
+          </div>
+        </div>
         <div class="ability-card"><h4>Hero ability · ${esc(h.ability.name)}</h4><p>${esc(h.ability.desc)}</p></div>
-        <h3 class="section-title">Quick facts</h3>
-        <div class="content-grid">
-          <article class="item"><div class="item-info"><p class="meta">Unlock</p><h3>${esc(h.unlock)}</h3><p>Requires the matching Hero Hall level to unlock and upgrade.</p></div></article>
-          <article class="item"><div class="item-info"><p class="meta">Targets</p><h3>${esc(h.target)}</h3><p>Buildings this hero can attack, and what they can safely ignore.</p></div></article>
-          <article class="item"><div class="item-info"><p class="meta">Equipment slots</p><h3>${h.equipment.length} pieces</h3><p>Two can be equipped at the same time. Mix offence with survivability.</p></div></article>
-        </div>`;
-    }
+        <h3 class="section-title">Boosts</h3>
+        ${statsMarkup(h)}
+        <h3 class="section-title">Equipment</h3>
+        ${equipmentChips(h)}
+        <div class="hero-entry-actions">
+          <button type="button" class="hero-jump" data-goto-equipment="${h.id}">DPS, boosts &amp; ore per level →</button>
+          <button type="button" class="hero-jump" data-goto-skins="${h.id}">Skins (${h.skins.length}) →</button>
+        </div>
+      </article>`).join("");
   }
 
   function renderEquipmentTab() {
@@ -401,11 +430,22 @@
       if (button.dataset.cosmetic) { cosmeticTab = button.dataset.cosmetic; renderCosmetics(); return; }
       if (button.dataset.filter) { skinFilter = button.dataset.filter; renderCosmetics(); return; }
       if (button.dataset.heroTab) { heroTab = button.dataset.heroTab; renderProfile(); return; }
+      if (button.dataset.gotoEquipment) {
+        selected = button.dataset.gotoEquipment;
+        setMainTab("equipment");
+        $("#equipmentArea")?.scrollIntoView({ block: "start" });
+        return;
+      }
+      if (button.dataset.gotoSkins) {
+        selected = button.dataset.gotoSkins;
+        skinFilter = selected;
+        cosmeticTab = "skins";
+        setMainTab("cosmetics");
+        $("#cosmeticsArea")?.scrollIntoView({ block: "start" });
+        return;
+      }
       if (button.dataset.hero) {
         selected = button.dataset.hero;
-        heroTab = "overview";
-        renderHeroPicks("#heroPicks");
-        renderProfile();
         if (mainTab === "equipment") renderEquipmentTab();
         return;
       }
@@ -418,12 +458,8 @@
     const match = HEROES.find(h => h.id === raw.toLowerCase().replace(/\s+/g, "-"));
     if (match) {
       selected = match.id;
-      heroTab = "overview";
-      renderHeroPicks("#heroPicks");
-      renderProfile();
-      if (mainTab === "equipment") renderEquipmentTab();
       window.requestAnimationFrame(() => {
-        const target = document.getElementById("heroArea");
+        const target = document.getElementById("hero-" + match.id) || document.getElementById("heroArea");
         if (target) target.scrollIntoView({ block: "start" });
       });
     }
@@ -431,7 +467,6 @@
 
   function init() {
     HEROES.forEach(h => { h.skins.forEach(s => { if (!s[3]) s[3] = "#8d37ca"; }); });
-    renderHeroPicks("#heroPicks");
     renderProfile();
     bind();
     readHash();
