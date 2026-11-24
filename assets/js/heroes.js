@@ -238,7 +238,6 @@
   let heroTab = "overview";
   let cosmeticTab = "skins";
   let skinFilter = "all";
-  let eqLevel = 1;
 
   /* -------------------------------------------------------------- render */
   function renderHeroPicks(target, compact) {
@@ -262,54 +261,23 @@
       </div>`).join("")}</div>`;
   }
 
-  /* Equipment levels: Commons upgrade to 18, Epics to 27. The damage shown per
-     level is an illustrative progression so you can see how adding levels moves
-     the number; it is not a scraped in-game table. */
-  const EQ_LEVELS = { Common: { min: 1, max: 18, base: 90, step: 6 }, Epic: { min: 1, max: 27, base: 260, step: 12 } };
-  const eqRange = rarity => EQ_LEVELS[rarity] || EQ_LEVELS.Common;
-  const eqEffective = (rarity, level) => Math.min(Math.max(level, 1), eqRange(rarity).max);
-  const eqDamage = (rarity, level) => {
-    const r = eqRange(rarity);
-    return r.base + (eqEffective(rarity, level) - r.min) * r.step;
-  };
-
-  function syncEqLevel() {
-    const out = $("#eqLevelOut");
-    if (out) out.textContent = eqLevel;
-    $$(".equipment-card[data-rarity]").forEach(card => {
-      const rarity = card.dataset.rarity;
-      const eff = eqEffective(rarity, eqLevel);
-      const lv = $(".eq-stat", card), dmg = $(".eq-dmg", card);
-      if (lv) lv.textContent = "Lv " + eff + (eff < eqLevel ? " (max)" : "");
-      if (dmg) dmg.textContent = eqDamage(rarity, eqLevel);
-    });
-  }
-
-  function setEqLevel(value) {
-    eqLevel = Math.min(Math.max(Number(value) || 1, 1), 27);
-    syncEqLevel();
-  }
+  /* Equipment level caps: Commons upgrade to 18, Epics to 27. Only the real
+     level ranges are shown — per-level damage differs per piece and is not
+     published in the game, so we do not invent a number for it. */
+  const EQ_CAPS = { Common: 18, Epic: 27 };
+  const eqMax = rarity => EQ_CAPS[rarity] || EQ_CAPS.Common;
 
   function equipmentMarkup(h) {
-    return `<div class="eq-level-bar">
-      <label for="eqLevelRange">Equipment level <b id="eqLevelOut">${eqLevel}</b></label>
-      <input id="eqLevelRange" type="range" min="1" max="27" step="1" value="${eqLevel}" aria-label="Equipment level">
-      <small>Commons upgrade 1–18, Epics 1–27. Every level adds a fixed amount of damage; the numbers are an illustrative progression, not in-game values.</small>
-    </div>
-    <div class="equipment-grid">${h.equipment.map(([name, rarity, icon, desc]) => {
-      const max = eqRange(rarity).max;
-      const eff = eqEffective(rarity, eqLevel);
-      return `<article class="equipment-card" data-rarity="${rarity}">
+    return `<div class="equipment-grid">${h.equipment.map(([name, rarity, icon, desc]) => `
+      <article class="equipment-card" data-rarity="${rarity}">
         <span class="eq-icon" aria-hidden="true">${icon}${dropIn("equipment", name, name)}</span>
         <div>
           <b>${esc(name)}</b>
           <span class="rarity ${rarity.toLowerCase()}">${esc(rarity)}</span>
-          <span class="eq-levels">Lv 1–${max}</span>
+          <span class="eq-levels">Lv 1–${eqMax(rarity)}</span>
           <small>${esc(desc)}</small>
-          <span class="eq-progress"><b class="eq-stat">Lv ${eff}${eff < eqLevel ? " (max)" : ""}</b> · <b class="eq-dmg">${eqDamage(rarity, eqLevel)}</b> damage</span>
         </div>
-      </article>`;
-    }).join("")}</div>`;
+      </article>`).join("")}</div>`;
   }
 
   /* One card for a skin, whether the art ships with the site or not. */
@@ -347,8 +315,7 @@
     const content = $("#heroContent");
     if (heroTab === "equipment") {
       content.innerHTML = `<h3 class="section-title">Equipment available to ${esc(h.name)}</h3>${equipmentMarkup(h)}
-        <div class="level-note"><h3>How equipment works</h3><p>Each hero can carry two pieces of equipment. Commons start unlocked, Epics are earned through events and the shop. Upgrading a piece adds damage at every level up to its cap.</p></div>`;
-      syncEqLevel();
+        <div class="level-note"><h3>How equipment works</h3><p>Each hero can carry two pieces of equipment. Commons start unlocked, Epics are earned through events and the shop. A piece can be upgraded from level 1 up to its cap — 18 for Commons, 27 for Epics — and every level improves that piece's own stats in game.</p></div>`;
     } else if (heroTab === "skins") {
       content.innerHTML = `<h3 class="section-title">${esc(h.name)} skins</h3>${heroSkinCards(h)}
         <p class="muted" style="margin-top:12px">Prices shown are shop reference values and change with events and region. Cosmetics never affect hero stats.</p>`;
@@ -380,8 +347,7 @@
         </div>
       </div>
       ${equipmentMarkup(h)}
-      <div class="level-note" style="margin-top:14px"><h3>Upgrade tips</h3><p>Prioritise the equipment you use in every war. Commons are cheap to max; save Epic equipment ore for the one piece that carries your main army.</p></div>`;
-    syncEqLevel();
+      <div class="level-note" style="margin-top:14px"><h3>Upgrade tips</h3><p>Prioritise the equipment you use in every war. Commons max at level 18 and Epics at 27; save Epic equipment ore for the one piece that carries your main army.</p></div>`;
   }
 
   function renderCosmetics() {
@@ -443,9 +409,6 @@
         if (mainTab === "equipment") renderEquipmentTab();
         return;
       }
-    });
-    document.addEventListener("input", event => {
-      if (event.target && event.target.id === "eqLevelRange") setEqLevel(event.target.value);
     });
   }
 

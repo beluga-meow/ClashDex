@@ -60,7 +60,7 @@ window.PDX_ART = {
 "grand-warden": "./assets/heroes/grand-warden.webp",
 "heroes": "./assets/heroes/heroes.svg",
 "minion-prince": "./assets/heroes/minion-prince.webp",
-"royal-champion": "./assets/heroes/royal-champion.svg"
+"royal-champion": "./assets/heroes/royal-champion.webp"
 },
 "sceneries": {
 "10th-clashiversary": "./assets/sceneries/10th-clashiversary.webp",
