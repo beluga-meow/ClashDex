@@ -1,7 +1,7 @@
 
 {
-  "name": "ClashDex — Your Kingdom Companion",
-  "short_name": "ClashDex",
+  "name": "PekkaDex — Your Kingdom Companion",
+  "short_name": "PekkaDex",
   "description": "A fan-made Clash of Clans companion.",
   "start_url": "./index.html",
   "display": "standalone",
