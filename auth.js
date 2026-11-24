@@ -1,4 +1,4 @@
-/* ClashVault email sign-in: sends a 6-digit code, verifies it. */
+/* PekkaDex email sign-in: sends a 6-digit code, verifies it. */
 (() => {
   const client = window.supabaseClient;
   const $ = id => document.getElementById(id);
@@ -19,7 +19,7 @@
     const u = s && s.user;
     if (!u) return show("method");
     show("in");
-    $("authUserName").textContent = "Welcome to ClashVault!";
+    $("authUserName").textContent = "Welcome to PekkaDex!";
     $("authUserEmail").textContent = /@players\.clashvault\.app$/i.test(u.email || "") ? "Signed in with Clash of Clans" : "Signed in as " + u.email;
   }
   function startCooldown() {
@@ -63,7 +63,7 @@
       const { data, error } = await client.auth.verifyOtp({ email, token, type: "email" });
       if (error) throw error;
       if (data.user) await client.from("profiles").upsert({ id: data.user.id, display_name: email.split("@")[0] }, { onConflict: "id" });
-      say("You're in. Welcome to ClashVault!"); session(data.session);
+      say("You're in. Welcome to PekkaDex!"); session(data.session);
     } catch (er) { say(friendly(er)); }
     finally { b.disabled = false; }
   });
