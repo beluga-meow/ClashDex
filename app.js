@@ -1,19 +1,16 @@
 
 /* =====================================================================
-   ClashVault: Clash of Clans look + working finder, library and builders
-   File name: app.js   (version 3)
+   PekkaDex: player/clan finder, Town Hall library and Clash Heroes encyclopedia
+   File name: app.js   (version 4)
 
-   INSTALL: 2 steps, nothing else in your site changes
-     1) Upload this file to the repo root and replace the old one.
-     2) In index.html keep the ONE script line (after auth.js, before </body>)
-        and change the number so phones load the new file:
-          <script src="./clashvault-redesign.js?v=3"></script>
+   INSTALL: Upload app.js, index.html, pekkadex-developer-themes.js and
+   the assets/buildings/townhalls folder to the repository root. Keep your
+   existing style.css, auth.js and supabase-config.js files.
 
-   Safe by design
-   - It never edits app.js, auth.js, style.css or your Supabase setup.
-   - The old Player Finder / Base Library / Tracker are only HIDDEN, never
-     deleted, and only after the new version was built without errors.
-   - To undo everything: remove that one <script> line.
+   Integration notes
+   - Existing auth.js, style.css and Supabase configuration remain separate.
+   - The Builder Tracker has been removed from the active page and navigation.
+   - Seasonal appearance is controlled by the developer theme module.
    ===================================================================== */
 (() => {
   "use strict";
@@ -27,7 +24,6 @@
     PROXY_BASE: "",                 // optional: your own proxy URL ending in /v1 ("" = not used)
     LAYOUTS_URL: "./layouts.json",  // optional file with your real base + troop links (see layouts.example.json)
     MAX_TOWN_HALL: 19,              // raise this when Supercell releases a new Town Hall
-    DEFAULT_BUILDERS: 5             // builders shown the first time a player opens the tracker
   };
 
   /* ============ 2. LAYOUTS (bases + troop/army links) ============
@@ -61,7 +57,7 @@
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const num = n => (typeof n === "number" ? n.toLocaleString() : "-");
   const div = (cls, id) => { const d = document.createElement("div"); d.className = cls; if (id) d.id = id; return d; };
-  const safe = (where, fn) => { try { fn(); } catch (e) { try { console.warn("[ClashVault]", where, "skipped:", e); } catch (_) {} } };
+  const safe = (where, fn) => { try { fn(); } catch (e) { try { console.warn("[PekkaDex]", where, "skipped:", e); } catch (_) {} } };
 
   let toastEl = null, toastTimer = 0;
   function toast(msg) {
@@ -197,7 +193,7 @@
       403: "Supercell rejected the API key. Create the key with the proxy IP 45.79.218.79 (see README-SETUP.md).",
       404: "Not found. Double-check the tag.",
       429: "Too many searches at once. Wait a few seconds and try again.",
-      500: "ClashVault's API key isn't set up yet. Add the COC_API_TOKEN secret to the Edge Function.",
+      500: "PekkaDex's API key isn't set up yet. Add the COC_API_TOKEN secret to the Edge Function.",
       502: "Couldn't reach the Clash of Clans API. Try again in a moment.",
       503: "The Clash of Clans API is in maintenance. Try again later."
     };
@@ -335,7 +331,7 @@ html.cx input:focus,html.cx select:focus,html.cx textarea:focus{border-color:var
 html.cx input::placeholder{color:#a08560}
 html.cx label{color:#6b4a26;font-size:14px;font-weight:800}
 
-/* ---------- ClashVault components ---------- */
+/* ---------- PekkaDex components ---------- */
 .cx-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .cx-tab,.cx-chip{font-family:var(--cx-title);font-weight:400;font-size:15px;letter-spacing:.3px;color:#ffeab8;text-shadow:0 2px 0 var(--cx-w4);background:linear-gradient(var(--cx-w1),var(--cx-w2));border:3px solid var(--cx-w4);border-radius:12px;padding:8px 14px;min-height:44px;cursor:pointer;box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 3px 0 var(--cx-w4)}
 .cx-tab.on,.cx-chip.on{color:#4a2c12;text-shadow:0 1px 0 rgba(255,255,255,.5);background:linear-gradient(var(--cx-g1),var(--cx-g2));border-color:#5a3300;box-shadow:inset 0 2px 0 rgba(255,255,255,.6),0 3px 0 var(--cx-g3)}
@@ -450,13 +446,16 @@ html.cx .cx-search input{width:100%;min-height:54px;padding:0 14px 0 46px;font-s
 .cx-close{display:block;margin:4px 0 0 auto;min-height:44px;padding:0 10px;border:0;background:none;color:#6b4a26;font:400 17px var(--cx-title);letter-spacing:.8px;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 .cx-go{width:100%}
 .cx-label{display:block;margin:0 0 4px;font-size:14px;font-weight:800;color:#6b4a26}
-.cx-ths{display:flex;gap:8px;margin:0 -4px 6px;padding:4px 4px 12px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.cx-ths::-webkit-scrollbar{display:none}
-.cx-thc{flex:none;scroll-snap-align:start;display:grid;place-items:center;align-content:center;min-width:58px;min-height:58px;padding:4px 8px;font-family:var(--cx-title);line-height:1;color:#ffeab8;text-shadow:0 2px 0 var(--cx-w4);background:linear-gradient(var(--cx-w1),var(--cx-w2));border:3px solid var(--cx-w4);border-radius:12px;box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 3px 0 var(--cx-w4);cursor:pointer}
-.cx-thc small{font-size:11px;letter-spacing:.6px}
-.cx-thc b{font-weight:400;font-size:24px}
-.cx-thc.all{min-width:68px}
-.cx-thc.all b{font-size:20px}
+.cx-ths{display:grid;grid-template-columns:repeat(auto-fit,minmax(66px,1fr));gap:9px;margin:0 0 12px;padding:4px;overflow:visible}
+.cx-thc{display:grid;place-items:center;align-content:center;gap:2px;min-width:0;min-height:86px;padding:6px 4px;font-family:var(--cx-title);line-height:1;color:#ffeab8;text-shadow:0 2px 0 var(--cx-w4);background:linear-gradient(var(--cx-w1),var(--cx-w2));border:3px solid var(--cx-w4);border-radius:12px;box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 3px 0 var(--cx-w4);cursor:pointer}
+.cx-thc img{display:block;width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.cx-thc small{font-size:10px;letter-spacing:.5px}
+.cx-thc b{font-weight:400;font-size:19px}
+.cx-th-placeholder{display:grid;place-items:center;width:48px;height:48px;font-size:30px}
+.cx-thc small{font-size:10px;letter-spacing:.5px}
+.cx-thc b{font-weight:400;font-size:19px}
+.cx-thc.all{min-height:86px}
+.cx-thc.all b{font-size:18px}
 .cx-thc.on{color:#4a2c12;text-shadow:0 1px 0 rgba(255,255,255,.5);background:linear-gradient(var(--cx-g1),var(--cx-g2));border-color:#5a3300;box-shadow:inset 0 2px 0 rgba(255,255,255,.6),0 3px 0 var(--cx-g3)}
 .cx-chip.tag{min-height:40px;padding:6px 12px;font-size:14px}
 .cx-more{margin:0 0 12px;border:2px dashed #b98a4e;border-radius:14px;background:rgba(255,255,255,.4)}
@@ -498,7 +497,7 @@ html.cx .attack-visual.visual-ground{position:relative;bottom:auto;left:auto;wid
 .cx-disc{max-width:760px;margin:14px auto 0;padding:0 16px 8px;font-size:12px;line-height:1.55;text-align:center;color:rgba(233,212,168,.88)}
 .cx-disc a{color:var(--cx-g1);text-decoration:underline}
 @media(prefers-reduced-motion:reduce){.cx-cloud{animation:none}.cx-add b,.cx-more summary::after{transition:none}}
-@media(max-width:380px){.cx-ths{margin:0 -2px}.cx-thc{min-width:54px}.cx-add{font-size:16px}}
+@media(max-width:380px){.cx-ths{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.cx-thc{min-height:78px}.cx-thc img,.cx-th-placeholder{width:42px;height:42px}.cx-add{font-size:16px}}
 
 /* Keep controls inside their cards on narrow screens. */
 html.cx .cx-app,html.cx .cx-panel,html.cx .cx-list,html.cx .cx-row,html.cx .cx-actions{min-width:0;max-width:100%}
@@ -517,6 +516,30 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
   html.cx .cx-tabs2 .cx-tab{flex:1 1 calc(50% - 8px);min-height:48px;padding:8px 10px;font-size:14px}
   html.cx .cx-go{width:100%;max-width:100%}
 }
+
+/* ---------- Town Hall chooser: visible grid, no horizontal swiping ---------- */
+.cx-ths{display:grid;grid-template-columns:repeat(auto-fit,minmax(66px,1fr));gap:9px;margin:0 0 12px;padding:4px;overflow:visible}
+.cx-thc{display:grid;place-items:center;align-content:center;gap:2px;min-width:0;min-height:86px;padding:6px 4px}
+.cx-thc img{display:block;width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.cx-thc small{font-size:10px;letter-spacing:.5px}.cx-thc b{font-size:19px}
+.cx-thc.all{min-height:86px}.cx-th-placeholder{display:grid;place-items:center;width:48px;height:48px;font-size:30px}
+/* ---------- Clash Heroes encyclopedia ---------- */
+.cx-hero-intro{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.cx-hero-intro h3{margin:2px 0 4px;font:400 26px var(--cx-title);color:var(--cx-ink)}
+.cx-hero-intro p{margin:0;color:var(--cx-ink2);font-size:14px;line-height:1.45}
+.cx-hero-seal{display:grid;place-items:center;flex:0 0 62px;height:62px;border-radius:18px;background:linear-gradient(var(--cx-g1),var(--cx-g2));border:3px solid #5a3300;font-size:30px}
+.cx-hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:12px 0}
+.cx-hero-card{display:grid;justify-items:center;gap:6px;padding:14px 10px;min-width:0;border:3px solid var(--cx-w4);border-radius:15px;background:linear-gradient(var(--cx-p1),var(--cx-p2));box-shadow:0 4px 0 var(--cx-w4);color:var(--cx-ink);cursor:pointer;text-align:center}
+.cx-hero-card[hidden]{display:none}.cx-hero-card:active{transform:translateY(2px);box-shadow:0 2px 0 var(--cx-w4)}
+.cx-hero-art{display:grid;place-items:center;width:66px;height:66px;border-radius:18px;background:radial-gradient(circle,#ffe778,#c27a25);border:3px solid var(--cx-w2);font-size:36px}
+.cx-hero-name{font:400 17px/1.1 var(--cx-title)}.cx-hero-role{font-size:12px;font-weight:800;color:var(--cx-ink2)}
+.cx-hero-open{font-size:12px;font-weight:900;color:#2d6d17}
+.cx-hero-detail{margin-top:14px;padding:14px;border:3px solid var(--cx-w2);border-radius:16px;background:linear-gradient(#fff8e6,#f3dda8);color:var(--cx-ink)}
+.cx-hero-detail[hidden]{display:none}.cx-hero-detail-head{display:flex;align-items:center;gap:10px}.cx-hero-detail-head>span{font-size:36px}.cx-hero-detail-head>div{flex:1}.cx-hero-detail h3{margin:0;font:400 23px var(--cx-title)}.cx-hero-detail-head p{margin:0;font-size:13px;color:var(--cx-ink2)}
+.cx-hero-detail h4{margin:16px 0 8px;font:400 18px var(--cx-title)}.cx-equipment-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.cx-equipment-item{padding:10px;border:2px solid var(--cx-p3);border-radius:10px;background:rgba(255,255,255,.55)}.cx-equipment-item b,.cx-equipment-item small{display:block}.cx-equipment-item small{margin-top:4px;color:var(--cx-ink2);font-size:11px}
+.cx-hero-coming{display:grid;gap:4px;margin-top:12px;padding:12px;border-radius:12px;background:rgba(47,124,200,.12);border:2px dashed #2f7cc8;font-size:13px;line-height:1.45}
+@media(max-width:380px){.cx-ths{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.cx-thc{min-height:78px}.cx-thc img,.cx-th-placeholder{width:42px;height:42px}.cx-hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 `;
 
   function injectTheme() {
@@ -574,8 +597,8 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       if (node) node.textContent = value;
     };
     const h1 = $(".hero h1");
-    if (h1) h1.innerHTML = "Look up players.<br>Copy base links.<br>Track your builders.";
-    set(".hero-text", "Search players and clans, browse base and troop layouts, and check which builders are available.");
+    if (h1) h1.innerHTML = "Find players.<br>Explore bases.<br><span>Master heroes.</span>";
+    set(".hero-text", "Find players and clans, explore Town Hall layouts, learn attack strategies and discover everything about Clash Heroes.");
 
     const heroButtons = $$(".hero-buttons .button");
     if (heroButtons[0]) heroButtons[0].textContent = "Search a player";
@@ -586,7 +609,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       ["Player lookup", "By tag or saved name", "#player-finder"],
       ["Base layouts", "Browse by Town Hall", "#bases"],
       ["Attack guides", "Browse army guides", "#attacks"],
-      ["Builder tracker", "See who's available", "#tracker"]
+      ["Clash Heroes", "Heroes, skins & equipment", "#heroes"]
     ];
     $$(".quick-stats > div").forEach((item, index) => {
       const data = quick[index];
@@ -621,15 +644,15 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       "player-finder": "Look up a player by tag or name, or search a clan.",
       "bases": "Choose a Town Hall and browse base or troop layouts.",
       "attacks": "Browse the available army guides and attack plans.",
-      "tracker": "Check which builders are available or working.",
-      "events": "Clash of Clans news and ClashVault updates.",
-      "account": "Sign in to manage your ClashVault account."
+      "heroes": "Explore heroes, skins, equipment and their in-game details.",
+      "events": "Clash of Clans news and PekkaDex updates.",
+      "account": "Sign in to manage your PekkaDex account."
     };
     Object.keys(subtitles).forEach(id => set("#" + id + " .section-subtitle", subtitles[id]));
     set("#account .section-heading h2", "Account");
     set("#events .section-heading h2", "Events & Updates");
     set("#attacks .section-heading h2", "Attack Academy");
-    set("#events .event-season p", "No community events yet. Check back for updates.");
+    set("#events .event-season p", "Seasonal themes and featured content are managed and published by PekkaDex developers.");
   }
 
   /* ============ 7. Player + Clan finder ============ */
@@ -1001,10 +1024,15 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       b.classList.toggle("on", on);
       b.setAttribute("aria-pressed", on ? "true" : "false");
     });
+    const TH_IMAGE_EXT = {1:"svg",2:"png",3:"png",4:"png",5:"png",6:"png",7:"png",8:"png",9:"png",10:"webp",11:"webp",12:"png",13:"webp",14:"png",15:"png",16:"webp",17:"webp",18:"webp",19:"webp"};
     const drawThs = () => {
-      let h = '<button type="button" class="cx-thc all" data-th="" aria-pressed="false"><b>All</b></button>';
+      let h = '<button type="button" class="cx-thc all" data-th="" aria-pressed="false"><b>ALL</b><small>Town Halls</small></button>';
       for (let n = SETTINGS.MAX_TOWN_HALL; n >= 1; n--) {
-        h += '<button type="button" class="cx-thc" data-th="' + n + '" aria-pressed="false"><small>TH</small><b>' + n + "</b></button>";
+        const ext = TH_IMAGE_EXT[n];
+        const art = ext
+          ? '<img src="./assets/buildings/townhalls/th-' + n + '.' + ext + '" alt="Town Hall ' + n + '" loading="lazy" decoding="async">'
+          : '<span class="cx-th-placeholder" aria-hidden="true">🏠</span>';
+        h += '<button type="button" class="cx-thc" data-th="' + n + '" aria-label="Show Town Hall ' + n + ' layouts" aria-pressed="false">' + art + '<small>TH</small><b>' + n + '</b></button>';
       }
       ths.innerHTML = h;
       markOn(ths, "data-th", th);
@@ -1182,96 +1210,59 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     });
   }
 
-  /* ============ 9. Builder tracker (sign in to see builders) ============ */
-  function buildTracker() {
-    const sec = $("#tracker");
+  /* ============ 9. Clash Heroes Encyclopedia ============ */
+  function buildHeroes() {
+    const sec = $("#heroes");
     if (!sec) return;
-    const box = div("cx-panel cx-app", "cxTracker");
-    let uid = null, st = null;
-    const key = id => "cx-builders-v3:" + id;
-    const norm = s => {
-      const total = Math.min(6, Math.max(1, parseInt(s && s.total, 10) || SETTINGS.DEFAULT_BUILDERS));
-      return { total: total, busy: Array.from({ length: total }, (_, i) => !!(s && s.busy && s.busy[i])) };
+    const box = div("cx-panel cx-app", "cxHeroes");
+    const roster = [
+      {name:"Barbarian King",role:"Ground tank",icon:"👑",about:"A powerful frontline hero who leads ground attacks and protects nearby troops."},
+      {name:"Archer Queen",role:"Ranged damage",icon:"🏹",about:"A long-range hero suited to precise attacks, funneling and taking key defenses."},
+      {name:"Grand Warden",role:"Support hero",icon:"🧙",about:"A support hero whose abilities help nearby troops survive critical moments."},
+      {name:"Royal Champion",role:"Defense hunter",icon:"🛡️",about:"A mobile hero who targets defenses and supports late-stage attack plans."},
+      {name:"Minion Prince",role:"Air support",icon:"🦇",about:"An airborne hero who adds pressure and support to a wide range of armies."}
+    ];
+    const equipment = {
+      "Barbarian King":["Barbarian Puppet","Rage Vial","Earthquake Boots","Vampstache","Giant Gauntlet","Spiky Ball"],
+      "Archer Queen":["Archer Puppet","Invisibility Vial","Giant Arrow","Healer Puppet","Frozen Arrow","Magic Mirror"],
+      "Grand Warden":["Eternal Tome","Life Gem","Rage Gem","Healing Tome","Fireball","Lavaloon Puppet"],
+      "Royal Champion":["Seeking Shield","Royal Gem","Hog Rider Puppet","Haste Vial","Rocket Spear","Electro Boots"],
+      "Minion Prince":["Henchmen Puppet","Dark Orb","Metal Pants"]
     };
-    const load = () => { try { return norm(JSON.parse(localStorage.getItem(key(uid)) || "null")); } catch (_) { return norm(null); } };
-    const save = () => { try { localStorage.setItem(key(uid), JSON.stringify(st)); } catch (_) { toast("Couldn't save on this device."); } };
-
-    function gate() {
-      box.innerHTML = '<div class="cx-gate"><div class="big" aria-hidden="true">🔒</div><h3>Sign in to see your builders</h3>' +
-        "<p>After you sign in, you'll see how many builders are available and how many are working.</p>" +
-        '<a class="cx-btn green" href="#account">Go to Account</a></div>';
+    box.innerHTML =
+      '<div class="cx-hero-intro"><div><span class="cx-label">THE HERO ARCHIVE</span><h3>Meet your <strong>Heroes</strong></h3><p>Browse hero roles and their equipment. Select a hero to open its encyclopedia entry.</p></div><span class="cx-hero-seal">⚔️</span></div>' +
+      '<label class="cx-search"><i aria-hidden="true">🔎</i><input id="cxHeroSearch" type="search" placeholder="Search heroes or equipment…" autocomplete="off"></label>' +
+      '<div class="cx-hero-grid" id="cxHeroGrid">' + roster.map((h,i) => '<button type="button" class="cx-hero-card" data-hero="' + i + '"><span class="cx-hero-art">' + h.icon + '</span><span class="cx-hero-name">' + h.name + '</span><span class="cx-hero-role">' + h.role + '</span><span class="cx-hero-open">View encyclopedia →</span></button>').join('') + '</div>' +
+      '<div class="cx-hero-detail" id="cxHeroDetail" hidden aria-live="polite"></div>' +
+      '<p class="cx-help">Equipment names are listed as a reference. Exact level-by-level stats, skin release dates and prices should be published only after verification against current game data.</p>';
+    const grid = $("#cxHeroGrid", box), detail = $("#cxHeroDetail", box), search = $("#cxHeroSearch", box);
+    function showHero(index) {
+      const h = roster[index]; if (!h) return;
+      const gear = equipment[h.name] || [];
+      detail.innerHTML = '<div class="cx-hero-detail-head"><span>' + h.icon + '</span><div><h3>' + h.name + '</h3><p>' + h.role + '</p></div><button type="button" class="cx-btn blue sm" id="cxHeroClose">Close</button></div>' +
+        '<p>' + h.about + '</p><h4>Hero Equipment</h4><div class="cx-equipment-list">' + gear.map((g,i) => '<div class="cx-equipment-item"><b>' + g + '</b><small>Equipment · Stats require verified level data</small></div>').join('') + '</div>' +
+        '<div class="cx-hero-coming"><b>Skins &amp; level stats</b><span>Release dates, prices and level 1–max stat tables will appear here as verified encyclopedia entries are added.</span></div>';
+      detail.hidden = false;
+      detail.scrollIntoView({behavior:"smooth",block:"nearest"});
+      $("#cxHeroClose", detail)?.addEventListener("click", () => { detail.hidden = true; });
     }
-    function draw() {
-      const working = st.busy.filter(Boolean).length, free = st.total - working;
-      box.innerHTML =
-        '<div class="cx-bar-top"><span class="cx-hud" title="Available builders">🔨 ' + free + "/" + st.total + "</span>" +
-        '<label class="cx-field" style="margin:0;min-width:150px"><span>My builders</span><select id="cxBTotal">' +
-        [1, 2, 3, 4, 5, 6].map(n => '<option value="' + n + '"' + (n === st.total ? " selected" : "") + ">" + n + " builders</option>").join("") +
-        "</select></label></div>" +
-        '<div class="cx-sum"><div><b>' + st.total + '</b><span>Total</span></div><div class="free"><b>' + free +
-        '</b><span>Available</span></div><div class="busy"><b>' + working + "</b><span>Working</span></div></div>" +
-        '<div class="cx-bgrid">' + st.busy.map((b, i) =>
-          '<div class="cx-b' + (b ? " busy" : "") + '"><div class="cx-b-ico" aria-hidden="true">' + (b ? "🔨" : "😴") + "</div><h3>Builder " + (i + 1) +
-          '</h3><div class="cx-state">' + (b ? "WORKING" : "AVAILABLE") + '</div><button class="cx-btn ' + (b ? "gold" : "green") +
-          ' sm" type="button" data-b="' + i + '">' + (b ? "Mark available" : "Mark working") + "</button></div>").join("") + "</div>" +
-        '<div class="cx-actions" style="padding:14px 0 0"><button class="cx-btn blue sm" type="button" id="cxBReset">All available</button></div>' +
-        '<p class="cx-help">Supercell doesn\'t share live builder timers, so tap each builder to match your village. ClashVault remembers it on this device.</p>';
-    }
-
-    box.addEventListener("click", e => {
-      if (!uid || !st) return;
-      const b = e.target.closest("[data-b]");
-      if (b) { const i = Number(b.dataset.b); st.busy[i] = !st.busy[i]; save(); draw(); return; }
-      if (e.target.closest("#cxBReset")) { st.busy = st.busy.map(() => false); save(); draw(); }
+    grid.addEventListener("click", e => { const b = e.target.closest("[data-hero]"); if (b) showHero(Number(b.dataset.hero)); });
+    search.addEventListener("input", () => {
+      const q = search.value.trim().toLowerCase();
+      $$(".cx-hero-card", grid).forEach((card,i) => {
+        const hay = [roster[i].name,roster[i].role,...(equipment[roster[i].name]||[])].join(" ").toLowerCase();
+        card.hidden = !!q && !hay.includes(q);
+      });
     });
-    box.addEventListener("change", e => {
-      if (!uid || !st || e.target.id !== "cxBTotal") return;
-      st = norm({ total: e.target.value, busy: st.busy });
-      save();
-      draw();
-    });
-
-    function setUser(id) {
-      if (id === uid) return;
-      uid = id;
-      if (!uid) { st = null; gate(); return; }
-      st = load();
-      draw();
-    }
-
-    let sbUser = null;
-    const emailKey = u => (u && (u.email || u.id)) ? String(u.email || u.id).toLowerCase() : null;
-    const domUser = () => {
-      const li = $("#authLoggedIn");
-      if (!li || li.hidden) return null;
-      const em = (($("#authUserEmail") || {}).textContent || "").trim().toLowerCase();
-      return em || "signed-in";
-    };
-    const refresh = () => setUser(sbUser || domUser());
-
-    gate();
     swapIn(sec, box);
-    setHeading(sec, 'Builder <span>Tracker</span>', "Check which builders are available or working.");
-
-    const sb = sbClient();
-    if (sb && sb.auth) {
-      try {
-        sb.auth.getSession().then(r => { sbUser = emailKey(r && r.data && r.data.session && r.data.session.user); refresh(); }).catch(refresh);
-        sb.auth.onAuthStateChange((_ev, session) => { setTimeout(() => { sbUser = emailKey(session && session.user); refresh(); }, 0); });
-      } catch (_) {}
-    }
-    const acc = $("#account");
-    if (acc && "MutationObserver" in window) {
-      new MutationObserver(refresh).observe(acc, { attributes: true, attributeFilter: ["hidden"], childList: true, subtree: true, characterData: true });
-    }
-    refresh();
+    setHeading(sec, 'Clash <span>Heroes</span> Encyclopedia', "Explore heroes, skins and equipment in one dedicated archive.");
   }
 
   /* ============ 10. Mobile bottom menu (game style) ============ */
   function buildTabbar() {
     if ($(".cx-tabbar")) return;
     const items = [["home", "🏠", "Home"], ["player-finder", "🔍", "Players"], ["bases", "🏰", "Bases"],
-      ["attacks", "⚔️", "Attack"], ["tracker", "🔨", "Builders"], ["account", "👤", "Account"]];
+      ["attacks", "⚔️", "Attack"], ["heroes", "🦸", "Heroes"], ["account", "👤", "Account"]];
     const nav = document.createElement("nav");
     nav.className = "cx-tabbar";
     nav.setAttribute("aria-label", "Quick navigation");
@@ -1331,37 +1322,21 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     modal?.addEventListener("click", e => { if (e.target === modal) closeModal(); });
     document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 
-    // Keep the seasonal preview control working.
+    // Seasonal appearance is controlled centrally by the developer theme module.
     const themeButton = $("#themeButton");
-    const themes = ["Classic Kingdom","Winter Festival","Haunted Kingdom","Lunar Celebration","Summer Kingdom"];
-    const icons = ["🌙","❄️","🎃","🏮","☀️"];
-    let themeIndex = 0;
-    themeButton?.addEventListener("click", () => {
-      themeIndex = (themeIndex + 1) % themes.length;
-      document.body.classList.remove("theme-christmas","theme-halloween","theme-lunar","theme-summer");
-      const classes = ["","theme-christmas","theme-halloween","theme-lunar","theme-summer"];
-      if (classes[themeIndex]) document.body.classList.add(classes[themeIndex]);
-      themeButton.textContent = icons[themeIndex];
-      themeButton.title = `Current theme: ${themes[themeIndex]}`;
-      notify(`${themes[themeIndex]} enabled.`);
-    });
-    $("#previewSeason")?.addEventListener("click", () => {
-      themeIndex = themeIndex === 0 ? 1 : themeIndex;
-      document.body.classList.remove("theme-christmas","theme-halloween","theme-lunar","theme-summer");
-      document.body.classList.add("theme-christmas");
-      themeButton && (themeButton.textContent = "❄️");
-      notify("Winter Festival preview enabled.");
-    });
+    if (themeButton) themeButton.hidden = true;
+    const seasonPreview = $("#previewSeason");
+    if (seasonPreview) seasonPreview.hidden = true;
 
     safe("theme", injectTheme);
     safe("hero", decorateHero);
     safe("finder", buildFinder);
     safe("library", buildLibrary);
-    safe("tracker", buildTracker);
+    safe("heroes", buildHeroes);
     safe("tabbar", buildTabbar);
     safe("copy", plainCopy);
     safe("disclaimer", addDisclaimer);
-    console.info("ClashVault app.js loaded. Authentication and Supabase configuration were not changed.");
+    console.info("PekkaDex app.js loaded. Authentication and Supabase configuration were not changed.");
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});
   else start();
