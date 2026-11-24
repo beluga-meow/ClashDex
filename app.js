@@ -22,7 +22,7 @@
   const SETTINGS = {
     EDGE_FUNCTION: "coc",           // name of your Supabase Edge Function (see coc-edge-function.ts)
     PROXY_BASE: "",                 // optional: your own proxy URL ending in /v1 ("" = not used)
-    LAYOUTS_URL: "./layouts.json",  // optional file with your real base + troop links (see layouts.example.json)
+    LAYOUTS_URL: "",                 // optional file with real base + troop links, e.g. "./layouts.json"
     MAX_TOWN_HALL: 19,              // raise this when Supercell releases a new Town Hall
   };
 
@@ -249,7 +249,7 @@ html.cx .small-action{display:inline-flex;align-items:center;justify-content:cen
 html.cx .small-action:hover{background:linear-gradient(#fff0a0,#ffc63a);color:#4a2c12}
 
 /* ---------- headings ---------- */
-html.cx .eyebrow{background:linear-gradient(#e8493c,#b3281d);border:2px solid #5d130c;color:#fff;font-family:var(--cx-title);font-weight:400;font-size:13px;letter-spacing:.8px;text-shadow:0 1px 0 #5d130c}
+html.cx .eyebrow{display:inline-block;width:auto;max-width:100%;background:linear-gradient(#e8493c,#b3281d);border:2px solid #5d130c;color:#fff;font-family:var(--cx-title);font-weight:400;font-size:13px;letter-spacing:.8px;text-shadow:0 1px 0 #5d130c}
 html.cx .section-heading h2{font-family:var(--cx-title);font-weight:400;letter-spacing:.5px;line-height:1.1;font-size:clamp(32px,8vw,48px);color:#fff;text-shadow:var(--cx-ol)}
 html.cx .section-heading h2 span{color:var(--cx-g1)}
 html.cx .section-subtitle{color:#eaf5ff;font-size:16px;line-height:1.5;text-shadow:0 1px 2px rgba(7,25,50,.65)}
@@ -320,6 +320,13 @@ html.cx #account .player-link-panel,html.cx .auth-status,html.cx #account .auth-
 html.cx #account #authPlayerStatus{color:#2f7a14}
 html.cx #account #authUserName{font-family:var(--cx-title);font-weight:400}
 html.cx #account .auth-emblem,html.cx .modal-icon{background:linear-gradient(var(--cx-g1),var(--cx-g2));border:3px solid #5a3300}
+html.cx #account #authGameScreen{text-align:left!important}
+html.cx #account #authGameScreen h3,html.cx #account #authGameScreen p,html.cx #account #authGameScreen label,html.cx #account #authGameScreen .cx-field,html.cx #account #authGameScreen .cx-field>span,html.cx #account #authGameScreen .form-note{text-align:left!important;justify-items:stretch}
+html.cx #account #authGameScreen .small-action{justify-self:start}
+html.cx #authGameScreen input{text-align:left}
+html.cx #authGameScreen .game-hero{display:grid;place-items:center;width:74px;height:74px;margin:2px auto 8px;border-radius:18px;border:3px solid #5a3300;background:linear-gradient(var(--cx-g1),var(--cx-g2));font-size:38px}
+html.cx #authGameScreen .auth-divider{margin:12px 0}
+html.cx #authGameScreen .small-action{margin-top:4px}
 html.cx .modal{background:linear-gradient(var(--cx-p1),var(--cx-p2));border:4px solid var(--cx-w2);box-shadow:0 8px 0 var(--cx-w4),0 20px 40px rgba(0,0,0,.45);color:var(--cx-ink)}
 html.cx .modal h2{font-family:var(--cx-title);font-weight:400;color:var(--cx-ink)}
 html.cx .modal-close{background:linear-gradient(var(--cx-r1),var(--cx-r2));border:2px solid var(--cx-line);color:#fff;box-shadow:0 3px 0 var(--cx-r3)}
@@ -545,6 +552,41 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
 .cx-equipment-item{padding:10px;border:2px solid var(--cx-p3);border-radius:10px;background:rgba(255,255,255,.55)}.cx-equipment-item b,.cx-equipment-item small{display:block}.cx-equipment-item small{margin-top:4px;color:var(--cx-ink2);font-size:11px}
 .cx-hero-coming{display:grid;gap:4px;margin-top:12px;padding:12px;border-radius:12px;background:rgba(47,124,200,.12);border:2px dashed #2f7cc8;font-size:13px;line-height:1.45}
 @media(max-width:380px){.cx-ths{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.cx-thc{min-height:78px}.cx-thc img,.cx-th-placeholder{width:42px;height:42px}.cx-hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ---------- header: keep every nav label inside the bar ---------- */
+html.cx .site-header{height:auto!important;min-height:78px;flex-wrap:nowrap;gap:10px;padding-top:8px;padding-bottom:8px}
+html.cx .brand{flex:0 0 auto}
+html.cx .brand small{white-space:nowrap}
+html.cx .main-nav{flex-wrap:nowrap!important;gap:2px!important;min-width:0}
+html.cx .main-nav a{white-space:nowrap;padding:7px 9px;font-size:14px;line-height:1.1}
+html.cx .header-actions{gap:8px;margin-left:4px;flex:0 0 auto}
+@media(max-width:1260px){html.cx .brand small{display:none}html.cx .main-nav a{font-size:13px;padding:6px 7px}}
+@media(max-width:1060px){html.cx .main-nav a{font-size:12px;padding:6px 5px;letter-spacing:0}}
+@media(max-width:980px){html.cx .main-nav a:nth-child(7){display:none}}
+@media(max-width:880px){html.cx .main-nav a:nth-child(6){display:none}}
+@media(max-width:760px){html.cx .site-header{height:66px;min-height:66px}html.cx .main-nav{flex-wrap:wrap!important;gap:0!important}html.cx .main-nav a{font-size:17px!important;padding:13px 8px!important;white-space:normal}}
+
+/* ---------- Clash Heroes archive card ---------- */
+html.cx .pdx-archive-wrap{display:grid;gap:12px}
+html.cx .pdx-archive-card{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:center;padding:12px;text-decoration:none;color:inherit;border:3px solid var(--cx-w2);border-radius:20px;background:linear-gradient(#fff8e6,#f1dba9);box-shadow:0 5px 0 var(--cx-w4),0 12px 22px rgba(0,0,0,.22);transition:transform .15s,box-shadow .15s}
+html.cx .pdx-archive-card:hover{transform:translateY(-3px);box-shadow:0 8px 0 var(--cx-w4),0 16px 26px rgba(0,0,0,.28)}
+html.cx .pdx-archive-card:focus-visible{outline:4px solid #fff;outline-offset:3px}
+html.cx .pdx-archive-pic{display:block;overflow:hidden;border:3px solid #3d1c6e;border-radius:16px;background:#3d1c6e;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25),0 4px 0 #2a1049}
+html.cx .pdx-archive-pic svg{display:block;width:100%;height:auto}
+html.cx .pdx-archive-copy{display:grid;gap:8px;min-width:0}
+html.cx .pdx-archive-kicker{font-size:11px;font-weight:900;letter-spacing:1.3px;color:#9a5a12;text-transform:uppercase}
+html.cx .pdx-archive-copy h3{margin:0;font:400 clamp(22px,3.4vw,33px)/1.08 var(--cx-title);color:#4a2c12}
+html.cx .pdx-archive-copy p{margin:0;font-size:14px;line-height:1.5;color:#6f5130}
+html.cx .pdx-archive-cta{display:inline-flex;align-items:center;justify-content:center;justify-self:start;gap:7px;margin-top:4px;padding:9px 18px;border:3px solid #1b0f05;border-radius:13px;background:linear-gradient(var(--cx-n1),var(--cx-n2) 55%,#4a9a1d);color:#fff;font:400 16px var(--cx-title);text-shadow:0 2px 0 #1b0f05;box-shadow:0 4px 0 var(--cx-n3)}
+html.cx .pdx-archive-chips{display:flex;flex-wrap:wrap;gap:8px;padding:4px 2px 6px}
+html.cx .pdx-archive-chip{display:flex;flex:0 0 auto;align-items:center;gap:7px;padding:7px 11px;border:2px solid #805027;border-radius:999px;background:#fff5dc;color:#4a2c12;text-decoration:none;font:400 14px var(--cx-title);white-space:nowrap}
+html.cx .pdx-archive-chip:hover{background:linear-gradient(var(--cx-g1),var(--cx-g2))}
+html.cx .pdx-archive-chip span{font-size:17px}
+html.cx .pdx-archive-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+html.cx .pdx-archive-feature{display:grid;gap:3px;padding:11px;border:2px solid #d6b270;border-radius:13px;background:#fffaf0}
+html.cx .pdx-archive-feature b{font:400 16px var(--cx-title);color:#4a2c12}
+html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;font-weight:700}
+@media(max-width:720px){html.cx .pdx-archive-card{grid-template-columns:minmax(0,1fr);gap:11px}html.cx .pdx-archive-features{grid-template-columns:minmax(0,1fr)}}
 `;
 
   function injectTheme() {
@@ -1255,52 +1297,78 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     });
   }
 
-  /* ============ 9. Clash Heroes Encyclopedia ============ */
+  /* ============ 9. Clash Heroes Encyclopedia (archive card) ============ */
   function buildHeroes() {
     const sec = $("#heroes");
     if (!sec) return;
-    const box = div("cx-panel cx-app", "cxHeroes");
     const roster = [
-      {name:"Barbarian King",role:"Ground tank",icon:"👑",about:"A powerful frontline hero who leads ground attacks and protects nearby troops."},
-      {name:"Archer Queen",role:"Ranged damage",icon:"🏹",about:"A long-range hero suited to precise attacks, funneling and taking key defenses."},
-      {name:"Grand Warden",role:"Support hero",icon:"🧙",about:"A support hero whose abilities help nearby troops survive critical moments."},
-      {name:"Royal Champion",role:"Defense hunter",icon:"🛡️",about:"A mobile hero who targets defenses and supports late-stage attack plans."},
-      {name:"Minion Prince",role:"Air support",icon:"🦇",about:"An airborne hero who adds pressure and support to a wide range of armies."}
+      ["barbarian-king", "Barbarian King", "👑", "Ground tank"],
+      ["archer-queen", "Archer Queen", "🏹", "Ranged damage"],
+      ["grand-warden", "Grand Warden", "🧙", "Support"],
+      ["royal-champion", "Royal Champion", "🛡️", "Defence hunter"],
+      ["minion-prince", "Minion Prince", "🦇", "Air support"],
+      ["dragon-duke", "Dragon Duke", "🐲", "Melee brawler"]
     ];
-    const equipment = {
-      "Barbarian King":["Barbarian Puppet","Rage Vial","Earthquake Boots","Vampstache","Giant Gauntlet","Spiky Ball"],
-      "Archer Queen":["Archer Puppet","Invisibility Vial","Giant Arrow","Healer Puppet","Frozen Arrow","Magic Mirror"],
-      "Grand Warden":["Eternal Tome","Life Gem","Rage Gem","Healing Tome","Fireball","Lavaloon Puppet"],
-      "Royal Champion":["Seeking Shield","Royal Gem","Hog Rider Puppet","Haste Vial","Rocket Spear","Electro Boots"],
-      "Minion Prince":["Henchmen Puppet","Dark Orb","Metal Pants"]
-    };
-    box.innerHTML =
-      '<div class="cx-hero-intro"><div><span class="cx-label">THE HERO ARCHIVE</span><h3>Meet your <strong>Heroes</strong></h3><p>Browse hero roles and their equipment. Select a hero to open its encyclopedia entry.</p></div><span class="cx-hero-seal">⚔️</span></div>' +
-      '<label class="cx-search"><i aria-hidden="true">🔎</i><input id="cxHeroSearch" type="search" placeholder="Search heroes or equipment…" autocomplete="off"></label>' +
-      '<div class="cx-hero-grid" id="cxHeroGrid">' + roster.map((h,i) => '<button type="button" class="cx-hero-card" data-hero="' + i + '"><span class="cx-hero-art">' + h.icon + '</span><span class="cx-hero-name">' + h.name + '</span><span class="cx-hero-role">' + h.role + '</span><span class="cx-hero-open">View encyclopedia →</span></button>').join('') + '</div>' +
-      '<div class="cx-hero-detail" id="cxHeroDetail" hidden aria-live="polite"></div>' +
-      '<p class="cx-help">Equipment names are listed as a reference. Exact level-by-level stats, skin release dates and prices should be published only after verification against current game data.</p>';
-    const grid = $("#cxHeroGrid", box), detail = $("#cxHeroDetail", box), search = $("#cxHeroSearch", box);
-    function showHero(index) {
-      const h = roster[index]; if (!h) return;
-      const gear = equipment[h.name] || [];
-      detail.innerHTML = '<div class="cx-hero-detail-head"><span>' + h.icon + '</span><div><h3>' + h.name + '</h3><p>' + h.role + '</p></div><button type="button" class="cx-btn blue sm" id="cxHeroClose">Close</button></div>' +
-        '<p>' + h.about + '</p><h4>Hero Equipment</h4><div class="cx-equipment-list">' + gear.map((g,i) => '<div class="cx-equipment-item"><b>' + g + '</b><small>Equipment · Stats require verified level data</small></div>').join('') + '</div>' +
-        '<div class="cx-hero-coming"><b>Skins &amp; level stats</b><span>Release dates, prices and level 1–max stat tables will appear here as verified encyclopedia entries are added.</span></div>';
-      detail.hidden = false;
-      detail.scrollIntoView({behavior:"smooth",block:"nearest"});
-      $("#cxHeroClose", detail)?.addEventListener("click", () => { detail.hidden = true; });
+
+    /* One hand-drawn group picture for the archive box. */
+    function groupArt() {
+      const faces = [
+        { x: 10, skin: "#f4c593", hair: "#d9a12b", armor: "#93a4b3", kind: "crown", beard: true },
+        { x: 93, skin: "#f7d3ad", hair: "#8b4fd6", armor: "#3f7fbf", kind: "tiara", long: true },
+        { x: 176, skin: "#e8b98e", hair: "#b06be0", armor: "#6d5bb5", kind: "circlet", beard: true },
+        { x: 259, skin: "#8fd8ee", hair: "#2a4f9e", armor: "#4b3f8f", kind: "horns" },
+        { x: 342, skin: "#e8b98e", hair: "#3f6fd0", armor: "#3c8fd6", kind: "band" },
+        { x: 425, skin: "#e9a067", hair: "#8f3a1f", armor: "#6b3f2a", kind: "helm" }
+      ];
+      const topper = f => {
+        if (f.kind === "crown") return '<path d="M24 106l4-16 8 10 6-14 6 14 8-10 4 16z" fill="#f7c33a" stroke="#8a5a05" stroke-width="2"/>';
+        if (f.kind === "tiara") return '<path d="M25 106q17-11 34 0" fill="none" stroke="#f7c33a" stroke-width="4"/><circle cx="42" cy="99" r="3" fill="#62b52c" stroke="#2a6a10" stroke-width="1"/>';
+        if (f.kind === "circlet") return '<path d="M26 108q16-12 32 0" fill="none" stroke="#f7c33a" stroke-width="3.5"/><circle cx="42" cy="101" r="3.4" fill="#a855f7"/>';
+        if (f.kind === "band") return '<rect x="24" y="104" width="36" height="5" rx="2.5" fill="#f7c33a" stroke="#8a5a05" stroke-width="1.6"/>';
+        if (f.kind === "horns") return '<path d="M26 105c-5-7-8-13-6-19 6 3 11 9 13 17z" fill="#d9d2e6" stroke="#4a3b5e" stroke-width="2"/><path d="M58 105c5-7 8-13 6-19-6 3-11 9-13 17z" fill="#d9d2e6" stroke="#4a3b5e" stroke-width="2"/>';
+        return '<path d="M24 108c0-12 8-19 18-19s18 7 18 19z" fill="' + f.armor + '" stroke="#2a1a10" stroke-width="2"/>';
+      };
+      const bust = f => '<g transform="translate(' + f.x + ',0)">' +
+        '<path d="M2 208c2-30 18-42 40-42s38 12 40 42z" fill="' + f.armor + '" stroke="#221206" stroke-width="3"/>' +
+        '<rect x="33" y="150" width="18" height="18" rx="5" fill="' + f.skin + '" stroke="#221206" stroke-width="2"/>' +
+        (f.long ? '<path d="M22 114c-3 18-2 30 0 42 3-6 4-10 5-18v24h30v-24c1 8 2 12 5 18 2-12 3-24 0-42z" fill="' + f.hair + '"/>' : '') +
+        '<ellipse cx="42" cy="126" rx="21" ry="23" fill="' + f.skin + '" stroke="#221206" stroke-width="2.4"/>' +
+        '<circle cx="21" cy="127" r="4" fill="' + f.skin + '" stroke="#221206" stroke-width="1.8"/><circle cx="63" cy="127" r="4" fill="' + f.skin + '" stroke="#221206" stroke-width="1.8"/>' +
+        '<path d="M24 112c1-13 9-20 18-20s17 7 18 20c-4-7-10-11-18-11s-14 4-18 11z" fill="' + f.hair + '"/>' +
+        (f.beard ? '<path d="M25 132c1 16 8 24 17 24s16-8 17-24c-3 8-8 12-17 12s-14-4-17-12z" fill="' + f.hair + '"/>' : '') +
+        '<ellipse cx="34" cy="124" rx="3.2" ry="3.8" fill="#fffdf4"/><ellipse cx="50" cy="124" rx="3.2" ry="3.8" fill="#fffdf4"/>' +
+        '<circle cx="35" cy="125" r="1.8" fill="#2a1a10"/><circle cx="51" cy="125" r="1.8" fill="#2a1a10"/>' +
+        topper(f) + '</g>';
+      return '<svg viewBox="0 0 520 210" role="img" aria-label="The Clash Heroes: Barbarian King, Archer Queen, Grand Warden, Minion Prince, Royal Champion and Dragon Duke" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><radialGradient id="pdxGroupBg" cx="50%" cy="26%" r="80%"><stop offset="0" stop-color="#c26bf5"/><stop offset="55%" stop-color="#6a2aab"/><stop offset="100%" stop-color="#2b0f52"/></radialGradient></defs>' +
+        '<rect width="520" height="210" fill="url(#pdxGroupBg)"/>' +
+        '<g opacity=".45" stroke="#fff" fill="none" stroke-width="1.4"><circle cx="44" cy="40" r="7"/><circle cx="486" cy="62" r="5"/><circle cx="466" cy="168" r="6"/><circle cx="76" cy="176" r="4"/></g>' +
+        '<g opacity=".5" fill="#fff"><circle cx="150" cy="34" r="2"/><circle cx="300" cy="26" r="2.4"/><circle cx="410" cy="44" r="1.8"/></g>' +
+        faces.map(bust).join("") +
+        '<rect y="203" width="520" height="7" fill="#1b0f05" opacity=".35"/></svg>';
     }
-    grid.addEventListener("click", e => { const b = e.target.closest("[data-hero]"); if (b) showHero(Number(b.dataset.hero)); });
-    search.addEventListener("input", () => {
-      const q = search.value.trim().toLowerCase();
-      $$(".cx-hero-card", grid).forEach((card,i) => {
-        const hay = [roster[i].name,roster[i].role,...(equipment[roster[i].name]||[])].join(" ").toLowerCase();
-        card.hidden = !!q && !hay.includes(q);
-      });
-    });
+
+    const box = div("cx-panel cx-app", "cxHeroes");
+    box.innerHTML =
+      '<div class="pdx-archive-wrap">' +
+        '<a class="pdx-archive-card" href="./heroes.html">' +
+          '<span class="pdx-archive-pic">' + groupArt() + '</span>' +
+          '<span class="pdx-archive-copy">' +
+            '<span class="pdx-archive-kicker">THE PEKKADEX ARCHIVE</span>' +
+            '<h3>Clash Heroes Encyclopedia</h3>' +
+            '<p>Open the archive for every hero, their equipment, all hero skins and the village sceneries — with Skins and Sceneries tabs just like the game.</p>' +
+            '<span class="pdx-archive-cta">Open the encyclopedia →</span>' +
+          '</span>' +
+        '</a>' +
+        '<div class="pdx-archive-chips">' + roster.map(h => '<a class="pdx-archive-chip" href="./heroes.html#' + h[0] + '"><span aria-hidden="true">' + h[2] + '</span>' + esc(h[1]) + '</a>').join('') + '</div>' +
+        '<div class="pdx-archive-features">' +
+          '<div class="pdx-archive-feature"><b>⚔ Hero profiles</b><small>Roles, abilities, equipment and skins for all six heroes.</small></div>' +
+          '<div class="pdx-archive-feature"><b>🛠 Equipment</b><small>Every common and epic piece, with what it does in battle.</small></div>' +
+          '<div class="pdx-archive-feature"><b>🎨 Cosmetics</b><small>Skins and sceneries in one collection with hero filters.</small></div>' +
+        '</div>' +
+      '</div>';
     swapIn(sec, box);
-    setHeading(sec, 'Clash <span>Heroes</span> Encyclopedia', "Explore heroes, skins and equipment in one dedicated archive.");
+    setHeading(sec, 'Clash <span>Heroes</span> Encyclopedia', "Heroes, equipment, skins and sceneries — all in the dedicated archive.");
   }
 
   /* ============ 10. Mobile bottom menu (game style) ============ */

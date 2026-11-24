@@ -1,86 +1,447 @@
+/* PekkaDex — Clash Heroes Encyclopedia page logic (heroes.html)
+   Fully static: heroes, equipment, skins and sceneries. No external images,
+   every portrait is drawn inline so nothing can 404. */
 (() => {
   "use strict";
-  const HEROES = [
-    {id:"barbarian-king",name:"Barbarian King",icon:"👑",role:"Ground tank",desc:"Frontline hero that leads ground attacks and tanks for nearby troops.",equipment:[["Barbarian Puppet","Common"],["Rage Vial","Common"],["Earthquake Boots","Common"],["Vampstache","Epic"],["Giant Gauntlet","Epic"],["Spiky Ball","Epic"]],skins:[["Gladiator King","🎖️"],["King Barbarian","⚔️"]]},
-    {id:"archer-queen",name:"Archer Queen",icon:"🏹",role:"Ranged damage",desc:"Long-range hero for precise funneling and key defensive targets.",equipment:[["Archer Puppet","Common"],["Invisibility Vial","Common"],["Giant Arrow","Epic"],["Healer Puppet","Epic"],["Frozen Arrow","Epic"],["Magic Mirror","Epic"]],skins:[["Elven Archer","🏹"]]},
-    {id:"grand-warden",name:"Grand Warden",icon:"🧙",role:"Support",desc:"Support hero whose abilities protect nearby troops at critical moments.",equipment:[["Eternal Tome","Common"],["Life Gem","Common"],["Rage Gem","Epic"],["Healing Tome","Epic"],["Fireball","Epic"],["Lavaloon Puppet","Epic"]],skins:[["Grand Mage","✨"]]},
-    {id:"royal-champion",name:"Royal Champion",icon:"🛡️",role:"Defense hunter",desc:"Mobile hero that hunts defenses and supports late-stage attacks.",equipment:[["Seeking Shield","Common"],["Royal Gem","Common"],["Hog Rider Puppet","Common"],["Haste Vial","Epic"],["Rocket Spear","Epic"],["Electro Boots","Epic"]],skins:[["Tempest Champion","⚡"]]},
-    {id:"minion-prince",name:"Minion Prince",icon:"🦇",role:"Air support",desc:"Airborne hero that adds pressure and support to many armies.",equipment:[["Henchmen Puppet","Common"],["Dark Orb","Epic"],["Metal Pants","Epic"]],skins:[["Lich Prince","💀"],["Anime Fury Prince","🌟"]]},
-    {id:"dragon-duke",name:"Dragon Duke",icon:"🐲",role:"Melee brawler",desc:"A melee hero who fights up close with powerful fire-based attacks.",equipment:[["Rocket Backpack","Pending verification"],["Flame Blower","Pending verification"],["Electro Fangs","Pending verification"],["Heart of Fire","Pending verification"],["Shock Blast","Pending verification"]],skins:[["Drakan Duke","🐉"],["Hydra Duke","🐲"],["Kane","⭐"],["Anime Fury Dragon Duke","🔥"]]}
-  ];
-  const SCENERIES = [
-    {name:"Year of the Snake",art:"🐍",note:"Scenery catalog entry; details pending verification."},
-    {name:"Clash of Dragons",art:"🐉",note:"Scenery catalog entry; details pending verification."},
-    {name:"Wasteland Scenery",art:"🏜️",note:"Scenery catalog entry; details pending verification."},
-    {name:"Ruined Kingdom Wasteland",art:"🏰",note:"Scenery catalog entry; details pending verification."}
-  ];
-  const $ = s => document.querySelector(s);
-  const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  let selected = HEROES[0].id, heroTab = "overview", mainTab = "heroes", cosmeticTab = "skins", skinFilter = "all";
 
-  function currentHero(){ return HEROES.find(h => h.id === selected) || HEROES[0]; }
-  function portraitMarkup(h, large=false){
-    const cls = large ? "hero-avatar" : "portrait";
-    const path = `./assets/heroes/${h.id}.webp`;
-    return `<span class="${cls}"><img src="${path}" alt="${escapeHTML(h.name)} portrait" onerror="this.replaceWith(document.createTextNode('${h.icon}'))"></span>`;
+  /* ---------------------------------------------------------------- data */
+  const HEROES = [
+    {
+      id: "barbarian-king", name: "Barbarian King", role: "Ground tank", unlock: "Town Hall 7",
+      icon: "👑", target: "Ground only", speed: "Medium",
+      bio: "The first hero most Chiefs unlock. He walks into the thick of the fight, soaks up damage and clears a path for the rest of the army.",
+      ability: { name: "Iron Fist", desc: "When the ability is triggered the King grows in size, hits harder and recovers a chunk of health. Save it for the moment he reaches the core." },
+      stats: { health: 10, damage: 8, speed: 5, utility: 6 },
+      art: { skin: "#f4c593", hair: "#d9a12b", armor: "#93a4b3", accent: "#f7b823", face: "beard", head: "crown" },
+      equipment: [
+        ["Barbarian Puppet", "Common", "🪆", "Summons a group of Barbarians around the King when his ability is used. Good for extra bodies in the funnel."],
+        ["Rage Vial", "Common", "🧪", "Drops a rage spell on the King when the ability triggers, boosting his damage and speed."],
+        ["Earthquake Boots", "Common", "👟", "The King stomps on landing, damaging and slowing nearby buildings and walls."],
+        ["Vampstache", "Epic", "🧛", "Every hit he lands heals him, which keeps him alive through long walks."],
+        ["Giant Gauntlet", "Epic", "🧤", "Greatly increases his size and damage, and his punches send out a shockwave."],
+        ["Spiky Ball", "Epic", "⚽", "Throws a bouncing spiked ball that damages several defences in a line."]
+      ],
+      skins: [
+        ["Bruiser King", "Legendary", "1,500 Gems", "#f2b21c", "The gold-plated brawler look from the Hero Skins shop."],
+        ["Gladiator King", "Legendary", "1,500 Gems", "#9b5b2a", "Arena armour with a crested helmet and twin blades."],
+        ["King Barbarian", "Epic", "₱189.00", "#b02c2c", "Classic barbarian warpaint, fur and a heavy axe."],
+        ["Valhalla King", "Epic", "Gold Pass", "#4c7fc4", "Frost-blue northern armour with a horned helm."]
+      ]
+    },
+    {
+      id: "archer-queen", name: "Archer Queen", role: "Ranged damage", unlock: "Town Hall 9",
+      icon: "🏹", target: "Ground & Air", speed: "Fast",
+      bio: "The precision tool of every attack. She picks off defences from range and her ability buys precious seconds on the inside of a base.",
+      ability: { name: "Royal Cloak", desc: "She turns invisible for a few seconds and heals herself, letting her slip past splash defences and finish a core compartment." },
+      stats: { health: 6, damage: 10, speed: 7, utility: 8 },
+      art: { skin: "#f7d3ad", hair: "#8b4fd6", armor: "#3f7fbf", accent: "#ffe778", face: "long", head: "tiara" },
+      equipment: [
+        ["Archer Puppet", "Common", "🏹", "Summons Archers to fight beside the Queen when her ability is used."],
+        ["Invisibility Vial", "Common", "🧪", "Extends and strengthens her cloak, keeping her hidden for longer."],
+        ["Giant Arrow", "Epic", "🎯", "Fires one huge arrow across the base that damages every building it crosses."],
+        ["Healer Puppet", "Epic", "💗", "Summons Healers that follow and heal nearby troops."],
+        ["Frozen Arrow", "Epic", "❄️", "Her arrows slow the buildings they hit, buying time for the push."],
+        ["Magic Mirror", "Epic", "🪞", "Creates a copy of the Queen that fights alongside her for a short time."]
+      ],
+      skins: [
+        ["Fury Queen", "Legendary", "₱189.00", "#c03a8a", "Red braids, a visor and dual hand crossbows."],
+        ["Elven Archer", "Epic", "1,500 Gems", "#3f9d6a", "Forest-green elven armour with a longbow."],
+        ["Valkyrie Queen", "Legendary", "1,500 Gems", "#8d6fd6", "Winged helm and a spear of the fallen."],
+        ["Archer Queen of the North", "Epic", "Gold Pass", "#5aa8d6", "Winter furs and a crystal-tipped arrow."]
+      ]
+    },
+    {
+      id: "grand-warden", name: "Grand Warden", role: "Support hero", unlock: "Town Hall 11",
+      icon: "🧙", target: "Ground & Air", speed: "Medium",
+      bio: "The only hero who can be set to follow your army. His aura keeps troops alive and his ability can turn a losing push into a three star.",
+      ability: { name: "Eternal Tome", desc: "Makes nearby troops and heroes invulnerable for a few seconds — the classic answer to a Eagle Artillery or Monolith shot." },
+      stats: { health: 5, damage: 6, speed: 6, utility: 10 },
+      art: { skin: "#e8b98e", hair: "#b06be0", armor: "#6d5bb5", accent: "#ffe778", face: "beard", head: "circlet" },
+      equipment: [
+        ["Eternal Tome", "Common", "📖", "The default book. Grants temporary invulnerability to nearby troops."],
+        ["Life Gem", "Common", "💎", "Increases the health of troops inside the Warden's aura."],
+        ["Rage Gem", "Epic", "🔴", "Troops in the aura deal more damage while the ability is active."],
+        ["Healing Tome", "Epic", "💚", "Heals all friendly troops in range instead of only shielding them."],
+        ["Fireball", "Epic", "🔥", "Calls down a massive fireball that can wipe out a whole compartment."],
+        ["Lavaloon Puppet", "Epic", "🎈", "Summons Lava Hounds and Balloons when the ability is used."]
+      ],
+      skins: [
+        ["Shaman Warden", "Legendary", "₱189.00", "#5c7f3f", "Tribal mask, staff and a cloak of feathers."],
+        ["Grand Mage", "Epic", "1,500 Gems", "#7a4fd6", "Arcane robes with a floating spellbook."],
+        ["Party Warden", "Rare", "Event reward", "#e05aa8", "Confetti robe and a party hat. Purely for style."],
+        ["Frost Warden", "Epic", "Gold Pass", "#4f9fd6", "Ice-crowned robes that match the winter sceneries."]
+      ]
+    },
+    {
+      id: "royal-champion", name: "Royal Champion", role: "Defence hunter", unlock: "Town Hall 13",
+      icon: "🛡️", target: "Ground & Air", speed: "Fast",
+      bio: "A mobile duelist who jumps straight onto defences. She is usually sent in behind the main push to clean up the back end of a base.",
+      ability: { name: "Seeking Shield", desc: "Throws her shield at up to four defences, damaging them and then returning to her hand." },
+      stats: { health: 7, damage: 9, speed: 8, utility: 7 },
+      art: { skin: "#e8b98e", hair: "#3f6fd0", armor: "#3c8fd6", accent: "#ffe778", face: "short", head: "band" },
+      equipment: [
+        ["Seeking Shield", "Common", "🛡️", "Her signature throw: the shield bounces between four defences."],
+        ["Royal Gem", "Common", "💠", "Restores health and shields her when the ability is used."],
+        ["Hog Rider Puppet", "Common", "🐗", "Summons Hog Riders that jump onto nearby defences."],
+        ["Haste Vial", "Epic", "⚡", "Gives her a burst of speed and attack rate."],
+        ["Rocket Spear", "Epic", "🚀", "Launches a spear that explodes on impact for heavy area damage."],
+        ["Electro Boots", "Epic", "🥾", "Her leaps chain lightning between nearby buildings."]
+      ],
+      skins: [
+        ["Nomad Champion", "Legendary", "₱189.00", "#d69a2a", "Desert wanderer with a spear and round shield."],
+        ["Tempest Champion", "Legendary", "1,500 Gems", "#3f9fd6", "Storm armour crackling with lightning."],
+        ["Champion of the Sea", "Epic", "Gold Pass", "#1f7f9c", "Coral armour and a trident."]
+      ]
+    },
+    {
+      id: "minion-prince", name: "Minion Prince", role: "Air support", unlock: "Town Hall 16",
+      icon: "🦇", target: "Ground & Air", speed: "Fast",
+      bio: "An airborne hero who flies over walls and adds constant pressure. He is the natural pick for air armies and for reaching compartments ground heroes cannot.",
+      ability: { name: "Dark Orb", desc: "Drops a dark orb that damages and slows everything beneath him while he keeps attacking from the air." },
+      stats: { health: 6, damage: 8, speed: 9, utility: 6 },
+      art: { skin: "#8fd8ee", hair: "#2a4f9e", armor: "#4b3f8f", accent: "#b06be0", face: "short", head: "horns" },
+      equipment: [
+        ["Henchmen Puppet", "Common", "🦇", "Summons Minions that swarm the nearest defences."],
+        ["Dark Orb", "Epic", "🔮", "A slowing, damaging orb dropped on the strongest defence below."],
+        ["Metal Pants", "Epic", "🩳", "Heavy armour for his legs: more health and reduced knockback."],
+        ["Fire Fork", "Epic", "🍴", "Hurls a burning trident that pierces a line of buildings."]
+      ],
+      skins: [
+        ["Armored Prince", "Legendary", "₱189.00", "#7f8fa6", "Full plate armour with a glowing blue core."],
+        ["Lich Prince", "Legendary", "1,500 Gems", "#5c8fa6", "Undead crown and spectral wings."],
+        ["Anime Fury Prince", "Epic", "Event reward", "#e05aa8", "Bright anime-inspired armour with energy trails."],
+        ["Fallen Prince", "Epic", "Gold Pass", "#3f3f6f", "Dark feathers and a broken halo."]
+      ]
+    },
+    {
+      id: "dragon-duke", name: "Dragon Duke", role: "Melee brawler", unlock: "Town Hall 17",
+      icon: "🐲", target: "Ground only", speed: "Fast",
+      bio: "A close-range bruiser who fights with fire. He is built to punch through a compartment and stay there, trading hits with defences.",
+      ability: { name: "Heart of Fire", desc: "Ignites his attacks and leaves a trail of flame, damaging everything he walks past." },
+      stats: { health: 9, damage: 9, speed: 6, utility: 5 },
+      art: { skin: "#e9a067", hair: "#8f3a1f", armor: "#6b3f2a", accent: "#ff8a3c", face: "wild", head: "helm" },
+      equipment: [
+        ["Rocket Backpack", "Common", "🚀", "Short rocket boosts that carry him over a wall."],
+        ["Flame Blower", "Common", "🔥", "A cone of flame that damages several buildings in front of him."],
+        ["Electro Fangs", "Epic", "⚡", "Bites chain lightning between nearby defences."],
+        ["Heart of Fire", "Epic", "❤️‍🔥", "His ability: burning attacks and a damaging trail."],
+        ["Shock Blast", "Epic", "💥", "A ground slam that stuns defences in a small radius."]
+      ],
+      skins: [
+        ["Drakan Duke", "Legendary", "1,500 Gems", "#a8431f", "Scaled armour and dragon-wing pauldrons."],
+        ["Hydra Duke", "Legendary", "₱189.00", "#2f8f6f", "Three-headed hydra theme with green flame."],
+        ["Kane", "Epic", "Event reward", "#6f3f9f", "Shadow-flame armour with a horned mask."],
+        ["Anime Fury Dragon Duke", "Epic", "Gold Pass", "#e05a2a", "Over-the-top spiky armour and fire aura."]
+      ]
+    }
+  ];
+
+  const SCENERIES = [
+    ["Year of the Snake", "🐍", "linear-gradient(160deg,#3fbf7f,#0b5a3a)", "Lunar New Year scenery with lanterns, blossom trees and a serpent statue."],
+    ["Clash of Dragons", "🐉", "linear-gradient(160deg,#c0563a,#5a1a12)", "Volcanic dragon roost with lava rivers and bone arches."],
+    ["Wasteland Scenery", "🏜️", "linear-gradient(160deg,#e0b25a,#7a4a12)", "Cracked desert ground, rusted walls and a bone-dry well."],
+    ["Ruined Kingdom Wasteland", "🏰", "linear-gradient(160deg,#8f8f9f,#33333f)", "A broken castle backdrop with fog and fallen towers."],
+    ["Snow Day", "❄️", "linear-gradient(160deg,#a8d8f0,#3f6f9f)", "Snow-covered pines, frozen ponds and a cosy lodge."],
+    ["Pirate Cove", "🏴‍☠️", "linear-gradient(160deg,#3f9fb0,#0b3f5e)", "A smuggler's harbour with docks, cannons and a treasure hoard."],
+    ["Jungle Ruins", "🌿", "linear-gradient(160deg,#4fa845,#124a1f)", "Overgrown temple stones, hanging vines and hidden statues."],
+    ["Royal Arena", "🏟️", "linear-gradient(160deg,#d6b25a,#6b4a12)", "A tournament ground with banners, sand and spectator stands."]
+  ];
+
+  /* --------------------------------------------------------------- utils */
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const heroById = id => HEROES.find(h => h.id === id) || HEROES[0];
+
+  /* -------------------------------------------------- inline SVG portraits */
+  function portrait(h, label, tint) {
+    const a = tint ? Object.assign({}, h.art, { armor: tint }) : h.art, id = h.id;
+    const hairBack = a.face === "long"
+      ? `<path d="M36 44c-4 20-3 34 0 48 4-6 6-12 7-20l0 24h34l0-24c1 8 3 14 7 20 3-14 4-28 0-48z" fill="${a.hair}"/>` : "";
+    const hairFront = a.face === "short"
+      ? `<path d="M40 38c3-12 10-16 20-16s17 4 20 16c-5-6-11-9-20-9s-15 3-20 9z" fill="${a.hair}"/>` : "";
+    const beard = a.face === "beard"
+      ? `<path d="M41 62c0 16 8 26 19 26s19-10 19-26c-3 8-9 12-19 12s-16-4-19-12z" fill="${a.hair}"/>
+         <path d="M60 82c-4 6-4 12 0 18 4-6 4-12 0-18z" fill="${a.hair}"/>` : "";
+    const wild = a.face === "wild"
+      ? `<path d="M36 44c-8 8-10 20-6 30 4-8 8-12 12-14-2-6-2-12-6-16zM84 44c8 8 10 20 6 30-4-8-8-12-12-14 2-6 2-12 6-16z" fill="${a.hair}"/>` : "";
+
+    let head = "";
+    if (a.head === "crown") head = `
+      <path d="M40 36l4-17 9 11 7-15 7 15 9-11 4 17z" fill="#f7c33a" stroke="#8a5a05" stroke-width="2.5" stroke-linejoin="round"/>
+      <rect x="38" y="34" width="44" height="7" rx="3" fill="#ffe778" stroke="#8a5a05" stroke-width="2"/>
+      <circle cx="60" cy="28" r="3" fill="#e8493c" stroke="#8a3a05" stroke-width="1.2"/>`;
+    else if (a.head === "tiara") head = `
+      <path d="M40 35q20-12 40 0" fill="none" stroke="#f7c33a" stroke-width="5" stroke-linecap="round"/>
+      <path d="M46 30l4-8 5 7 5-10 5 10 5-7 4 8z" fill="#f7c33a" stroke="#8a5a05" stroke-width="1.6"/>
+      <circle cx="60" cy="22" r="3" fill="#62b52c" stroke="#2a6a10" stroke-width="1.2"/>`;
+    else if (a.head === "circlet") head = `
+      <path d="M41 38q19-14 38 0" fill="none" stroke="#f7c33a" stroke-width="4"/>
+      <circle cx="60" cy="30" r="4.5" fill="#a855f7" stroke="#5a1a9c" stroke-width="1.5"/>`;
+    else if (a.head === "band") head = `
+      <rect x="38" y="33" width="44" height="6" rx="3" fill="#f7c33a" stroke="#8a5a05" stroke-width="2"/>
+      <circle cx="60" cy="36" r="3" fill="#e8493c"/>`;
+    else if (a.head === "horns") head = `
+      <path d="M42 34c-6-8-10-16-8-24 8 4 14 12 17 22z" fill="#d9d2e6" stroke="#4a3b5e" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M78 34c6-8 10-16 8-24-8 4-14 12-17 22z" fill="#d9d2e6" stroke="#4a3b5e" stroke-width="2.5" stroke-linejoin="round"/>`;
+    else if (a.head === "helm") head = `
+      <path d="M39 38c0-14 9-22 21-22s21 8 21 22z" fill="${a.armor}" stroke="#2a1a10" stroke-width="2.5"/>
+      <path d="M60 16l4 8-4 4-4-4z" fill="${a.accent}"/>`;
+
+    return `<svg viewBox="0 0 120 120" role="img" aria-label="${esc(label || h.name + " portrait")}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hx-${id}" cx="50%" cy="32%" r="72%">
+          <stop offset="0" stop-color="#c47bf7"/><stop offset="60%" stop-color="#6a2aab"/><stop offset="100%" stop-color="#2e125c"/>
+        </radialGradient>
+      </defs>
+      <rect width="120" height="120" fill="url(#hx-${id})"/>
+      <circle cx="60" cy="52" r="45" fill="#ffffff" opacity=".08"/>
+      <g opacity=".5" stroke="#ffffff" stroke-width="1.4" fill="none">
+        <circle cx="20" cy="80" r="6"/><circle cx="100" cy="34" r="4"/><circle cx="96" cy="92" r="5"/>
+      </g>
+      ${hairBack}
+      <path d="M9 120c2-24 22-33 51-33s49 9 51 33z" fill="${a.armor}" stroke="#221206" stroke-width="3"/>
+      <path d="M9 120c2-24 22-33 51-33s49 9 51 33z" fill="none" stroke="${a.accent}" stroke-width="2" opacity=".55"/>
+      <path d="M34 120c1-14 8-21 18-23l8 14 8-14c10 2 17 9 18 23z" fill="${a.accent}" opacity=".28"/>
+      <rect x="50" y="68" width="20" height="20" rx="6" fill="${a.skin}" stroke="#221206" stroke-width="2"/>
+      <ellipse cx="60" cy="55" rx="23" ry="25" fill="${a.skin}" stroke="#221206" stroke-width="2.6"/>
+      <circle cx="35" cy="57" r="4.5" fill="${a.skin}" stroke="#221206" stroke-width="2"/>
+      <circle cx="85" cy="57" r="4.5" fill="${a.skin}" stroke="#221206" stroke-width="2"/>
+      ${hairFront}${wild}${beard}
+      <g>
+        <ellipse cx="51" cy="55" rx="3.6" ry="4.2" fill="#fffdf4"/>
+        <ellipse cx="69" cy="55" rx="3.6" ry="4.2" fill="#fffdf4"/>
+        <circle cx="52" cy="56" r="2" fill="#2a1a10"/>
+        <circle cx="70" cy="56" r="2" fill="#2a1a10"/>
+        <path d="M45 47l9 2M75 47l-9 2" stroke="#3a2412" stroke-width="2.6" stroke-linecap="round" opacity=".8"/>
+        <path d="M55 67q5 4 10 0" stroke="#7a3a1c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      </g>
+      ${head}
+      <path d="M14 118h92" stroke="#000" stroke-opacity=".18" stroke-width="3"/>
+    </svg>`;
   }
-  function heroButtons(target){
+
+  function runeArt() {
+    return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g stroke="#ffffff" stroke-opacity=".35" fill="none" stroke-width="2">
+        <circle cx="60" cy="60" r="44" stroke-dasharray="6 10"/>
+        <circle cx="60" cy="60" r="33" stroke-dasharray="3 9"/>
+        <path d="M60 12v16M60 92v16M12 60h16M92 60h16"/>
+      </g>
+      <g fill="#ffffff" fill-opacity=".5">
+        <circle cx="60" cy="16" r="2.4"/><circle cx="104" cy="60" r="2.4"/><circle cx="60" cy="104" r="2.4"/><circle cx="16" cy="60" r="2.4"/>
+      </g>
+    </svg>`;
+  }
+
+  function figure(h, tint) {
+    /* Hero bust used inside skin cards; the tint echoes that skin's theme. */
+    return `<span class="art-figure">${portrait(h, h.name + " skin preview", tint)}</span>`;
+  }
+
+  /* --------------------------------------------------------------- state */
+  let selected = HEROES[0].id;
+  let mainTab = "heroes";
+  let heroTab = "overview";
+  let cosmeticTab = "skins";
+  let skinFilter = "all";
+
+  /* -------------------------------------------------------------- render */
+  function renderHeroPicks(target, compact) {
     const root = $(target);
-    root.innerHTML = HEROES.map(h => `<button type="button" class="hero-pick ${h.id===selected?"is-active":""}" data-hero="${h.id}" aria-pressed="${h.id===selected}">${portraitMarkup(h)}<small>${escapeHTML(h.name)}</small></button>`).join("");
+    if (!root) return;
+    root.innerHTML = HEROES.map(h => `
+      <button type="button" class="hero-pick ${h.id === selected ? "is-active" : ""}" data-hero="${h.id}"
+        aria-pressed="${h.id === selected}" aria-label="${esc(h.name)}">
+        <span class="portrait">${portrait(h)}</span>
+        <strong>${esc(h.name)}</strong>
+        ${compact ? "" : `<small>${esc(h.role)}</small>`}
+      </button>`).join("");
   }
-  function equipmentCards(h){
-    return `<div class="content-grid">${h.equipment.map(([name,rarity]) => `<article class="item"><div class="item-art">🛠️</div><div class="item-info"><h3>${escapeHTML(name)}</h3><p class="meta">${escapeHTML(rarity)} equipment</p><p>Level 1–maximum statistics are pending verified game data.</p></div></article>`).join("")}</div>`;
+
+  function statsMarkup(h) {
+    const labels = { health: "Health", damage: "Damage", speed: "Speed", utility: "Utility" };
+    return `<div class="stat-bars">${Object.keys(labels).map(key => `
+      <div class="stat-bar">
+        <div><span>${labels[key]}</span><span>${h.stats[key]}/10</span></div>
+        <i><b style="width:${h.stats[key] * 10}%"></b></i>
+      </div>`).join("")}</div>`;
   }
-  function skinCards(h){
-    return h.skins.length ? `<div class="content-grid">${h.skins.map(([name,icon]) => `<article class="item skin"><div class="item-art">${icon}</div><div class="item-info"><h3>${escapeHTML(name)}</h3><p>Hero skin · ${escapeHTML(h.name)}</p><p class="meta">Release date / price: not verified</p></div></article>`).join("")}</div>` : `<div class="empty">No skin entries listed for this hero.</div>`;
+
+  function equipmentMarkup(h) {
+    return `<div class="equipment-grid">${h.equipment.map(([name, rarity, icon, desc]) => `
+      <article class="equipment-card">
+        <span class="eq-icon" aria-hidden="true">${icon}</span>
+        <div>
+          <b>${esc(name)}</b>
+          <span class="rarity ${rarity.toLowerCase()}">${esc(rarity)}</span>
+          <small>${esc(desc)}</small>
+        </div>
+      </article>`).join("")}</div>`;
   }
-  function drawHero(){
-    const h = currentHero();
-    heroButtons("#heroPicks");
-    $("#heroAvatar").innerHTML = portraitMarkup(h,true).replace(/^<span class="hero-avatar">|<\/span>$/g,"");
+
+  function heroSkinCards(h) {
+    if (!h.skins.length) return `<div class="empty">No skins listed for this hero yet.</div>`;
+    return `<div class="skin-grid">${h.skins.map(([name, rarity, price, tint], i) => `
+      <article class="skin-card ${i === 0 ? "is-featured" : ""}" style="--skin:${tint}">
+        <h3 class="skin-name">${esc(name)}</h3>
+        <div class="skin-art" style="background:radial-gradient(circle at 50% 32%,rgba(255,255,255,.28),transparent 65%),linear-gradient(160deg,${tint},#00000055)">
+          <span class="art-rune">${runeArt()}</span>
+          ${figure(h, tint)}
+          <span class="skin-rarity">${esc(rarity)}</span>
+        </div>
+        <div class="skin-price"><span class="gem" aria-hidden="true"></span>${esc(price)}</div>
+      </article>`).join("")}</div>`;
+  }
+
+  function renderProfile() {
+    const h = heroById(selected);
+    $("#heroAvatar").innerHTML = portrait(h);
     $("#heroName").textContent = h.name;
     $("#heroRole").textContent = h.role;
-    $("#heroDesc").textContent = h.desc;
-    document.querySelectorAll("[data-hero-tab]").forEach(b => b.classList.toggle("is-active",b.dataset.heroTab===heroTab));
-    if(heroTab==="equipment") $("#heroContent").innerHTML = equipmentCards(h);
-    else if(heroTab==="skins") $("#heroContent").innerHTML = skinCards(h);
-    else $("#heroContent").innerHTML = `<div class="level-note"><h3>${escapeHTML(h.name)} overview</h3><p>${escapeHTML(h.desc)}</p><p>Choose Equipment or Skins above to explore this hero's collection.</p><p>Hero level statistics will be added when verified values are available.</p></div>`;
-  }
-  function drawEquipment(){
-    heroButtons("#equipmentPicks");
-    $("#equipmentContent").innerHTML = equipmentCards(currentHero());
-  }
-  function drawCosmetics(){
-    const filters = `<button type="button" class="${skinFilter==="all"?"is-active":""}" data-filter="all">All Heroes</button>` + HEROES.map(h => `<button type="button" class="${skinFilter===h.id?"is-active":""}" data-filter="${h.id}">${h.icon} ${escapeHTML(h.name)}</button>`).join("");
-    $("#skinFilters").innerHTML = cosmeticTab==="skins" ? filters : "";
-    document.querySelectorAll("[data-cosmetic]").forEach(b => b.classList.toggle("is-active",b.dataset.cosmetic===cosmeticTab));
-    if(cosmeticTab==="skins"){
-      const list = HEROES.filter(h => skinFilter==="all" || h.id===skinFilter).flatMap(h => h.skins.map(s => ({hero:h,skin:s})));
-      $("#cosmeticContent").innerHTML = list.length ? `<div class="content-grid">${list.map(x => `<article class="item skin"><div class="item-art">${x.skin[1]}</div><div class="item-info"><h3>${escapeHTML(x.skin[0])}</h3><p>${escapeHTML(x.hero.name)}</p><p class="meta">Price / release date: not verified</p></div></article>`).join("")}</div>` : `<div class="empty">No listed skins for this filter.</div>`;
+    $("#heroDesc").textContent = h.bio;
+    $("#heroMeta").innerHTML = `<span>Unlocked at ${esc(h.unlock)}</span><span>Targets: ${esc(h.target)}</span><span>Speed: ${esc(h.speed)}</span>`;
+    $$("[data-hero-tab]").forEach(b => {
+      const on = b.dataset.heroTab === heroTab;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-selected", String(on));
+    });
+    const content = $("#heroContent");
+    if (heroTab === "equipment") {
+      content.innerHTML = `<h3 class="section-title">Equipment available to ${esc(h.name)}</h3>${equipmentMarkup(h)}
+        <div class="level-note"><h3>How equipment works</h3><p>Each hero can carry two pieces of equipment. Commons start unlocked, Epics are earned through events and the shop. Upgrade them with equipment ore to raise the bonus they give.</p></div>`;
+    } else if (heroTab === "skins") {
+      content.innerHTML = `<h3 class="section-title">${esc(h.name)} skins</h3>${heroSkinCards(h)}
+        <p class="muted" style="margin-top:12px">Prices shown are shop reference values and change with events and region. Cosmetics never affect hero stats.</p>`;
     } else {
-      $("#cosmeticContent").innerHTML = `<div class="content-grid">${SCENERIES.map(s => `<article class="item scenery"><div class="item-art">${s.art}</div><div class="item-info"><h3>${escapeHTML(s.name)}</h3><p>${escapeHTML(s.note)}</p><p class="meta">Price: not verified</p></div></article>`).join("")}</div>`;
+      content.innerHTML = `
+        <h3 class="section-title">Strengths</h3>
+        ${statsMarkup(h)}
+        <div class="ability-card"><h4>Hero ability · ${esc(h.ability.name)}</h4><p>${esc(h.ability.desc)}</p></div>
+        <h3 class="section-title">Quick facts</h3>
+        <div class="content-grid">
+          <article class="item"><div class="item-info"><p class="meta">Unlock</p><h3>${esc(h.unlock)}</h3><p>Requires the matching Hero Hall level to unlock and upgrade.</p></div></article>
+          <article class="item"><div class="item-info"><p class="meta">Targets</p><h3>${esc(h.target)}</h3><p>Buildings this hero can attack, and what they can safely ignore.</p></div></article>
+          <article class="item"><div class="item-info"><p class="meta">Equipment slots</p><h3>${h.equipment.length} pieces</h3><p>Two can be equipped at the same time. Mix offence with survivability.</p></div></article>
+        </div>`;
     }
   }
-  function switchMain(name){
-    mainTab = name;
-    document.querySelectorAll("[data-main]").forEach(b => b.classList.toggle("is-active",b.dataset.main===name));
-    $("#heroArea").hidden = name!=="heroes";
-    $("#equipmentArea").hidden = name!=="equipment";
-    $("#cosmeticsArea").hidden = name!=="cosmetics";
-    if(name==="equipment") drawEquipment();
-    if(name==="cosmetics") drawCosmetics();
+
+  function renderEquipmentTab() {
+    const h = heroById(selected);
+    renderHeroPicks("#equipmentPicks", true);
+    $("#equipmentContent").innerHTML = `
+      <div class="hero-summary">
+        <span class="hero-avatar">${portrait(h)}</span>
+        <div class="hero-summary-copy">
+          <p class="eyebrow">EQUIPMENT LOADOUT</p>
+          <h2>${esc(h.name)}</h2>
+          <span class="role-pill">${esc(h.role)}</span>
+          <p>${h.equipment.length} pieces listed · equip any two. Common gear comes unlocked, Epics are earned from events, the shop and clan games.</p>
+        </div>
+      </div>
+      ${equipmentMarkup(h)}
+      <div class="level-note" style="margin-top:14px"><h3>Upgrade tips</h3><p>Prioritise the equipment you use in every war. Commons are cheap to max; save Epic equipment ore for the one piece that carries your main army.</p></div>`;
   }
-  document.addEventListener("click", event => {
-    const button = event.target.closest("button");
-    if(!button) return;
-    if(button.dataset.main) switchMain(button.dataset.main);
-    if(button.dataset.hero){
-      selected = button.dataset.hero;
-      drawHero(); drawEquipment();
+
+  function renderCosmetics() {
+    $$("[data-cosmetic]").forEach(b => {
+      const on = b.dataset.cosmetic === cosmeticTab;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-selected", String(on));
+    });
+    $("#skinFilters").hidden = cosmeticTab !== "skins";
+    if (cosmeticTab === "skins") {
+      $("#skinFilters").innerHTML = `
+        <div class="show-row">
+          <span>Show</span>
+          <div class="show-strip" role="group" aria-label="Filter skins by hero">
+            <button type="button" class="${skinFilter === "all" ? "is-active" : ""}" data-filter="all" aria-pressed="${skinFilter === "all"}" aria-label="All heroes"><span style="display:grid;place-items:center;width:100%;height:100%;font:400 22px var(--hx-title);color:#fff;background:linear-gradient(#a83fe0,#5a1a9c)">✦</span></button>
+            ${HEROES.map(h => `<button type="button" class="${skinFilter === h.id ? "is-active" : ""}" data-filter="${h.id}" aria-pressed="${skinFilter === h.id}" aria-label="${esc(h.name)}">${portrait(h)}</button>`).join("")}
+          </div>
+        </div>`;
+      const list = HEROES.filter(h => skinFilter === "all" || h.id === skinFilter)
+        .flatMap(h => h.skins.map(s => ({ skin: s, hero: h })));
+      $("#cosmeticContent").innerHTML = list.length ? `<div class="skin-grid">${list.map(({ skin, hero }, index) => {
+        const [name, rarity, price, tint] = skin;
+        return `<article class="skin-card ${index === 0 ? "is-featured" : ""}">
+          <h3 class="skin-name">${esc(name)}</h3>
+          <div class="skin-art" style="background:radial-gradient(circle at 50% 32%,rgba(255,255,255,.3),transparent 65%),linear-gradient(160deg,${tint},#00000066)">
+            <span class="art-rune">${runeArt()}</span>
+            ${figure(hero, tint)}
+            <span class="skin-rarity">${esc(rarity)}</span>
+          </div>
+          <div class="skin-price"><span class="gem" aria-hidden="true"></span>${esc(price)}</div>
+        </article>`;
+      }).join("")}</div>` : `<div class="empty-state"><b>No skins for this hero yet</b>Pick another hero from the Show row.</div>`;
+    } else {
+      $("#cosmeticContent").innerHTML = `<div class="scenery-grid">${SCENERIES.map(([name, icon, bg, note]) => `
+        <article class="scenery-card">
+          <div class="scenery-art" style="background:${bg}">${icon}</div>
+          <h3>${esc(name)}</h3>
+          <p>${esc(note)}</p>
+        </article>`).join("")}</div>`;
     }
-    if(button.dataset.heroTab){ heroTab = button.dataset.heroTab; drawHero(); }
-    if(button.dataset.cosmetic){ cosmeticTab = button.dataset.cosmetic; drawCosmetics(); }
-    if(button.dataset.filter){ skinFilter = button.dataset.filter; drawCosmetics(); }
-  });
-  drawHero(); drawEquipment(); drawCosmetics();
+  }
+
+  function setMainTab(tab) {
+    mainTab = tab;
+    $$("[data-main]").forEach(b => {
+      const on = b.dataset.main === tab;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-selected", String(on));
+    });
+    $("#heroArea").hidden = tab !== "heroes";
+    $("#equipmentArea").hidden = tab !== "equipment";
+    $("#cosmeticsArea").hidden = tab !== "cosmetics";
+    if (tab === "equipment") renderEquipmentTab();
+    if (tab === "cosmetics") renderCosmetics();
+  }
+
+  function bind() {
+    document.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      if (button.dataset.main) { setMainTab(button.dataset.main); return; }
+      if (button.dataset.cosmetic) { cosmeticTab = button.dataset.cosmetic; renderCosmetics(); return; }
+      if (button.dataset.filter) { skinFilter = button.dataset.filter; renderCosmetics(); return; }
+      if (button.dataset.heroTab) { heroTab = button.dataset.heroTab; renderProfile(); return; }
+      if (button.dataset.hero) {
+        selected = button.dataset.hero;
+        heroTab = "overview";
+        renderHeroPicks("#heroPicks");
+        renderProfile();
+        if (mainTab === "equipment") renderEquipmentTab();
+        return;
+      }
+    });
+  }
+
+  function readHash() {
+    const raw = decodeURIComponent((location.hash || "").replace(/^#/, "")).trim();
+    if (!raw) return;
+    const match = HEROES.find(h => h.id === raw.toLowerCase().replace(/\s+/g, "-"));
+    if (match) {
+      selected = match.id;
+      heroTab = "overview";
+      renderHeroPicks("#heroPicks");
+      renderProfile();
+      if (mainTab === "equipment") renderEquipmentTab();
+      window.requestAnimationFrame(() => {
+        const target = document.getElementById("heroArea");
+        if (target) target.scrollIntoView({ block: "start" });
+      });
+    }
+  }
+
+  function init() {
+    HEROES.forEach(h => { h.skins.forEach(s => { if (!s[3]) s[3] = "#8d37ca"; }); });
+    renderHeroPicks("#heroPicks");
+    renderProfile();
+    bind();
+    readHash();
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
+  else init();
 })();

@@ -10,7 +10,7 @@
   <script>setTimeout(function(){var s=document.getElementById("cxPre");if(s)s.remove()},4000)</script>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css?v=11">
+  <link rel="stylesheet" href="./style.css?v=12">
 <link rel="stylesheet" href="./pekka.css?v=2">
 </head>
 <body>
@@ -30,18 +30,16 @@
     <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
     <nav class="main-nav" id="mainNav">
       <a class="active" href="#home">Home</a>
-      <a href="#player-finder">Player Finder</a>
-      <a href="#bases">Base Library</a>
-      <a href="#attacks">Attack Academy</a>
-      <a href="#armies">Armies</a>
-      <a href="#heroes">Clash Heroes</a>
-      <a href="#sceneries">Sceneries</a>
+      <a href="#player-finder">Players</a>
+      <a href="#bases">Bases</a>
+      <a href="#attacks">Attacks</a>
+      <a href="#heroes">Heroes</a>
       <a href="#events">Events</a>
       <a href="#account">Account</a>
     </nav>
     <div class="header-actions">
       <button class="icon-button" id="themeButton" title="Change seasonal theme" aria-label="Change seasonal theme">🌙</button>
-      <a class="header-cta" href="#account">Join PekkaDex <span>↗</span></a>
+      <a class="header-cta" href="./profile.html" data-profile-link>👤</a>
     </div>
   </header>
 
@@ -110,7 +108,7 @@
           <h3>Welcome to PekkaDex</h3>
           <p>Choose how you want to access your account.</p>
           <button class="button button-green auth-choice" id="authGameButton" type="button">
-            <span>🎮</span><span><strong>Open with a game</strong><small>Supercell connection coming soon</small></span>
+            <span>🎮</span><span><strong>Open with a game</strong><small>Verify your Clash of Clans account</small></span>
           </button>
           <div class="auth-divider"><span>OR</span></div>
           <button class="button button-green auth-choice" id="authEmailButton" type="button">
@@ -270,12 +268,6 @@
       <div class="section-heading"><div><h2>Clash <span>Heroes</span></h2></div></div>
     </section>
 
-    <!-- ARMIES -->
-    <section class="section" id="armies"></section>
-
-    <!-- SCENERIES -->
-    <section class="section" id="sceneries"></section>
-
     <!-- EVENTS -->
     <section class="section events-section" id="events">
       <div class="section-heading">
@@ -327,13 +319,13 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./supabase-config.js?v=11"></script>
-  <script src="./app.js?v=11"></script>
-<script src="./heroes-encyclopedia.js?v=1"></script>
-  <script src="./auth.js?v=11"></script>
-  <script src="./vault.js?v=11"></script>
+  <script src="./supabase-config.js?v=12"></script>
+  <script src="./app.js?v=15"></script>
+  <script src="./attacks.js?v=2"></script>
+  <script src="./profile-nav.js?v=2"></script>
+  <script src="./auth.js?v=14"></script>
   <script>
-  if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=11").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
+  if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=16").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
   </script>
 </body>
 </html>

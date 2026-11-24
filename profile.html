@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#7a4a22">
+  <meta name="description" content="Your PekkaDex profile — Clash of Clans stats, ranked and classic history and account settings.">
+  <title>My Profile — PekkaDex</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./heroes.css?v=3">
+  <link rel="stylesheet" href="./profile.css?v=1">
+</head>
+<body class="heroes-page profile-page">
+  <header class="sitebar">
+    <a class="home" href="./index.html"><span aria-hidden="true">←</span> PekkaDex</a>
+    <div class="sitebar-titles">
+      <strong>MY PROFILE</strong>
+      <small>stats · ranked · classic · account</small>
+    </div>
+    <div class="sitebar-actions">
+      <a class="profile-circle" href="./profile.html" data-profile-link aria-label="Your profile" title="Your profile">👤</a>
+    </div>
+  </header>
+
+  <main class="profile-shell">
+    <!-- SIGN-IN GATE -->
+    <section class="paper-panel" id="profileGate" hidden>
+      <div class="gate-emoji" aria-hidden="true">👤</div>
+      <h1>Sign in to PekkaDex</h1>
+      <p class="gate-copy">Open your profile to see your Clash of Clans stats, your ranked and classic history and your account details.</p>
+      <div class="gate-actions">
+        <a class="big-button green" href="./index.html?signin=game#account">🎮 Open with a game</a>
+        <a class="big-button gold" href="./index.html?signin=email#account">✉️ Log in with email</a>
+      </div>
+      <div class="gate-or"><span>OR</span></div>
+      <form id="gateTagForm" class="gate-tag">
+        <label class="cx-field"><span>Player Tag</span>
+          <input id="gateTag" type="text" maxlength="15" placeholder="#2PP" autocomplete="off" autocapitalize="characters" required>
+        </label>
+        <button class="big-button blue" type="submit" id="gateTagGo">Continue with Player Tag</button>
+        <p class="form-note">Player Tag only saves a profile on this device. Open with a game to verify the account.</p>
+      </form>
+      <p class="gate-status" id="gateStatus" aria-live="polite"></p>
+    </section>
+
+    <!-- PROFILE -->
+    <div id="profileMain" hidden>
+      <section class="paper-panel profile-head">
+        <div class="profile-avatar" id="profileAvatar" aria-hidden="true">P</div>
+        <div class="profile-head-copy">
+          <p class="eyebrow">CLASH OF CLANS ACCOUNT</p>
+          <h1 id="profileName">Chief</h1>
+          <div class="profile-tags">
+            <span class="profile-tag" id="profileTag">#TAG</span>
+            <span class="profile-tag th" id="profileTH">TH ?</span>
+            <span class="profile-state" id="profileState">Unverified</span>
+          </div>
+          <p class="profile-sub" id="profileSub"></p>
+        </div>
+        <div class="profile-head-actions">
+          <button class="small-button" id="refreshProfile" type="button">↻ Refresh stats</button>
+          <a class="small-button" href="./heroes.html">Heroes archive →</a>
+        </div>
+      </section>
+
+      <nav class="profile-tabs" role="tablist" aria-label="Profile sections">
+        <button class="is-active" type="button" data-atab="overview" role="tab" aria-selected="true">Overview</button>
+        <button type="button" data-atab="ranked" role="tab" aria-selected="false">Ranked</button>
+        <button type="button" data-atab="classic" role="tab" aria-selected="false">Classic</button>
+        <button type="button" data-atab="account" role="tab" aria-selected="false">Account</button>
+      </nav>
+
+      <section class="paper-panel" id="tabOverview" role="tabpanel">
+        <div class="stat-grid" id="statGrid"></div>
+        <h2 class="block-title">Heroes</h2>
+        <div class="hero-progress" id="heroProgress"></div>
+        <h2 class="block-title">Equipment owned</h2>
+        <div class="equipment-owned" id="equipmentOwned"></div>
+        <h2 class="block-title">Clan</h2>
+        <div id="clanBox"></div>
+        <p class="profile-note" id="profileNote"></p>
+      </section>
+
+      <section class="paper-panel" id="tabRanked" role="tabpanel" hidden>
+        <h2 class="block-title">Ranked · Legend League</h2>
+        <div class="stat-grid" id="rankedStats"></div>
+        <div id="rankedSeasons"></div>
+        <h2 class="block-title">Ranked battles you logged</h2>
+        <div id="rankedHistory"></div>
+      </section>
+
+      <section class="paper-panel" id="tabClassic" role="tabpanel" hidden>
+        <h2 class="block-title">Classic record</h2>
+        <div class="stat-grid" id="classicStats"></div>
+        <h2 class="block-title">Classic battles you logged</h2>
+        <div id="classicHistory"></div>
+      </section>
+
+      <section class="paper-panel" id="tabAccount" role="tabpanel" hidden>
+        <h2 class="block-title">Account</h2>
+        <div class="account-rows" id="accountRows"></div>
+        <h3 class="block-sub">Change linked Player Tag</h3>
+        <form id="tagForm" class="tag-form">
+          <label class="cx-field"><span>New Player Tag</span>
+            <input id="newTag" type="text" maxlength="15" placeholder="#2PP" autocomplete="off" autocapitalize="characters" required>
+          </label>
+          <button class="big-button green" type="submit" id="tagSave">Verify and save</button>
+        </form>
+        <p class="gate-status" id="accountStatus" aria-live="polite"></p>
+        <h3 class="block-sub">Danger zone</h3>
+        <div class="account-danger">
+          <button class="big-button red" id="signOut" type="button">Sign out</button>
+          <p class="form-note">Signing out removes the saved profile from this device. Tracked battles stay in your browser.</p>
+        </div>
+      </section>
+    </div>
+
+    <p class="disclaimer">Fan-made companion. Not affiliated with, endorsed or sponsored by Supercell. Battle history is tracked by you; Clash of Clans does not publish a full match log.</p>
+  </main>
+
+  <footer class="heroes-footer">
+    <a href="./index.html">← Return to PekkaDex</a>
+    <a href="./heroes.html">Clash Heroes Encyclopedia</a>
+    <span>PEKKADEX · PLAYER PROFILE</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase-config.js?v=12"></script>
+  <script src="./profile-nav.js?v=2"></script>
+  <script src="./profile.js?v=2"></script>
+</body>
+</html>
