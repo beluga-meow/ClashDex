@@ -7,7 +7,7 @@
   <title>ClashVault — Your Kingdom Companion</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css?v=7">
+  <link rel="stylesheet" href="./style.css?v=8">
 </head>
 <body>
   <div class="season-effects" id="seasonEffects" aria-hidden="true"></div>
@@ -30,7 +30,7 @@
       <a href="#bases">Base Library</a>
       <a href="#attacks">Attack Academy</a>
       <a href="#armies">Armies</a>
-      <a href="#heroes">Clash Heroes</a>
+      <a href="heroes.html">Clash Heroes</a>
       <a href="#sceneries">Sceneries</a>
       <a href="#events">Events</a>
       <a href="#account">Account</a>
@@ -295,15 +295,7 @@
     </section>
 
     <!-- STORE -->
-    <section class="store-banner" id="store">
-      <div class="store-emblem">💎</div>
-      <div>
-        <div class="eyebrow">THE KINGDOM MARKET</div>
-        <h2>Skins, scenery & special offers.</h2>
-        <p>Browse official offers and the Supercell Store. Purchases are completed through official channels.</p>
-      </div>
-      <a class="button button-gold" href="https://store.supercell.com/clashofclans" target="_blank" rel="noopener">Visit official store ↗</a>
-    </section>
+    
   </main>
 
   <footer class="site-footer">
@@ -331,12 +323,12 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./supabase-config.js?v=7"></script>
-  <script src="./app.js?v=7"></script>
-  <script src="./auth.js?v=7"></script>
-  <script src="./vault.js?v=7"></script>
+  <script src="./supabase-config.js?v=8"></script>
+  <script src="./app.js?v=8"></script>
+  <script src="./auth.js?v=8"></script>
+  <script src="./vault.js?v=8"></script>
   <script>
-  if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=7").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
+  if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=8").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
   </script>
 </body>
 </html>
