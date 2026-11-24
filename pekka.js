@@ -1,4 +1,4 @@
-/* ClashVault v7: gold theme, Armies, Heroes pages, Sceneries, OTP loader */
+/* PekkaDex v7: gold theme, Armies, Heroes pages, Sceneries, OTP loader */
 (() => {
 "use strict";
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -7,7 +7,7 @@ const toast=m=>{const t=$("#toast");if(!t)return alert(m);t.textContent=m;t.clas
 const copy=async txt=>{try{await navigator.clipboard.writeText(txt)}catch(_){const a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove()}};
 
 /* ---- theme css, appended last so it wins ---- */
-const l=document.createElement("link");l.rel="stylesheet";l.href="./vault.css?v=8";document.head.appendChild(l);
+const l=document.createElement("link");l.rel="stylesheet";l.href="./vault.css?v=9";document.head.appendChild(l);
 
 /* ---- DATA (edit freely) ---- */
 const ARMIES=[
