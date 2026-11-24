@@ -171,13 +171,51 @@
     return `<img class="drop-in" alt="${esc(alt || name)}" loading="lazy" src="${base}.${ART_EXTS[0]}" data-base="${base}" data-ext="0" onload="this.classList.add('is-on')" onerror="window.pdxArtFail(this)">`;
   };
 
+  /* --------------------------------------------------- shipped artwork */
+  const ART = window.PDX_ART || { heroes: {}, skins: {}, sceneries: {}, equipment: {} };
+  const titleOf = key => key.split("-").filter(Boolean)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+  const tintOf = key => {
+    let n = 0;
+    for (let i = 0; i < key.length; i++) n = (n * 31 + key.charCodeAt(i)) % 360;
+    return `hsl(${n} 62% 42%)`;
+  };
+  const photo = (src, alt) => src
+    ? `<img class="drop-in is-on" src="${src}" alt="${esc(alt)}" loading="lazy" onerror="this.remove()">`
+    : "";
+
+  /* Merge the art that ships in assets/skins and assets/sceneries into the data
+     below so the archive always matches the files in the repo. */
+  HEROES.forEach(h => {
+    const shipped = ART.skins[h.id] || {};
+    const used = new Set();
+    h.skins = h.skins.map(skin => {
+      const key = slug(skin[0]);
+      if (!shipped[key]) return skin;
+      used.add(key);
+      return [skin[0], skin[1], skin[2], skin[3], shipped[key]];
+    }).concat(Object.keys(shipped).filter(key => !used.has(key)).map(key => [
+      titleOf(key), "", "", tintOf(key), shipped[key]
+    ]));
+  });
+
+  if (Object.keys(ART.sceneries).length) {
+    SCENERIES.length = 0;
+    Object.keys(ART.sceneries).sort().forEach(key => {
+      SCENERIES.push([titleOf(key), "🏞️", `linear-gradient(160deg,${tintOf(key)},#0b3f5e)`, "Scenery from the cookbook collection.", ART.sceneries[key]]);
+    });
+  }
+
   /* ------------------------------------------------------- hero portraits
      One design per hero lives in assets/heroes/<hero-id>.svg so the same
      artwork is used on the homepage chips, the picks, the profile and the
      skin cards (tinted) without any page ever loading a missing image. */
   function portrait(h, label, tint) {
     const alt = esc(label || h.name + " portrait");
-    const img = `<img src="./assets/heroes/${h.id}.svg" width="240" height="240" alt="${alt}" loading="lazy" onerror="this.remove()">`;
+    const art = ART.heroes[h.id];
+    const img = art
+      ? `<img src="${art}" width="240" height="240" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='./assets/heroes/${h.id}.svg'">`
+      : `<img src="./assets/heroes/${h.id}.svg" width="240" height="240" alt="${alt}" loading="lazy" onerror="this.remove()">`;
     return tint ? `<span class="hero-tint" style="--t:${tint}">${img}<i aria-hidden="true"></i></span>` : img;
   }
 
@@ -192,11 +230,6 @@
         <circle cx="60" cy="16" r="2.4"/><circle cx="104" cy="60" r="2.4"/><circle cx="60" cy="104" r="2.4"/><circle cx="16" cy="60" r="2.4"/>
       </g>
     </svg>`;
-  }
-
-  function figure(h, tint) {
-    /* Hero bust used inside skin cards; the tint echoes that skin's theme. */
-    return `<span class="art-figure">${portrait(h, h.name + " skin preview", tint)}</span>`;
   }
 
   /* --------------------------------------------------------------- state */
@@ -279,19 +312,24 @@
     }).join("")}</div>`;
   }
 
+  /* One card for a skin, whether the art ships with the site or not. */
+  function skinCardMarkup(hero, skin, featured) {
+    const [name, rarity, price, tint, file] = skin;
+    return `<article class="skin-card ${featured ? "is-featured" : ""}" style="--skin:${tint}">
+        <h3 class="skin-name">${esc(name)}</h3>
+        <div class="skin-art" style="background:radial-gradient(circle at 50% 32%,rgba(255,255,255,.3),transparent 65%),linear-gradient(160deg,${tint},#00000066)">
+          <span class="art-rune">${runeArt()}</span>
+          <span class="art-figure">${portrait(hero, name + " skin preview", tint)}</span>
+          ${file ? photo(file, name) : dropIn("skins", name, name)}
+          ${rarity ? `<span class="skin-rarity">${esc(rarity)}</span>` : ""}
+        </div>
+        ${price ? `<div class="skin-price"><span class="gem" aria-hidden="true"></span>${esc(price)}</div>` : ""}
+      </article>`;
+  }
+
   function heroSkinCards(h) {
     if (!h.skins.length) return `<div class="empty">No skins listed for this hero yet.</div>`;
-    return `<div class="skin-grid">${h.skins.map(([name, rarity, price, tint], i) => `
-      <article class="skin-card ${i === 0 ? "is-featured" : ""}" style="--skin:${tint}">
-        <h3 class="skin-name">${esc(name)}</h3>
-        <div class="skin-art" style="background:radial-gradient(circle at 50% 32%,rgba(255,255,255,.28),transparent 65%),linear-gradient(160deg,${tint},#00000055)">
-          <span class="art-rune">${runeArt()}</span>
-          ${figure(h, tint)}
-          ${dropIn("skins", name, name)}
-          <span class="skin-rarity">${esc(rarity)}</span>
-        </div>
-        <div class="skin-price"><span class="gem" aria-hidden="true"></span>${esc(price)}</div>
-      </article>`).join("")}</div>`;
+    return `<div class="skin-grid">${h.skins.map((skin, i) => skinCardMarkup(h, skin, i === 0)).join("")}</div>`;
   }
 
   function renderProfile() {
@@ -364,23 +402,11 @@
         </div>`;
       const list = HEROES.filter(h => skinFilter === "all" || h.id === skinFilter)
         .flatMap(h => h.skins.map(s => ({ skin: s, hero: h })));
-      $("#cosmeticContent").innerHTML = list.length ? `<div class="skin-grid">${list.map(({ skin, hero }, index) => {
-        const [name, rarity, price, tint] = skin;
-        return `<article class="skin-card ${index === 0 ? "is-featured" : ""}">
-          <h3 class="skin-name">${esc(name)}</h3>
-          <div class="skin-art" style="background:radial-gradient(circle at 50% 32%,rgba(255,255,255,.3),transparent 65%),linear-gradient(160deg,${tint},#00000066)">
-            <span class="art-rune">${runeArt()}</span>
-            ${figure(hero, tint)}
-            ${dropIn("skins", name, name)}
-            <span class="skin-rarity">${esc(rarity)}</span>
-          </div>
-          <div class="skin-price"><span class="gem" aria-hidden="true"></span>${esc(price)}</div>
-        </article>`;
-      }).join("")}</div>` : `<div class="empty-state"><b>No skins for this hero yet</b>Pick another hero from the Show row.</div>`;
+      $("#cosmeticContent").innerHTML = list.length ? `<div class="skin-grid">${list.map(({ skin, hero }, index) => skinCardMarkup(hero, skin, index === 0)).join("")}</div>` : `<div class="empty-state"><b>No skins for this hero yet</b>Pick another hero from the Show row.</div>`;
     } else {
-      $("#cosmeticContent").innerHTML = `<div class="scenery-grid">${SCENERIES.map(([name, icon, bg, note]) => `
+      $("#cosmeticContent").innerHTML = `<div class="scenery-grid">${SCENERIES.map(([name, icon, bg, note, file]) => `
         <article class="scenery-card">
-          <div class="scenery-art" style="background:${bg}">${icon}${dropIn("sceneries", name, name)}</div>
+          <div class="scenery-art" style="background:${bg}">${icon}${file ? photo(file, name) : dropIn("sceneries", name, name)}</div>
           <h3>${esc(name)}</h3>
           <p>${esc(note)}</p>
         </article>`).join("")}</div>`;

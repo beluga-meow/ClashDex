@@ -22,8 +22,10 @@ assets/
   sceneries/               scenery art (drop-in)
   townhalls/               th-2 … th-19
   builder-halls/           bh3 … bh10
-  icons/                   favicon + PWA icon
-  data/                    season.json, skins.json, build-manifest.json
+  icons/                   favicon + PWA icon + UI icons
+  data/                    art-manifest.json, season.json, skins.json, build-manifest.json
+  js/art-data.js           generated index of the art that ships (window.PDX_ART)
+tools/build-art-manifest.py  regenerates the art index after adding files
 supabase/functions/coc/    deployed Clash of Clans proxy
 ```
 
@@ -31,6 +33,7 @@ supabase/functions/coc/    deployed Clash of Clans proxy
 
 `assets/skins/`, `assets/sceneries/` and `assets/equipment/` are drop-in
 folders: name the file after the item (lower-case, words joined with `-`,
-`.webp` / `.png` / `.jpg` / `.svg`) and the encyclopedia picks it up with no
-code change. Each folder has a README with the exact names. Without a file the
-drawn portrait, gradient or emoji stays, so nothing ever shows a broken image.
+`.webp` / `.png` / `.jpg` / `.svg`), then run
+`python3 tools/build-art-manifest.py` to refresh the index. Each folder has a
+README with the exact names. Without a file the drawn portrait, gradient or
+emoji stays, so nothing ever shows a broken image.

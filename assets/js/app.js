@@ -1301,6 +1301,12 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
   }
 
   /* ============ 9. Clash Heroes Encyclopedia (archive card) ============ */
+  /* Real hero art when it ships in assets/heroes, drawn portrait as fallback. */
+  function heroArt(id) {
+    const art = window.PDX_ART && window.PDX_ART.heroes;
+    return (art && art[id]) || "./assets/heroes/" + id + ".svg";
+  }
+
   function buildHeroes() {
     const sec = $("#heroes");
     if (!sec) return;
@@ -1325,7 +1331,7 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
             '<span class="pdx-archive-cta">Open the encyclopedia →</span>' +
           '</span>' +
         '</a>' +
-        '<div class="pdx-archive-chips">' + roster.map(h => '<a class="pdx-archive-chip" href="./heroes.html#' + h[0] + '"><span class="pdx-archive-chip-art" aria-hidden="true"><img src="./assets/heroes/' + h[0] + '.svg" width="30" height="30" alt="" loading="lazy" onerror="this.parentElement.textContent=\'' + h[2] + '\'"></span>' + esc(h[1]) + '</a>').join('') + '</div>' +
+        '<div class="pdx-archive-chips">' + roster.map(h => '<a class="pdx-archive-chip" href="./heroes.html#' + h[0] + '"><span class="pdx-archive-chip-art" aria-hidden="true"><img src="' + heroArt(h[0]) + '" width="30" height="30" alt="" loading="lazy" onerror="this.parentElement.textContent=\'' + h[2] + '\'"></span>' + esc(h[1]) + '</a>').join('') + '</div>' +
         '<div class="pdx-archive-features">' +
           '<div class="pdx-archive-feature"><b>⚔ Hero profiles</b><small>Roles, abilities, equipment and skins for all six heroes.</small></div>' +
           '<div class="pdx-archive-feature"><b>🛠 Equipment</b><small>Every common and epic piece, with what it does in battle.</small></div>' +
