@@ -1,0 +1,13 @@
+{
+  "source": "ClashDex-main.zip + PekkaDex-player-finder-neutral.zip + coc.zip supplied in prior conversation",
+  "generated_at": "2026-11-24",
+  "files": [
+    "app.js",
+    "supabase/functions/coc/index.ts",
+    "supabase/migrations/202611240002_public_directory.sql",
+    "admin/discover-clans.example.sh",
+    "README.txt"
+  ],
+  "live_deployment": false,
+  "live_api_test": false
+}
