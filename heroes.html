@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0b"><title>Clash Heroes — ClashVault</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<style>
+:root{--g:#ffd21f;--ln:#4a3a14;--card:#121212;--ink:#f6ecd0;--mute:#c9bb92}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 500px at 15% -5%,#2b2208,transparent 60%),#0b0b0b;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:40px}
+header{position:sticky;top:0;z-index:5;background:#111;border-bottom:1px solid var(--ln);display:flex;align-items:center;gap:12px;padding:12px 16px}
+header a{color:var(--g);font-weight:800;text-decoration:none}header b{flex:1;color:var(--g);font-size:19px}
+main{max-width:900px;margin:auto;padding:16px;display:grid;gap:16px}
+h1,h2,h3{margin:0;color:var(--g)}p{margin:0;color:var(--mute)}
+.pick{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.pick button{flex:none;display:grid;justify-items:center;gap:2px;min-width:92px;padding:10px 12px;background:var(--card);border:1px solid var(--ln);border-radius:18px;color:var(--ink);font-weight:700;font-size:13px;cursor:pointer}
+.pick button span{font-size:30px}.pick button.on{background:var(--g);color:#1a1200;border-color:var(--g)}
+.top{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--ln);border-top:3px solid var(--g);border-radius:24px;padding:16px}.top .ic{font-size:56px}
+.tabs{display:flex;gap:8px}.tabs button{flex:1;padding:12px;border-radius:999px;background:#17130a;color:var(--mute);border:1px solid var(--ln);font:800 15px system-ui;cursor:pointer}.tabs button.on{background:var(--g);color:#1a1200}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.it{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center}
+.it.epic{border-color:#a855f7}.it.common{border-color:#6b7280}.it i{font-size:28px;font-style:normal}.it small{color:var(--mute)}
+.empty{border:2px dashed var(--ln);border-radius:20px;padding:22px;text-align:center;color:var(--mute)}
+.note{font-size:13px;color:#8d7f58}
+</style></head><body>
+<header><a href="./index.html#heroes">← Back</a><b>Clash Heroes</b></header>
+<main>
+<div class="pick" id="pick"></div>
+<div id="view"></div>
+<p class="note">Fan-made encyclopedia. Always confirm exact stats and unlock levels in the game. Not affiliated with Supercell.</p>
+</main>
+<script>
+const H=[
+{id:"barbarian-king",n:"Barbarian King",i:"👑",r:"Ground tank",a:"Frontline hero that leads ground attacks and tanks for your troops.",
+ eq:[["Barbarian Puppet","common"],["Rage Vial","common"],["Earthquake Boots","common"],["Vampstache","epic"],["Giant Gauntlet","epic"],["Spiky Ball","epic"]],
+ sk:[["Gladiator King",""],["King Barbarian","The Awesome Quest season skin"]]},
+{id:"archer-queen",n:"Archer Queen",i:"🏹",r:"Ranged damage",a:"Long-range hero for precise funneling and taking out key defenses.",
+ eq:[["Archer Puppet","common"],["Invisibility Vial","common"],["Giant Arrow","epic"],["Healer Puppet","epic"],["Frozen Arrow","epic"],["Magic Mirror","epic"]],
+ sk:[["Elven Archer","The Awesome Quest season skin"]]},
+{id:"grand-warden",n:"Grand Warden",i:"🧙",r:"Support",a:"Support hero whose abilities protect nearby troops at critical moments.",
+ eq:[["Eternal Tome","common"],["Life Gem","common"],["Rage Gem","epic"],["Healing Tome","epic"],["Fireball","epic"],["Lavaloon Puppet","epic"]],
+ sk:[["Grand Mage","The Awesome Quest season skin"]]},
+{id:"royal-champion",n:"Royal Champion",i:"🛡️",r:"Defense hunter",a:"Mobile hero that hunts defenses and supports late-stage attacks.",
+ eq:[["Seeking Shield","common"],["Royal Gem","common"],["Hog Rider Puppet","common"],["Haste Vial","epic"],["Rocket Spear","epic"],["Electro Boots","epic"]],
+ sk:[["Tempest Champion","The Awesome Quest season skin"]]},
+{id:"minion-prince",n:"Minion Prince",i:"🦇",r:"Air support",a:"Airborne hero that adds pressure and support to many armies.",
+ eq:[["Henchmen Puppet","common"],["Dark Orb","epic"],["Metal Pants","epic"]],
+ sk:[["Lich Prince","The Awesome Quest season skin"],["Anime Fury Prince","Anime Fury season skin"]]},
+{id:"dragon-duke",n:"Dragon Duke",i:"🐲",r:"Melee brawler (TH15+)",a:"The sixth hero. A melee fighter that slashes and breathes fire, and works best fighting on his own.",
+ eq:[["Rocket Backpack",""],["Flame Blower",""],["Electro Fangs","common"],["Heart of Fire",""],["Shock Blast",""]],
+ sk:[["Drakan Duke","The Awesome Quest season skin"],["Hydra Duke","Barbarian's Odyssey season skin"],["Kane","WWE crossover skin"],["Anime Fury Dragon Duke","Anime Fury season skin"]]}
+];
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let cur=H[0].id,tab="equipment";
+function parse(){const m=location.hash.match(/^#([\w-]+)(?:\/(skins|equipment))?/);if(m&&H.some(h=>h.id===m[1])){cur=m[1];tab=m[2]||"equipment"}}
+function draw(){
+ const h=H.find(x=>x.id===cur);
+ $("#pick").innerHTML=H.map(x=>`<button data-id="${x.id}" class="${x.id===cur?"on":""}"><span>${x.i}</span>${x.n}</button>`).join("");
+ const eq=h.eq.map(e=>`<div class="it ${e[1]}"><i>${e[1]==="epic"?"✨":"🔧"}</i><div><b>${esc(e[0])}</b><br><small>${e[1]?e[1][0].toUpperCase()+e[1].slice(1)+" equipment":"Equipment"}</small></div></div>`).join("");
+ const sk=h.sk.length?h.sk.map(s=>`<div class="it"><i>🎨</i><div><b>${esc(s[0])}</b><br><small>${esc(s[1]||"Hero skin")}</small></div></div>`).join(""):"";
+ $("#view").innerHTML=`<div style="display:grid;gap:14px"><div class="top"><span class="ic">${h.i}</span><div><h1>${h.n}</h1><small style="color:var(--g)">${h.r}</small><p style="margin-top:4px">${esc(h.a)}</p></div></div>
+ <div class="tabs"><button data-t="equipment" class="${tab==="equipment"?"on":""}">🎒 Equipment (${h.eq.length})</button><button data-t="skins" class="${tab==="skins"?"on":""}">🎨 Skins (${h.sk.length})</button></div>
+ <div class="grid">${tab==="equipment"?eq:sk}</div>${tab==="skins"&&!sk?'<div class="empty">No skins listed yet.</div>':""}</div>`;
+}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.id)location.hash=b.dataset.id+"/"+tab;if(b.dataset.t)location.hash=cur+"/"+b.dataset.t});
+addEventListener("hashchange",()=>{parse();draw();scrollTo(0,0)});parse();draw();
+</script></body></html>
