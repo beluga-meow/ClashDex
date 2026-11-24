@@ -66,3 +66,18 @@ html.cx .cx-tabbar a{color:#c9bb92}html.cx .cx-tabbar a.on{color:var(--g)}
 @keyframes vslide{from{left:0}to{left:60%}}
 .auth-panel{position:relative}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+/* v8 fixes */
+.v-card>span,.v-card span[style]{color:#f6ecd0}
+html.cx .cx-lay,html.cx .cx-lay-body,html.cx .cx-sheet,html.cx .cx-sheet *{background-color:transparent}
+html.cx .cx-lay{background:#121212!important;border:1px solid var(--ln)!important;border-radius:20px;overflow:hidden}
+html.cx .cx-lay-body{background:#121212!important}
+html.cx .cx-lay h3{color:var(--g)!important}
+html.cx .cx-lay p,html.cx .cx-lay-body p{color:#c9bb92!important}
+html.cx .cx-art{background:linear-gradient(145deg,#2b2208,#0b0b0b)!important}
+html.cx .cx-pill{background:#2a2208!important;color:var(--g)!important;border:1px solid var(--ln)!important}
+html.cx .cx-tab{background:#17130a!important;color:#c9bb92!important;border:1px solid var(--ln)!important}
+html.cx .cx-tab.on{background:var(--g)!important;color:#1a1200!important}
+html.cx .cx-more{background:#121212!important;border:1px dashed var(--g)!important}
+html.cx .cx-more summary,html.cx .cx-label{color:var(--g)!important}
+html.cx .eyebrow,html.cx .cx-label+*{background:none}
+html.cx .eyebrow{background:#2a2208!important;color:var(--g)!important}
