@@ -152,73 +152,33 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const heroById = id => HEROES.find(h => h.id === id) || HEROES[0];
+  const slug = v => String(v).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-  /* -------------------------------------------------- inline SVG portraits */
+  /* Drop-in art: put a file at assets/<folder>/<slug>.webp|png|jpg|svg and it is
+     used automatically. Without a file the drawn portrait or emoji stays. */
+  const ART_EXTS = ["webp", "png", "jpg", "jpeg", "svg"];
+  window.pdxArtFail = img => {
+    const next = (Number(img.dataset.ext) || 0) + 1;
+    if (next < ART_EXTS.length) {
+      img.dataset.ext = next;
+      img.src = img.dataset.base + "." + ART_EXTS[next];
+    } else {
+      img.remove();
+    }
+  };
+  const dropIn = (folder, name, alt) => {
+    const base = `./assets/${folder}/${slug(name)}`;
+    return `<img class="drop-in" alt="${esc(alt || name)}" loading="lazy" src="${base}.${ART_EXTS[0]}" data-base="${base}" data-ext="0" onload="this.classList.add('is-on')" onerror="window.pdxArtFail(this)">`;
+  };
+
+  /* ------------------------------------------------------- hero portraits
+     One design per hero lives in assets/heroes/<hero-id>.svg so the same
+     artwork is used on the homepage chips, the picks, the profile and the
+     skin cards (tinted) without any page ever loading a missing image. */
   function portrait(h, label, tint) {
-    const a = tint ? Object.assign({}, h.art, { armor: tint }) : h.art, id = h.id;
-    const hairBack = a.face === "long"
-      ? `<path d="M36 44c-4 20-3 34 0 48 4-6 6-12 7-20l0 24h34l0-24c1 8 3 14 7 20 3-14 4-28 0-48z" fill="${a.hair}"/>` : "";
-    const hairFront = a.face === "short"
-      ? `<path d="M40 38c3-12 10-16 20-16s17 4 20 16c-5-6-11-9-20-9s-15 3-20 9z" fill="${a.hair}"/>` : "";
-    const beard = a.face === "beard"
-      ? `<path d="M41 62c0 16 8 26 19 26s19-10 19-26c-3 8-9 12-19 12s-16-4-19-12z" fill="${a.hair}"/>
-         <path d="M60 82c-4 6-4 12 0 18 4-6 4-12 0-18z" fill="${a.hair}"/>` : "";
-    const wild = a.face === "wild"
-      ? `<path d="M36 44c-8 8-10 20-6 30 4-8 8-12 12-14-2-6-2-12-6-16zM84 44c8 8 10 20 6 30-4-8-8-12-12-14 2-6 2-12 6-16z" fill="${a.hair}"/>` : "";
-
-    let head = "";
-    if (a.head === "crown") head = `
-      <path d="M40 36l4-17 9 11 7-15 7 15 9-11 4 17z" fill="#f7c33a" stroke="#8a5a05" stroke-width="2.5" stroke-linejoin="round"/>
-      <rect x="38" y="34" width="44" height="7" rx="3" fill="#ffe778" stroke="#8a5a05" stroke-width="2"/>
-      <circle cx="60" cy="28" r="3" fill="#e8493c" stroke="#8a3a05" stroke-width="1.2"/>`;
-    else if (a.head === "tiara") head = `
-      <path d="M40 35q20-12 40 0" fill="none" stroke="#f7c33a" stroke-width="5" stroke-linecap="round"/>
-      <path d="M46 30l4-8 5 7 5-10 5 10 5-7 4 8z" fill="#f7c33a" stroke="#8a5a05" stroke-width="1.6"/>
-      <circle cx="60" cy="22" r="3" fill="#62b52c" stroke="#2a6a10" stroke-width="1.2"/>`;
-    else if (a.head === "circlet") head = `
-      <path d="M41 38q19-14 38 0" fill="none" stroke="#f7c33a" stroke-width="4"/>
-      <circle cx="60" cy="30" r="4.5" fill="#a855f7" stroke="#5a1a9c" stroke-width="1.5"/>`;
-    else if (a.head === "band") head = `
-      <rect x="38" y="33" width="44" height="6" rx="3" fill="#f7c33a" stroke="#8a5a05" stroke-width="2"/>
-      <circle cx="60" cy="36" r="3" fill="#e8493c"/>`;
-    else if (a.head === "horns") head = `
-      <path d="M42 34c-6-8-10-16-8-24 8 4 14 12 17 22z" fill="#d9d2e6" stroke="#4a3b5e" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M78 34c6-8 10-16 8-24-8 4-14 12-17 22z" fill="#d9d2e6" stroke="#4a3b5e" stroke-width="2.5" stroke-linejoin="round"/>`;
-    else if (a.head === "helm") head = `
-      <path d="M39 38c0-14 9-22 21-22s21 8 21 22z" fill="${a.armor}" stroke="#2a1a10" stroke-width="2.5"/>
-      <path d="M60 16l4 8-4 4-4-4z" fill="${a.accent}"/>`;
-
-    return `<svg viewBox="0 0 120 120" role="img" aria-label="${esc(label || h.name + " portrait")}" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="hx-${id}" cx="50%" cy="32%" r="72%">
-          <stop offset="0" stop-color="#c47bf7"/><stop offset="60%" stop-color="#6a2aab"/><stop offset="100%" stop-color="#2e125c"/>
-        </radialGradient>
-      </defs>
-      <rect width="120" height="120" fill="url(#hx-${id})"/>
-      <circle cx="60" cy="52" r="45" fill="#ffffff" opacity=".08"/>
-      <g opacity=".5" stroke="#ffffff" stroke-width="1.4" fill="none">
-        <circle cx="20" cy="80" r="6"/><circle cx="100" cy="34" r="4"/><circle cx="96" cy="92" r="5"/>
-      </g>
-      ${hairBack}
-      <path d="M9 120c2-24 22-33 51-33s49 9 51 33z" fill="${a.armor}" stroke="#221206" stroke-width="3"/>
-      <path d="M9 120c2-24 22-33 51-33s49 9 51 33z" fill="none" stroke="${a.accent}" stroke-width="2" opacity=".55"/>
-      <path d="M34 120c1-14 8-21 18-23l8 14 8-14c10 2 17 9 18 23z" fill="${a.accent}" opacity=".28"/>
-      <rect x="50" y="68" width="20" height="20" rx="6" fill="${a.skin}" stroke="#221206" stroke-width="2"/>
-      <ellipse cx="60" cy="55" rx="23" ry="25" fill="${a.skin}" stroke="#221206" stroke-width="2.6"/>
-      <circle cx="35" cy="57" r="4.5" fill="${a.skin}" stroke="#221206" stroke-width="2"/>
-      <circle cx="85" cy="57" r="4.5" fill="${a.skin}" stroke="#221206" stroke-width="2"/>
-      ${hairFront}${wild}${beard}
-      <g>
-        <ellipse cx="51" cy="55" rx="3.6" ry="4.2" fill="#fffdf4"/>
-        <ellipse cx="69" cy="55" rx="3.6" ry="4.2" fill="#fffdf4"/>
-        <circle cx="52" cy="56" r="2" fill="#2a1a10"/>
-        <circle cx="70" cy="56" r="2" fill="#2a1a10"/>
-        <path d="M45 47l9 2M75 47l-9 2" stroke="#3a2412" stroke-width="2.6" stroke-linecap="round" opacity=".8"/>
-        <path d="M55 67q5 4 10 0" stroke="#7a3a1c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      </g>
-      ${head}
-      <path d="M14 118h92" stroke="#000" stroke-opacity=".18" stroke-width="3"/>
-    </svg>`;
+    const alt = esc(label || h.name + " portrait");
+    const img = `<img src="./assets/heroes/${h.id}.svg" width="240" height="240" alt="${alt}" loading="lazy" onerror="this.remove()">`;
+    return tint ? `<span class="hero-tint" style="--t:${tint}">${img}<i aria-hidden="true"></i></span>` : img;
   }
 
   function runeArt() {
@@ -245,6 +205,7 @@
   let heroTab = "overview";
   let cosmeticTab = "skins";
   let skinFilter = "all";
+  let eqLevel = 1;
 
   /* -------------------------------------------------------------- render */
   function renderHeroPicks(target, compact) {
@@ -268,16 +229,54 @@
       </div>`).join("")}</div>`;
   }
 
+  /* Equipment levels: Commons upgrade to 18, Epics to 27. The damage shown per
+     level is an illustrative progression so you can see how adding levels moves
+     the number; it is not a scraped in-game table. */
+  const EQ_LEVELS = { Common: { min: 1, max: 18, base: 90, step: 6 }, Epic: { min: 1, max: 27, base: 260, step: 12 } };
+  const eqRange = rarity => EQ_LEVELS[rarity] || EQ_LEVELS.Common;
+  const eqEffective = (rarity, level) => Math.min(Math.max(level, 1), eqRange(rarity).max);
+  const eqDamage = (rarity, level) => {
+    const r = eqRange(rarity);
+    return r.base + (eqEffective(rarity, level) - r.min) * r.step;
+  };
+
+  function syncEqLevel() {
+    const out = $("#eqLevelOut");
+    if (out) out.textContent = eqLevel;
+    $$(".equipment-card[data-rarity]").forEach(card => {
+      const rarity = card.dataset.rarity;
+      const eff = eqEffective(rarity, eqLevel);
+      const lv = $(".eq-stat", card), dmg = $(".eq-dmg", card);
+      if (lv) lv.textContent = "Lv " + eff + (eff < eqLevel ? " (max)" : "");
+      if (dmg) dmg.textContent = eqDamage(rarity, eqLevel);
+    });
+  }
+
+  function setEqLevel(value) {
+    eqLevel = Math.min(Math.max(Number(value) || 1, 1), 27);
+    syncEqLevel();
+  }
+
   function equipmentMarkup(h) {
-    return `<div class="equipment-grid">${h.equipment.map(([name, rarity, icon, desc]) => `
-      <article class="equipment-card">
-        <span class="eq-icon" aria-hidden="true">${icon}</span>
+    return `<div class="eq-level-bar">
+      <label for="eqLevelRange">Equipment level <b id="eqLevelOut">${eqLevel}</b></label>
+      <input id="eqLevelRange" type="range" min="1" max="27" step="1" value="${eqLevel}" aria-label="Equipment level">
+      <small>Commons upgrade 1–18, Epics 1–27. Every level adds a fixed amount of damage; the numbers are an illustrative progression, not in-game values.</small>
+    </div>
+    <div class="equipment-grid">${h.equipment.map(([name, rarity, icon, desc]) => {
+      const max = eqRange(rarity).max;
+      const eff = eqEffective(rarity, eqLevel);
+      return `<article class="equipment-card" data-rarity="${rarity}">
+        <span class="eq-icon" aria-hidden="true">${icon}${dropIn("equipment", name, name)}</span>
         <div>
           <b>${esc(name)}</b>
           <span class="rarity ${rarity.toLowerCase()}">${esc(rarity)}</span>
+          <span class="eq-levels">Lv 1–${max}</span>
           <small>${esc(desc)}</small>
+          <span class="eq-progress"><b class="eq-stat">Lv ${eff}${eff < eqLevel ? " (max)" : ""}</b> · <b class="eq-dmg">${eqDamage(rarity, eqLevel)}</b> damage</span>
         </div>
-      </article>`).join("")}</div>`;
+      </article>`;
+    }).join("")}</div>`;
   }
 
   function heroSkinCards(h) {
@@ -288,6 +287,7 @@
         <div class="skin-art" style="background:radial-gradient(circle at 50% 32%,rgba(255,255,255,.28),transparent 65%),linear-gradient(160deg,${tint},#00000055)">
           <span class="art-rune">${runeArt()}</span>
           ${figure(h, tint)}
+          ${dropIn("skins", name, name)}
           <span class="skin-rarity">${esc(rarity)}</span>
         </div>
         <div class="skin-price"><span class="gem" aria-hidden="true"></span>${esc(price)}</div>
@@ -309,7 +309,8 @@
     const content = $("#heroContent");
     if (heroTab === "equipment") {
       content.innerHTML = `<h3 class="section-title">Equipment available to ${esc(h.name)}</h3>${equipmentMarkup(h)}
-        <div class="level-note"><h3>How equipment works</h3><p>Each hero can carry two pieces of equipment. Commons start unlocked, Epics are earned through events and the shop. Upgrade them with equipment ore to raise the bonus they give.</p></div>`;
+        <div class="level-note"><h3>How equipment works</h3><p>Each hero can carry two pieces of equipment. Commons start unlocked, Epics are earned through events and the shop. Upgrading a piece adds damage at every level up to its cap.</p></div>`;
+      syncEqLevel();
     } else if (heroTab === "skins") {
       content.innerHTML = `<h3 class="section-title">${esc(h.name)} skins</h3>${heroSkinCards(h)}
         <p class="muted" style="margin-top:12px">Prices shown are shop reference values and change with events and region. Cosmetics never affect hero stats.</p>`;
@@ -342,6 +343,7 @@
       </div>
       ${equipmentMarkup(h)}
       <div class="level-note" style="margin-top:14px"><h3>Upgrade tips</h3><p>Prioritise the equipment you use in every war. Commons are cheap to max; save Epic equipment ore for the one piece that carries your main army.</p></div>`;
+    syncEqLevel();
   }
 
   function renderCosmetics() {
@@ -369,6 +371,7 @@
           <div class="skin-art" style="background:radial-gradient(circle at 50% 32%,rgba(255,255,255,.3),transparent 65%),linear-gradient(160deg,${tint},#00000066)">
             <span class="art-rune">${runeArt()}</span>
             ${figure(hero, tint)}
+            ${dropIn("skins", name, name)}
             <span class="skin-rarity">${esc(rarity)}</span>
           </div>
           <div class="skin-price"><span class="gem" aria-hidden="true"></span>${esc(price)}</div>
@@ -377,7 +380,7 @@
     } else {
       $("#cosmeticContent").innerHTML = `<div class="scenery-grid">${SCENERIES.map(([name, icon, bg, note]) => `
         <article class="scenery-card">
-          <div class="scenery-art" style="background:${bg}">${icon}</div>
+          <div class="scenery-art" style="background:${bg}">${icon}${dropIn("sceneries", name, name)}</div>
           <h3>${esc(name)}</h3>
           <p>${esc(note)}</p>
         </article>`).join("")}</div>`;
@@ -414,6 +417,9 @@
         if (mainTab === "equipment") renderEquipmentTab();
         return;
       }
+    });
+    document.addEventListener("input", event => {
+      if (event.target && event.target.id === "eqLevelRange") setEqLevel(event.target.value);
     });
   }
 

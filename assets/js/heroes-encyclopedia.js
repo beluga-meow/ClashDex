@@ -169,7 +169,7 @@
     const search = $('#pdxCosmeticSearch', app);
 
     function heroImage(h, className) {
-      const src = `./assets/heroes/${h.id}.webp`;
+      const src = `./assets/heroes/${h.id}.svg`;
       return `<span class="${className}"><img src="${src}" alt="${esc(h.name)} portrait" loading="lazy" onerror="this.remove();this.parentElement.textContent='${h.icon}'"></span>`;
     }
 

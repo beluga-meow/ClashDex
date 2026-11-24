@@ -25,6 +25,15 @@
     return t.startsWith("#") ? t : "#" + t;
   };
   const validTag = tag => /^#[0289PYLQGRJCUV]{3,15}$/.test(tag);
+  /* Edge Functions can cold-start or stall; a stuck request must never leave
+     the form locked on "Checking…" with the button disabled. */
+  const withTimeout = (work, ms, message) => new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(message)), ms);
+    Promise.resolve(work).then(
+      value => { clearTimeout(timer); resolve(value); },
+      error => { clearTimeout(timer); reject(error); }
+    );
+  });
 
   if (!client) {
     say("Sign-in isn't connected. Check supabase-config.js.");
@@ -62,7 +71,11 @@
   }
 
   async function playerLookup(tag) {
-    const res = await client.functions.invoke("coc", { body: { path: "/players/" + encodeURIComponent(tag) } });
+    const res = await withTimeout(
+      client.functions.invoke("coc", { body: { path: "/players/" + encodeURIComponent(tag) } }),
+      20000,
+      "Clash of Clans took too long to answer. Check your connection and try again."
+    );
     if (res.error || !res.data) throw new Error("Couldn't reach the Clash of Clans service. Try again in a moment.");
     if (res.data.status !== 200 || !res.data.data) {
       if (res.data.status === 404) throw new Error("No player found with that tag. Check the tag and try again.");
@@ -98,7 +111,11 @@
     say("Checking with Clash of Clans…");
     try {
       const player = await playerLookup(tag);
-      const res = await client.functions.invoke("game-login", { body: { tag: tag, token: token } });
+      const res = await withTimeout(
+        client.functions.invoke("game-login", { body: { tag: tag, token: token } }),
+        25000,
+        'Game verification is taking too long. Try again, or use "Continue with Player Tag only".'
+      );
       if (res.error || !res.data) throw new Error('Game verification is unavailable right now. Use "Continue with Player Tag only" or try again later.');
       if (!res.data.ok) throw new Error(res.data.error || "The API token didn't match that account.");
 

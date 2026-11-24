@@ -572,7 +572,7 @@ html.cx .pdx-archive-card{display:grid;grid-template-columns:minmax(0,1.05fr) mi
 html.cx .pdx-archive-card:hover{transform:translateY(-3px);box-shadow:0 8px 0 var(--cx-w4),0 16px 26px rgba(0,0,0,.28)}
 html.cx .pdx-archive-card:focus-visible{outline:4px solid #fff;outline-offset:3px}
 html.cx .pdx-archive-pic{display:block;overflow:hidden;border:3px solid #3d1c6e;border-radius:16px;background:#3d1c6e;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25),0 4px 0 #2a1049}
-html.cx .pdx-archive-pic svg{display:block;width:100%;height:auto}
+html.cx .pdx-archive-pic svg,html.cx .pdx-archive-pic img{display:block;width:100%;height:auto}
 html.cx .pdx-archive-copy{display:grid;gap:8px;min-width:0}
 html.cx .pdx-archive-kicker{font-size:11px;font-weight:900;letter-spacing:1.3px;color:#9a5a12;text-transform:uppercase}
 html.cx .pdx-archive-copy h3{margin:0;font:400 clamp(22px,3.4vw,33px)/1.08 var(--cx-title);color:#4a2c12}
@@ -582,6 +582,8 @@ html.cx .pdx-archive-chips{display:flex;flex-wrap:wrap;gap:8px;padding:4px 2px 6
 html.cx .pdx-archive-chip{display:flex;flex:0 0 auto;align-items:center;gap:7px;padding:7px 11px;border:2px solid #805027;border-radius:999px;background:#fff5dc;color:#4a2c12;text-decoration:none;font:400 14px var(--cx-title);white-space:nowrap}
 html.cx .pdx-archive-chip:hover{background:linear-gradient(var(--cx-g1),var(--cx-g2))}
 html.cx .pdx-archive-chip span{font-size:17px}
+html.cx .pdx-archive-chip-art{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;overflow:hidden;border:2px solid #805027;border-radius:50%;background:radial-gradient(circle at 50% 35%,#ffe58b,#bd7a2b);font-size:15px;line-height:1}
+html.cx .pdx-archive-chip-art img{display:block;width:100%;height:100%;object-fit:cover}
 html.cx .pdx-archive-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 html.cx .pdx-archive-feature{display:grid;gap:3px;padding:11px;border:2px solid #d6b270;border-radius:13px;background:#fffaf0}
 html.cx .pdx-archive-feature b{font:400 16px var(--cx-title);color:#4a2c12}
@@ -1082,12 +1084,13 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
       markOn(w, "data-v", village);
     };
     const TH_EXT = {2:"png",3:"png",4:"png",5:"png",6:"png",7:"png",8:"png",9:"png",10:"webp",11:"webp",12:"png",13:"webp",14:"png",15:"png",16:"webp",17:"webp",18:"webp",19:"webp"};
-    /* Put your own pictures at ./th-N.png|webp (Town Hall) and ./bhN_min.jpg (Builder Hall). Missing ones show an emoji. */
+    /* Put your own pictures at ./assets/townhalls/th-N.png|webp (Town Hall) and
+       ./assets/builder-halls/bhN_min.jpg (Builder Hall). Missing ones show an emoji. */
     const lvlImg = n => {
       const emo = village === "builder" ? "🔨" : village === "capital" ? "🏯" : "🏠";
       let src = "";
-      if (village === "home" && TH_EXT[n]) src = "./th-" + n + "." + TH_EXT[n];
-      if (village === "builder" && n >= 3) src = "./bh" + n + "_min.jpg";
+      if (village === "home" && TH_EXT[n]) src = "./assets/townhalls/th-" + n + "." + TH_EXT[n];
+      if (village === "builder" && n >= 3) src = "./assets/builder-halls/bh" + n + "_min.jpg";
       return src ? '<img src="' + src + '" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement(\'span\'),{textContent:\'' + emo + '\'}))">' : "<span>" + emo + "</span>";
     };
     const lvlName = n => (village === "builder" ? "Builder Hall " : village === "capital" ? "Capital Hall " : "Town Hall ") + n;
@@ -1310,49 +1313,11 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
       ["dragon-duke", "Dragon Duke", "🐲", "Melee brawler"]
     ];
 
-    /* One hand-drawn group picture for the archive box. */
-    function groupArt() {
-      const faces = [
-        { x: 10, skin: "#f4c593", hair: "#d9a12b", armor: "#93a4b3", kind: "crown", beard: true },
-        { x: 93, skin: "#f7d3ad", hair: "#8b4fd6", armor: "#3f7fbf", kind: "tiara", long: true },
-        { x: 176, skin: "#e8b98e", hair: "#b06be0", armor: "#6d5bb5", kind: "circlet", beard: true },
-        { x: 259, skin: "#8fd8ee", hair: "#2a4f9e", armor: "#4b3f8f", kind: "horns" },
-        { x: 342, skin: "#e8b98e", hair: "#3f6fd0", armor: "#3c8fd6", kind: "band" },
-        { x: 425, skin: "#e9a067", hair: "#8f3a1f", armor: "#6b3f2a", kind: "helm" }
-      ];
-      const topper = f => {
-        if (f.kind === "crown") return '<path d="M24 106l4-16 8 10 6-14 6 14 8-10 4 16z" fill="#f7c33a" stroke="#8a5a05" stroke-width="2"/>';
-        if (f.kind === "tiara") return '<path d="M25 106q17-11 34 0" fill="none" stroke="#f7c33a" stroke-width="4"/><circle cx="42" cy="99" r="3" fill="#62b52c" stroke="#2a6a10" stroke-width="1"/>';
-        if (f.kind === "circlet") return '<path d="M26 108q16-12 32 0" fill="none" stroke="#f7c33a" stroke-width="3.5"/><circle cx="42" cy="101" r="3.4" fill="#a855f7"/>';
-        if (f.kind === "band") return '<rect x="24" y="104" width="36" height="5" rx="2.5" fill="#f7c33a" stroke="#8a5a05" stroke-width="1.6"/>';
-        if (f.kind === "horns") return '<path d="M26 105c-5-7-8-13-6-19 6 3 11 9 13 17z" fill="#d9d2e6" stroke="#4a3b5e" stroke-width="2"/><path d="M58 105c5-7 8-13 6-19-6 3-11 9-13 17z" fill="#d9d2e6" stroke="#4a3b5e" stroke-width="2"/>';
-        return '<path d="M24 108c0-12 8-19 18-19s18 7 18 19z" fill="' + f.armor + '" stroke="#2a1a10" stroke-width="2"/>';
-      };
-      const bust = f => '<g transform="translate(' + f.x + ',0)">' +
-        '<path d="M2 208c2-30 18-42 40-42s38 12 40 42z" fill="' + f.armor + '" stroke="#221206" stroke-width="3"/>' +
-        '<rect x="33" y="150" width="18" height="18" rx="5" fill="' + f.skin + '" stroke="#221206" stroke-width="2"/>' +
-        (f.long ? '<path d="M22 114c-3 18-2 30 0 42 3-6 4-10 5-18v24h30v-24c1 8 2 12 5 18 2-12 3-24 0-42z" fill="' + f.hair + '"/>' : '') +
-        '<ellipse cx="42" cy="126" rx="21" ry="23" fill="' + f.skin + '" stroke="#221206" stroke-width="2.4"/>' +
-        '<circle cx="21" cy="127" r="4" fill="' + f.skin + '" stroke="#221206" stroke-width="1.8"/><circle cx="63" cy="127" r="4" fill="' + f.skin + '" stroke="#221206" stroke-width="1.8"/>' +
-        '<path d="M24 112c1-13 9-20 18-20s17 7 18 20c-4-7-10-11-18-11s-14 4-18 11z" fill="' + f.hair + '"/>' +
-        (f.beard ? '<path d="M25 132c1 16 8 24 17 24s16-8 17-24c-3 8-8 12-17 12s-14-4-17-12z" fill="' + f.hair + '"/>' : '') +
-        '<ellipse cx="34" cy="124" rx="3.2" ry="3.8" fill="#fffdf4"/><ellipse cx="50" cy="124" rx="3.2" ry="3.8" fill="#fffdf4"/>' +
-        '<circle cx="35" cy="125" r="1.8" fill="#2a1a10"/><circle cx="51" cy="125" r="1.8" fill="#2a1a10"/>' +
-        topper(f) + '</g>';
-      return '<svg viewBox="0 0 520 210" role="img" aria-label="The Clash Heroes: Barbarian King, Archer Queen, Grand Warden, Minion Prince, Royal Champion and Dragon Duke" xmlns="http://www.w3.org/2000/svg">' +
-        '<defs><radialGradient id="pdxGroupBg" cx="50%" cy="26%" r="80%"><stop offset="0" stop-color="#c26bf5"/><stop offset="55%" stop-color="#6a2aab"/><stop offset="100%" stop-color="#2b0f52"/></radialGradient></defs>' +
-        '<rect width="520" height="210" fill="url(#pdxGroupBg)"/>' +
-        '<g opacity=".45" stroke="#fff" fill="none" stroke-width="1.4"><circle cx="44" cy="40" r="7"/><circle cx="486" cy="62" r="5"/><circle cx="466" cy="168" r="6"/><circle cx="76" cy="176" r="4"/></g>' +
-        '<g opacity=".5" fill="#fff"><circle cx="150" cy="34" r="2"/><circle cx="300" cy="26" r="2.4"/><circle cx="410" cy="44" r="1.8"/></g>' +
-        faces.map(bust).join("") +
-        '<rect y="203" width="520" height="7" fill="#1b0f05" opacity=".35"/></svg>';
-    }
-
     const box = div("cx-panel cx-app", "cxHeroes");
     box.innerHTML =
       '<div class="pdx-archive-wrap">' +
         '<a class="pdx-archive-card" href="./heroes.html">' +
-          '<span class="pdx-archive-pic">' + groupArt() + '</span>' +
+          '<span class="pdx-archive-pic"><img src="./assets/heroes/heroes.svg" width="520" height="210" alt="Barbarian King, Archer Queen, Grand Warden, Minion Prince, Royal Champion and Dragon Duke" loading="lazy"></span>' +
           '<span class="pdx-archive-copy">' +
             '<span class="pdx-archive-kicker">THE PEKKADEX ARCHIVE</span>' +
             '<h3>Clash Heroes Encyclopedia</h3>' +
@@ -1360,7 +1325,7 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
             '<span class="pdx-archive-cta">Open the encyclopedia →</span>' +
           '</span>' +
         '</a>' +
-        '<div class="pdx-archive-chips">' + roster.map(h => '<a class="pdx-archive-chip" href="./heroes.html#' + h[0] + '"><span aria-hidden="true">' + h[2] + '</span>' + esc(h[1]) + '</a>').join('') + '</div>' +
+        '<div class="pdx-archive-chips">' + roster.map(h => '<a class="pdx-archive-chip" href="./heroes.html#' + h[0] + '"><span class="pdx-archive-chip-art" aria-hidden="true"><img src="./assets/heroes/' + h[0] + '.svg" width="30" height="30" alt="" loading="lazy" onerror="this.parentElement.textContent=\'' + h[2] + '\'"></span>' + esc(h[1]) + '</a>').join('') + '</div>' +
         '<div class="pdx-archive-features">' +
           '<div class="pdx-archive-feature"><b>⚔ Hero profiles</b><small>Roles, abilities, equipment and skins for all six heroes.</small></div>' +
           '<div class="pdx-archive-feature"><b>🛠 Equipment</b><small>Every common and epic piece, with what it does in battle.</small></div>' +

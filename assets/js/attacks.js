@@ -175,7 +175,7 @@
   const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
   const TH_EXT = { 2: "png", 3: "png", 4: "png", 5: "png", 6: "png", 7: "png", 8: "png", 9: "png", 10: "webp", 11: "webp", 12: "png", 13: "webp", 14: "png", 15: "png", 16: "webp", 17: "webp", 18: "webp", 19: "webp" };
-  const thImage = n => `./th-${n}.${TH_EXT[n] || "png"}`;
+  const thImage = n => `./assets/townhalls/th-${n}.${TH_EXT[n] || "png"}`;
 
   const CSS = `
   .atk-app{display:grid;gap:14px;min-width:0}
