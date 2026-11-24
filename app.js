@@ -647,7 +647,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
 
     const subtitles = {
       "player-finder": "Look up a player by tag or name, or search a clan.",
-      "bases": "Pick a village, then open Level, tags & sort to filter.",
+      "bases": "Pick a village, pick a Town Hall level, then use Tags & sort.",
       "attacks": "Browse the available army guides and attack plans.",
       "heroes": "Explore heroes, skins, equipment and their in-game details.",
       "events": "Clash of Clans news and PekkaDex updates.",
@@ -784,7 +784,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     async function loadPlayer(tag) {
       say("Loading profile…");
       try {
-        const p = await api("/players/" + encodeURIComponent(tag));
+        const p = await api("/players/" + encodeURIComponent(normTag(tag)));
         out.innerHTML = playerCard(p);
         say("Found " + (p.name || "player") + ".", "ok");
         try { out.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch (_) {}
@@ -995,9 +995,10 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
         '<button type="button" class="cx-tab on" data-k="base" role="tab" aria-selected="true"><span aria-hidden="true">🏰</span>Base layouts</button>' +
         '<button type="button" class="cx-tab" data-k="army" role="tab" aria-selected="false"><span aria-hidden="true">⚔️</span>Troop layouts</button></div>' +
       '<div class="cx-seg" id="cxVill" role="group" aria-label="Village"></div>' +
+      '<div class="cx-dd" id="cxDD"><button type="button" class="cx-dd-btn" id="cxDDBtn" aria-haspopup="listbox" aria-expanded="false"></button><div class="cx-dd-list" id="cxThs" role="listbox" hidden></div></div>' +
       '<div class="cx-seg" id="cxCats" role="group" aria-label="Layout type"></div>' +
-      '<details class="cx-more" id="cxMore"><summary>Level, tags &amp; sort</summary><div class="cx-more-body">' +
-        '<div id="cxThWrap"><span class="cx-label" id="cxThLabel">Town Hall</span><div class="cx-seg" id="cxThs" role="group" aria-labelledby="cxThLabel"></div></div>' +
+      '<details class="cx-more" id="cxMore"><summary>Tags &amp; sort</summary><div class="cx-more-body">' +
+        '' +
         '<div id="cxTagsWrap"><span class="cx-label">Tags</span><div class="cx-seg" id="cxTags" role="group" aria-label="Tags"></div></div>' +
         '<label class="cx-field"><span>Sort by</span><select id="cxSort">' +
           SORTS.map(s => '<option value="' + s[0] + '">' + s[1] + "</option>").join("") + "</select></label></div></details>" +
@@ -1038,13 +1039,28 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       w.innerHTML = VILL.map(v => '<button type="button" class="cx-chip" data-v="' + v[0] + '" aria-pressed="false">' + v[1] + "</button>").join("");
       markOn(w, "data-v", village);
     };
+    const TH_EXT = {2:"png",3:"png",4:"png",5:"png",6:"png",7:"png",8:"png",9:"png",10:"webp",11:"webp",12:"png",13:"webp",14:"png",15:"png",16:"webp",17:"webp",18:"webp",19:"webp"};
+    /* Put your own pictures at ./th-N.png|webp (Town Hall) and ./bhN_min.jpg (Builder Hall). Missing ones show an emoji. */
+    const lvlImg = n => {
+      const emo = village === "builder" ? "🔨" : village === "capital" ? "🏯" : "🏠";
+      let src = "";
+      if (village === "home" && TH_EXT[n]) src = "./th-" + n + "." + TH_EXT[n];
+      if (village === "builder" && n >= 3) src = "./bh" + n + "_min.jpg";
+      return src ? '<img src="' + src + '" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement(\'span\'),{textContent:\'' + emo + '\'}))">' : "<span>" + emo + "</span>";
+    };
+    const lvlName = n => (village === "builder" ? "Builder Hall " : village === "capital" ? "Capital Hall " : "Town Hall ") + n;
     const drawThs = () => {
-      const max = village === "builder" ? 10 : village === "capital" ? 10 : SETTINGS.MAX_TOWN_HALL;
-      $("#cxThLabel", box).textContent = village === "builder" ? "Builder Hall level" : village === "capital" ? "Capital Hall level" : "Town Hall level";
-      let h = '<button type="button" class="cx-chip" data-th="" aria-pressed="false">All</button>';
-      for (let n = max; n >= 1; n--) h += '<button type="button" class="cx-chip" data-th="' + n + '" aria-pressed="false">' + pre(village).trim() + n + "</button>";
+      const max = village === "home" ? SETTINGS.MAX_TOWN_HALL : 10;
+      let h = '<button type="button" class="cx-dd-i" role="option" data-th=""><span>🌐</span>All ' + (village === "builder" ? "Builder Halls" : village === "capital" ? "Capital Halls" : "Town Halls") + "</button>";
+      for (let n = max; n >= 1; n--) h += '<button type="button" class="cx-dd-i" role="option" data-th="' + n + '">' + lvlImg(n) + lvlName(n) + "</button>";
       ths.innerHTML = h;
+      ths.hidden = true;
+      $("#cxDDBtn", box).setAttribute("aria-expanded", "false");
+      setDD();
       markOn(ths, "data-th", th);
+    };
+    const setDD = () => {
+      $("#cxDDBtn", box).innerHTML = (th ? lvlImg(Number(th)) : "<span>🌐</span>") + "<b>" + (th ? lvlName(th) : "All " + (village === "builder" ? "Builder Halls" : village === "capital" ? "Capital Halls" : "Town Halls")) + "</b><i>▾</i>";
     };
     const catsFor = () => {
       const set = {};
@@ -1180,11 +1196,19 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
       markOn($("#cxVill", box), "data-v", village);
       drawThs(); drawCats(); drawTags(); draw();
     });
+    $("#cxDDBtn", box).addEventListener("click", () => {
+      const open = ths.hidden;
+      ths.hidden = !open;
+      $("#cxDDBtn", box).setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    document.addEventListener("click", e => { if (!ths.hidden && !e.target.closest("#cxDD")) { ths.hidden = true; $("#cxDDBtn", box).setAttribute("aria-expanded", "false"); } });
     ths.addEventListener("click", e => {
       const b = e.target.closest("[data-th]");
       if (!b) return;
       th = b.getAttribute("data-th");
       markOn(ths, "data-th", th);
+      ths.hidden = true; $("#cxDDBtn", box).setAttribute("aria-expanded", "false");
+      setDD();
       draw();
     });
     cats.addEventListener("click", e => {
@@ -1216,7 +1240,7 @@ html.cx .cx-tabs2 .cx-tab{flex:1 1 140px;min-width:0;white-space:normal;line-hei
     drawTags();
     draw();
     swapIn(sec, box);
-    setHeading(sec, null, "Pick a village, then open Level, tags & sort to filter.");
+    setHeading(sec, null, "Pick a village, pick a Town Hall level, then use Tags & sort.");
 
     loadLayoutsFile().then(list => {
       if (!list) return;
