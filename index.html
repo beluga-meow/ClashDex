@@ -2,12 +2,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#18372b">
+  <meta name="theme-color" content="#7a4a22">
   <meta name="description" content="PekkaDex — your Clash of Clans companion for player lookup, base ideas, attack guides and village progress.">
   <title>PekkaDex — Your Kingdom Companion</title>
+  <style id="cxPre">html:not(.cx){background:#1a5ca8}html:not(.cx) body{visibility:hidden}</style>
+  <noscript><style>html:not(.cx) body{visibility:visible!important}</style></noscript>
+  <script>setTimeout(function(){var s=document.getElementById("cxPre");if(s)s.remove()},4000)</script>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css?v=9">
+  <link rel="stylesheet" href="./style.css?v=11">
 </head>
 <body>
   <div class="season-effects" id="seasonEffects" aria-hidden="true"></div>
@@ -323,12 +326,12 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./supabase-config.js?v=9"></script>
-  <script src="./app.js?v=9"></script>
-  <script src="./auth.js?v=9"></script>
-  <script src="./vault.js?v=9"></script>
+  <script src="./supabase-config.js?v=11"></script>
+  <script src="./app.js?v=11"></script>
+  <script src="./auth.js?v=11"></script>
+  <script src="./vault.js?v=11"></script>
   <script>
-  if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=9").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
+  if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=11").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
   </script>
 </body>
 </html>
