@@ -1,50 +1,8 @@
-const CACHE = "clashdex-shell-v2";
-
-const FILES = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./app.js",
-  "./manifest.webmanifest",
-  "./favicon.svg",
-  "./icon-192.svg"
-];
-
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(FILES))
-  );
-});
-
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(key => key !== CACHE)
-          .map(key => caches.delete(key))
-      )
-    )
-  );
-});
-
-self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET") return;
-
-  event.respondWith(
-    caches.match(event.request).then(cached =>
-      cached ||
-      fetch(event.request).then(response => {
-        if (response.ok) {
-          const copy = response.clone();
-
-          caches.open(CACHE).then(cache =>
-            cache.put(event.request, copy)
-          );
-        }
-
-        return response;
-      }).catch(() => caches.match("./index.html"))
-    )
-  );
+/* Network-first: new deploys show on the very next load. */
+const CACHE="clashvault-v7";
+self.addEventListener("install",e=>{self.skipWaiting()});
+self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
+self.addEventListener("fetch",e=>{
+  if(e.request.method!=="GET"||!e.request.url.startsWith(self.location.origin))return;
+  e.respondWith(fetch(e.request,{cache:"no-cache"}).then(r=>{if(r.ok){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c))}return r}).catch(()=>caches.match(e.request).then(m=>m||caches.match("./index.html"))));
 });
