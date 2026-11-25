@@ -452,6 +452,7 @@ html.cx .main-nav a{padding:16px;font-size:17px;border-radius:0;border-bottom:1p
 .cx-tabbar{position:fixed;left:0;right:0;bottom:0;z-index:500;display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:linear-gradient(#7a4a22,#5c3517);border-top:4px solid var(--cx-w4);box-shadow:0 -6px 16px rgba(0,0,0,.35)}
 .cx-tabbar a{display:grid;justify-items:center;align-content:center;gap:1px;min-height:48px;padding:3px 0;border-radius:10px;color:#ffeab8;font:400 11px/1.1 var(--cx-title);text-shadow:0 1px 0 var(--cx-w4)}
 .cx-tabbar a span{font-size:20px;line-height:1}
+.cx-tabbar a .tab-ico{width:28px;height:28px;object-fit:contain}
 .cx-tabbar a.on{background:linear-gradient(var(--cx-g1),var(--cx-g2));color:#4a2c12;text-shadow:none;box-shadow:inset 0 2px 0 rgba(255,255,255,.6)}
 .cx-toast{bottom:96px}
 }
@@ -1455,12 +1456,12 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
   /* ============ 10. Mobile bottom menu (game style) ============ */
   function buildTabbar() {
     if ($(".cx-tabbar")) return;
-    const items = [["home", "🏰", "Home"], ["player-finder", "🔍", "Players"], ["bases", "🏡", "Bases"],
-      ["attacks", "⚔️", "Attack"], ["heroes", "📖", "Heroes"], ["account", "👤", "Account"]];
+    const items = [["home", "home", "Home"], ["player-finder", "players", "Players"], ["bases", "bases", "Bases"],
+      ["attacks", "attack", "Attack"], ["heroes", "heroes", "Heroes"], ["account", "account", "Account"]];
     const nav = document.createElement("nav");
     nav.className = "cx-tabbar";
     nav.setAttribute("aria-label", "Quick navigation");
-    nav.innerHTML = items.map(i => '<a href="#' + i[0] + '" data-s="' + i[0] + '"><span aria-hidden="true">' + i[1] + "</span>" + i[2] + "</a>").join("");
+    nav.innerHTML = items.map(i => '<a href="#' + i[0] + '" data-s="' + i[0] + '"><img class="tab-ico" src="./assets/icons/nav-' + i[1] + '.png" alt="" width="28" height="28">' + i[2] + "</a>").join("");
     document.body.appendChild(nav);
     const links = $$("a", nav);
     const setOn = id => links.forEach(a => a.classList.toggle("on", a.dataset.s === id));
