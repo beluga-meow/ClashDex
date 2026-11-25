@@ -131,6 +131,8 @@ button,input,select,textarea {
   display: flex;
   gap: 25px;
   align-items: center;
+  margin-left: auto;
+  margin-right: clamp(8px, 2vw, 26px);
 }
 
 .main-nav a {
@@ -1524,7 +1526,8 @@ button,input,select,textarea {
 
   .mobile-menu {
     display: block;
-    order: 3;
+    order: 4;
+    margin-left: 8px;
   }
 
   .main-nav {
@@ -1533,6 +1536,7 @@ button,input,select,textarea {
     top: 66px;
     left: 0;
     right: 0;
+    margin: 0;
     background: #10251a;
     padding: 14px 22px 20px;
     box-shadow: 0 15px 28px rgba(0,0,0,.28);
@@ -1556,14 +1560,23 @@ button,input,select,textarea {
   }
 
   .main-nav a {
-    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 10px;
     border-bottom: 1px solid var(--line);
     font-size: 12px;
   }
 
+  .main-nav .nav-ico {
+    font-size: 18px;
+    line-height: 1;
+  }
+
   .header-actions {
     margin-left: auto;
-    margin-right: 12px;
+    margin-right: 0;
+    order: 3;
   }
 
   .header-cta {

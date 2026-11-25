@@ -447,8 +447,8 @@ html.cx .cx-check input{flex:none;width:26px;height:26px;min-height:0;accent-col
 @media(min-width:700px){.cx-bgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:760px){
 html.cx body{padding-bottom:86px}
-html.cx .main-nav{background:linear-gradient(#7a4a22,#5c3517);border-bottom:4px solid var(--cx-w4)}
-html.cx .main-nav a{padding:13px 8px;font-size:17px;border-radius:0;border-bottom:1px solid rgba(0,0,0,.25)}
+html.cx .main-nav{background:linear-gradient(#7a4a22,#5c3517);border-bottom:4px solid var(--cx-w4);box-shadow:0 18px 30px rgba(0,0,0,.42)}
+html.cx .main-nav a{padding:16px;font-size:17px;border-radius:0;border-bottom:1px solid rgba(0,0,0,.25)}
 .cx-tabbar{position:fixed;left:0;right:0;bottom:0;z-index:500;display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:linear-gradient(#7a4a22,#5c3517);border-top:4px solid var(--cx-w4);box-shadow:0 -6px 16px rgba(0,0,0,.35)}
 .cx-tabbar a{display:grid;justify-items:center;align-content:center;gap:1px;min-height:48px;padding:3px 0;border-radius:10px;color:#ffeab8;font:400 11px/1.1 var(--cx-title);text-shadow:0 1px 0 var(--cx-w4)}
 .cx-tabbar a span{font-size:20px;line-height:1}
@@ -591,7 +591,16 @@ html.cx .header-actions{gap:8px;margin-left:10px;margin-right:0;flex:0 0 auto}
 @media(max-width:1260px){html.cx .brand small{display:none}html.cx .main-nav a{font-size:13px;padding:6px 7px}}
 @media(max-width:1180px){html.cx .main-nav a{padding:6px 6px;font-size:13px}html.cx .main-nav a .nav-ico{margin-right:3px;font-size:14px}}
 @media(max-width:1060px){html.cx .main-nav a{font-size:12px;padding:6px 4px;letter-spacing:0}html.cx .main-nav a .nav-ico{margin-right:2px;font-size:13px}}
-@media(max-width:760px){html.cx .site-header{height:66px;min-height:66px}html.cx .main-nav{flex-wrap:wrap!important;gap:0!important}html.cx .main-nav a{font-size:17px!important;padding:13px 8px!important;white-space:normal}}
+@media(max-width:760px){
+html.cx .site-header{height:66px;min-height:66px}
+html.cx .header-actions{margin-left:auto;margin-right:0;order:3}
+html.cx .mobile-menu{order:4;margin-left:8px}
+html.cx .main-nav{flex-wrap:wrap!important;gap:0!important}
+html.cx .main-nav a{display:flex;align-items:center;gap:12px;font-size:17px!important;padding:14px 14px!important;white-space:normal;border-bottom:1px solid rgba(0,0,0,.25)}
+html.cx .main-nav a:last-child{border-bottom:0}
+html.cx .main-nav a .nav-ico{flex:0 0 24px;margin-right:0;font-size:20px;text-align:center}
+html.cx .main-nav a.active,html.cx .main-nav a:active{background:rgba(0,0,0,.22)}
+}
 
 /* ---------- Clash Heroes archive card ---------- */
 html.cx .pdx-archive-wrap{display:grid;gap:12px}
@@ -679,7 +688,8 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
     const heroButtons = $$(".hero-buttons .button");
     if (heroButtons[0]) heroButtons[0].textContent = "Search a player";
     if (heroButtons[1]) heroButtons[1].textContent = "Browse bases";
-    set(".header-cta", "Sign in");
+    /* The header button is the round 👤 profile link (profile-nav.js);
+       its label is never overwritten here. */
 
     const quick = [
       ["Player lookup", "By tag or saved name", "#player-finder"],
@@ -891,6 +901,36 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
       out.innerHTML = '<div class="cx-list">' + hits.map(playerRow).join("") + "</div>" + (note || "");
     };
 
+    /* Older deployments of the coc function answer 100 rows per call. When the
+       first page does not hold every match, finish the search on demand with
+       one extra request per Town Hall instead of dead-ending the result list. */
+    let pending = null;
+
+    async function loadRemaining() {
+      if (!pending) return;
+      const { q, exact, hits, found, seen } = pending;
+      const btn = $("[data-load-rest]", out);
+      if (btn) { btn.disabled = true; btn.textContent = "Loading matches…"; }
+      const merged = hits.slice();
+      for (let thv = 1; thv <= SETTINGS.MAX_TOWN_HALL && merged.length < found; thv++) {
+        say("Loading Town Hall " + thv + " of " + SETTINGS.MAX_TOWN_HALL + "…");
+        try {
+          const page = await callEdge({ action: "findPlayers", name: q, exact: !!exact, th: thv, limit: 1000 });
+          if (page.status !== 200 || !page.data) continue;
+          for (const item of page.data.items || []) {
+            const tag = item && item.tag;
+            if (!tag || seen.has(tag)) continue;
+            seen.add(tag);
+            merged.push(item);
+          }
+        } catch (_) { /* one Town Hall failing must not end the search */ }
+      }
+      pending = null;
+      const list = sortHits(toHits(merged), q);
+      paintHits(list, q, "");
+      say(list.length + (list.length === 1 ? " matching player found." : " matching players found.") + " All matches loaded.", "ok");
+    }
+
     pForm.addEventListener("submit", async e => {
       e.preventDefault();
       const typed = $("#cxPQ", box).value.trim();
@@ -934,16 +974,29 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
           return;
         }
 
+        /* result_limit tells the two server versions apart: the current
+           function filters in SQL and can return 1000 rows, while the deployed
+           one is capped at 100. Only the capped version needs Town Hall paging. */
+        const perCall = Number(data && data.result_limit) || 0;
+        const capped = perCall > 0 && perCall < 1000;
         const more = found > hits.length;
+        pending = more && capped
+          ? { q: q, exact: exact, hits: items, found: found, seen: new Set(items.map(i => i.tag).filter(Boolean)) }
+          : null;
         const note = more
-          ? '<div class="cx-more-results"><p>' + found + ' players match; the first ' + hits.length + ' are below.</p>' +
-            '<p class="cx-help">One search answers with a single page. Add a letter or pick a Town Hall to narrow it down.</p></div>'
+          ? (pending
+              ? '<div class="cx-more-results"><p>' + found + " players match. The search service returns " + hits.length + " at a time.</p>" +
+                '<button class="cx-btn green sm" type="button" data-load-rest>Show all ' + found + ' matches</button></div>'
+              : '<div class="cx-more-results"><p>' + found + ' players match; the first ' + hits.length + ' are below.</p>' +
+                '<p class="cx-help">One search answers with a single page. Add a letter or pick a Town Hall to narrow it down.</p></div>')
           : "";
         paintHits(hits, q, note);
+        const folding = data && data.total_scope
+          ? " Matches ignore capitals, small-caps fonts, full-width letters and emoji; numbers still count."
+          : " Matches ignore capitals, punctuation, spaces and emoji.";
         say((more ? "Showing " + hits.length + " of " + found : String(found)) +
-          (found === 1 ? " matching player found." : " matching players found.") +
-          " Matches ignore capitals, small-caps fonts, full-width letters and emoji; numbers still count." +
-          (more ? " Narrow the search to see the rest." : ""), "ok");
+          (found === 1 ? " matching player found." : " matching players found.") + folding +
+          (pending ? " Use Show all to load the rest." : (more ? " Narrow the search to see the rest." : "")), "ok");
       } catch (err) {
         say(errText(err), "err");
       } finally {
@@ -998,6 +1051,7 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
     });
 
     out.addEventListener("click", async e => {
+      if (e.target.closest("[data-load-rest]")) { loadRemaining(); return; }
       const memberButton = e.target.closest("[data-members]");
       if (memberButton) {
         const clanTag = memberButton.dataset.members;
