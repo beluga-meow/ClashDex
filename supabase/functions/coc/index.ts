@@ -1034,10 +1034,9 @@ Deno.serve(async (req: Request) => {
                 });
             }
 
-            // Maximum search configuration.
+            // One indexed query answers the whole search, so a single request
+            // returns every match instead of walking the table page by page.
             const MAX_RESULTS = 1000;
-            const MAX_SCAN = 100000;
-            const PAGE_SIZE = 1000;
 
             const requestedLimit = Number(body.limit);
 
@@ -1048,77 +1047,25 @@ Deno.serve(async (req: Request) => {
                 )
                 : MAX_RESULTS;
 
-            const requestedScan = Number(body.scanLimit);
+            const COLUMNS =
+                "player_tag,name,search_name,town_hall_level,trophies,role,clan_tag,clan_name";
 
-            const scanLimit = Number.isInteger(requestedScan)
-                ? Math.max(
-                    1,
-                    Math.min(MAX_SCAN, requestedScan)
-                )
-                : MAX_SCAN;
-
-            // Count indexed records before scanning.
-            let countQuery = supabase
-                .from("coc_player_index")
-                .select("player_tag", {
-                    count: "exact",
-                    head: true,
-                });
-
-            if (th !== null) {
-                countQuery = countQuery.eq(
-                    "town_hall_level",
-                    th
-                );
-            }
-
-            const {
-                count: directoryTotal,
-                error: countError,
-            } = await countQuery;
-
-            if (countError) {
-                console.error(
-                    "Player directory count failed:",
-                    countError.message
-                );
-
-                return apiResponse(503, {
-                    items: [],
-                    message: "Could not count the shared player directory.",
-                });
-            }
-
-            const availableRecords = directoryTotal || 0;
-
-            const effectiveScanLimit = Math.min(
-                scanLimit,
-                availableRecords
-            );
-
-            let scanned = 0;
-
-            const matches: any[] = [];
-
-            // Scan every available page up to the configured maximum.
-            while (scanned < effectiveScanLimit) {
-                const pageSize = Math.min(
-                    PAGE_SIZE,
-                    effectiveScanLimit - scanned
-                );
-
+            /* search_name is stored already folded (small caps, full-width
+               letters, accents and emoji removed), so PostgREST can answer the
+               name search with one index-friendly query. `name` is included in
+               the filter for rows indexed before search_name existed. */
+            async function nameQuery(wildcard: string, limit: number) {
                 let dbQuery = supabase
                     .from("coc_player_index")
-                    .select(
-                        "player_tag,name,search_name,town_hall_level,trophies,role,clan_tag,clan_name"
+                    .select(COLUMNS, { count: "exact" })
+                    .or(
+                        `search_name.ilike.${wildcard},name.ilike.${wildcard}`
                     )
-                    .order("player_tag", {
-                        ascending: true,
+                    .order("trophies", {
+                        ascending: false,
+                        nullsFirst: false,
                     })
-                    .range(
-                        scanned,
-                        scanned + pageSize - 1
-                    );
+                    .limit(limit);
 
                 if (th !== null) {
                     dbQuery = dbQuery.eq(
@@ -1127,126 +1074,165 @@ Deno.serve(async (req: Request) => {
                     );
                 }
 
-                const {
-                    data: rows,
-                    error,
-                } = await dbQuery;
+                return await dbQuery;
+            }
 
-                if (error) {
-                    console.error(
-                        "Player index scan failed:",
-                        error.message
+            function scoreRow(row: any) {
+                if (
+                    typeof row.player_tag !== "string" ||
+                    typeof row.name !== "string"
+                ) {
+                    return null;
+                }
+
+                const originalName = row.name;
+
+                const fullKey = normalizeFull(originalName);
+                const textKey = normalizeText(originalName);
+
+                let matchType: string | null = null;
+                let matchRank = 99;
+                let similarity = 99;
+
+                // 1. Exact original name.
+                if (
+                    originalName.toLocaleLowerCase() ===
+                    name.toLocaleLowerCase()
+                ) {
+                    matchType = "Exact Match";
+                    matchRank = 0;
+                }
+
+                // 2. Unicode-normalized exact match.
+                else if (
+                    fullKey === queryFull
+                ) {
+                    matchType = "Normalized Match";
+                    matchRank = 1;
+                }
+
+                // 3. Ignore emoji, symbols, and spaces.
+                else if (
+                    textKey === queryText
+                ) {
+                    matchType = "Normalized Match";
+                    matchRank = 2;
+                }
+
+                // 4. Partial normalized match.
+                else if (
+                    fullKey.includes(queryFull)
+                ) {
+                    matchType = "Partial Match";
+                    matchRank = 3;
+                }
+
+                // 5. Partial letters-and-numbers match.
+                else if (
+                    textKey.includes(queryText)
+                ) {
+                    matchType = "Partial Match";
+                    matchRank = 4;
+                }
+
+                // 6. Similar spelling.
+                else if (
+                    queryText.length >= 3 &&
+                    textKey.length >= 3 &&
+                    Math.abs(
+                        queryText.length - textKey.length
+                    ) <= 4 &&
+                    textKey[0] === queryText[0]
+                ) {
+                    const distance = similarName(
+                        queryText,
+                        textKey
                     );
 
-                    return apiResponse(503, {
-                        items: [],
-                        message: "Could not scan the shared player directory.",
-                    });
+                    if (distance !== null) {
+                        matchType = "Similar Match";
+                        matchRank = 5;
+                        similarity = distance;
+                    }
                 }
 
-                const page = rows || [];
+                if (!matchType) {
+                    return null;
+                }
 
-                for (const row of page) {
-                    if (
-                        typeof row.player_tag !== "string" ||
-                        typeof row.name !== "string"
-                    ) {
-                        continue;
-                    }
+                return {
+                    tag: row.player_tag,
+                    name: originalName,
+                    th: row.town_hall_level,
+                    trophies: row.trophies,
+                    role: row.role || "",
+                    clan_tag: row.clan_tag || "",
+                    clan_name: row.clan_name || "",
 
-                    const originalName = row.name;
+                    match_type: matchType,
 
-                    const fullKey = normalizeFull(originalName);
-                    const textKey = normalizeText(originalName);
+                    _rank: matchRank,
+                    _similarity: similarity,
+                };
+            }
 
-                    let matchType: string | null = null;
-                    let matchRank = 99;
-                    let similarity = 99;
+            const matches: any[] = [];
 
-                    // 1. Exact original name.
-                    if (
-                        originalName.toLocaleLowerCase() ===
-                        name.toLocaleLowerCase()
-                    ) {
-                        matchType = "Exact Match";
-                        matchRank = 0;
-                    }
+            const {
+                data: indexedRows,
+                count: matchedRows,
+                error: indexError,
+            } = await nameQuery(`%${queryText}%`, resultLimit);
 
-                    // 2. Unicode-normalized exact match.
-                    else if (
-                        fullKey === queryFull
-                    ) {
-                        matchType = "Normalized Match";
-                        matchRank = 1;
-                    }
+            if (indexError) {
+                console.error(
+                    "Player index search failed:",
+                    indexError.message
+                );
 
-                    // 3. Ignore emoji, symbols, and spaces.
-                    else if (
-                        textKey === queryText
-                    ) {
-                        matchType = "Normalized Match";
-                        matchRank = 2;
-                    }
+                return apiResponse(503, {
+                    items: [],
+                    message: "Could not search the shared player directory.",
+                });
+            }
 
-                    // 4. Partial normalized match.
-                    else if (
-                        fullKey.includes(queryFull)
-                    ) {
-                        matchType = "Partial Match";
-                        matchRank = 3;
-                    }
+            const scannedRows = indexedRows || [];
 
-                    // 5. Partial letters-and-numbers match.
-                    else if (
-                        textKey.includes(queryText)
-                    ) {
-                        matchType = "Partial Match";
-                        matchRank = 4;
-                    }
+            for (const row of scannedRows) {
+                const match = scoreRow(row);
 
-                    // 6. Similar spelling.
-                    else if (
-                        queryText.length >= 3 &&
-                        textKey.length >= 3 &&
-                        Math.abs(
-                            queryText.length - textKey.length
-                        ) <= 4 &&
-                        textKey[0] === queryText[0]
-                    ) {
-                        const distance = similarName(
-                            queryText,
-                            textKey
-                        );
+                if (match) {
+                    matches.push(match);
+                }
+            }
 
-                        if (distance !== null) {
-                            matchType = "Similar Match";
-                            matchRank = 5;
-                            similarity = distance;
+            /* Nothing matched the letters as typed: repeat once for names that
+               start with the same letter, so a misspelling still finds them. */
+            let fallbackRows = 0;
+
+            if (!matches.length && queryText.length >= 3) {
+                const first = queryText[0].replace(/[%_\\]/g, "");
+
+                const fallback = await nameQuery(
+                    `${first}%`,
+                    Math.min(resultLimit, 500)
+                );
+
+                if (fallback.error) {
+                    console.error(
+                        "Player index fallback failed:",
+                        fallback.error.message
+                    );
+                } else {
+                    fallbackRows = (fallback.data || []).length;
+
+                    for (const row of fallback.data || []) {
+                        const match = scoreRow(row);
+
+                        if (match) {
+                            matches.push(match);
                         }
                     }
-
-                    if (matchType) {
-                        matches.push({
-                            tag: row.player_tag,
-                            name: originalName,
-                            th: row.town_hall_level,
-                            trophies: row.trophies,
-                            role: row.role || "",
-                            clan_tag: row.clan_tag || "",
-                            clan_name: row.clan_name || "",
-
-                            match_type: matchType,
-
-                            _rank: matchRank,
-                            _similarity: similarity,
-                        });
-                    }
-                }
-
-                scanned += page.length;
-
-                if (page.length < pageSize) {
-                    break;
                 }
             }
 
@@ -1364,26 +1350,18 @@ Deno.serve(async (req: Request) => {
                 }
             }
 
-            const scanLimitReached =
-                availableRecords > scanned;
-
             return apiResponse(200, {
                 items,
                 total,
-                scanned,
+                scanned: scannedRows.length + fallbackRows,
 
-                directory_records_available:
-                    availableRecords,
+                directory_matches:
+                    typeof matchedRows === "number"
+                        ? matchedRows
+                        : null,
 
                 result_limit: resultLimit,
-                scan_limit: scanLimit,
-
-                scan_limit_reached:
-                    scanLimitReached,
-
-                total_scope: scanLimitReached
-                    ? "scanned_subset"
-                    : "entire_shared_index",
+                total_scope: "entire_shared_index",
 
                 directory_scope:
                     "shared_public_index",

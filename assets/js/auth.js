@@ -42,6 +42,10 @@
 
   /* ------------------------------------------------------------ game UI */
   const GAME_LOGIN = "https://id.supercell.com/";
+  /* The official in-game share link: opens Clash of Clans on the phone that
+     has the game, straight on that player's profile. */
+  const playerLink = tag => "https://link.clashofclans.com/en?action=OpenPlayerProfile&tag=" +
+    encodeURIComponent(normTag(tag).replace(/^#/, ""));
 
   function buildGameScreen() {
     if (!panel || $("authGameScreen")) return;
@@ -51,24 +55,74 @@
     s.innerHTML =
       '<button class="small-action" id="gameBack" type="button">← Back</button>' +
       '<h3>Open with a game</h3>' +
-      '<p>One click opens the official Clash of Clans login. Sign in with your Supercell ID there and come back to PekkaDex.</p>' +
+      '<p>Clash of Clans has no sign-in for fan sites, so PekkaDex links your village with your Player Tag. The button opens that profile inside the game, and PekkaDex saves the same tag to your account.</p>' +
       '<div class="game-hero" aria-hidden="true">🎮</div>' +
-      '<a class="button button-green" id="gameOpen" href="' + GAME_LOGIN + '" target="_blank" rel="noopener noreferrer">Open Clash of Clans login ↗</a>' +
-      '<p class="form-note">That page belongs to Supercell. PekkaDex never asks for your Supercell password or an API token.</p>' +
-      '<div class="auth-divider"><span>BACK IN PEKKADEX</span></div>' +
-      '<button class="button button-green" id="gameContinue" type="button">Continue with PekkaDex</button>' +
-      '<button class="small-action" id="gameEmail" type="button">Use an email code instead</button>' +
-      '<p class="form-note" id="gameNote">Supercell does not share game logins with fan sites, so the PekkaDex account keeps its own sign-in. Your profile stays private.</p>';
+      '<label class="cx-field"><span>Player Tag</span>' +
+        '<input id="gameTag" type="text" maxlength="15" placeholder="#2PP" autocomplete="off" autocapitalize="characters" spellcheck="false">' +
+      '</label>' +
+      '<a class="button button-green" id="gameOpen" href="' + playerLink("") + '" target="_blank" rel="noopener noreferrer">Open my profile in game ↗</a>' +
+      '<p class="form-note">That is the same link the game\'s own Share button makes. It needs Clash of Clans installed on this phone.</p>' +
+      '<button class="button button-gold" id="gameLink" type="button">Link this tag to PekkaDex</button>' +
+      '<p class="form-note">No Supercell password and no API token: the tag is public and only says which village is yours.</p>' +
+      '<p class="auth-status" id="gameStatus" aria-live="polite"></p>' +
+      '<a class="small-action" id="gameProfile" href="./profile.html" hidden>Open my PekkaDex profile →</a>' +
+      '<div class="auth-divider"><span>SUPERCELL ID</span></div>' +
+      '<a class="small-action" id="gameSupercell" href="' + GAME_LOGIN + '" target="_blank" rel="noopener noreferrer">Open Supercell ID ↗</a>' +
+      '<button class="small-action" id="gameEmail" type="button">Use an email code instead</button>';
     panel.insertBefore(s, $("authMessage") || null);
+
+    const tagInput = $("gameTag");
+    const openBtn = $("gameOpen");
+    const status = $("gameStatus");
+    const tagHint = "Player tags look like #2PP — letters 0289PYLQGRJCUV and numbers only.";
+
+    function syncLink() {
+      const tag = normTag(tagInput.value);
+      const ok = validTag(tag);
+      openBtn.href = playerLink(ok ? tag : "");
+      openBtn.style.pointerEvents = ok ? "" : "none";
+      openBtn.style.opacity = ok ? "" : ".55";
+      openBtn.setAttribute("aria-disabled", ok ? "false" : "true");
+      if (!ok && tagInput.value.trim()) status.textContent = tagHint;
+      else if (status.textContent === tagHint) status.textContent = "";
+    }
+    tagInput.addEventListener("input", syncLink);
+    openBtn.addEventListener("click", event => {
+      if (openBtn.getAttribute("aria-disabled") === "true") { event.preventDefault(); tagInput.focus(); }
+    });
+
+    $("gameLink").addEventListener("click", async () => {
+      const tag = normTag(tagInput.value);
+      if (!validTag(tag)) { status.textContent = "Enter your Player Tag, for example #2PP."; tagInput.focus(); return; }
+      const btn = $("gameLink");
+      btn.disabled = true;
+      status.textContent = "Checking " + tag + " in Clash of Clans…";
+      try {
+        const player = await playerLookup(tag);
+        const { data: sessionData } = await client.auth.getSession();
+        const user = sessionData && sessionData.session && sessionData.session.user;
+        if (user) {
+          const { error } = await client.from("profiles").upsert({
+            id: user.id, display_name: player.name || "Chief", player_tag: player.tag,
+            player_name: player.name, player_tag_verified: true
+          }, { onConflict: "id" });
+          if (error) throw error;
+        }
+        window.PDXIdentity.write({ tag: player.tag, name: player.name, kind: user ? "verified" : "local", townHall: player.townHallLevel });
+        tagInput.value = player.tag;
+        syncLink();
+        status.textContent = "Linked " + player.name + " (" + player.tag + ") · Town Hall " + (player.townHallLevel || "?");
+        $("gameProfile").hidden = false;
+      } catch (error) {
+        status.textContent = error.message || "Couldn't link that Player Tag.";
+      } finally {
+        btn.disabled = false;
+      }
+    });
 
     $("gameBack").addEventListener("click", () => { show("method"); say(""); });
     $("gameEmail").addEventListener("click", () => { show("email"); say(""); });
-    $("gameContinue").addEventListener("click", () => {
-      const local = window.PDXIdentity && window.PDXIdentity.read();
-      if (local) { location.href = "./profile.html"; return; }
-      show("email");
-      say("Choose a PekkaDex sign-in to finish your account. The game login opens in its own tab.");
-    });
+    syncLink();
   }
 
   async function playerLookup(tag) {
@@ -136,12 +190,7 @@
   }
 
   buildGameScreen();
-  $("authGameButton").addEventListener("click", () => {
-    show("game");
-    say("");
-    /* A direct click is allowed to open the game login in its own tab. */
-    try { window.open(GAME_LOGIN, "_blank", "noopener"); } catch (_) {}
-  });
+  $("authGameButton").addEventListener("click", () => { show("game"); say(""); });
   $("authEmailButton").addEventListener("click", () => { show("email"); say(""); });
   $("authEmailBack").addEventListener("click", () => { show("method"); say(""); });
   $("authModeToggle").addEventListener("click", () => {

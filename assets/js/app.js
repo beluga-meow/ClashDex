@@ -22,7 +22,7 @@
   const SETTINGS = {
     EDGE_FUNCTION: "coc",           // name of your Supabase Edge Function (see coc-edge-function.ts)
     PROXY_BASE: "",                 // optional: your own proxy URL ending in /v1 ("" = not used)
-    LAYOUTS_URL: "",                 // optional file with real base + troop links, e.g. "./layouts.json"
+    LAYOUTS_URL: "./layouts.json",     // file with real base + troop links
     MAX_TOWN_HALL: 19,              // raise this when Supercell releases a new Town Hall
   };
 
@@ -866,7 +866,6 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
     }
 
     /* ---- shared result helpers: one search can span several index pages ---- */
-    let lastSearch = null;
     const toHits = items => (items || []).map(i => ({
       tag: i.tag, name: i.name, th: i.th, trophies: i.trophies,
       role: i.role || "", match: i.match_type || "",
@@ -922,7 +921,6 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
 
       lock(pForm, true);
       out.innerHTML = "";
-      lastSearch = null;
       try {
         say("Searching every player record in the shared index…");
         const data = await findInIndex(q, exact, thv);
@@ -937,61 +935,21 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
         }
 
         const more = found > hits.length;
-        lastSearch = { q, exact, thv, found };
         const note = more
-          ? '<div class="cx-more-results"><p>' + found + ' players match, but one page of the index stops at ' + hits.length + '.</p>' +
-            '<button type="button" class="cx-btn blue" id="cxLoadAll">Load all ' + found + ' matches</button>' +
-            '<p class="cx-help">Loads every Town Hall page and merges the results. It can take a few seconds.</p></div>'
+          ? '<div class="cx-more-results"><p>' + found + ' players match; the first ' + hits.length + ' are below.</p>' +
+            '<p class="cx-help">One search answers with a single page. Add a letter or pick a Town Hall to narrow it down.</p></div>'
           : "";
         paintHits(hits, q, note);
         say((more ? "Showing " + hits.length + " of " + found : String(found)) +
           (found === 1 ? " matching player found." : " matching players found.") +
-          " Matches are name-folded: capitals, small letters, full-width fonts and emoji are ignored, and numbers still count." +
-          (more ? " Load all to see every match." : ""), "ok");
+          " Matches ignore capitals, small-caps fonts, full-width letters and emoji; numbers still count." +
+          (more ? " Narrow the search to see the rest." : ""), "ok");
       } catch (err) {
         say(errText(err), "err");
       } finally {
         lock(pForm, false);
       }
     });
-
-    /* The index returns at most 100 rows per call. When more players match,
-       ask again one Town Hall at a time and merge the pages, so a name can be
-       traced across the whole directory instead of the first 100 rows. */
-    async function loadAllMatches(button) {
-      if (!lastSearch) return;
-      const { q, exact, thv, found } = lastSearch;
-      if (thv) {
-        say("That Town Hall filter already returns every match the index can serve in one page. Remove the filter or add more letters to narrow it down.", "err");
-        return;
-      }
-      const label = button.textContent;
-      button.disabled = true;
-      button.textContent = "Loading every match…";
-      const seen = new Map();
-      const levels = Array.from({ length: 19 }, (_, i) => 19 - i);
-      let failed = 0;
-      try {
-        for (let i = 0; i < levels.length; i += 4) {
-          const batch = levels.slice(i, i + 4);
-          const pages = await Promise.all(batch.map(n => findInIndex(q, exact, n).catch(() => null)));
-          pages.forEach(page => {
-            if (!page) { failed++; return; }
-            toHits(page.items).forEach(hit => { if (hit.tag) seen.set(hit.tag, hit); });
-          });
-          say("Loading every match… " + Math.min(i + 4, levels.length) + "/19 Town Halls, " + seen.size + " found so far.");
-        }
-        const hits = sortHits([...seen.values()], q);
-        out.innerHTML = '<div class="cx-list">' + hits.map(playerRow).join("") + "</div>";
-        say("Loaded " + hits.length + " of " + found + " matching players across every Town Hall." +
-          (hits.length < found ? " A single Town Hall can still hold more than one page; narrow the search with fewer common letters." : "") +
-          (failed ? " " + failed + " page(s) timed out — search again to fill the gap." : ""), "ok");
-      } catch (err) {
-        button.disabled = false;
-        button.textContent = label;
-        say(errText(err), "err");
-      }
-    }
 
     cForm.addEventListener("submit", async e => {
       e.preventDefault();
@@ -1062,8 +1020,6 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
         }
         return;
       }
-      const loadAll = e.target.closest("#cxLoadAll");
-      if (loadAll) { loadAllMatches(loadAll); return; }
       const c = e.target.closest("[data-copy]");
       if (c) { toast((await copyText(c.dataset.copy)) ? "Copied " + c.dataset.copy : "Couldn't copy. Copy it by hand."); return; }
       const v = e.target.closest("[data-view]");
@@ -1234,16 +1190,17 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
       if (!x) return;
       const page = location.origin + location.pathname + "#bases";
       const label = x.kind === "army" ? "Army layout" : "Base layout";
-      const text = [
+      const real = isGameLink(x.link);
+      const text = real ? x.link : [
         label + ": " + x.name,
         (x.kind === "base" ? pre(x.v) : "TH ") + x.th + " · " + x.cat + (x.tag ? " · " + x.tag : ""),
         x.note || "",
-        isGameLink(x.link) ? x.link : "PekkaDex: " + page
+        "PekkaDex: " + page
       ].filter(Boolean).join("\n");
       const ok = await copyText(text);
       toast(ok
-        ? label + " copied — paste it in clan chat or a notes app."
-        : "Couldn't copy. Select the layout text and copy it by hand.");
+        ? (real ? label + " link copied — paste it in clan chat and tap it to import." : "Sample copied — this layout has no in-game link yet.")
+        : "Couldn't copy. Select the text and copy it by hand.");
     }
 
     /* ----- detail sheet (tap a card picture) ----- */

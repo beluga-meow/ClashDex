@@ -1,0 +1,232 @@
+{
+  "layouts": [
+    {
+      "kind": "base",
+      "th": 18,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🛡️",
+      "name": "TH18 FWA war base",
+      "note": "War layout links straight into the game. Copy the link, paste it in clan chat, then tap it.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH18%3AWB%3AAAAAAgAAAAMIFXlpMp2DcHS1uqUMNgA4"
+    },
+    {
+      "kind": "base",
+      "th": 17,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🛡️",
+      "name": "TH17 war base",
+      "note": "Spitters facing opposite directions, spring traps on the outside.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH17%3AHV%3AAAAAVAAAAAH2f7oBUtZeD0QGWoPfQHi9"
+    },
+    {
+      "kind": "base",
+      "th": 17,
+      "cat": "Hybrid",
+      "tag": "Anti 2 Stars",
+      "icon": "⚔️",
+      "name": "TH17 rage + poison base",
+      "note": "Rage and poison towers around the core, trap-heavy outside ring.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH17%3AWB%3AAAAAVAAAAAH2f9CNjVbV_n67TXdkH3fN"
+    },
+    {
+      "kind": "base",
+      "th": 17,
+      "cat": "Trophy",
+      "tag": "Legend League",
+      "icon": "🏆",
+      "name": "TH17 Legend base",
+      "note": "Compact Legend League layout that keeps trophies on defence.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH17%3AWB%3AAAAAMwAAAAJvKqSJR0K6j5vKXNzKC0Eo"
+    },
+    {
+      "kind": "base",
+      "th": 16,
+      "cat": "Trophy",
+      "tag": "Legend League",
+      "icon": "🏆",
+      "name": "TH16 Legend base",
+      "note": "Double rage tower legends base, built to stop root riders.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AHV%3AAAAAJAAAAAJCU3TZj_ywjB7Z3HV-yYxh"
+    },
+    {
+      "kind": "base",
+      "th": 16,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🛡️",
+      "name": "TH16 war base",
+      "note": "War layout with traps and spell towers tuned for the current meta.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AHV%3AAAAAJAAAAAJCU323bAtawUHHZHlbRNe1"
+    },
+    {
+      "kind": "base",
+      "th": 16,
+      "cat": "Hybrid",
+      "tag": "Anti 2 Stars",
+      "icon": "⚔️",
+      "name": "TH16 double poison base",
+      "note": "Spread double poison with an isolated core and Town Hall.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AWB%3AAAAAVAAAAAHxKrqwCCkmwJBQ-jOYImzS"
+    },
+    {
+      "kind": "base",
+      "th": 16,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🏰",
+      "name": "TH16 FWA war base",
+      "note": "Simple FWA-friendly war layout.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AWB%3AAAAAWQAAAAHYhYD8UAx4YzwvwSR5_kYp"
+    },
+    {
+      "kind": "base",
+      "th": 15,
+      "cat": "Trophy",
+      "tag": "Legend League",
+      "icon": "🏆",
+      "name": "TH15 Legend base",
+      "note": "Pathing-focused Legend layout for trophy pushes.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH15%3AWB%3AAAAAKQAAAAKqSGPbn2WewLUBEICnBiEx"
+    },
+    {
+      "kind": "base",
+      "th": 15,
+      "cat": "War",
+      "tag": "Anti 2 Stars",
+      "icon": "🛡️",
+      "name": "TH15 anti 2 star base",
+      "note": "Keeps the third star away with a protected core.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH15%3AWB%3AAAAAKQAAAAKqSGULxKY-7_WFevDMPnKv"
+    },
+    {
+      "kind": "base",
+      "th": 15,
+      "cat": "War",
+      "tag": "Anti Air",
+      "icon": "🐉",
+      "name": "TH15 anti Lavaloon base",
+      "note": "Built to drag air attacks away from the Town Hall.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH15%3AWB%3AAAAABQAAAAKWTKv7jBsiQhOK9cPwpZ5Q"
+    },
+    {
+      "kind": "base",
+      "th": 15,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🏰",
+      "name": "TH15 FWA war base",
+      "note": "Simple FWA-friendly war layout.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH15%3AWB%3AAAAAVAAAAAHixZ2x1n8Q5kcjKac5Ta3R"
+    },
+    {
+      "kind": "base",
+      "th": 14,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🛡️",
+      "name": "TH14 war base",
+      "note": "War layout for Town Hall 14, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH14%3AWB%3AAAAAPQAAAAJQFTvvhxVFhpHEctRKa2RJ"
+    },
+    {
+      "kind": "base",
+      "th": 13,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🛡️",
+      "name": "TH13 war base",
+      "note": "War layout for Town Hall 13, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH13%3AWB%3AAAAANQAAAAJg3K_0TUhkZz6SfZeONbRt"
+    },
+    {
+      "kind": "base",
+      "th": 12,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🛡️",
+      "name": "TH12 war base",
+      "note": "War layout for Town Hall 12, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH12%3AWB%3AAAAAAAAAAAMJ-9kz6ATWMmoYhsM5X4Zo"
+    },
+    {
+      "kind": "base",
+      "th": 11,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🛡️",
+      "name": "TH11 war base",
+      "note": "War layout for Town Hall 11, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH11%3AWB%3AAAAAJQAAAAKdWWT-kVMWijtjXI3Ieeeu"
+    },
+    {
+      "kind": "base",
+      "th": 10,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🛡️",
+      "name": "TH10 war base",
+      "note": "War layout for Town Hall 10, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH10%3AWB%3AAAAASwAAAAHxz3UQ1NJeeTS0DGN61Gm"
+    },
+    {
+      "kind": "base",
+      "th": 9,
+      "cat": "War",
+      "tag": "Anti 3 Stars",
+      "icon": "🛡️",
+      "name": "TH9 war base",
+      "note": "War layout for Town Hall 9, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH9%3AWB%3AAAAANQAAAAJg3suFcORqtzL2m38RiJuD"
+    },
+    {
+      "kind": "base",
+      "v": "builder",
+      "th": 10,
+      "cat": "War",
+      "icon": "🔨",
+      "name": "BH10 Star Keeper",
+      "note": "Builder Hall 10 versus layout.",
+      "link": ""
+    },
+    {
+      "kind": "base",
+      "v": "builder",
+      "th": 9,
+      "cat": "Trophy",
+      "icon": "🏆",
+      "name": "BH9 Trophy Wall",
+      "note": "Compact trophy pusher.",
+      "link": ""
+    },
+    {
+      "kind": "base",
+      "v": "capital",
+      "th": 10,
+      "cat": "Defence",
+      "icon": "🏯",
+      "name": "Capital Hall 10 Fortress",
+      "note": "Clan Capital district layout.",
+      "link": ""
+    },
+    {
+      "kind": "army",
+      "th": 17,
+      "cat": "Air",
+      "icon": "🐉",
+      "name": "Electro Dragon Push",
+      "note": "Simple air attack. Funnel first.",
+      "link": ""
+    },
+    {
+      "kind": "army",
+      "th": 16,
+      "cat": "Ground",
+      "icon": "🌳",
+      "name": "Root Rider Smash",
+      "note": "Ground push backed by your heroes.",
+      "link": ""
+    }
+  ]
+}
