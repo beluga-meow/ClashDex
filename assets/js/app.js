@@ -56,6 +56,15 @@
     { kind: "army", th: 16, cat: "Ground",        tag: "", icon: "🧙", name: "Yeti + Witch Push",   note: "Strong mid-game ground army.", link: "" }
   ];
 
+  /* Community source for Town Hall base browsing. */
+  let BASE_SOURCES = {
+    homeVillage: "https://www.coc-prime.com/base-library",
+    townHallPattern: "https://www.coc-prime.com/base-library/browse/hv/th{th}",
+    minTownHall: 3,
+    maxTownHall: 19
+  };
+
+
   /* ============ 3. Small helpers ============ */
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
