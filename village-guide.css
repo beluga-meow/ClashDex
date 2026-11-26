@@ -1,27 +1,69 @@
-/* PekkaDex Village Guide — standalone chatbot */
-#villageGuide{position:fixed;right:22px;bottom:22px;z-index:80;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#4a2c12}
-#villageGuide *{box-sizing:border-box}
-#villageGuide .vg-launcher{display:flex;align-items:center;gap:10px;border:3px solid #351b08;border-radius:999px;padding:8px 15px 8px 8px;background:linear-gradient(#ffe98e,#f5b936);box-shadow:0 4px 0 #754316,0 9px 22px #0005;color:#4a2c12;font-weight:900;cursor:pointer;transition:transform .16s}
-#villageGuide .vg-launcher:hover{transform:translateY(-3px)}
-#villageGuide .vg-avatar{display:grid;place-items:center;width:44px;height:44px;border:2px solid #754316;border-radius:50%;background:linear-gradient(#fff5d9,#e9b86b);font-size:27px}
-#villageGuide .vg-launcher small{display:block;font-size:10px;font-weight:700;opacity:.8}
-#villageGuide .vg-panel{position:absolute;right:0;bottom:68px;width:min(360px,calc(100vw - 28px));max-height:min(540px,calc(100dvh - 115px));display:flex;flex-direction:column;overflow:hidden;border:3px solid #3e210c;border-radius:20px;background:#fff8e8;box-shadow:0 14px 42px #0006}
-#villageGuide .vg-panel[hidden]{display:none}
-#villageGuide .vg-head{display:flex;align-items:center;gap:10px;padding:13px;background:linear-gradient(#b97835,#78451e);color:#fff8df;border-bottom:3px solid #4b290f}
-#villageGuide .vg-head .vg-avatar{flex:none;background:linear-gradient(#fff5d9,#edc47e)}
-#villageGuide .vg-head strong{display:block;font-size:14px}
-#villageGuide .vg-status{font-size:11px;color:#e7f6c8}
-#villageGuide .vg-close{margin-left:auto;width:34px;height:34px;border:2px solid #4b290f;border-radius:9px;background:#f6d477;color:#4a2c12;font-size:22px;cursor:pointer}
-#villageGuide .vg-messages{display:flex;flex-direction:column;gap:10px;min-height:170px;overflow:auto;padding:14px;background:linear-gradient(#fff8e8,#f5e4bf)}
-#villageGuide .vg-message{max-width:90%;padding:10px 12px;border:2px solid #d6bd8c;border-radius:13px;background:#fffdf6;font-size:13px;line-height:1.45;overflow-wrap:anywhere}
-#villageGuide .vg-message.guide{align-self:flex-start;border-bottom-left-radius:4px}
-#villageGuide .vg-message.chief{align-self:flex-end;background:#e8f4d7;border-color:#b2ce8b;border-bottom-right-radius:4px}
-#villageGuide .vg-message a{display:inline-block;margin-top:7px;color:#175d9a;font-weight:900;text-decoration:underline}
-#villageGuide .vg-quick{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 11px;background:#f5e4bf}
-#villageGuide .vg-quick button{border:2px solid #a66a2d;border-radius:999px;padding:6px 9px;background:#fff1c9;color:#593313;font-size:11px;font-weight:800;cursor:pointer}
-#villageGuide .vg-form{display:flex;gap:7px;padding:11px;border-top:1px solid #ddc99f;background:#fff8e8}
-#villageGuide .vg-input{min-width:0;flex:1;border:2px solid #c6a978;border-radius:10px;padding:10px;background:#fff;color:#38230f;font:inherit;font-size:13px}
-#villageGuide .vg-send{border:2px solid #31551d;border-radius:10px;padding:0 13px;background:linear-gradient(#a8df68,#5e9e35);color:#17340d;font-weight:900;cursor:pointer}
-#villageGuide button:focus-visible,#villageGuide input:focus-visible{outline:3px solid #287ac2;outline-offset:2px}
-@media(max-width:520px){#villageGuide{right:12px;bottom:14px}#villageGuide .vg-panel{right:0;bottom:64px;width:min(360px,calc(100vw - 24px));max-height:calc(100dvh - 100px)}#villageGuide .vg-launcher{padding-right:12px}}
-@media(prefers-reduced-motion:no-preference){#villageGuide .vg-launcher{animation:vgBob 3.8s ease-in-out infinite}@keyframes vgBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}}
+
+/* PekkaDex Villager Greeter */
+(() => {
+  "use strict";
+
+  if (window.__pekkaDexVillager) return;
+  window.__pekkaDexVillager = true;
+
+  const reactions = [
+    "./Villager_info.webp",
+    "./Villager_Shocked.webp",
+    "./Villager_Crying.webp",
+    "./Villager_pleading.webp",
+    "./Villager_Scared.webp",
+    "./Villager_Mad.webp"
+  ];
+
+  const guide = document.createElement("div");
+  guide.id = "villageGuide";
+
+  guide.innerHTML = `
+    <div class="vg-bubble" id="vgBubble">
+      <button class="vg-bubble-close" aria-label="Dismiss greeting">×</button>
+      Hey Chief! Welcome to PekkaDex!
+    </div>
+    <img class="vg-character"
+      src="./Villager_info.webp"
+      alt="PekkaDex Village Guide">
+    <button class="vg-character-close"
+      aria-label="Hide Village Guide">×</button>
+  `;
+
+  document.body.appendChild(guide);
+
+  const character = guide.querySelector(".vg-character");
+  const bubble = guide.querySelector(".vg-bubble");
+  const bubbleClose = guide.querySelector(".vg-bubble-close");
+  const characterClose = guide.querySelector(".vg-character-close");
+
+  // Preload all expressions
+  reactions.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+
+  // Greeting can be dismissed independently
+  bubbleClose.addEventListener("click", () => {
+    bubble.hidden = true;
+  });
+
+  // Hide the entire character
+  characterClose.addEventListener("click", () => {
+    guide.classList.add("vg-hidden");
+  });
+
+  // Cycle through expressions
+  let index = 0;
+
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (!reducedMotion) {
+    setInterval(() => {
+      index = (index + 1) % reactions.length;
+      character.src = reactions[index];
+    }, 5000);
+  }
+})();
