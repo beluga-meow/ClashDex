@@ -16,6 +16,8 @@
   <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./assets/css/style.css?v=14">
 <link rel="stylesheet" href="./assets/css/pekka.css?v=4">
+<link rel="stylesheet" href="./assets/css/living-village.css">
+
 </head>
 <body>
   <div class="season-effects" id="seasonEffects" aria-hidden="true"></div>
@@ -330,6 +332,7 @@
   <script src="./assets/js/auth.js?v=18"></script>
   <script>
   if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=21").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
+<script src="./assets/js/living-village.js"></script>
   </script>
 </body>
 </html>
