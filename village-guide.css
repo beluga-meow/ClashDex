@@ -1,69 +1,129 @@
 
-/* PekkaDex Villager Greeter */
-(() => {
-  "use strict";
+/* PekkaDex — Villager Greeter */
 
-  if (window.__pekkaDexVillager) return;
-  window.__pekkaDexVillager = true;
+#villageGuide {
+  position: fixed;
+  right: 22px;
+  bottom: 18px;
+  z-index: 9999;
+  width: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: system-ui, sans-serif;
+  pointer-events: none;
+}
 
-  const reactions = [
-    "./Villager_info.webp",
-    "./Villager_Shocked.webp",
-    "./Villager_Crying.webp",
-    "./Villager_pleading.webp",
-    "./Villager_Scared.webp",
-    "./Villager_Mad.webp"
-  ];
+#villageGuide * {
+  box-sizing: border-box;
+}
 
-  const guide = document.createElement("div");
-  guide.id = "villageGuide";
+#villageGuide.vg-hidden {
+  display: none;
+}
 
-  guide.innerHTML = `
-    <div class="vg-bubble" id="vgBubble">
-      <button class="vg-bubble-close" aria-label="Dismiss greeting">×</button>
-      Hey Chief! Welcome to PekkaDex!
-    </div>
-    <img class="vg-character"
-      src="./Villager_info.webp"
-      alt="PekkaDex Village Guide">
-    <button class="vg-character-close"
-      aria-label="Hide Village Guide">×</button>
-  `;
+.vg-character {
+  width: 170px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.25));
+  animation: vg-float 3s ease-in-out infinite;
+  pointer-events: auto;
+}
 
-  document.body.appendChild(guide);
+.vg-bubble {
+  position: relative;
+  max-width: 220px;
+  margin-bottom: 8px;
+  padding: 13px 30px 13px 15px;
+  border: 2px solid #75451f;
+  border-radius: 15px;
+  background: #fff4d8;
+  color: #4a2c12;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.4;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  pointer-events: auto;
+}
 
-  const character = guide.querySelector(".vg-character");
-  const bubble = guide.querySelector(".vg-bubble");
-  const bubbleClose = guide.querySelector(".vg-bubble-close");
-  const characterClose = guide.querySelector(".vg-character-close");
+.vg-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  background: #fff4d8;
+  border-right: 2px solid #75451f;
+  border-bottom: 2px solid #75451f;
+  transform: translateX(-50%) rotate(45deg);
+}
 
-  // Preload all expressions
-  reactions.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
+.vg-bubble[hidden] {
+  display: none;
+}
 
-  // Greeting can be dismissed independently
-  bubbleClose.addEventListener("click", () => {
-    bubble.hidden = true;
-  });
+.vg-bubble-close,
+.vg-character-close {
+  border: 0;
+  cursor: pointer;
+  font-weight: 900;
+  pointer-events: auto;
+}
 
-  // Hide the entire character
-  characterClose.addEventListener("click", () => {
-    guide.classList.add("vg-hidden");
-  });
+.vg-bubble-close {
+  position: absolute;
+  top: 3px;
+  right: 7px;
+  background: transparent;
+  color: #75451f;
+  font-size: 18px;
+}
 
-  // Cycle through expressions
-  let index = 0;
+.vg-character-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #75451f;
+  color: white;
+  font-size: 16px;
+}
 
-  const reducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-  if (!reducedMotion) {
-    setInterval(() => {
-      index = (index + 1) % reactions.length;
-      character.src = reactions[index];
-    }, 5000);
+@keyframes vg-float {
+  0%, 100% {
+    transform: translateY(0);
   }
-})();
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@media (max-width: 600px) {
+  #villageGuide {
+    right: 8px;
+    bottom: 10px;
+    width: 135px;
+  }
+
+  .vg-character {
+    width: 125px;
+  }
+
+  .vg-bubble {
+    max-width: 175px;
+    font-size: 11px;
+    padding: 10px 27px 10px 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vg-character {
+    animation: none;
+  }
+}
