@@ -1,5 +1,42 @@
 # Changelog
 
+## 2026-11-27 — Home page and profile on the design system
+
+### Removed the guessed coc-prime URLs
+- Deleted `BASE_SOURCES` and the Town Hall browse pattern
+  (`coc-prime.com/base-library/browse/hv/th{th}`) that came in from `main`. The
+  pattern was never checked, so no card or empty state builds a coc-prime URL
+  any more.
+- The Base Library empty state and the `bases.html` note now name only
+  CocBaseFinder, and say plainly that PekkaDex does not check it.
+
+### Home page
+- Deleted the injected sample base/army library from `app.js` (the fabricated
+  `LAYOUTS` list, `loadLayoutsFile`, `buildLibrary` and its copy-link sheet).
+  The `#bases` section is now a single panel that links to the real
+  `bases.html` and `armies.html`, so nothing on the home page duplicates them.
+- Rebuilt `index.html` on `tokens.css` + `components.css` with a new
+  `assets/css/home.css`: wood header, sky hero, parchment panels, the account
+  panel, the player/clan finder, the Attack Academy and the footer all use the
+  shared tokens. The `html.cx` runtime theme and its ~420-line injected
+  stylesheet are gone, as is the pre-paint spinner gate that hid the page
+  until JavaScript ran.
+- The Attack Academy styling moved out of `attacks.js` into `home.css`; no
+  page injects CSS from JavaScript now.
+
+### Profile page
+- `profile.html` loads `tokens.css` + `components.css` and uses the shared
+  `pdx-btn`, `pdx-field` and `pdx-input` components.
+- `profile.css` is on the tokens. It previously referenced `--hx-title`, which
+  was never defined anywhere, so every profile heading fell back to 16px body
+  text; it now uses `--font-display`.
+
+### Cleanup
+- **Deleted** `assets/css/style.css` (2759 lines) and `assets/css/pekka.css`.
+  No page or script references them.
+- Added `pdx-btn--sky`, `pdx-btn--danger` and `pdx-btn--sm` to
+  `components.css`; service worker cache bumped to `v24`.
+
 ## 2026-11-26 — Base Library, Army Library, Lady Villager guide, Scenery Shop
 
 ### Base Library (`bases.html`)

@@ -246,7 +246,6 @@
       const baseEmpty = page === "bases"
         ? `<p class="lib-copy">No genuine layout link is on file for ${esc(th)} yet, so nothing is shown rather than a placeholder. Community libraries to check in the meantime:</p>
            <div class="lib-source-links">
-             <a class="pdx-btn pdx-btn--wood" href="https://www.coc-prime.com/base-library" target="_blank" rel="noopener noreferrer">coc-prime Base Library</a>
              <a class="pdx-btn pdx-btn--wood" href="https://cocbasefinder.com/" target="_blank" rel="noopener noreferrer">CocBaseFinder</a>
            </div>`
         : `<p class="lib-copy">No army is listed for ${esc(th)} and this filter yet. Clear a filter, or check the same category at a nearby Town Hall.</p>`;

@@ -151,6 +151,9 @@ button.pdx-card { cursor: pointer; font: inherit; padding: 0; }
 .pdx-btn:active { transform: translateY(2px); box-shadow: var(--sh-1); }
 .pdx-btn:focus-visible { outline: var(--focus); outline-offset: 2px; }
 .pdx-btn--wood { background: linear-gradient(var(--c-wood-400), var(--c-wood-500)); color: #ffeab8; text-shadow: 0 2px 0 var(--c-wood-800); }
+.pdx-btn--sky { background: linear-gradient(#6fb6f0, var(--c-blue-500) 55%, #2468b0); color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .45); }
+.pdx-btn--danger { background: linear-gradient(#ff8068, var(--c-danger) 60%, #b3281d); color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .45); }
+.pdx-btn--sm { min-height: 38px; padding: var(--s-1) var(--s-3); font-size: var(--fs-sm); box-shadow: var(--sh-1); }
 .pdx-btn--ghost { background: rgba(255, 255, 255, .12); color: #fff; border-color: rgba(0, 0, 0, .55); text-shadow: 0 1px 0 rgba(0, 0, 0, .5); }
 .pdx-btn--icon { width: var(--tap); min-width: var(--tap); padding: 0; }
 .pdx-btn[disabled] { opacity: .55; cursor: not-allowed; }

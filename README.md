@@ -30,8 +30,8 @@ assets/
     heroes.css                 shared encyclopedia chrome (sitebar, panels)
     library.css                Base + Army Library filters, cards, detail sheet
     villager.css               Lady Villager guide bubble
-    style.css, pekka.css       the older home-page theme (still in use there)
-    profile.css                profile page
+    home.css                   home page layout on the tokens (hero, sections, finder, attacks)
+    profile.css                profile page layout on the tokens
   js/
     app.js                     home page: search, filters, theme, tab bar
     name-fold.js               shared name folding + match ranking (tested)
@@ -90,8 +90,10 @@ them paints a page-specific layout, and there is no `!important`.
 - Rarity colours: `--rarity-common/rare/epic/legendary`.
 - Icons: `<svg class="pdx-ico"><use href="./assets/icons/icons.svg#i-name"></use></svg>`.
 
-`heroes.html` is fully on the system. `index.html` and `profile.html` load the
-tokens but still carry the older `style.css` theme.
+Every page is on the system: `index.html` adds `home.css`, `profile.html` adds
+`heroes.css` (shared encyclopedia chrome) plus `profile.css`, and the two
+libraries add `library.css`. The old `style.css` and `pekka.css` themes are
+gone, and no page injects a stylesheet from JavaScript.
 
 ## Base Library and Army Library
 
@@ -104,7 +106,8 @@ as `?base=<id>` or `?army=<id>`, with a Back button and Escape to close.
   rows that already had a Clash of Clans `link.clashofclans.com` Copy Base link
   are imported, and each card labels it “supplied with the project · not
   re-tested”. Town Halls without a genuine link show an honest empty state
-  that points at coc-prime and CocBaseFinder, never a made-up layout.
+  with a link to CocBaseFinder and no guessed URL pattern, never a made-up
+  layout.
 - **Armies** come from the Attack Academy records through
   `node tools/build-armies.mjs`, plus five classic farming archetypes. Siege
   machine and hero equipment are left open where no recommendation is

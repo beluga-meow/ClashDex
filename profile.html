@@ -10,8 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/tokens.css?v=db87c23f">
+  <link rel="stylesheet" href="./assets/css/components.css?v=8df6c753">
   <link rel="stylesheet" href="./assets/css/heroes.css?v=b022781a">
-  <link rel="stylesheet" href="./assets/css/profile.css?v=60ee9ff4">
+  <link rel="stylesheet" href="./assets/css/profile.css?v=9c3cd85e">
   <link rel="stylesheet" href="./assets/css/villager.css?v=acd85999">
 </head>
 <body class="heroes-page profile-page" data-guide="profile">
@@ -33,15 +35,15 @@
       <h1>Sign in to PekkaDex</h1>
       <p class="gate-copy">Open your profile to see your Clash of Clans stats, your ranked and classic history and your account details.</p>
       <div class="gate-actions">
-        <a class="big-button green" href="./index.html?signin=game#account">🎮 Open with a game</a>
-        <a class="big-button gold" href="./index.html?signin=email#account">✉️ Log in with email</a>
+        <a class="pdx-btn" href="./index.html?signin=game#account">🎮 Open with a game</a>
+        <a class="pdx-btn pdx-btn--sky" href="./index.html?signin=email#account">✉️ Log in with email</a>
       </div>
       <div class="gate-or"><span>OR</span></div>
       <form id="gateTagForm" class="gate-tag">
-        <label class="cx-field"><span>Player Tag</span>
-          <input id="gateTag" type="text" maxlength="15" placeholder="#2PP" autocomplete="off" autocapitalize="characters" required>
+        <label class="pdx-field"><span>Player Tag</span>
+          <input class="pdx-input" id="gateTag" type="text" maxlength="15" placeholder="#2PP" autocomplete="off" autocapitalize="characters" required>
         </label>
-        <button class="big-button blue" type="submit" id="gateTagGo">Continue with Player Tag</button>
+        <button class="pdx-btn pdx-btn--sky" type="submit" id="gateTagGo">Continue with Player Tag</button>
         <p class="form-note">A Player Tag saves a profile on this device. Open with a game to link the tag and jump straight to your village in Clash of Clans.</p>
       </form>
       <p class="gate-status" id="gateStatus" aria-live="polite"></p>
@@ -62,8 +64,8 @@
           <p class="profile-sub" id="profileSub"></p>
         </div>
         <div class="profile-head-actions">
-          <button class="small-button" id="refreshProfile" type="button">↻ Refresh stats</button>
-          <a class="small-button" href="./heroes.html">Heroes archive →</a>
+          <button class="pdx-btn pdx-btn--sm" id="refreshProfile" type="button">↻ Refresh stats</button>
+          <a class="pdx-btn pdx-btn--sm" href="./heroes.html">Heroes archive →</a>
         </div>
       </section>
 
@@ -105,15 +107,15 @@
         <div class="account-rows" id="accountRows"></div>
         <h3 class="block-sub">Change linked Player Tag</h3>
         <form id="tagForm" class="tag-form">
-          <label class="cx-field"><span>New Player Tag</span>
-            <input id="newTag" type="text" maxlength="15" placeholder="#2PP" autocomplete="off" autocapitalize="characters" required>
+          <label class="pdx-field"><span>New Player Tag</span>
+            <input class="pdx-input" id="newTag" type="text" maxlength="15" placeholder="#2PP" autocomplete="off" autocapitalize="characters" required>
           </label>
-          <button class="big-button green" type="submit" id="tagSave">Verify and save</button>
+          <button class="pdx-btn" type="submit" id="tagSave">Verify and save</button>
         </form>
         <p class="gate-status" id="accountStatus" aria-live="polite"></p>
         <h3 class="block-sub">Danger zone</h3>
         <div class="account-danger">
-          <button class="big-button red" id="signOut" type="button">Sign out</button>
+          <button class="pdx-btn pdx-btn--danger" id="signOut" type="button">Sign out</button>
           <p class="form-note">Signing out removes the saved profile from this device. Tracked battles stay in your browser.</p>
         </div>
       </section>
