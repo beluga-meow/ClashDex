@@ -13,12 +13,10 @@
   if (window.PDXVillager) return;
 
   const BASE = "./assets/villager/";
-  /* The six Villager_*.webp files are not in the repository yet (checked
-     against the tracked files and the uploaded ZIP). Set this to true once
-     they are dropped into assets/villager/ so the guide uses the artwork
-     instead of the fallback medallion. Keeping it false means no page ever
-     requests a missing image. */
-  const ART_SHIPPED = false;
+  /* All six expressions were uploaded to the repository root and moved into
+     assets/villager/. The medallion stays as a fallback if a file ever goes
+     missing, but art is used by default. */
+  const ART_SHIPPED = true;
   const FALLBACK_FACE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><circle cx="12" cy="8" r="3.4"></circle><path d="M5.5 20a6.5 6.5 0 0 1 13 0"></path><path d="M3.5 8.5 5 6l2.5-.5"></path></svg>';
   const MOODS = {
     welcome: { file: "Villager_info.webp", alt: "Lady Villager greeting you", line: "Hey Chief! Welcome to PekkaDex!" },

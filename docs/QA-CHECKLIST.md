@@ -76,7 +76,7 @@ node --check assets/js/villager.js    # syntax
 - [ ] Army Library shows “Ready for battle, Chief?”; Profile shows “Whoa! Look at those stats!”.
 - [ ] Clicking Sign out shows “Leaving already, Chief? See you next time!” and the sign-out still happens immediately.
 - [ ] Guide sits above the tab bar at 360px, is not clipped at the bottom and never covers the header or tab bar.
-- [ ] With `ART_SHIPPED = false` the guide shows the medallion and the network panel shows no 404 for `assets/villager/`.
+- [ ] The guide shows the real Villager art (info on home, Mad on armies, Shocked on profile, pleading on sign out) with no distortion and no 404 for `assets/villager/`.
 - [ ] `index.html#heroes` contains only “Clash Heroes Encyclopedia” and “Open the Encyclopedia”; no hero chips or shortcut cards.
 
 ## Skins and Scenery Shop

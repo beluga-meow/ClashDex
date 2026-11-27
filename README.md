@@ -118,11 +118,13 @@ as `?base=<id>` or `?army=<id>`, with a Back button and Escape to close.
 those stats!” on `profile.html`. Clicking sign out adds “Leaving already,
 Chief? See you next time!” without touching the real sign-out handler.
 
-**The six `Villager_*.webp` images are not in the repository** (verified against
-the working tree, Git history and `pekkadex-site.zip`). Until they are added to
-`assets/villager/`, `ART_SHIPPED` in `villager.js` is `false` and the guide uses
-a small medallion, so no page requests a missing image. Add the files, then set
-`ART_SHIPPED = true`; the expected names are in the script's `MOODS` map.
+The six expressions are in `assets/villager/`:
+`Villager_info` (home greeting), `Villager_Mad` (Army Library),
+`Villager_Shocked` (profile) and `Villager_pleading` (sign out).
+`Villager_Crying` and `Villager_Scared` ship with the site but are not used by
+a page yet. She stays still — no random expression cycling; the only motion is
+the one-time fade-in. If a file is ever missing the guide falls back to a small
+medallion instead of showing a broken image.
 
 ## Data layer
 

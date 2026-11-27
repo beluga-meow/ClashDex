@@ -17,7 +17,7 @@
 ### Lady Villager guide
 - **Added** `assets/js/villager.js` and `assets/css/villager.css`: one stationary portrait with one page-aware line — greeting on the home page, “Ready for battle, Chief?” on `armies.html`, “Whoa! Look at those stats!” on `profile.html`, and the pleading farewell when sign-out is clicked (the real sign-out is never blocked or delayed).
 - The guide floats above the mobile tab bar, fades in once, can be dismissed, and remembers the dismissal for the session. It never covers the header or the tab bar.
-- **Missing asset:** the six `Villager_*.webp` files are not in the repository (checked in the working tree, full Git history and `pekkadex-site.zip`). `ART_SHIPPED` is therefore `false` and the guide renders a small medallion, so no broken image is requested. Drop the files into `assets/villager/` and flip the flag.
+- The six `Villager_*.webp` expressions were uploaded to the repository root during this work and are now in `assets/villager/`. The guide uses `info` for the welcome, `Mad` for the Army Library, `Shocked` for the profile and `pleading` for the farewell. It deliberately does not cycle expressions every few seconds: the brief asks for a stationary guide, so the only motion is the one-time fade-in. The medallion remains as a fallback if a file goes missing.
 
 ### Home page encyclopedia cleanup
 - The Clash Heroes Encyclopedia section now contains exactly a title and one “Open the Encyclopedia” button. The injected archive card, hero chips and shortcut cards are gone from `app.js`; every page and all cosmetics remain available on `heroes.html`.
