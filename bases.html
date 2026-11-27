@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7a4a22">
+  <meta name="description" content="PekkaDex Base Library — Town Hall 1 to 19 layouts by war, farming, trophy, hybrid and anti-air categories, with genuine Clash of Clans Copy Base links where one is on file.">
+  <title>Base Library — PekkaDex</title>
+  <link rel="canonical" href="https://beluga-meow.github.io/ClashDex/bases.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PekkaDex">
+  <meta property="og:title" content="Base Library — PekkaDex">
+  <meta property="og:description" content="Filter Clash of Clans base layouts by Town Hall and category. Copy links are labelled when they are supplied rather than re-tested.">
+  <meta property="og:url" content="https://beluga-meow.github.io/ClashDex/bases.html">
+  <meta property="og:image" content="https://beluga-meow.github.io/ClashDex/assets/townhalls/th-17.webp">
+  <meta name="twitter:card" content="summary">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap">
+  <link rel="stylesheet" href="./assets/css/tokens.css?v=db87c23f">
+  <link rel="stylesheet" href="./assets/css/components.css?v=c713ea9b">
+  <link rel="stylesheet" href="./assets/css/heroes.css?v=b022781a">
+  <link rel="stylesheet" href="./assets/css/library.css?v=eec17147">
+  <link rel="stylesheet" href="./assets/css/villager.css?v=81ce1079">
+</head>
+<body class="heroes-page library-page" data-library="bases">
+  <a class="pdx-skip" href="#main">Skip to content</a>
+
+  <header class="sitebar">
+    <a class="home" href="./index.html">
+      <svg class="pdx-ico" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-back"></use></svg>
+      <span>PekkaDex</span>
+    </a>
+    <div class="sitebar-titles">
+      <strong>BASE LIBRARY</strong>
+      <small>Town Hall 1–19 · war, farming, trophy, hybrid</small>
+    </div>
+    <div class="sitebar-actions">
+      <a class="profile-circle" href="./profile.html" data-profile-link aria-label="Open your profile" title="Your profile">
+        <svg class="pdx-ico" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-user"></use></svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="encyclopedia" id="main">
+    <section class="intro">
+      <p class="eyebrow">DESIGNED TO DEFEND</p>
+      <h1>Base Library</h1>
+      <p>Every layout here is one that is actually on file with a Clash of Clans Copy Base link. Where no genuine link exists yet, the library says so instead of filling the gap with a placeholder.</p>
+    </section>
+
+    <section class="paper-panel">
+      <div class="lib-app" id="libApp">
+        <div class="lib-controls">
+          <form class="lib-search" id="libQueryForm" role="search">
+            <label class="pdx-field">
+              <span>Search layouts</span>
+              <input class="pdx-input" id="libQuery" type="search" name="q" maxlength="60" placeholder="e.g. anti air, legend, FWA" autocomplete="off">
+            </label>
+            <label class="pdx-field">
+              <span>Sort by</span>
+              <select class="pdx-select" id="libSort"></select>
+            </label>
+          </form>
+          <div>
+            <span class="pdx-field" style="display:block;margin-bottom:4px"><span>Town Hall</span></span>
+            <div class="lib-ths" id="libThs" role="group" aria-label="Filter by Town Hall"></div>
+          </div>
+          <div>
+            <span class="pdx-field" style="display:block;margin-bottom:4px"><span>Category</span></span>
+            <div class="lib-chips" id="libCats" role="group" aria-label="Filter by base category"></div>
+          </div>
+        </div>
+
+        <p class="lib-count" id="libCount" role="status" aria-live="polite">Loading layouts…</p>
+        <p class="pdx-note" id="libCoverage"></p>
+        <div id="libSummary"></div>
+
+        <noscript>
+          <div class="lib-noscript">
+            <b>The filters need JavaScript. Here are the linked layouts on file:</b>
+            <ul>
+              <li>TH18 FWA war base — War</li>
+              <li>TH17 war base — War</li>
+              <li>TH17 rage + poison base — Hybrid</li>
+              <li>TH17 Legend base — Trophy</li>
+              <li>TH16 Legend base — Trophy</li>
+              <li>TH16 war base — War</li>
+              <li>TH16 double poison base — Hybrid</li>
+              <li>TH16 FWA war base — War</li>
+              <li>TH15 Legend base — Trophy</li>
+              <li>TH15 anti 2 star base — War</li>
+              <li>TH15 anti Lavaloon base — Anti-Air</li>
+              <li>TH15 FWA war base — War</li>
+              <li>TH14 war base — War</li>
+              <li>TH13 war base — War</li>
+              <li>TH12 war base — War</li>
+              <li>TH11 war base — War</li>
+              <li>TH10 war base — War</li>
+              <li>TH9 war base — War</li>
+            </ul>
+            <p class="lib-copy">Copy links are stored in <code>assets/data/bases.json</code>.</p>
+          </div>
+        </noscript>
+
+        <div class="lib-grid" id="libGrid" aria-live="polite"></div>
+
+        <p class="pdx-note">PekkaDex does not host these layouts and does not claim them as its own. Each Copy Base link is an in-game link: paste it in clan chat on your phone and tap it to import. Community libraries such as <a href="https://www.coc-prime.com/base-library" target="_blank" rel="noopener noreferrer">coc-prime</a> and <a href="https://cocbasefinder.com/" target="_blank" rel="noopener noreferrer">CocBaseFinder</a> are separate sites.</p>
+      </div>
+    </section>
+
+    <p class="disclaimer">
+      Unofficial fan-made reference. Not affiliated with, endorsed, sponsored or specifically approved by Supercell.
+      Base artwork is used under the <a href="https://www.supercell.com/fan-content-policy/" target="_blank" rel="noopener noreferrer">Supercell Fan Content Policy</a>.
+    </p>
+  </main>
+
+  <footer class="heroes-footer">
+    <a href="./index.html">Return to PekkaDex</a>
+    <a href="./armies.html">Army Library</a>
+    <a href="./heroes.html">Clash Heroes Encyclopedia</a>
+    <span>PEKKADEX · BASE LIBRARY</span>
+  </footer>
+
+  <nav class="cx-tabbar" aria-label="Quick navigation">
+    <a href="./index.html#home"><img class="tab-ico" src="./assets/icons/nav-home.png" alt="" width="28" height="28"><span>Home</span></a>
+    <a href="./index.html#player-finder"><img class="tab-ico" src="./assets/icons/nav-players.png" alt="" width="28" height="28"><span>Players</span></a>
+    <a class="on" href="./bases.html" aria-current="page"><img class="tab-ico" src="./assets/icons/nav-bases.png" alt="" width="28" height="28"><span>Bases</span></a>
+    <a href="./armies.html"><img class="tab-ico" src="./assets/icons/nav-attack.png" alt="" width="28" height="28"><span>Attack</span></a>
+    <a href="./heroes.html"><img class="tab-ico" src="./assets/icons/nav-heroes.png" alt="" width="28" height="28"><span>Heroes</span></a>
+    <a href="./index.html#account"><img class="tab-ico" src="./assets/icons/nav-account.png" alt="" width="28" height="28"><span>Account</span></a>
+  </nav>
+
+  <div class="lib-veil" id="libDetail" hidden>
+    <div class="lib-sheet" role="dialog" aria-modal="true" aria-labelledby="libDetailHeading">
+      <div class="lib-sheet__bar">
+        <strong id="libDetailTitle">Base details</strong>
+        <button class="pdx-btn pdx-btn--wood" type="button" data-close-detail>Back to Base Library</button>
+        <button class="pdx-btn pdx-btn--wood pdx-btn--icon" type="button" data-close-detail aria-label="Close details">
+          <svg class="pdx-ico" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-close"></use></svg>
+        </button>
+      </div>
+      <div class="lib-sheet__body" id="libDetailBody"></div>
+    </div>
+  </div>
+
+  <script src="./assets/js/library.js?v=9b9e8e87"></script>
+  <script src="./assets/js/villager.js?v=a3145ea0"></script>
+</body>
+</html>

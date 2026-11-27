@@ -1,0 +1,946 @@
+{
+  "schema": 1,
+  "verifiedOn": "2026-11-25",
+  "note": "Compositions and tactics are community recommendations, not official data. Siege machines and hero equipment are deliberately left unset where no recommendation is confirmed. Clash of Clans has no public CopyArmy web link, so the library copies the army as text for clan chat instead.",
+  "categories": [
+    "Most Popular",
+    "War Armies",
+    "Trophy Pushing",
+    "Farming",
+    "Legend League",
+    "Air Attacks",
+    "Ground Attacks",
+    "Hybrid Attacks",
+    "Beginner-Friendly",
+    "Event and Challenge Armies"
+  ],
+  "armies": [
+    {
+      "id": "mass-dragons",
+      "name": "Mass Dragons",
+      "minTh": 8,
+      "maxTh": 11,
+      "categories": [
+        "Most Popular",
+        "Trophy Pushing",
+        "Air Attacks",
+        "Beginner-Friendly"
+      ],
+      "difficulty": "Easy",
+      "type": "Air",
+      "army": "8–10 Dragons · 4 Balloons · 2 Lightning",
+      "spells": "Lightning ×4, Rage ×1, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "King + Queen to funnel the edges before the dragons fly in.",
+      "strategy": [
+        "Lightning out one Air Defence on the side you are entering from.",
+        "Funnel with the heroes so the dragons stay together through the middle.",
+        "Rage the pack over the core, then freeze the last Air Defence."
+      ],
+      "risks": [
+        "Dies to a well-placed Air Sweeper.",
+        "Spread-out bases break the dragon clump."
+      ],
+      "tags": [
+        "Beginner friendly",
+        "Low hero levels"
+      ],
+      "popularity": 72,
+      "power": 63,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "gowiwi",
+      "name": "GoWiWi",
+      "minTh": 8,
+      "maxTh": 10,
+      "categories": [
+        "Ground Attacks"
+      ],
+      "difficulty": "Medium",
+      "type": "Ground",
+      "army": "2 Golems · 8 Witches · 8 Wizards · 4 Wall Breakers",
+      "spells": "Jump ×2, Rage ×1, Heal ×1, Poison ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "King soaks the first compartment, Queen cleans up behind.",
+      "strategy": [
+        "Open the outer wall with Wall Breakers and drop the Golems into the splash.",
+        "Funnel wizards on both sides before sending the witches up the middle.",
+        "Jump into the core and rage the skeleton swarm."
+      ],
+      "risks": [
+        "Slow push — watch the timer.",
+        "Multi-Inferno towers shred skeletons."
+      ],
+      "tags": [
+        "Ground control",
+        "Skilled"
+      ],
+      "popularity": 41,
+      "power": 58,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "lavaloon",
+      "name": "LavaLoon",
+      "minTh": 9,
+      "maxTh": 13,
+      "categories": [
+        "Most Popular",
+        "Air Attacks"
+      ],
+      "difficulty": "Medium",
+      "type": "Air",
+      "army": "3 Lava Hounds · 16 Balloons · 10 Minions",
+      "spells": "Rage ×2, Haste ×2, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "Queen takes an Air Defence with a Queen Walk, King funnels the far side.",
+      "strategy": [
+        "Queen Walk one Air Defence while the King clears the opposite corner.",
+        "Release the hounds first so the balloons arrive under cover.",
+        "Haste the balloons through the core and freeze the Town Hall weapon."
+      ],
+      "risks": [
+        "Needs a clean Air Defence kill.",
+        "Heavy air traps punish a late balloon drop."
+      ],
+      "tags": [
+        "Air",
+        "Queen Walk"
+      ],
+      "popularity": 70,
+      "power": 72,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "hog-raid",
+      "name": "Hog Rider Raid",
+      "minTh": 9,
+      "maxTh": 12,
+      "categories": [
+        "Most Popular",
+        "Trophy Pushing",
+        "Ground Attacks",
+        "Beginner-Friendly"
+      ],
+      "difficulty": "Easy",
+      "type": "Ground",
+      "army": "32–36 Hog Riders · 6 Wizards · 4 Healers",
+      "spells": "Heal ×5, Poison ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "Queen Walk to take out the Queen and one splash defence.",
+      "strategy": [
+        "Kill the defending Archer Queen and a multi-Inferno with the Queen Walk.",
+        "Send hogs in a line along the remaining defences.",
+        "Heal through the bomb towers and the core."
+      ],
+      "risks": [
+        "Giant Bombs and multi-Infernos melt the pack.",
+        "Skeleton traps stall the rush."
+      ],
+      "tags": [
+        "Beginner friendly",
+        "Fast"
+      ],
+      "popularity": 74,
+      "power": 67,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "edrag-rush",
+      "name": "Electro Dragon Rush",
+      "minTh": 11,
+      "maxTh": 15,
+      "categories": [
+        "Most Popular",
+        "Trophy Pushing",
+        "Air Attacks",
+        "Beginner-Friendly"
+      ],
+      "difficulty": "Easy",
+      "type": "Air",
+      "army": "7 Electro Dragons · 6 Balloons · 4 Minions",
+      "spells": "Rage ×2, Freeze ×2, Haste ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "King and Queen cut one edge; the Warden follows the dragons.",
+      "strategy": [
+        "Funnel both corners so the Electro Dragons cannot scatter.",
+        "Chain the dragons into the core with a Warden Eternal Tome.",
+        "Freeze the Eagle Artillery and the Town Hall weapon."
+      ],
+      "risks": [
+        "Single-target Infernos slow the chain badly.",
+        "Air Sweepers ruin the entry angle."
+      ],
+      "tags": [
+        "Beginner friendly",
+        "Air"
+      ],
+      "popularity": 84,
+      "power": 79,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "yeti-smash",
+      "name": "Yeti Smash",
+      "minTh": 12,
+      "maxTh": 15,
+      "categories": [
+        "War Armies",
+        "Ground Attacks"
+      ],
+      "difficulty": "Medium",
+      "type": "Ground",
+      "army": "5 Yetis · 8 Witches · 6 Bowlers · 4 Wall Breakers",
+      "spells": "Jump ×2, Rage ×2, Heal ×1, Poison ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "All four heroes lead the smash through the middle.",
+      "strategy": [
+        "Open the wall and send Yetis with the King into the biggest compartment.",
+        "Witches and Bowlers follow behind the Yetimites.",
+        "Warden Tome over the core, rage the Bowlers."
+      ],
+      "risks": [
+        "Needs a wide funnel.",
+        "Splash-heavy cores eat the Yetimites."
+      ],
+      "tags": [
+        "Ground",
+        "Hero heavy"
+      ],
+      "popularity": 61,
+      "power": 77,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "qc-hybrid",
+      "name": "Queen Charge Hybrid",
+      "minTh": 12,
+      "maxTh": 19,
+      "categories": [
+        "Most Popular",
+        "War Armies",
+        "Trophy Pushing",
+        "Hybrid Attacks"
+      ],
+      "difficulty": "Hard",
+      "type": "Hybrid",
+      "army": "5 Healers · 12 Miners · 12 Hog Riders · 4 Wall Breakers",
+      "spells": "Rage ×2, Heal ×3, Freeze ×1, Poison ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "Queen charge takes the core; King and Champion funnel the other side.",
+      "strategy": [
+        "Queen Charge into the compartment that holds the defending Queen and Clan Castle.",
+        "Funnel the opposite edge with the King and Royal Champion.",
+        "Send Miners and Hogs together, heals ready for the core."
+      ],
+      "risks": [
+        "Punishing if the Queen charge fails.",
+        "Needs good timing on the Warden ability."
+      ],
+      "tags": [
+        "Meta",
+        "High skill"
+      ],
+      "popularity": 88,
+      "power": 85,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "fireball-walk",
+      "name": "Fireball Warden Walk",
+      "minTh": 13,
+      "maxTh": 19,
+      "categories": [
+        "Most Popular",
+        "War Armies",
+        "Hybrid Attacks"
+      ],
+      "difficulty": "Hard",
+      "type": "Hybrid",
+      "army": "5 Healers · 4 Dragons · 6 Balloons · 10 Minions",
+      "spells": "Rage ×2, Freeze ×2, Haste ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "Warden Walk with Fireball deletes a whole compartment before the push.",
+      "strategy": [
+        "Warden Walk with healers until the Fireball lines up on the core.",
+        "Delete the core defences, then send the dragons into the gap.",
+        "Freeze the remaining splash and Tome the last stretch."
+      ],
+      "risks": [
+        "Fireball timing must be exact.",
+        "Warden walk dies to a hidden Tesla farm."
+      ],
+      "tags": [
+        "Meta",
+        "High skill"
+      ],
+      "popularity": 76,
+      "power": 87,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "blizzard-lalo",
+      "name": "Blizzard Lalo",
+      "minTh": 13,
+      "maxTh": 17,
+      "categories": [
+        "War Armies",
+        "Air Attacks"
+      ],
+      "difficulty": "Hard",
+      "type": "Air",
+      "army": "8 Wizards + Blimp · 2 Lava Hounds · 18 Balloons",
+      "spells": "Rage ×2, Haste ×2, Freeze ×1, Invisibility ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "Queen and Warden protect the Blizzard; King funnels.",
+      "strategy": [
+        "Blizzard the core to remove the Queen, Clan Castle and Eagle.",
+        "Lava Hounds then balloons into the now-exposed air defences.",
+        "Haste through the last defences, freeze the Town Hall weapon."
+      ],
+      "risks": [
+        "Blimp can be shot down early.",
+        "Needs precise ability timing."
+      ],
+      "tags": [
+        "Air",
+        "High skill"
+      ],
+      "popularity": 64,
+      "power": 83,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "root-smash",
+      "name": "Root Rider Smash",
+      "minTh": 15,
+      "maxTh": 19,
+      "categories": [
+        "Most Popular",
+        "War Armies",
+        "Trophy Pushing",
+        "Legend League",
+        "Ground Attacks"
+      ],
+      "difficulty": "Medium",
+      "type": "Ground",
+      "army": "6 Root Riders · 6 Valks · 6 Bowlers · 4 Wall Breakers",
+      "spells": "Jump ×2, Rage ×2, Heal ×1, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "Every hero goes in with the smash — this is a full commit.",
+      "strategy": [
+        "Funnel both edges so the Root Riders walk straight at the core.",
+        "Jump the pack into the centre, rage on the Town Hall.",
+        "Warden Tome for the Monolith and freeze the last splash."
+      ],
+      "risks": [
+        "A split base wastes the smash.",
+        "Needs heroes high enough to survive the core."
+      ],
+      "tags": [
+        "Meta",
+        "Ground"
+      ],
+      "popularity": 91,
+      "power": 92,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "hydra-root",
+      "name": "Hydra Root Rider",
+      "minTh": 16,
+      "maxTh": 19,
+      "categories": [
+        "Most Popular",
+        "War Armies",
+        "Trophy Pushing",
+        "Legend League",
+        "Hybrid Attacks"
+      ],
+      "difficulty": "Hard",
+      "type": "Hybrid",
+      "army": "4 Dragons + 6 Balloons · 4 Root Riders · 6 Witches",
+      "spells": "Rage ×2, Haste ×1, Jump ×1, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "Air on one side, ground smash through the other, Warden with the Riders.",
+      "strategy": [
+        "Air wave clears the outer air defences and the funnel.",
+        "Root Riders enter the hole the air wave made.",
+        "Tome the Monolith, freeze the Town Hall weapon."
+      ],
+      "risks": [
+        "Two-phase attack: the timing must line up.",
+        "Bad pathing splits the Riders."
+      ],
+      "tags": [
+        "Meta",
+        "Hybrid"
+      ],
+      "popularity": 80,
+      "power": 93,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "titan-smash",
+      "name": "Electro Titan Smash",
+      "minTh": 16,
+      "maxTh": 19,
+      "categories": [
+        "War Armies",
+        "Legend League",
+        "Ground Attacks"
+      ],
+      "difficulty": "Medium",
+      "type": "Ground",
+      "army": "4 Electro Titans · 6 Root Riders · 6 Witches",
+      "spells": "Jump ×2, Rage ×2, Heal ×1, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "King tanks first, Titans follow the aura into the core.",
+      "strategy": [
+        "King and Queen clear one edge and open the wall.",
+        "Titans walk the aura through the base while Riders smash the core.",
+        "Heal through the splash, freeze the Monolith."
+      ],
+      "risks": [
+        "Titans are slow — watch the clock.",
+        "Single-target Infernos focus them down."
+      ],
+      "tags": [
+        "Ground",
+        "Late game"
+      ],
+      "popularity": 58,
+      "power": 87,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "dragon-blimp",
+      "name": "Dragon Rider Blimp",
+      "minTh": 15,
+      "maxTh": 19,
+      "categories": [
+        "War Armies",
+        "Trophy Pushing",
+        "Legend League",
+        "Air Attacks"
+      ],
+      "difficulty": "Hard",
+      "type": "Air",
+      "army": "Blimp + 8 Dragons · 4 Dragon Riders · 6 Minions",
+      "spells": "Rage ×2, Haste ×2, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "Warden rides with the Blimp, King and Queen funnel.",
+      "strategy": [
+        "Blimp the core with the Warden inside for the Tome.",
+        "Dragons and Dragon Riders enter from the cleared side.",
+        "Haste the riders onto the remaining air defences."
+      ],
+      "risks": [
+        "Blimp interception loses the attack.",
+        "Very timing dependent."
+      ],
+      "tags": [
+        "Air",
+        "High skill"
+      ],
+      "popularity": 59,
+      "power": 85,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "bowler-smash",
+      "name": "Super Bowler Smash",
+      "minTh": 14,
+      "maxTh": 18,
+      "categories": [
+        "War Armies",
+        "Ground Attacks"
+      ],
+      "difficulty": "Medium",
+      "type": "Ground",
+      "army": "8 Super Bowlers · 6 Witches · 6 Valkyries",
+      "spells": "Jump ×2, Rage ×2, Heal ×1, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "King and Queen open the wall, Warden shields the Bowlers.",
+      "strategy": [
+        "Clear a corner and jump the Bowlers into the core.",
+        "Witches follow to keep the skeleton wall alive.",
+        "Tome over the Eagle and rage the Bowlers."
+      ],
+      "risks": [
+        "Splash kills the Bowler line.",
+        "Needs a clean jump."
+      ],
+      "tags": [
+        "Ground",
+        "Strong core"
+      ],
+      "popularity": 56,
+      "power": 82,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "minion-air",
+      "name": "Minion Prince Air Push",
+      "minTh": 16,
+      "maxTh": 19,
+      "categories": [
+        "War Armies",
+        "Trophy Pushing",
+        "Legend League",
+        "Air Attacks"
+      ],
+      "difficulty": "Medium",
+      "type": "Air",
+      "army": "6 Dragons · 8 Balloons · Minion Prince + Henchmen",
+      "spells": "Rage ×2, Haste ×2, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "Minion Prince leads from the air; Warden follows the dragons.",
+      "strategy": [
+        "Minion Prince takes the first Air Defence from above.",
+        "Dragons and balloons flood the gap.",
+        "Tome the core and freeze the Town Hall weapon."
+      ],
+      "risks": [
+        "Ground-only heroes may idle.",
+        "Air traps punish the balloon clump."
+      ],
+      "tags": [
+        "Air",
+        "New hero"
+      ],
+      "popularity": 55,
+      "power": 86,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "duke-smash",
+      "name": "Dragon Duke Ground Push",
+      "minTh": 17,
+      "maxTh": 19,
+      "categories": [
+        "War Armies",
+        "Legend League",
+        "Ground Attacks"
+      ],
+      "difficulty": "Hard",
+      "type": "Ground",
+      "army": "Dragon Duke + 6 Root Riders · 6 Witches · 6 Valks",
+      "spells": "Jump ×2, Rage ×2, Heal ×1, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "The Duke opens the wall with his rocket boost, the smash follows.",
+      "strategy": [
+        "Rocket the Duke over the outer wall onto the Eagle.",
+        "Root Riders jump in behind him while the Warden shields.",
+        "Rage the core and freeze the Monolith."
+      ],
+      "risks": [
+        "Duke can be isolated and killed early.",
+        "Still being figured out by the meta."
+      ],
+      "tags": [
+        "New hero",
+        "Ground"
+      ],
+      "popularity": 52,
+      "power": 89,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "valk-root",
+      "name": "Valkyrie Root Rush",
+      "minTh": 14,
+      "maxTh": 18,
+      "categories": [
+        "War Armies",
+        "Ground Attacks",
+        "Beginner-Friendly"
+      ],
+      "difficulty": "Easy",
+      "type": "Ground",
+      "army": "10 Valkyries · 4 Root Riders · 6 Wizards",
+      "spells": "Rage ×2, Jump ×2, Heal ×1, Freeze ×1",
+      "siege": null,
+      "equipment": null,
+      "heroes": "King tanks, Queen funnels, Warden shields the spin.",
+      "strategy": [
+        "Funnel both sides with heroes and wizards.",
+        "Jump the Valkyries into the core so their spin hits everything.",
+        "Rage and heal through the splash."
+      ],
+      "risks": [
+        "Valkyries scatter without a funnel.",
+        "Dies to a bad jump."
+      ],
+      "tags": [
+        "Beginner friendly",
+        "Ground"
+      ],
+      "popularity": 66,
+      "power": 78,
+      "copyArmy": null,
+      "source": "PekkaDex Attack Academy — community recommendation",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "barch-farming",
+      "name": "BARCH Farming",
+      "minTh": 3,
+      "maxTh": 19,
+      "categories": [
+        "Farming",
+        "Beginner-Friendly",
+        "Ground Attacks",
+        "Most Popular"
+      ],
+      "difficulty": "Easy",
+      "type": "Ground",
+      "army": "About 50 Barbarians + 50 Archers (fill every army camp)",
+      "spells": "None needed; bring Lightning if you want a free storage",
+      "heroes": "No heroes required. Add the Barbarian King and Archer Queen once unlocked.",
+      "strategy": [
+        "Pick a dead base with full collectors and drop Barbarians around the outside.",
+        "Send Archers behind them so they reach the loot without walking through defences.",
+        "End the raid as soon as the collectors are empty — trophies are not the goal."
+      ],
+      "risks": [
+        "Splash defences wipe the whole wave.",
+        "Shielded bases show loot you cannot take."
+      ],
+      "tags": [
+        "Farming",
+        "Cheap"
+      ],
+      "popularity": 82,
+      "power": 40,
+      "siege": null,
+      "equipment": null,
+      "copyArmy": null,
+      "source": "Community farming archetype — editorial",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "goblin-knife",
+      "name": "Goblin Knife",
+      "minTh": 7,
+      "maxTh": 11,
+      "categories": [
+        "Farming",
+        "Ground Attacks"
+      ],
+      "difficulty": "Medium",
+      "type": "Ground",
+      "army": "About 80 Goblins + 8 Wall Breakers + 4 Giants",
+      "spells": "Jump x2, Heal x1, Rage x1",
+      "heroes": "Use the Barbarian King to tank the first splash defence.",
+      "strategy": [
+        "Open the wall next to the Town Hall or the biggest storage.",
+        "Jump the Goblins straight into the core — they target loot buildings first.",
+        "Heal through splash and Rage the storage cluster."
+      ],
+      "risks": [
+        "Dies badly if the jump misses.",
+        "Multi-target Infernos shred the pack."
+      ],
+      "tags": [
+        "Farming",
+        "Core dive"
+      ],
+      "popularity": 61,
+      "power": 52,
+      "siege": null,
+      "equipment": null,
+      "copyArmy": null,
+      "source": "Community farming archetype — editorial",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "sneaky-goblin-farming",
+      "name": "Sneaky Goblin Raid",
+      "minTh": 11,
+      "maxTh": 19,
+      "categories": [
+        "Farming",
+        "Most Popular",
+        "Ground Attacks"
+      ],
+      "difficulty": "Easy",
+      "type": "Ground",
+      "army": "Sneaky Goblins filling the camps + 4 Wall Breakers",
+      "spells": "Jump x2, Invisibility x1",
+      "heroes": "Heroes stay home unless you are also going for trophies.",
+      "strategy": [
+        "Deploy Sneaky Goblins on the storage side of the base while they are invisible.",
+        "Use a Jump to reach the core storage, then Invisibility over the splash.",
+        "Leave as soon as the storages are down to keep the army cheap."
+      ],
+      "risks": [
+        "Splash defences still catch them once visible.",
+        "Needs the Super Troop slot free."
+      ],
+      "tags": [
+        "Farming",
+        "Super Troop"
+      ],
+      "popularity": 78,
+      "power": 55,
+      "siege": null,
+      "equipment": null,
+      "copyArmy": null,
+      "source": "Community farming archetype — editorial",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "miner-farming",
+      "name": "Mass Miner Farm",
+      "minTh": 10,
+      "maxTh": 16,
+      "categories": [
+        "Farming",
+        "Ground Attacks",
+        "Beginner-Friendly"
+      ],
+      "difficulty": "Easy",
+      "type": "Ground",
+      "army": "Mass Miners (fill every camp) + 4 Wall Breakers",
+      "spells": "Heal x4, Rage x1",
+      "heroes": "Queen Walk on one side if you want the Town Hall too.",
+      "strategy": [
+        "Send the Miners in a line so they burrow past the outer walls.",
+        "Heal on top of the splash defences as the pack passes them.",
+        "Rage the core if you are also chasing the Town Hall."
+      ],
+      "risks": [
+        "Single-target defences stall the pack.",
+        "Bomb Towers punish the clump."
+      ],
+      "tags": [
+        "Farming",
+        "Simple"
+      ],
+      "popularity": 64,
+      "power": 60,
+      "siege": null,
+      "equipment": null,
+      "copyArmy": null,
+      "source": "Community farming archetype — editorial",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    },
+    {
+      "id": "super-barb-farming",
+      "name": "Super Barbarian Farm",
+      "minTh": 11,
+      "maxTh": 19,
+      "categories": [
+        "Farming",
+        "Ground Attacks"
+      ],
+      "difficulty": "Easy",
+      "type": "Ground",
+      "army": "Super Barbarians filling the camps + 8 Wall Breakers",
+      "spells": "Jump x2, Rage x1, Heal x1",
+      "heroes": "King and Queen clear one edge so the wave stays on target.",
+      "strategy": [
+        "Funnel one edge with the heroes, then release the Super Barbarians.",
+        "Jump into the storage compartment and Rage the pack.",
+        "Take the 50% star and leave if the loot is already collected."
+      ],
+      "risks": [
+        "Splash defences end the wave quickly.",
+        "Needs the Super Troop slot free."
+      ],
+      "tags": [
+        "Farming",
+        "Super Troop"
+      ],
+      "popularity": 57,
+      "power": 58,
+      "siege": null,
+      "equipment": null,
+      "copyArmy": null,
+      "source": "Community farming archetype — editorial",
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "composition checked against the current balance",
+        "CopyArmy link",
+        "last-updated date"
+      ]
+    }
+  ]
+}

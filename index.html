@@ -14,10 +14,13 @@
   <link id="cx-font" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/css/style.css?v=14">
-<link rel="stylesheet" href="./assets/css/pekka.css?v=4">
+  <link rel="stylesheet" href="./assets/css/tokens.css?v=db87c23f">
+  <link rel="stylesheet" href="./assets/css/components.css?v=c713ea9b">
+  <link rel="stylesheet" href="./assets/css/style.css?v=d5cdda71">
+  <link rel="stylesheet" href="./assets/css/pekka.css?v=2ee693d1">
+  <link rel="stylesheet" href="./assets/css/villager.css?v=81ce1079">
 </head>
-<body>
+<body data-guide="home">
   <div class="season-effects" id="seasonEffects" aria-hidden="true"></div>
 
   <div class="announcement" id="announcement">
@@ -28,10 +31,10 @@
 
   <header class="site-header">
     <a class="brand" href="#home" aria-label="PekkaDex home">
-      <span class="brand-mark">⚔</span>
+      <span class="brand-mark" aria-hidden="true"><svg class="pdx-ico" width="22" height="22" focusable="false"><use href="./assets/icons/icons.svg#i-attack"></use></svg></span>
       <span>PEKKA<span class="brand-accent">DEX</span><small>YOUR KINGDOM COMPANION</small></span>
     </a>
-    <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+    <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open navigation" aria-expanded="false"><svg class="pdx-ico" width="24" height="24" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-home"></use></svg></button>
     <nav class="main-nav" id="mainNav">
       <a class="active" href="#home"><img class="nav-ico" src="./assets/icons/nav-home.png" alt="" width="24" height="24" decoding="async">Home</a>
       <a href="#player-finder"><img class="nav-ico" src="./assets/icons/nav-players.png" alt="" width="24" height="24" decoding="async">Players</a>
@@ -41,8 +44,8 @@
       <a href="#account"><img class="nav-ico" src="./assets/icons/nav-account.png" alt="" width="24" height="24" decoding="async">Account</a>
     </nav>
     <div class="header-actions">
-      <button class="icon-button" id="themeButton" title="Change seasonal theme" aria-label="Change seasonal theme">🌙</button>
-      <a class="header-cta" href="./profile.html" data-profile-link>👤</a>
+      <button class="icon-button" id="themeButton" title="Change seasonal theme" aria-label="Change seasonal theme"><svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-spark"></use></svg></button>
+      <a class="header-cta" href="./profile.html" data-profile-link aria-label="Open your profile"><svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-user"></use></svg></a>
     </div>
   </header>
 
@@ -57,7 +60,7 @@
           <a class="button button-ghost" href="#bases">Browse base layouts</a>
         </div>
         <div class="hero-proof">
-          <div class="proof-avatars"><span>👑</span><span>🛡️</span><span>⚔️</span></div>
+          <div class="proof-avatars" aria-hidden="true"><span><svg class="pdx-ico" width="18" height="18" focusable="false"><use href="./assets/icons/icons.svg#i-heroes"></use></svg></span><span><svg class="pdx-ico" width="18" height="18" focusable="false"><use href="./assets/icons/icons.svg#i-user"></use></svg></span><span><svg class="pdx-ico" width="18" height="18" focusable="false"><use href="./assets/icons/icons.svg#i-attack"></use></svg></span></div>
           <div><strong>Made for Chiefs</strong><small>One place for your Clash journey</small></div>
         </div>
       </div>
@@ -65,7 +68,7 @@
         <div class="hero-orbit orbit-one"></div>
         <div class="hero-orbit orbit-two"></div>
         <div class="hero-sun"></div>
-        <div class="floating-tag tag-top">🏆 <span>Plan your next win</span></div>
+        <div class="floating-tag tag-top"><svg class="pdx-ico" width="18" height="18" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-heroes"></use></svg> <span>Plan your next win</span></div>
         <div class="castle">
           <div class="castle-flag">⚑</div>
           <div class="tower tower-left"><i></i></div>
@@ -80,17 +83,17 @@
           <span class="lobby-troop troop-two">🏹</span>
           <span class="lobby-troop troop-three">🧙</span>
         </div>
-        <div class="floating-tag tag-bottom">✨ <span>Build your kingdom</span></div>
+        <div class="floating-tag tag-bottom"><svg class="pdx-ico" width="18" height="18" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-spark"></use></svg> <span>Build your kingdom</span></div>
         <div class="hero-spark spark-one">✦</div>
         <div class="hero-spark spark-two">✧</div>
       </div>
     </section>
 
     <section class="quick-stats" aria-label="PekkaDex features">
-      <div><span class="stat-icon">🔎</span><strong>Player lookup</strong><small>Explore public profiles</small></div>
-      <div><span class="stat-icon">🏰</span><strong>Base library</strong><small>Find your next layout</small></div>
-      <div><span class="stat-icon">⚔️</span><strong>Attack guides</strong><small>Learn new strategies</small></div>
-      <div><span class="stat-icon">⏱️</span><strong>Village tracker</strong><small>Stay on upgrade schedule</small></div>
+      <div><span class="stat-icon" aria-hidden="true"><svg class="pdx-ico" width="24" height="24" focusable="false"><use href="./assets/icons/icons.svg#i-search"></use></svg></span><strong>Player lookup</strong><small>Explore public profiles</small></div>
+      <div><span class="stat-icon" aria-hidden="true"><svg class="pdx-ico" width="24" height="24" focusable="false"><use href="./assets/icons/icons.svg#i-bases"></use></svg></span><strong>Base library</strong><small>Find your next layout</small></div>
+      <div><span class="stat-icon" aria-hidden="true"><svg class="pdx-ico" width="24" height="24" focusable="false"><use href="./assets/icons/icons.svg#i-attack"></use></svg></span><strong>Attack guides</strong><small>Learn new strategies</small></div>
+      <div><span class="stat-icon" aria-hidden="true"><svg class="pdx-ico" width="24" height="24" focusable="false"><use href="./assets/icons/icons.svg#i-heroes"></use></svg></span><strong>Village tracker</strong><small>Stay on upgrade schedule</small></div>
     </section>
 
     
@@ -107,15 +110,15 @@
       </div>
       <div class="auth-panel">
         <div id="authMethodScreen">
-          <div class="auth-emblem">♛</div>
+          <div class="auth-emblem" aria-hidden="true"><svg class="pdx-ico" width="28" height="28" focusable="false"><use href="./assets/icons/icons.svg#i-heroes"></use></svg></div>
           <h3>Welcome to PekkaDex</h3>
           <p>Choose how you want to access your account.</p>
           <button class="button button-green auth-choice" id="authGameButton" type="button">
-            <span>🎮</span><span><strong>Open with a game</strong><small>Sign in with your Supercell ID</small></span>
+            <span aria-hidden="true"><svg class="pdx-ico" width="22" height="22" focusable="false"><use href="./assets/icons/icons.svg#i-heroes"></use></svg></span><span><strong>Open with a game</strong><small>Sign in with your Supercell ID</small></span>
           </button>
           <div class="auth-divider"><span>OR</span></div>
           <button class="button button-green auth-choice" id="authEmailButton" type="button">
-            <span>✉️</span><span><strong>Log in with email</strong><small>Receive a PekkaDex verification code</small></span>
+            <span aria-hidden="true"><svg class="pdx-ico" width="22" height="22" focusable="false"><use href="./assets/icons/icons.svg#i-spark"></use></svg></span><span><strong>Log in with email</strong><small>Receive a PekkaDex verification code</small></span>
           </button>
           <p class="form-note">Email verification is handled by PekkaDex. It is separate from your Supercell ID.</p>
         </div>
@@ -132,7 +135,7 @@
         </div>
 
         <div id="authOtpScreen" hidden>
-          <div class="auth-emblem">✉️</div>
+          <div class="auth-emblem" aria-hidden="true"><svg class="pdx-ico" width="28" height="28" focusable="false"><use href="./assets/icons/icons.svg#i-spark"></use></svg></div>
           <h3>Almost there!</h3>
           <p>We sent a 6-digit PekkaDex verification code to:</p>
           <strong id="authPendingEmail" class="auth-pending-email"></strong>
@@ -170,7 +173,7 @@
       </div>
       <div class="finder-panel">
         <div class="finder-copy">
-          <div class="finder-emblem">🔍</div>
+          <div class="finder-emblem" aria-hidden="true"><svg class="pdx-ico" width="26" height="26" focusable="false"><use href="./assets/icons/icons.svg#i-search"></use></svg></div>
           <div><h3>Search a Chief</h3><p>Enter a Clash of Clans player tag to look up a public player profile.</p></div>
         </div>
         <form id="playerSearchForm" class="search-form">
@@ -192,7 +195,7 @@
           <h2>Base <span>Library</span></h2>
           <p class="section-subtitle">Find a layout that fits your Town Hall and your goal.</p>
         </div>
-        <a class="text-link" href="#bases">Explore layouts <span>→</span></a>
+        <a class="text-link" href="./bases.html">Open the Base Library <span>→</span></a>
       </div>
       <div class="filter-row" id="baseFilters">
         <button class="filter-chip selected" data-filter="All">All bases</button>
@@ -241,7 +244,7 @@
           <h2>Attack <span>Academy</span></h2>
           <p class="section-subtitle">Learn an army composition and understand when to use it.</p>
         </div>
-        <span class="section-badge">STRATEGY HUB</span>
+        <a class="text-link" href="./armies.html">Open the Army Library <span>→</span></a>
       </div>
       <div class="attack-grid">
         <article class="attack-feature">
@@ -268,7 +271,8 @@
 
     <!-- HEROES -->
     <section class="section" id="heroes">
-      <div class="section-heading"><div><h2>Clash <span>Heroes</span></h2></div></div>
+      <div class="section-heading"><div><h2>Clash <span>Heroes Encyclopedia</span></h2></div></div>
+      <a class="button button-gold" href="./heroes.html">Open the Encyclopedia <span>→</span></a>
     </section>
 
     <!-- EVENTS -->
@@ -283,11 +287,11 @@
       </div>
       <div class="event-grid">
         <article class="event-card event-season">
-          <div class="event-symbol">🎉</div>
+          <div class="event-symbol" aria-hidden="true"><svg class="pdx-ico" width="30" height="30" focusable="false"><use href="./assets/icons/icons.svg#i-spark"></use></svg></div>
           <div><span class="event-kicker">SEASONAL SPOTLIGHT</span><h3>Seasonal celebrations</h3><p>Event-themed PekkaDex visuals can change with the season.</p><button class="small-action" id="previewSeason">Preview theme ↗</button></div>
         </article>
         <article class="event-card event-news">
-          <div class="event-symbol">📜</div>
+          <div class="event-symbol" aria-hidden="true"><svg class="pdx-ico" width="30" height="30" focusable="false"><use href="./assets/icons/icons.svg#i-arrow-right"></use></svg></div>
           <div><span class="event-kicker">GAME NEWS</span><h3>Official updates</h3><p>Connect official news sources here to show verified announcements.</p><a class="small-action" href="https://supercell.com/en/games/clashofclans/" target="_blank" rel="noopener">Visit Clash of Clans ↗</a></div>
         </article>
       </div>
@@ -298,8 +302,8 @@
   </main>
 
   <footer class="site-footer">
-    <a class="brand footer-brand" href="#home">
-      <span class="brand-mark">⚔</span>
+          <a class="brand footer-brand" href="#home">
+      <span class="brand-mark" aria-hidden="true"><svg class="pdx-ico" width="22" height="22" focusable="false"><use href="./assets/icons/icons.svg#i-attack"></use></svg></span>
       <span>PEKKA<span class="brand-accent">DEX</span><small>YOUR KINGDOM COMPANION</small></span>
     </a>
     <p>Fan-made companion concept. Not affiliated with, endorsed, sponsored or specifically approved by Supercell.</p>
@@ -314,7 +318,7 @@
   <div class="modal-backdrop" id="modalBackdrop" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <button class="modal-close" id="modalClose" aria-label="Close dialog">×</button>
-      <div class="modal-icon">🏰</div>
+      <div class="modal-icon" aria-hidden="true"><svg class="pdx-ico" width="34" height="34" focusable="false"><use href="./assets/icons/icons.svg#i-bases"></use></svg></div>
       <h2 id="modalTitle">PekkaDex</h2>
       <p id="modalText"></p>
       <button class="button button-green" id="modalOk">Got it</button>
@@ -322,12 +326,14 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./assets/js/supabase-config.js?v=13"></script>
-  <script src="./assets/js/art-data.js?v=2"></script>
-  <script src="./assets/js/app.js?v=25"></script>
-  <script src="./assets/js/attacks.js?v=3"></script>
-  <script src="./assets/js/profile-nav.js?v=3"></script>
-  <script src="./assets/js/auth.js?v=18"></script>
+  <script src="./assets/js/supabase-config.js?v=f3dfcc9a"></script>
+  <script src="./assets/js/art-data.js?v=59839121"></script>
+  <script src="./assets/js/name-fold.js?v=d08912b4"></script>
+  <script src="./assets/js/app.js?v=533d969d"></script>
+  <script src="./assets/js/attacks.js?v=e9ac9bbf"></script>
+  <script src="./assets/js/profile-nav.js?v=08a83389"></script>
+  <script src="./assets/js/auth.js?v=d96030e2"></script>
+  <script src="./assets/js/villager.js?v=a3145ea0"></script>
   <script>
   if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=21").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
   </script>

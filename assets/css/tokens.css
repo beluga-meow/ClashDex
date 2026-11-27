@@ -1,0 +1,81 @@
+/* PekkaDex design tokens — shared by every page.
+   One display font (Lilita One, loaded per page) and one body font (system
+   stack, so no extra download). Spacing is an 8-point scale. Nothing in here
+   paints anything; it only declares values. */
+
+:root {
+  /* type */
+  --font-display: "Lilita One", "Luckiest Guy", Impact, "Arial Black", sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 20px;
+  --fs-xl: 26px;
+  --fs-2xl: clamp(28px, 5vw, 42px);
+  --lh-tight: 1.12;
+  --lh-body: 1.55;
+
+  /* palette — the cartoon wood/sky/gold colours the site already uses */
+  --c-sky-900: #12447c;
+  --c-sky-700: #1a5ca8;
+  --c-sky-500: #2f84cc;
+  --c-wood-900: #2b1708;
+  --c-wood-800: #49290f;
+  --c-wood-700: #5c3517;
+  --c-wood-500: #8a5427;
+  --c-wood-400: #b8793b;
+  --c-gold-700: #9b6810;
+  --c-gold-500: #f7b823;
+  --c-gold-300: #ffe778;
+  --c-paper-50: #fffaf0;
+  --c-paper-100: #fff8e7;
+  --c-paper-200: #f0d9a6;
+  --c-paper-300: #e2c88f;
+  --c-ink: #3f2710;
+  --c-ink-2: #6f5130;
+  --c-ink-3: #8a6f4d;
+  --c-green-500: #62b52c;
+  --c-green-700: #2a6a10;
+  --c-blue-500: #2f7cc8;
+  --c-danger: #dc3d2e;
+  --c-white: #fff;
+  --c-black: #000;
+
+  /* rarity — used for equipment and skin borders */
+  --rarity-common: #9aa4b2;
+  --rarity-rare: #f97316;
+  --rarity-epic: #a855f7;
+  --rarity-legendary: #f5b71f;
+
+  /* 8-point spacing scale */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 40px;
+  --s-8: 48px;
+
+  /* radii */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+
+  /* shadows */
+  --sh-inset: inset 0 2px 0 rgba(255, 255, 255, .55);
+  --sh-1: 0 2px 0 rgba(43, 23, 8, .55);
+  --sh-2: 0 4px 0 var(--c-wood-800);
+  --sh-3: 0 10px 24px rgba(16, 45, 75, .35);
+  --sh-sheet: 0 -12px 40px rgba(0, 0, 0, .45);
+
+  /* borders and interaction */
+  --line: 3px solid var(--c-wood-900);
+  --line-thin: 2px solid var(--c-wood-500);
+  --tap: 44px;
+  --page-max: 1120px;
+  --focus: 3px solid #fff;
+}

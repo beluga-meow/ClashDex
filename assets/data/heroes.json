@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "verifiedOn": "2026-11-25",
+  "source": "Hero names and Town Hall unlocks are the commonly published values; anything the site could not confirm is marked verified:false.",
+  "heroes": [
+    {
+      "id": "barbarian-king",
+      "name": "Barbarian King",
+      "role": "Ground tank",
+      "unlock": "Town Hall 7",
+      "targets": "Ground only",
+      "speed": "Medium",
+      "art": "./assets/heroes/barbarian-king.webp",
+      "artSvg": "./assets/heroes/barbarian-king.svg",
+      "bio": "The first hero most Chiefs unlock. He walks into the thick of the fight, soaks up damage and clears a path for the rest of the army.",
+      "ability": {
+        "name": "Iron Fist",
+        "text": "When the ability is triggered the King grows, hits harder and recovers a chunk of health. Save it for the moment he reaches the core.",
+        "verified": true
+      },
+      "verified": true,
+      "notes": ""
+    },
+    {
+      "id": "archer-queen",
+      "name": "Archer Queen",
+      "role": "Ranged damage",
+      "unlock": "Town Hall 9",
+      "targets": "Ground & Air",
+      "speed": "Fast",
+      "art": "./assets/heroes/archer-queen.webp",
+      "artSvg": "./assets/heroes/archer-queen.svg",
+      "bio": "The precision tool of most attacks. She picks off defences from range and her ability buys precious seconds inside a base.",
+      "ability": {
+        "name": "Royal Cloak",
+        "text": "She turns invisible for a few seconds and heals herself, letting her slip past splash defences and finish a core compartment.",
+        "verified": true
+      },
+      "verified": true,
+      "notes": ""
+    },
+    {
+      "id": "grand-warden",
+      "name": "Grand Warden",
+      "role": "Support hero",
+      "unlock": "Town Hall 11",
+      "targets": "Ground & Air",
+      "speed": "Medium",
+      "art": "./assets/heroes/grand-warden.webp",
+      "artSvg": "./assets/heroes/grand-warden.svg",
+      "bio": "The only hero who can be set to follow your army. His aura keeps troops alive and his ability can turn a losing push into a three star.",
+      "ability": {
+        "name": "Eternal Tome",
+        "text": "Makes nearby troops and heroes invulnerable for a few seconds — the classic answer to an Eagle Artillery or Monolith shot.",
+        "verified": true
+      },
+      "verified": true,
+      "notes": ""
+    },
+    {
+      "id": "royal-champion",
+      "name": "Royal Champion",
+      "role": "Defence hunter",
+      "unlock": "Town Hall 13",
+      "targets": "Ground & Air",
+      "speed": "Fast",
+      "art": "./assets/heroes/royal-champion.webp",
+      "artSvg": "./assets/heroes/royal-champion.svg",
+      "bio": "A mobile duelist who jumps straight onto defences. She is usually sent in behind the main push to clean up the back end of a base.",
+      "ability": {
+        "name": "Seeking Shield",
+        "text": "Throws her shield at up to four defences, damaging them, and it then returns to her hand.",
+        "verified": false
+      },
+      "verified": false,
+      "notes": "Targets, speed and the exact number of shield targets need confirming against the current in-game info panel."
+    },
+    {
+      "id": "minion-prince",
+      "name": "Minion Prince",
+      "role": "Air support",
+      "unlock": "Town Hall 16",
+      "targets": "Ground & Air",
+      "speed": "Fast",
+      "art": "./assets/heroes/minion-prince.webp",
+      "artSvg": "./assets/heroes/minion-prince.svg",
+      "bio": "An airborne hero who flies over walls and adds constant pressure. He is the natural pick for air armies and for compartments ground heroes cannot reach.",
+      "ability": {
+        "name": "Dark Orb",
+        "text": "Drops a dark orb that damages and slows everything beneath him while he keeps attacking from the air.",
+        "verified": false
+      },
+      "verified": false,
+      "notes": "Unlock Town Hall and ability numbers need confirming."
+    },
+    {
+      "id": "dragon-duke",
+      "name": "Dragon Duke",
+      "role": "Melee brawler",
+      "unlock": "Town Hall 17",
+      "targets": "Ground only",
+      "speed": "Fast",
+      "art": "./assets/heroes/dragon-duke.webp",
+      "artSvg": "./assets/heroes/dragon-duke.svg",
+      "bio": "A close-range bruiser who fights with fire. He is built to punch through a compartment and stay there, trading hits with defences.",
+      "ability": {
+        "name": "Heart of Fire",
+        "text": "Ignites his attacks and leaves a trail of flame, damaging everything he walks past.",
+        "verified": false
+      },
+      "verified": false,
+      "notes": "Newest hero in the archive: unlock Town Hall, targets and ability details all still need a source before this is presented as fact."
+    }
+  ]
+}

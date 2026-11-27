@@ -1,475 +1,805 @@
-/* PekkaDex — Clash Heroes Encyclopedia page logic (heroes.html)
-   Fully static: heroes, equipment, skins and sceneries. No external images,
-   every portrait is drawn inline so nothing can 404. */
+/* PekkaDex — Clash Heroes Encyclopedia (heroes.html)
+   Reads assets/data/*.json, renders the hero index and detail views, the
+   equipment loadout planner and the cosmetics gallery.
+
+   Routes (hash):
+     #heroes                      hero index
+     #hero/barbarian-king         hero detail (legacy #barbarian-king works too)
+     #hero/barbarian-king/skins   hero detail with a tab open
+     #equipment                   equipment tab (optionally #equipment/<hero>)
+     #cosmetics                   cosmetics (optionally #cosmetics/sceneries)
+*/
 (() => {
   "use strict";
 
-  /* ---------------------------------------------------------------- data */
-  const HEROES = [
-    {
-      id: "barbarian-king", name: "Barbarian King", role: "Ground tank", unlock: "Town Hall 7",
-      icon: "👑", target: "Ground only", speed: "Medium",
-      bio: "The first hero most Chiefs unlock. He walks into the thick of the fight, soaks up damage and clears a path for the rest of the army.",
-      ability: { name: "Iron Fist", desc: "When the ability is triggered the King grows in size, hits harder and recovers a chunk of health. Save it for the moment he reaches the core." },
-      stats: { health: 10, damage: 8, speed: 5, utility: 6 },
-      art: { skin: "#f4c593", hair: "#d9a12b", armor: "#93a4b3", accent: "#f7b823", face: "beard", head: "crown" },
-      equipment: [
-        ["Barbarian Puppet", "Common", "🪆", "Summons a group of Barbarians around the King when his ability is used. Good for extra bodies in the funnel."],
-        ["Rage Vial", "Common", "🧪", "Drops a rage spell on the King when the ability triggers, boosting his damage and speed."],
-        ["Earthquake Boots", "Common", "👟", "The King stomps on landing, damaging and slowing nearby buildings and walls."],
-        ["Vampstache", "Epic", "🧛", "Every hit he lands heals him, which keeps him alive through long walks."],
-        ["Giant Gauntlet", "Epic", "🧤", "Greatly increases his size and damage, and his punches send out a shockwave."],
-        ["Spiky Ball", "Epic", "⚽", "Throws a bouncing spiked ball that damages several defences in a line."]
-      ],
-      skins: [
-        ["Bruiser King", "Legendary", "1,500 Gems", "#f2b21c", "The gold-plated brawler look from the Hero Skins shop."],
-        ["Gladiator King", "Legendary", "1,500 Gems", "#9b5b2a", "Arena armour with a crested helmet and twin blades."],
-        ["King Barbarian", "Epic", "₱189.00", "#b02c2c", "Classic barbarian warpaint, fur and a heavy axe."],
-        ["Valhalla King", "Epic", "Gold Pass", "#4c7fc4", "Frost-blue northern armour with a horned helm."]
-      ]
-    },
-    {
-      id: "archer-queen", name: "Archer Queen", role: "Ranged damage", unlock: "Town Hall 9",
-      icon: "🏹", target: "Ground & Air", speed: "Fast",
-      bio: "The precision tool of every attack. She picks off defences from range and her ability buys precious seconds on the inside of a base.",
-      ability: { name: "Royal Cloak", desc: "She turns invisible for a few seconds and heals herself, letting her slip past splash defences and finish a core compartment." },
-      stats: { health: 6, damage: 10, speed: 7, utility: 8 },
-      art: { skin: "#f7d3ad", hair: "#8b4fd6", armor: "#3f7fbf", accent: "#ffe778", face: "long", head: "tiara" },
-      equipment: [
-        ["Archer Puppet", "Common", "🏹", "Summons Archers to fight beside the Queen when her ability is used."],
-        ["Invisibility Vial", "Common", "🧪", "Extends and strengthens her cloak, keeping her hidden for longer."],
-        ["Giant Arrow", "Epic", "🎯", "Fires one huge arrow across the base that damages every building it crosses."],
-        ["Healer Puppet", "Epic", "💗", "Summons Healers that follow and heal nearby troops."],
-        ["Frozen Arrow", "Epic", "❄️", "Her arrows slow the buildings they hit, buying time for the push."],
-        ["Magic Mirror", "Epic", "🪞", "Creates a copy of the Queen that fights alongside her for a short time."]
-      ],
-      skins: [
-        ["Fury Queen", "Legendary", "₱189.00", "#c03a8a", "Red braids, a visor and dual hand crossbows."],
-        ["Elven Archer", "Epic", "1,500 Gems", "#3f9d6a", "Forest-green elven armour with a longbow."],
-        ["Valkyrie Queen", "Legendary", "1,500 Gems", "#8d6fd6", "Winged helm and a spear of the fallen."],
-        ["Archer Queen of the North", "Epic", "Gold Pass", "#5aa8d6", "Winter furs and a crystal-tipped arrow."]
-      ]
-    },
-    {
-      id: "grand-warden", name: "Grand Warden", role: "Support hero", unlock: "Town Hall 11",
-      icon: "🧙", target: "Ground & Air", speed: "Medium",
-      bio: "The only hero who can be set to follow your army. His aura keeps troops alive and his ability can turn a losing push into a three star.",
-      ability: { name: "Eternal Tome", desc: "Makes nearby troops and heroes invulnerable for a few seconds — the classic answer to a Eagle Artillery or Monolith shot." },
-      stats: { health: 5, damage: 6, speed: 6, utility: 10 },
-      art: { skin: "#e8b98e", hair: "#b06be0", armor: "#6d5bb5", accent: "#ffe778", face: "beard", head: "circlet" },
-      equipment: [
-        ["Eternal Tome", "Common", "📖", "The default book. Grants temporary invulnerability to nearby troops."],
-        ["Life Gem", "Common", "💎", "Increases the health of troops inside the Warden's aura."],
-        ["Rage Gem", "Epic", "🔴", "Troops in the aura deal more damage while the ability is active."],
-        ["Healing Tome", "Epic", "💚", "Heals all friendly troops in range instead of only shielding them."],
-        ["Fireball", "Epic", "🔥", "Calls down a massive fireball that can wipe out a whole compartment."],
-        ["Lavaloon Puppet", "Epic", "🎈", "Summons Lava Hounds and Balloons when the ability is used."]
-      ],
-      skins: [
-        ["Shaman Warden", "Legendary", "₱189.00", "#5c7f3f", "Tribal mask, staff and a cloak of feathers."],
-        ["Grand Mage", "Epic", "1,500 Gems", "#7a4fd6", "Arcane robes with a floating spellbook."],
-        ["Party Warden", "Rare", "Event reward", "#e05aa8", "Confetti robe and a party hat. Purely for style."],
-        ["Frost Warden", "Epic", "Gold Pass", "#4f9fd6", "Ice-crowned robes that match the winter sceneries."]
-      ]
-    },
-    {
-      id: "royal-champion", name: "Royal Champion", role: "Defence hunter", unlock: "Town Hall 13",
-      icon: "🛡️", target: "Ground & Air", speed: "Fast",
-      bio: "A mobile duelist who jumps straight onto defences. She is usually sent in behind the main push to clean up the back end of a base.",
-      ability: { name: "Seeking Shield", desc: "Throws her shield at up to four defences, damaging them and then returning to her hand." },
-      stats: { health: 7, damage: 9, speed: 8, utility: 7 },
-      art: { skin: "#e8b98e", hair: "#3f6fd0", armor: "#3c8fd6", accent: "#ffe778", face: "short", head: "band" },
-      equipment: [
-        ["Seeking Shield", "Common", "🛡️", "Her signature throw: the shield bounces between four defences."],
-        ["Royal Gem", "Common", "💠", "Restores health and shields her when the ability is used."],
-        ["Hog Rider Puppet", "Common", "🐗", "Summons Hog Riders that jump onto nearby defences."],
-        ["Haste Vial", "Epic", "⚡", "Gives her a burst of speed and attack rate."],
-        ["Rocket Spear", "Epic", "🚀", "Launches a spear that explodes on impact for heavy area damage."],
-        ["Electro Boots", "Epic", "🥾", "Her leaps chain lightning between nearby buildings."]
-      ],
-      skins: [
-        ["Nomad Champion", "Legendary", "₱189.00", "#d69a2a", "Desert wanderer with a spear and round shield."],
-        ["Tempest Champion", "Legendary", "1,500 Gems", "#3f9fd6", "Storm armour crackling with lightning."],
-        ["Champion of the Sea", "Epic", "Gold Pass", "#1f7f9c", "Coral armour and a trident."]
-      ]
-    },
-    {
-      id: "minion-prince", name: "Minion Prince", role: "Air support", unlock: "Town Hall 16",
-      icon: "🦇", target: "Ground & Air", speed: "Fast",
-      bio: "An airborne hero who flies over walls and adds constant pressure. He is the natural pick for air armies and for reaching compartments ground heroes cannot.",
-      ability: { name: "Dark Orb", desc: "Drops a dark orb that damages and slows everything beneath him while he keeps attacking from the air." },
-      stats: { health: 6, damage: 8, speed: 9, utility: 6 },
-      art: { skin: "#8fd8ee", hair: "#2a4f9e", armor: "#4b3f8f", accent: "#b06be0", face: "short", head: "horns" },
-      equipment: [
-        ["Henchmen Puppet", "Common", "🦇", "Summons Minions that swarm the nearest defences."],
-        ["Dark Orb", "Epic", "🔮", "A slowing, damaging orb dropped on the strongest defence below."],
-        ["Metal Pants", "Epic", "🩳", "Heavy armour for his legs: more health and reduced knockback."],
-        ["Fire Fork", "Epic", "🍴", "Hurls a burning trident that pierces a line of buildings."]
-      ],
-      skins: [
-        ["Armored Prince", "Legendary", "₱189.00", "#7f8fa6", "Full plate armour with a glowing blue core."],
-        ["Lich Prince", "Legendary", "1,500 Gems", "#5c8fa6", "Undead crown and spectral wings."],
-        ["Anime Fury Prince", "Epic", "Event reward", "#e05aa8", "Bright anime-inspired armour with energy trails."],
-        ["Fallen Prince", "Epic", "Gold Pass", "#3f3f6f", "Dark feathers and a broken halo."]
-      ]
-    },
-    {
-      id: "dragon-duke", name: "Dragon Duke", role: "Melee brawler", unlock: "Town Hall 17",
-      icon: "🐲", target: "Ground only", speed: "Fast",
-      bio: "A close-range bruiser who fights with fire. He is built to punch through a compartment and stay there, trading hits with defences.",
-      ability: { name: "Heart of Fire", desc: "Ignites his attacks and leaves a trail of flame, damaging everything he walks past." },
-      stats: { health: 9, damage: 9, speed: 6, utility: 5 },
-      art: { skin: "#e9a067", hair: "#8f3a1f", armor: "#6b3f2a", accent: "#ff8a3c", face: "wild", head: "helm" },
-      equipment: [
-        ["Rocket Backpack", "Common", "🚀", "Short rocket boosts that carry him over a wall."],
-        ["Flame Blower", "Common", "🔥", "A cone of flame that damages several buildings in front of him."],
-        ["Electro Fangs", "Epic", "⚡", "Bites chain lightning between nearby defences."],
-        ["Heart of Fire", "Epic", "❤️‍🔥", "His ability: burning attacks and a damaging trail."],
-        ["Shock Blast", "Epic", "💥", "A ground slam that stuns defences in a small radius."]
-      ],
-      skins: [
-        ["Drakan Duke", "Legendary", "1,500 Gems", "#a8431f", "Scaled armour and dragon-wing pauldrons."],
-        ["Hydra Duke", "Legendary", "₱189.00", "#2f8f6f", "Three-headed hydra theme with green flame."],
-        ["Kane", "Epic", "Event reward", "#6f3f9f", "Shadow-flame armour with a horned mask."],
-        ["Anime Fury Dragon Duke", "Epic", "Gold Pass", "#e05a2a", "Over-the-top spiky armour and fire aura."]
-      ]
+  const HERO_TABS = ["overview", "abilities", "equipment", "skins"];
+  const SPRITE = "./assets/icons/icons.svg";
+  const state = {
+    status: "loading", // loading | ready | error
+    data: { heroes: [], equipment: [], skins: [], sceneries: [] },
+    meta: { verifiedOn: "" },
+    main: "heroes",
+    heroId: null,
+    heroTab: "overview",
+    eqHero: null,
+    cosmetic: "skins",
+    query: "",
+    filters: { hero: "all", source: "all", season: "all", rarity: "all" },
+    loadout: {},
+  };
+
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+  const esc = value => String(value == null ? "" : value)
+    .replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  const icon = (name, cls = "pdx-ico") =>
+    `<svg class="${cls}" aria-hidden="true" focusable="false"><use href="${SPRITE}#i-${name}"></use></svg>`;
+  const titleCase = value => String(value).charAt(0).toUpperCase() + String(value).slice(1);
+  const plural = (unit, count) => (unit === "scenery"
+    ? (count === 1 ? "scenery" : "sceneries")
+    : count === 1 ? unit : unit + "s");
+  const heroById = id => state.data.heroes.find(hero => hero.id === id) || null;
+  const equipmentById = id => state.data.equipment.find(item => item.id === id) || null;
+
+  /* ------------------------------------------------------------- loading */
+  async function fetchJSON(path) {
+    const response = await fetch(path, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`${path} answered ${response.status}`);
+    return response.json();
+  }
+
+  async function loadAll() {
+    state.status = "loading";
+    render();
+    try {
+      const [heroes, equipment, skins, sceneries] = await Promise.all([
+        fetchJSON("./assets/data/heroes.json"),
+        fetchJSON("./assets/data/equipment.json"),
+        fetchJSON("./assets/data/skins.json"),
+        fetchJSON("./assets/data/sceneries.json"),
+      ]);
+      state.data = {
+        heroes: heroes.heroes || [],
+        equipment: equipment.equipment || [],
+        skins: skins.skins || [],
+        sceneries: sceneries.sceneries || [],
+      };
+      state.meta.verifiedOn = heroes.verifiedOn || equipment.verifiedOn || "";
+      state.eqHero = state.eqHero || (state.data.heroes[0] || {}).id || null;
+      state.status = "ready";
+      paintLastVerified();
+      /* The route was parsed while the data was still empty, so resolve any
+         deep link again now that the heroes are known. */
+      applyRoute();
+    } catch (error) {
+      state.status = "error";
+      console.error("[PekkaDex] hero data failed to load:", error);
+      render();
     }
-  ];
+  }
 
-  const SCENERIES = [
-    ["Year of the Snake", "🐍", "linear-gradient(160deg,#3fbf7f,#0b5a3a)", "Lunar New Year scenery with lanterns, blossom trees and a serpent statue."],
-    ["Clash of Dragons", "🐉", "linear-gradient(160deg,#c0563a,#5a1a12)", "Volcanic dragon roost with lava rivers and bone arches."],
-    ["Wasteland Scenery", "🏜️", "linear-gradient(160deg,#e0b25a,#7a4a12)", "Cracked desert ground, rusted walls and a bone-dry well."],
-    ["Ruined Kingdom Wasteland", "🏰", "linear-gradient(160deg,#8f8f9f,#33333f)", "A broken castle backdrop with fog and fallen towers."],
-    ["Snow Day", "❄️", "linear-gradient(160deg,#a8d8f0,#3f6f9f)", "Snow-covered pines, frozen ponds and a cosy lodge."],
-    ["Pirate Cove", "🏴‍☠️", "linear-gradient(160deg,#3f9fb0,#0b3f5e)", "A smuggler's harbour with docks, cannons and a treasure hoard."],
-    ["Jungle Ruins", "🌿", "linear-gradient(160deg,#4fa845,#124a1f)", "Overgrown temple stones, hanging vines and hidden statues."],
-    ["Royal Arena", "🏟️", "linear-gradient(160deg,#d6b25a,#6b4a12)", "A tournament ground with banners, sand and spectator stands."]
-  ];
+  function paintLastVerified() {
+    const node = $("#lastVerified");
+    if (!node || !state.meta.verifiedOn) return;
+    const date = new Date(state.meta.verifiedOn + "T00:00:00Z");
+    if (Number.isNaN(date.getTime())) return;
+    const label = date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+    node.innerHTML = `Last verified <time datetime="${esc(state.meta.verifiedOn)}">${esc(label)}</time>`;
+  }
 
-  /* --------------------------------------------------------------- utils */
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const heroById = id => HEROES.find(h => h.id === id) || HEROES[0];
-  const slug = v => String(v).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  /* -------------------------------------------------------------- routing */
+  function findHero(key) {
+    const slug = String(key || "").toLowerCase().replace(/[\s_]+/g, "-");
+    return state.data.heroes.find(hero => hero.id === slug ||
+      hero.name.toLowerCase().replace(/[\s_]+/g, "-") === slug) || null;
+  }
 
-  /* Drop-in art: put a file at assets/<folder>/<slug>.webp|png|jpg|svg and it is
-     used automatically. Without a file the drawn portrait or emoji stays. */
-  const ART_EXTS = ["webp", "png", "jpg", "jpeg", "svg"];
-  window.pdxArtFail = img => {
-    const next = (Number(img.dataset.ext) || 0) + 1;
-    if (next < ART_EXTS.length) {
-      img.dataset.ext = next;
-      img.src = img.dataset.base + "." + ART_EXTS[next];
-    } else {
-      img.remove();
+  function parseRoute() {
+    const raw = decodeURIComponent((location.hash || "").replace(/^#/, "")).replace(/^\/+/, "").trim();
+    const parts = raw.split("/").filter(Boolean).map(part => part.toLowerCase());
+    if (!parts.length) return { main: "heroes" };
+    if (parts[0] === "equipment") {
+      const hero = parts[1] ? findHero(parts[1]) : null;
+      return { main: "equipment", eqHero: hero ? hero.id : null };
     }
-  };
-  const dropIn = (folder, name, alt) => {
-    const base = `./assets/${folder}/${slug(name)}`;
-    return `<img class="drop-in" alt="${esc(alt || name)}" loading="lazy" src="${base}.${ART_EXTS[0]}" data-base="${base}" data-ext="0" onload="this.classList.add('is-on')" onerror="window.pdxArtFail(this)">`;
-  };
+    if (parts[0] === "cosmetics") {
+      return { main: "cosmetics", cosmetic: parts[1] === "sceneries" ? "sceneries" : "skins" };
+    }
+    if (parts[0] === "heroes" || parts[0] === "hero") parts.shift();
+    if (!parts.length) return { main: "heroes" };
+    const hero = findHero(parts[0]);
+    if (!hero) return { main: "heroes" };
+    return {
+      main: "heroes",
+      heroId: hero.id,
+      heroTab: HERO_TABS.includes(parts[1]) ? parts[1] : "overview",
+    };
+  }
 
-  /* --------------------------------------------------- shipped artwork */
-  const ART = window.PDX_ART || { heroes: {}, skins: {}, sceneries: {}, equipment: {} };
-  const titleOf = key => key.split("-").filter(Boolean)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
-  const tintOf = key => {
-    let n = 0;
-    for (let i = 0; i < key.length; i++) n = (n * 31 + key.charCodeAt(i)) % 360;
-    return `hsl(${n} 62% 42%)`;
-  };
-  const photo = (src, alt) => src
-    ? `<img class="drop-in is-on" src="${src}" alt="${esc(alt)}" loading="lazy" onerror="this.remove()">`
-    : "";
+  function applyRoute() {
+    const route = parseRoute();
+    state.main = route.main;
+    state.heroId = route.heroId || null;
+    state.heroTab = route.heroTab || "overview";
+    /* A search typed for skins should not silently hide every scenery. */
+    if (route.main === "cosmetics" && route.cosmetic && route.cosmetic !== state.cosmetic) state.query = "";
+    state.cosmetic = route.cosmetic || "skins";
+    if (route.main === "equipment" && route.eqHero) state.eqHero = route.eqHero;
+    if (state.heroId && state.heroTab === "equipment" && !state.eqHero) state.eqHero = state.heroId;
+    render();
+  }
 
-  /* Merge the art that ships in assets/skins and assets/sceneries into the data
-     below so the archive always matches the files in the repo. */
-  HEROES.forEach(h => {
-    const shipped = ART.skins[h.id] || {};
-    const used = new Set();
-    h.skins = h.skins.map(skin => {
-      const key = slug(skin[0]);
-      if (!shipped[key]) return skin;
-      used.add(key);
-      return [skin[0], skin[1], skin[2], skin[3], shipped[key]];
-    }).concat(Object.keys(shipped).filter(key => !used.has(key)).map(key => [
-      titleOf(key), "", "", tintOf(key), shipped[key]
-    ]));
-  });
+  function go(hash, { replace = false } = {}) {
+    const target = "#" + hash;
+    if (location.hash === target) { applyRoute(); return; }
+    if (replace) history.replaceState(null, "", target);
+    else location.hash = target;
+    if (replace) render();
+  }
 
-  if (Object.keys(ART.sceneries).length) {
-    SCENERIES.length = 0;
-    Object.keys(ART.sceneries).sort().forEach(key => {
-      SCENERIES.push([titleOf(key), "🏞️", `linear-gradient(160deg,${tintOf(key)},#0b3f5e)`, "Scenery from the cookbook collection.", ART.sceneries[key]]);
+  /* --------------------------------------------------------------- render */
+  function render() {
+    syncMainTabs();
+    if (state.status === "loading") {
+      renderSkeletons();
+      return;
+    }
+    if (state.status === "error") {
+      renderError();
+      return;
+    }
+    if (state.main === "heroes") renderHeroes();
+    if (state.main === "equipment") renderEquipmentTab();
+    if (state.main === "cosmetics") renderCosmetics();
+  }
+
+  function syncMainTabs() {
+    $$("[data-main]").forEach(tab => {
+      const on = tab.dataset.main === state.main;
+      tab.setAttribute("aria-selected", String(on));
+      tab.tabIndex = on ? 0 : -1;
+    });
+    const panels = { heroes: "#heroArea", equipment: "#equipmentArea", cosmetics: "#cosmeticsArea" };
+    Object.keys(panels).forEach(key => {
+      const panel = $(panels[key]);
+      if (panel) panel.hidden = key !== state.main;
     });
   }
 
-  /* ------------------------------------------------------- hero portraits
-     One design per hero lives in assets/heroes/<hero-id>.svg so the same
-     artwork is used on the homepage chips, the picks, the profile and the
-     skin cards (tinted) without any page ever loading a missing image. */
-  function portrait(h, label, tint) {
-    const alt = esc(label || h.name + " portrait");
-    const art = ART.heroes[h.id];
-    const img = art
-      ? `<img src="${art}" width="240" height="240" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='./assets/heroes/${h.id}.svg'">`
-      : `<img src="./assets/heroes/${h.id}.svg" width="240" height="240" alt="${alt}" loading="lazy" onerror="this.remove()">`;
-    return tint ? `<span class="hero-tint" style="--t:${tint}">${img}<i aria-hidden="true"></i></span>` : img;
+  function skeletonGrid(count, className = "") {
+    return `<div class="pdx-grid ${className}" aria-hidden="true">` +
+      Array.from({ length: count }, () => '<div class="pdx-skeleton"></div>').join("") + "</div>";
   }
 
-  function runeArt() {
-    return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <g stroke="#ffffff" stroke-opacity=".35" fill="none" stroke-width="2">
-        <circle cx="60" cy="60" r="44" stroke-dasharray="6 10"/>
-        <circle cx="60" cy="60" r="33" stroke-dasharray="3 9"/>
-        <path d="M60 12v16M60 92v16M12 60h16M92 60h16"/>
-      </g>
-      <g fill="#ffffff" fill-opacity=".5">
-        <circle cx="60" cy="16" r="2.4"/><circle cx="104" cy="60" r="2.4"/><circle cx="60" cy="104" r="2.4"/><circle cx="16" cy="60" r="2.4"/>
-      </g>
-    </svg>`;
-  }
-
-  /* --------------------------------------------------------------- state */
-  let selected = HEROES[0].id;
-  let mainTab = "heroes";
-  let heroTab = "overview";
-  let cosmeticTab = "skins";
-  let skinFilter = "all";
-
-  /* -------------------------------------------------------------- render */
-  function renderHeroPicks(target, compact) {
-    const root = $(target);
-    if (!root) return;
-    root.innerHTML = HEROES.map(h => `
-      <button type="button" class="hero-pick ${h.id === selected ? "is-active" : ""}" data-hero="${h.id}"
-        aria-pressed="${h.id === selected}" aria-label="${esc(h.name)}">
-        <span class="portrait">${portrait(h)}</span>
-        <strong>${esc(h.name)}</strong>
-        ${compact ? "" : `<small>${esc(h.role)}</small>`}
-      </button>`).join("");
-  }
-
-  function statsMarkup(h) {
-    const labels = { health: "Health", damage: "Damage", speed: "Speed", utility: "Utility" };
-    return `<div class="stat-bars">${Object.keys(labels).map(key => `
-      <div class="stat-bar">
-        <div><span>${labels[key]}</span><span>${h.stats[key]}/10</span></div>
-        <i><b style="width:${h.stats[key] * 10}%"></b></i>
-      </div>`).join("")}</div>`;
-  }
-
-  /* Equipment level caps: Commons upgrade to 18, Epics to 27. */
-  const EQ_CAPS = { Common: 18, Epic: 27 };
-  const eqMax = rarity => EQ_CAPS[rarity] || EQ_CAPS.Common;
-
-  /* Real per-level boosts and ore costs, generated from the Clash of Clans
-     Wiki by tools/fetch-equipment-levels.py. Nothing here is estimated: the
-     table above each piece is exactly what the game's upgrade screen shows. */
-  const EQ_LEVELS = (window.PDX_EQ_LEVELS && window.PDX_EQ_LEVELS.items) || {};
-
-  function eqLevelTable(name) {
-    const data = EQ_LEVELS[name];
-    if (!data || !data.rows || !data.rows.length) {
-      return `<p class="eq-missing">Level-by-level boosts and ore costs for this piece are not published in the wiki yet, so only its level range is shown.</p>`;
+  function renderSkeletons() {
+    const content = $("#heroContent");
+    if (content) content.innerHTML = skeletonGrid(6, "hero-grid");
+    const equipment = $("#equipmentContent");
+    if (equipment) equipment.innerHTML = skeletonGrid(6, "eq-grid");
+    const cosmetics = $("#cosmeticContent");
+    if (cosmetics) {
+      cosmetics.innerHTML = skeletonGrid(8, "skin-grid");
+      cosmetics.setAttribute("aria-busy", "true");
     }
-    const ore = data.columns.map(c => /ore/i.test(c));
-    const head = data.columns.map(c => `<th scope="col">${esc(c)}</th>`).join("");
-    const body = data.rows.map(row => `<tr>${row.map((v, i) =>
-      `<td${ore[i] ? ' class="eq-ore"' : ""}>${esc(v)}</td>`).join("")}</tr>`).join("");
-    return `<details class="eq-table">
-      <summary>DPS, boosts &amp; ore cost per level <span>${data.rows.length} levels</span></summary>
-      <div class="eq-table-scroll">
-        <table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>
-      </div>
-      <p class="eq-source">Every number comes from the <a href="https://clashofclans.fandom.com/wiki/${encodeURIComponent(name.replace(/ /g, "_"))}" target="_blank" rel="noopener noreferrer">Clash of Clans Wiki</a>. “—” means the upgrade costs no ore of that type.</p>
+    const status = $("#cosmeticStatus");
+    if (status) status.textContent = "Loading the archive…";
+  }
+
+  function renderError() {
+    const message = `<div class="pdx-empty"><b>The archive could not load</b>
+      <p class="pdx-note">The hero data files did not answer. Check your connection and try again.</p>
+      <button class="pdx-btn" type="button" data-retry>Try again</button></div>`;
+    ["#heroContent", "#equipmentContent", "#cosmeticContent"].forEach(selector => {
+      const node = $(selector);
+      if (node) node.innerHTML = message;
+    });
+    const status = $("#cosmeticStatus");
+    if (status) status.textContent = "";
+  }
+
+  /* ---------------------------------------------------------- hero index */
+  function renderHeroes() {
+    const count = $("#heroCount");
+    if (count) count.textContent = `${state.data.heroes.length} heroes`;
+    if (state.heroId) {
+      const hero = heroById(state.heroId);
+      if (hero) { renderHeroDetail(hero); return; }
+      state.heroId = null;
+    }
+    document.title = "Clash Heroes Encyclopedia — PekkaDex";
+    $("#heroContent").innerHTML = `
+      <p class="pdx-note">Pick a hero to open their page. Every portrait is the real hero art that ships with the site.</p>
+      <div class="pdx-grid hero-grid">
+        ${state.data.heroes.map(hero => `
+          <a class="pdx-card hero-card" href="#hero/${esc(hero.id)}" data-hero="${esc(hero.id)}">
+            <span class="pdx-card__media">
+              ${hero.verified === false ? '<span class="pdx-badge">Unverified</span>' : ""}
+              <img src="${esc(hero.art)}" alt="${esc(hero.name)} portrait" width="240" height="240" loading="lazy" decoding="async">
+            </span>
+            <span class="pdx-card__body">
+              <span class="pdx-card__title">${esc(hero.name)}</span>
+              <span class="pdx-card__meta">${esc(hero.role)} · ${esc(hero.unlock)}</span>
+              <span class="hero-card__cta">Open hero ${icon("chevron-right")}</span>
+            </span>
+          </a>`).join("")}
+      </div>`;
+  }
+
+  function heroFacts(hero) {
+    return `<ul class="hero-facts">
+      <li><b>Unlocks</b><span>${esc(hero.unlock)}</span></li>
+      <li><b>Targets</b><span>${esc(hero.targets)}</span></li>
+      <li><b>Speed</b><span>${esc(hero.speed)}</span></li>
+      <li><b>Equipment</b><span>${state.data.equipment.filter(item => item.hero === hero.id).length}</span></li>
+      <li><b>Skins</b><span>${state.data.skins.filter(skin => skin.hero === hero.id).length}</span></li>
+    </ul>`;
+  }
+
+  function renderHeroDetail(hero) {
+    document.title = `${hero.name} — PekkaDex Heroes`;
+    const tabs = HERO_TABS.map(tab => ({ key: tab, label: titleCase(tab) }));
+    $("#heroContent").innerHTML = `
+      <div class="hero-detail">
+        <a class="hero-back" href="#heroes">${icon("back")} All heroes</a>
+        <header class="hero-head">
+          <span class="hero-head__art"><img src="${esc(hero.art)}" alt="${esc(hero.name)} portrait" width="320" height="320" decoding="async"></span>
+          <div class="hero-head__copy">
+            <p class="eyebrow">${esc(hero.role)}</p>
+            <h2>${esc(hero.name)}</h2>
+            <p class="hero-head__bio">${esc(hero.bio)}</p>
+            ${heroFacts(hero)}
+            ${hero.verified === false
+              ? `<span class="verify-chip">${icon("spark")} Not verified yet</span>
+                 ${hero.notes ? `<p class="verify-notes">${esc(hero.notes)}</p>` : ""}`
+              : '<span class="verify-chip" style="border-color:#2a6a10;background:#f1fbe8;color:#2a6a10">Checked against published values</span>'}
+          </div>
+        </header>
+
+        <div class="pdx-tabs hero-tablist" role="tablist" aria-label="Sections for ${esc(hero.name)}">
+          ${tabs.map(tab => `
+            <button class="pdx-tab" type="button" role="tab"
+              id="ht-${esc(hero.id)}-${tab.key}"
+              aria-controls="hp-${esc(hero.id)}-${tab.key}"
+              aria-selected="${state.heroTab === tab.key}"
+              tabindex="${state.heroTab === tab.key ? 0 : -1}"
+              data-hero-tab="${tab.key}">${tab.label}</button>`).join("")}
+        </div>
+
+        ${tabs.map(tab => `
+          <div class="hero-panel" role="tabpanel"
+            id="hp-${esc(hero.id)}-${tab.key}"
+            aria-labelledby="ht-${esc(hero.id)}-${tab.key}"
+            tabindex="0" ${state.heroTab === tab.key ? "" : "hidden"}>
+            ${heroPanel(hero, tab.key)}
+          </div>`).join("")}
+      </div>`;
+
+    if (state.heroTab === "equipment") paintLoadout(hero.id);
+  }
+
+  function heroPanel(hero, tab) {
+    if (tab === "overview") {
+      return `
+        <div class="ability-card">
+          <h3>Hero ability · ${esc(hero.ability.name)}</h3>
+          <p>${esc(hero.ability.text)}</p>
+          ${hero.ability.verified === false ? '<span class="verify-chip">Ability text needs confirmation</span>' : ""}
+        </div>
+        <h3 class="section-title">In this entry</h3>
+        <p class="pdx-note">Abilities explains what the hero's ability does. Equipment lists every piece with its per-level wiki table and a two-slot planner. Skins shows the art that ships with the site. Anything the archive could not confirm is labelled instead of guessed.</p>
+        <p><button class="pdx-btn pdx-btn--wood" type="button" data-hero-tab="skins">${icon("palette")} See ${esc(hero.name)} skins</button></p>`;
+    }
+    if (tab === "abilities") {
+      return `
+        <div class="ability-card">
+          <h3>${esc(hero.ability.name)}</h3>
+          <p>${esc(hero.ability.text)}</p>
+          ${hero.ability.verified === false ? '<span class="verify-chip">Needs confirmation</span>' : ""}
+        </div>
+        <h3 class="section-title">Equipment that changes the ability</h3>
+        <p class="pdx-note">Several pieces of gear trigger or replace part of the ability. Open the Equipment tab to read each one and compare two of them side by side.</p>
+        <p><button class="pdx-btn" type="button" data-hero-tab="equipment">Open the equipment tab ${icon("arrow-right")}</button></p>`;
+    }
+    if (tab === "equipment") {
+      return `
+        ${plannerMarkup(hero)}
+        <div class="eq-grid">
+          ${equipmentFor(hero.id).map(item => equipmentCard(item, hero)).join("")}
+        </div>`;
+    }
+    return heroSkins(hero);
+  }
+
+  function equipmentFor(heroId) {
+    return state.data.equipment.filter(item => item.hero === heroId);
+  }
+
+  function heroSkins(hero) {
+    const skins = state.data.skins.filter(skin => skin.hero === hero.id);
+    if (!skins.length) {
+      return `<div class="pdx-empty"><b>No skins listed for ${esc(hero.name)} yet</b>
+        <p class="pdx-note">Skin art is added to assets/skins and then regenerated into skins.json.</p></div>`;
+    }
+    return `
+      <p class="pdx-note">Tap a skin for its full art and details. Season, source and price tier are marked as unverified until they are checked against the game.</p>
+      <div class="skin-grid">
+        ${skins.map(skin => skinCard(skin, hero)).join("")}
+      </div>`;
+  }
+
+  /* ------------------------------------------------------------ equipment */
+  function levelTable(item) {
+    const data = (window.PDX_EQ_LEVELS && window.PDX_EQ_LEVELS.items && window.PDX_EQ_LEVELS.items[item.name]) || null;
+    if (!data || !data.rows || !data.rows.length) {
+      return `<p class="eq-missing">The per-level table for this piece is not in the wiki extract yet, so only its level range is shown.</p>`;
+    }
+    const head = data.columns.map(column => `<th scope="col">${esc(column)}</th>`).join("");
+    const body = data.rows.map(row => `<tr>${row.map(cell => `<td>${esc(cell)}</td>`).join("")}</tr>`).join("");
+    return `<details class="eq-levels">
+      <summary>DPS, boosts &amp; ore per level (${data.rows.length} levels)</summary>
+      <div class="eq-table-scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>
+      <p class="eq-missing">Source: <a href="https://clashofclans.fandom.com/wiki/${encodeURIComponent(item.name.replace(/ /g, "_"))}" target="_blank" rel="noopener noreferrer">Clash of Clans Wiki</a>. A dash means the level costs no ore of that type.</p>
     </details>`;
   }
 
-  function equipmentMarkup(h) {
-    return `<div class="equipment-grid">${h.equipment.map(([name, rarity, icon, desc]) => `
-      <article class="equipment-card" data-rarity="${rarity}">
-        <div class="eq-head">
-          <span class="eq-icon" aria-hidden="true">${icon}${dropIn("equipment", name, name)}</span>
-          <div class="eq-info">
-            <b>${esc(name)}</b>
-            <span class="rarity ${rarity.toLowerCase()}">${esc(rarity)}</span>
-            <span class="eq-levels">Lv 1–${eqMax(rarity)}</span>
-            <small>${esc(desc)}</small>
-          </div>
-        </div>
-        ${eqLevelTable(name)}
-      </article>`).join("")}</div>`;
+  function equipmentCard(item, hero) {
+    const picked = (state.loadout[hero.id] || []).includes(item.id);
+    const full = (state.loadout[hero.id] || []).length >= 2 && !picked;
+    return `<article class="pdx-card eq-card" data-rarity="${esc(item.rarity)}">
+      <span class="pdx-card__media eq-card__media">
+        <img src="${esc(item.art)}" alt="${esc(item.name)} icon" width="240" height="180" loading="lazy" decoding="async">
+      </span>
+      <div class="pdx-card__body">
+        <span class="pdx-chip pdx-chip--${item.rarity.toLowerCase()}">${esc(item.rarity)}</span>
+        <h3 class="pdx-card__title">${esc(item.name)}</h3>
+        <p class="pdx-note">${esc(item.effect.text)}</p>
+        <p class="pdx-card__meta">Lv 1–${esc(item.maxLevel)} · ${esc(hero.name)}</p>
+        ${levelTable(item)}
+        <button class="pdx-btn ${picked ? "" : "pdx-btn--wood"}" type="button"
+          data-pick="${esc(item.id)}" data-pick-hero="${esc(hero.id)}"
+          aria-pressed="${picked}" ${full ? "disabled" : ""}>
+          ${picked ? "In the loadout" : "Add to loadout"}</button>
+      </div>
+    </article>`;
   }
 
-  /* One card for a skin, whether the art ships with the site or not. */
-  function skinCardMarkup(hero, skin, featured) {
-    const [name, rarity, price, tint, file] = skin;
-    return `<article class="skin-card ${featured ? "is-featured" : ""}" style="--skin:${tint}">
-        <h3 class="skin-name">${esc(name)}</h3>
-        <div class="skin-art" style="background:radial-gradient(circle at 50% 32%,rgba(255,255,255,.3),transparent 65%),linear-gradient(160deg,${tint},#00000066)">
-          <span class="art-rune">${runeArt()}</span>
-          <span class="art-figure">${portrait(hero, name + " skin preview", tint)}</span>
-          ${file ? photo(file, name) : dropIn("skins", name, name)}
-          ${rarity ? `<span class="skin-rarity">${esc(rarity)}</span>` : ""}
-        </div>
-        ${price ? `<div class="skin-price"><span class="gem" aria-hidden="true"></span>${esc(price)}</div>` : ""}
-      </article>`;
+  function plannerMarkup(hero) {
+    return `<section class="planner" aria-labelledby="planner-${esc(hero.id)}">
+      <h3 id="planner-${esc(hero.id)}">Loadout planner</h3>
+      <p class="pdx-note">Choose two pieces for ${esc(hero.name)}. The panel shows both effects together; it does not add their numbers, because the game's exact stacking is not published here.</p>
+      <div class="planner__slots" id="plannerSlots-${esc(hero.id)}"></div>
+      <div class="planner__out" id="plannerOut-${esc(hero.id)}"></div>
+    </section>`;
   }
 
-  function heroSkinCards(h) {
-    if (!h.skins.length) return `<div class="empty">No skins listed for this hero yet.</div>`;
-    return `<div class="skin-grid">${h.skins.map((skin, i) => skinCardMarkup(h, skin, i === 0)).join("")}</div>`;
+  function paintLoadout(heroId) {
+    const slots = document.getElementById("plannerSlots-" + heroId);
+    const out = document.getElementById("plannerOut-" + heroId);
+    if (!slots || !out) return;
+    const hero = heroById(heroId);
+    const picked = (state.loadout[heroId] || []).map(equipmentById).filter(Boolean);
+
+    slots.innerHTML = [0, 1].map(index => {
+      const item = picked[index];
+      if (!item) return `<div class="planner__slot"><span>Slot ${index + 1}</span><b>Empty slot</b><span>Pick a piece below.</span></div>`;
+      return `<div class="planner__slot">
+        <span>Slot ${index + 1}</span>
+        <b>${esc(item.name)}</b>
+        <span class="pdx-chip pdx-chip--${item.rarity.toLowerCase()}">${esc(item.rarity)}</span>
+        <button class="pdx-btn pdx-btn--wood" type="button" data-pick="${esc(item.id)}" data-pick-hero="${esc(heroId)}">Remove</button>
+      </div>`;
+    }).join("");
+
+    if (!picked.length) {
+      out.innerHTML = `<b>Nothing picked yet</b><p class="pdx-note">Add one or two pieces to see their effects listed together.</p>`;
+      return;
+    }
+    out.innerHTML = `<b>${esc(hero ? hero.name : "Loadout")} · ${picked.length} of 2 pieces</b>
+      <ul>${picked.map(item => `<li><b>${esc(item.name)}</b> (${esc(item.rarity)}, Lv 1–${esc(item.maxLevel)}) — ${esc(item.effect.text)}</li>`).join("")}</ul>
+      <p class="pdx-note">Both effects belong to the same hero. Effect wording is an archive summary, not a damage formula.</p>`;
+
+    $$(".eq-card").forEach(card => {
+      const button = $("[data-pick]", card);
+      if (!button) return;
+      const on = (state.loadout[heroId] || []).includes(button.dataset.pick);
+      button.setAttribute("aria-pressed", String(on));
+      button.textContent = on ? "In the loadout" : "Add to loadout";
+      button.classList.toggle("pdx-btn--wood", !on);
+      button.disabled = !on && picked.length >= 2;
+    });
   }
 
-  /* The Heroes tab is the encyclopedia itself: one full entry per hero, in
-     page order, with no portrait picker squeezed above it. */
-  function equipmentChips(h) {
-    return `<div class="eq-chip-list">${h.equipment.map(([name, rarity, icon]) =>
-      `<span class="eq-chip ${rarity.toLowerCase()}"><span aria-hidden="true">${icon}</span>${esc(name)}</span>`).join("")}</div>`;
-  }
-
-  function renderProfile() {
-    const content = $("#heroContent");
-    if (!content) return;
-    content.innerHTML = HEROES.map(h => `
-      <article class="hero-entry" id="hero-${h.id}">
-        <div class="hero-entry-head">
-          <span class="hero-avatar">${portrait(h)}</span>
-          <div class="hero-summary-copy">
-            <p class="eyebrow">${esc(h.role)} · ${esc(h.unlock)}</p>
-            <h2>${esc(h.name)}</h2>
-            <div class="hero-meta">
-              <span>Targets: ${esc(h.target)}</span>
-              <span>Speed: ${esc(h.speed)}</span>
-              <span>${h.equipment.length} equipment</span>
-              <span>${h.skins.length} skins</span>
-            </div>
-            <p>${esc(h.bio)}</p>
-          </div>
-        </div>
-        <div class="ability-card"><h4>Hero ability · ${esc(h.ability.name)}</h4><p>${esc(h.ability.desc)}</p></div>
-        <h3 class="section-title">Boosts</h3>
-        ${statsMarkup(h)}
-        <h3 class="section-title">Equipment</h3>
-        ${equipmentChips(h)}
-        <div class="hero-entry-actions">
-          <button type="button" class="hero-jump" data-goto-equipment="${h.id}">DPS, boosts &amp; ore per level →</button>
-          <button type="button" class="hero-jump" data-goto-skins="${h.id}">Skins (${h.skins.length}) →</button>
-        </div>
-      </article>`).join("");
+  function togglePick(itemId, heroId) {
+    const list = state.loadout[heroId] || (state.loadout[heroId] = []);
+    const index = list.indexOf(itemId);
+    if (index >= 0) list.splice(index, 1);
+    else if (list.length < 2) list.push(itemId);
+    else return;
+    paintLoadout(heroId);
   }
 
   function renderEquipmentTab() {
-    const h = heroById(selected);
-    renderHeroPicks("#equipmentPicks", true);
+    const hero = heroById(state.eqHero) || state.data.heroes[0];
+    if (!hero) return;
+    state.eqHero = hero.id;
     $("#equipmentContent").innerHTML = `
-      <div class="hero-summary">
-        <span class="hero-avatar">${portrait(h)}</span>
-        <div class="hero-summary-copy">
-          <p class="eyebrow">EQUIPMENT LOADOUT</p>
-          <h2>${esc(h.name)}</h2>
-          <span class="role-pill">${esc(h.role)}</span>
-          <p>${h.equipment.length} pieces listed · equip any two. Common gear comes unlocked, Epics are earned from events, the shop and clan games.</p>
-        </div>
+      <div class="hero-picker" role="group" aria-label="Choose a hero">
+        ${state.data.heroes.map(entry => `
+          <button class="hero-pick" type="button" data-eq-hero="${esc(entry.id)}"
+            aria-pressed="${entry.id === hero.id}">
+            <img src="${esc(entry.art)}" alt="" width="52" height="52" loading="lazy" decoding="async">
+            <span>${esc(entry.name)}</span>
+          </button>`).join("")}
       </div>
-      ${equipmentMarkup(h)}
-      <div class="level-note" style="margin-top:14px"><h3>Upgrade tips</h3><p>Prioritise the equipment you use in every war. Commons max at level 18 and Epics at 27; save Epic equipment ore for the one piece that carries your main army.</p></div>`;
+      ${plannerMarkup(hero)}
+      <div class="eq-grid">${equipmentFor(hero.id).map(item => equipmentCard(item, hero)).join("")}</div>`;
+    paintLoadout(hero.id);
+  }
+
+  /* ------------------------------------------------------------- cosmetics */
+  function uniqueValues(list, key) {
+    return Array.from(new Set(list.map(item => item[key]).filter(Boolean))).sort();
+  }
+
+  function filterOptions(list) {
+    return {
+      hero: uniqueValues(list, "hero").filter(id => heroById(id)),
+      source: uniqueValues(list, "source"),
+      season: uniqueValues(list, "season"),
+      rarity: uniqueValues(list, "rarity"),
+    };
+  }
+
+  function selectMarkup(id, label, allLabel, values, formatter) {
+    const options = values.length
+      ? values.map(value => `<option value="${esc(value)}">${esc(formatter ? formatter(value) : value)}</option>`).join("")
+      : "";
+    return `<label class="pdx-field"><span>${esc(label)}</span>
+      <select class="pdx-select" id="${id}" ${values.length ? "" : "disabled"}>
+        <option value="all">${esc(allLabel)}${values.length ? "" : " (nothing tagged yet)"}</option>
+        ${options}
+      </select></label>`;
+  }
+
+  function renderFilters(list) {
+    const root = $("#skinFilters");
+    if (!root) return;
+    const options = filterOptions(list);
+    root.innerHTML = `
+      <div class="filter-bar__row">
+        <label class="pdx-field"><span>Search</span>
+          <input class="pdx-input" id="filterQuery" type="search" value="${esc(state.query)}"
+            placeholder="Search ${state.cosmetic === "skins" ? "skins" : "sceneries"} by name" autocomplete="off">
+        </label>
+        ${state.cosmetic === "skins" ? selectMarkup("filterHero", "Hero", "All heroes", options.hero, id => (heroById(id) || {}).name || id) : ""}
+        ${selectMarkup("filterSource", "Source", "All sources", options.source)}
+        ${selectMarkup("filterSeason", "Season", "All seasons", options.season)}
+        ${state.cosmetic === "skins" ? selectMarkup("filterRarity", "Rarity", "All rarities", options.rarity) : ""}
+      </div>
+      <div class="filter-bar__row">
+        <button class="pdx-btn pdx-btn--wood filter-clear" type="button" data-filter-reset>Clear filters</button>
+        <p class="gallery-note">${options.source.length || options.season.length
+          ? "Filters apply as you type."
+          : "Season, source and rarity are not confirmed for these entries yet, so only the name and hero filters do anything."}</p>
+      </div>`;
+
+    const map = { filterHero: "hero", filterSource: "source", filterSeason: "season", filterRarity: "rarity" };
+    Object.keys(map).forEach(id => {
+      const node = document.getElementById(id);
+      if (node && state.filters[map[id]] !== "all") node.value = state.filters[map[id]];
+    });
+  }
+
+  function matchesQuery(item) {
+    if (!state.query) return true;
+    const needle = state.query.toLowerCase();
+    return item.name.toLowerCase().includes(needle) ||
+      String(item.id).toLowerCase().includes(needle) ||
+      (state.cosmetic === "skins" && ((heroById(item.hero) || {}).name || "").toLowerCase().includes(needle));
+  }
+
+  function filteredSkins() {
+    return state.data.skins.filter(skin =>
+      (state.filters.hero === "all" || skin.hero === state.filters.hero) &&
+      (state.filters.source === "all" || skin.source === state.filters.source) &&
+      (state.filters.season === "all" || skin.season === state.filters.season) &&
+      (state.filters.rarity === "all" || skin.rarity === state.filters.rarity) &&
+      matchesQuery(skin));
+  }
+
+  function filteredSceneries() {
+    return state.data.sceneries.filter(scenery =>
+      (state.filters.source === "all" || scenery.source === state.filters.source) &&
+      (state.filters.season === "all" || scenery.season === state.filters.season) &&
+      matchesQuery(scenery));
+  }
+
+  function skinCard(skin, hero) {
+    const owner = hero || heroById(skin.hero);
+    return `<button class="pdx-card skin-card" type="button" data-skin="${esc(skin.id)}">
+      <span class="pdx-card__media">
+        <img src="${esc(skin.thumb)}" alt="${esc(skin.name)} skin art" width="240" height="240" loading="lazy" decoding="async">
+      </span>
+      <span class="pdx-card__body">
+        <span class="pdx-card__title">${esc(skin.name)}</span>
+        <span class="pdx-card__meta">${esc(owner ? owner.name : "")}</span>
+      </span>
+    </button>`;
+  }
+
+  function sceneryCard(scenery) {
+    return `<button class="pdx-card scenery-card" type="button" data-scenery="${esc(scenery.id)}">
+      <span class="pdx-card__media">
+        <img src="${esc(scenery.thumb)}" alt="${esc(scenery.name)} scenery" width="320" height="200" loading="lazy" decoding="async">
+      </span>
+      <span class="pdx-card__body">
+        <span class="pdx-card__title">${esc(scenery.name)}</span>
+        <span class="pdx-card__meta">View scenery</span>
+      </span>
+    </button>`;
   }
 
   function renderCosmetics() {
-    $$("[data-cosmetic]").forEach(b => {
-      const on = b.dataset.cosmetic === cosmeticTab;
-      b.classList.toggle("is-active", on);
-      b.setAttribute("aria-selected", String(on));
-    });
-    $("#skinFilters").hidden = cosmeticTab !== "skins";
-    if (cosmeticTab === "skins") {
-      $("#skinFilters").innerHTML = `
-        <div class="show-row">
-          <span>Show</span>
-          <div class="show-strip" role="group" aria-label="Filter skins by hero">
-            <button type="button" class="${skinFilter === "all" ? "is-active" : ""}" data-filter="all" aria-pressed="${skinFilter === "all"}" aria-label="All heroes"><span style="display:grid;place-items:center;width:100%;height:100%;font:400 22px var(--hx-title);color:#fff;background:linear-gradient(#a83fe0,#5a1a9c)">✦</span></button>
-            ${HEROES.map(h => `<button type="button" class="${skinFilter === h.id ? "is-active" : ""}" data-filter="${h.id}" aria-pressed="${skinFilter === h.id}" aria-label="${esc(h.name)}">${portrait(h)}</button>`).join("")}
-          </div>
-        </div>`;
-      const list = HEROES.filter(h => skinFilter === "all" || h.id === skinFilter)
-        .flatMap(h => h.skins.map(s => ({ skin: s, hero: h })));
-      $("#cosmeticContent").innerHTML = list.length ? `<div class="skin-grid">${list.map(({ skin, hero }, index) => skinCardMarkup(hero, skin, index === 0)).join("")}</div>` : `<div class="empty-state"><b>No skins for this hero yet</b>Pick another hero from the Show row.</div>`;
-    } else {
-      $("#cosmeticContent").innerHTML = `<div class="scenery-grid">${SCENERIES.map(([name, icon, bg, note, file]) => `
-        <article class="scenery-card">
-          <div class="scenery-art" style="background:${bg}">${icon}${file ? photo(file, name) : dropIn("sceneries", name, name)}</div>
-          <h3>${esc(name)}</h3>
-          <p>${esc(note)}</p>
-        </article>`).join("")}</div>`;
+    if (state.cosmetic !== "skins") {
+      state.filters.hero = "all";
+      state.filters.rarity = "all";
     }
-  }
-
-  function setMainTab(tab) {
-    mainTab = tab;
-    $$("[data-main]").forEach(b => {
-      const on = b.dataset.main === tab;
-      b.classList.toggle("is-active", on);
-      b.setAttribute("aria-selected", String(on));
+    $$("[data-cosmetic]").forEach(tab => {
+      const on = tab.dataset.cosmetic === state.cosmetic;
+      tab.setAttribute("aria-selected", String(on));
+      tab.tabIndex = on ? 0 : -1;
     });
-    $("#heroArea").hidden = tab !== "heroes";
-    $("#equipmentArea").hidden = tab !== "equipment";
-    $("#cosmeticsArea").hidden = tab !== "cosmetics";
-    if (tab === "equipment") renderEquipmentTab();
-    if (tab === "cosmetics") renderCosmetics();
+
+    const list = state.cosmetic === "skins" ? state.data.skins : state.data.sceneries;
+    const heading = $("#cosmeticsArea .panel-heading h2");
+    const kicker = $("#cosmeticsArea .panel-heading .eyebrow");
+    if (heading) heading.textContent = state.cosmetic === "skins" ? "Hero Skins" : "Scenery Shop";
+    if (kicker) kicker.textContent = state.cosmetic === "skins" ? "PICK A SKIN FOR ITS FULL CARD" : "STEP 1 · PICK A SCENERY";
+    renderFilters(list);
+
+    const results = state.cosmetic === "skins" ? filteredSkins() : filteredSceneries();
+    const content = $("#cosmeticContent");
+    const status = $("#cosmeticStatus");
+    const count = $("#cosmeticCount");
+    const unit = state.cosmetic === "skins" ? "skin" : "scenery";
+    const total = list.length;
+
+    if (count) count.textContent = `${total} ${plural(unit, total)} on file`;
+    if (status) {
+      status.textContent = results.length === total
+        ? `${total} ${plural(unit, total)} shown.`
+        : `${results.length} of ${total} ${plural(unit, total)} match.`;
+    }
+
+    content.setAttribute("aria-busy", "false");
+    if (!results.length) {
+      content.innerHTML = `<div class="pdx-empty"><b>Nothing matches those filters</b>
+        <p class="pdx-note">Try a shorter search or clear the filters. Every entry here comes from the art that ships with the site.</p>
+        <button class="pdx-btn" type="button" data-filter-reset>Clear filters</button></div>`;
+      return;
+    }
+
+    content.innerHTML = state.cosmetic === "skins"
+      ? `<div class="skin-grid">${results.map(skin => skinCard(skin)).join("")}</div>`
+      : `<div class="scenery-grid">${results.map(sceneryCard).join("")}</div>`;
   }
 
+  /* ---------------------------------------------------------- dialogs */
+  let lastFocus = null;
+
+  function openDialog(el, focusSelector) {
+    lastFocus = document.activeElement;
+    el.hidden = false;
+    document.body.style.overflow = "hidden";
+    const target = el.querySelector(focusSelector);
+    if (target) target.focus();
+  }
+
+  function closeDialog(el) {
+    if (!el || el.hidden) return;
+    el.hidden = true;
+    document.body.style.overflow = "";
+    if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+    lastFocus = null;
+  }
+
+  function openSkin(skinId) {
+    const skin = state.data.skins.find(entry => entry.id === skinId);
+    if (!skin) return;
+    const hero = heroById(skin.hero);
+    $("#skinSheetTitle").textContent = skin.name;
+    $("#skinSheetBody").innerHTML = `
+      <div class="pdx-sheet__art"><img src="${esc(skin.art)}" alt="${esc(skin.name)} full art" width="480" height="360" decoding="async"></div>
+      <dl class="pdx-facts">
+        <div><dt>Hero</dt><dd>${esc(hero ? hero.name : "Unknown")}</dd></div>
+        <div><dt>Release date</dt><dd>${esc(skin.released || "Not on file yet")}</dd></div>
+        <div><dt>Season</dt><dd>${esc(skin.season || "Not listed yet")}</dd></div>
+        <div><dt>Price</dt><dd>${esc(skin.priceTier || "Not verified yet")}</dd></div>
+        <div><dt>How to get it</dt><dd>${esc(skin.source || skin.obtainable || "Not listed yet")}</dd></div>
+        <div><dt>Availability</dt><dd>${esc(skin.obtainable || skin.availability || "Not confirmed — this skin may no longer be in the shop")}</dd></div>
+        <div><dt>Rarity</dt><dd>${esc(skin.rarity || "Not listed yet")}</dd></div>
+      </dl>
+      <p class="pdx-note">In-game price varies by region. This archive never links to a purchase: open the game's own shop to see today's offer.</p>
+      ${skin.verified === false ? '<span class="verify-chip">Details not verified yet</span>' : ""}
+      <button class="pdx-btn pdx-btn--wood" type="button" data-close-sheet style="justify-self:start">Back to skins</button>`;
+    openDialog($("#skinSheet"), ".pdx-sheet__bar [data-close-sheet]");
+  }
+
+  function openScenery(sceneryId) {
+    const scenery = state.data.sceneries.find(entry => entry.id === sceneryId);
+    if (!scenery) return;
+    $("#sceneryTitle").textContent = scenery.name;
+    $("#sceneryArt").innerHTML = `<img src="${esc(scenery.art)}" alt="${esc(scenery.name)} full preview" width="1200" height="800" decoding="async">`;
+    $("#sceneryDetails").innerHTML = `
+      <p><b>Release date:</b> ${esc(scenery.released || "Not on file yet")} · <b>Season:</b> ${esc(scenery.season || "Not listed yet")}</p>
+      <p><b>Price:</b> ${esc(scenery.priceTier || "Not verified yet")} · <b>Source:</b> ${esc(scenery.source || "Not listed yet")}</p>
+      <p>In-game price varies by region, and sceneries rotate in and out of the shop.</p>
+      ${scenery.verified === false ? '<p>Scenery details are not verified yet.</p>' : ""}
+      <button class="pdx-btn pdx-btn--wood" type="button" data-close-scenery>Back to Scenery Shop</button>`;
+    openDialog($("#sceneryView"), "[data-close-scenery]");
+  }
+
+  function trapFocus(event) {
+    if (event.key !== "Tab") return;
+    const dialog = $(".pdx-sheet:not([hidden]) .pdx-sheet__panel, .pdx-lightbox:not([hidden]) .pdx-lightbox__panel");
+    if (!dialog) return;
+    const focusable = $$('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', dialog)
+      .filter(node => !node.disabled && node.offsetParent !== null);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
+
+  /* ------------------------------------------------------------- events */
   function bind() {
     document.addEventListener("click", event => {
-      const button = event.target.closest("button");
-      if (!button) return;
-      if (button.dataset.main) { setMainTab(button.dataset.main); return; }
-      if (button.dataset.cosmetic) { cosmeticTab = button.dataset.cosmetic; renderCosmetics(); return; }
-      if (button.dataset.filter) { skinFilter = button.dataset.filter; renderCosmetics(); return; }
-      if (button.dataset.heroTab) { heroTab = button.dataset.heroTab; renderProfile(); return; }
-      if (button.dataset.gotoEquipment) {
-        selected = button.dataset.gotoEquipment;
-        setMainTab("equipment");
-        $("#equipmentArea")?.scrollIntoView({ block: "start" });
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const retry = target.closest("[data-retry]");
+      if (retry) { loadAll(); return; }
+
+      const main = target.closest("[data-main]");
+      if (main) {
+        go(main.dataset.main === "cosmetics" ? "cosmetics/" + state.cosmetic : main.dataset.main);
+        refocus("#tab-" + main.dataset.main);
         return;
       }
-      if (button.dataset.gotoSkins) {
-        selected = button.dataset.gotoSkins;
-        skinFilter = selected;
-        cosmeticTab = "skins";
-        setMainTab("cosmetics");
-        $("#cosmeticsArea")?.scrollIntoView({ block: "start" });
+
+      const cosmetic = target.closest("[data-cosmetic]");
+      if (cosmetic) {
+        go("cosmetics/" + cosmetic.dataset.cosmetic);
+        refocus("#tab-" + cosmetic.dataset.cosmetic);
         return;
       }
-      if (button.dataset.hero) {
-        selected = button.dataset.hero;
-        if (mainTab === "equipment") renderEquipmentTab();
+
+      const heroTab = target.closest("[data-hero-tab]");
+      if (heroTab) {
+        go(`hero/${state.heroId}/${heroTab.dataset.heroTab}`);
+        refocus(`#ht-${state.heroId}-${heroTab.dataset.heroTab}`);
         return;
+      }
+
+      const eqHero = target.closest("[data-eq-hero]");
+      if (eqHero) { go("equipment/" + eqHero.dataset.eqHero); return; }
+
+      const pick = target.closest("[data-pick]");
+      if (pick) {
+        const heroId = pick.dataset.pickHero || state.eqHero || state.heroId;
+        if (heroId) togglePick(pick.dataset.pick, heroId);
+        return;
+      }
+
+      const skin = target.closest("[data-skin]");
+      if (skin) { openSkin(skin.dataset.skin); return; }
+
+      const scenery = target.closest("[data-scenery]");
+      if (scenery) { openScenery(scenery.dataset.scenery); return; }
+
+      if (target.closest("[data-close-sheet]")) { closeDialog($("#skinSheet")); return; }
+      if (target.closest("[data-close-scenery]")) { closeDialog($("#sceneryView")); return; }
+
+      if (target.closest("[data-filter-reset]")) {
+        state.query = "";
+        state.filters = { hero: "all", source: "all", season: "all", rarity: "all" };
+        renderCosmetics();
+        return;
+      }
+    });
+
+    document.addEventListener("input", event => {
+      const input = event.target;
+      if (!(input instanceof HTMLInputElement) || input.id !== "filterQuery") return;
+      state.query = input.value.trim();
+      const pos = input.selectionStart;
+      renderGalleryOnly();
+      const again = $("#filterQuery");
+      if (again) { again.focus(); try { again.setSelectionRange(pos, pos); } catch (_) { /* search inputs reject the range */ } }
+    });
+
+    document.addEventListener("change", event => {
+      const select = event.target;
+      if (!(select instanceof HTMLSelectElement)) return;
+      const map = { filterHero: "hero", filterSource: "source", filterSeason: "season", filterRarity: "rarity" };
+      const key = map[select.id];
+      if (!key) return;
+      state.filters[key] = select.value;
+      renderGalleryOnly();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        if (!$("#skinSheet").hidden) { closeDialog($("#skinSheet")); return; }
+        if (!$("#sceneryView").hidden) { closeDialog($("#sceneryView")); return; }
+      }
+      trapFocus(event);
+
+      const tab = event.target instanceof Element ? event.target.closest('[role="tab"]') : null;
+      if (!tab) return;
+      const list = tab.closest('[role="tablist"]');
+      if (!list) return;
+      const tabs = $$('[role="tab"]', list).filter(node => !node.disabled);
+      const index = tabs.indexOf(tab);
+      if (index < 0) return;
+      const keys = ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"];
+      if (!keys.includes(event.key)) return;
+      event.preventDefault();
+      let next = index;
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") next = (index + 1) % tabs.length;
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = (index - 1 + tabs.length) % tabs.length;
+      if (event.key === "Home") next = 0;
+      if (event.key === "End") next = tabs.length - 1;
+      tabs[next].focus();
+      tabs[next].click();
+    });
+
+    window.addEventListener("hashchange", () => {
+      const before = state.heroId;
+      applyRoute();
+      if (state.heroId && state.heroId !== before) {
+        const panel = $("#heroContent");
+        if (panel) panel.scrollIntoView({ block: "start", behavior: "smooth" });
       }
     });
   }
 
-  function readHash() {
-    const raw = decodeURIComponent((location.hash || "").replace(/^#/, "")).trim();
-    if (!raw) return;
-    const match = HEROES.find(h => h.id === raw.toLowerCase().replace(/\s+/g, "-"));
-    if (match) {
-      selected = match.id;
-      window.requestAnimationFrame(() => {
-        const target = document.getElementById("hero-" + match.id) || document.getElementById("heroArea");
-        if (target) target.scrollIntoView({ block: "start" });
-      });
+  /* Tabs are re-created on every render, so put the keyboard focus back on the
+     tab the user just chose. */
+  function refocus(selector) {
+    window.requestAnimationFrame(() => {
+      const node = document.querySelector(selector);
+      if (node) node.focus({ preventScroll: true });
+    });
+  }
+
+  /* Re-renders only the results grid so the search field keeps focus while typing. */
+  function renderGalleryOnly() {
+    const list = state.cosmetic === "skins" ? state.data.skins : state.data.sceneries;
+    const results = state.cosmetic === "skins" ? filteredSkins() : filteredSceneries();
+    const content = $("#cosmeticContent");
+    const status = $("#cosmeticStatus");
+    const unit = state.cosmetic === "skins" ? "skin" : "scenery";
+    if (status) {
+      status.textContent = results.length === list.length
+        ? `${list.length} ${plural(unit, list.length)} shown.`
+        : `${results.length} of ${list.length} ${plural(unit, list.length)} match.`;
     }
+    if (!content) return;
+    content.innerHTML = results.length
+      ? (state.cosmetic === "skins"
+        ? `<div class="skin-grid">${results.map(skin => skinCard(skin)).join("")}</div>`
+        : `<div class="scenery-grid">${results.map(sceneryCard).join("")}</div>`)
+      : `<div class="pdx-empty"><b>Nothing matches those filters</b>
+          <p class="pdx-note">Try a shorter search or clear the filters.</p>
+          <button class="pdx-btn" type="button" data-filter-reset>Clear filters</button></div>`;
   }
 
   function init() {
-    HEROES.forEach(h => { h.skins.forEach(s => { if (!s[3]) s[3] = "#8d37ca"; }); });
-    renderProfile();
     bind();
-    readHash();
+    applyRoute();
+    loadAll();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });

@@ -1,0 +1,98 @@
+/* PekkaDex — Lady Villager website guide.
+   A small, stationary portrait with one speech bubble. It sits above the
+   mobile tab bar, never overlaps the header, and fades in once. */
+
+.pdx-guide {
+  position: fixed;
+  left: max(12px, env(safe-area-inset-left));
+  bottom: calc(92px + env(safe-area-inset-bottom));
+  z-index: 80;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--s-2);
+  width: min(92vw, 368px);
+  pointer-events: none;
+  animation: pdx-guide-in .28s ease-out both;
+}
+.pdx-guide[hidden] { display: none !important; }
+
+.pdx-guide__face {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: end center;
+  width: 84px;
+  height: 84px;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .35));
+}
+.pdx-guide__face img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+.pdx-guide__face--fallback {
+  place-items: center;
+  border: 3px solid var(--c-wood-900);
+  border-radius: 50%;
+  background: linear-gradient(var(--c-gold-300), var(--c-gold-500));
+  color: var(--c-wood-900);
+}
+.pdx-guide__face--fallback svg { width: 44px; height: 44px; }
+
+.pdx-guide__bubble {
+  position: relative;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 3px solid var(--c-wood-900);
+  border-radius: var(--r-lg) var(--r-lg) var(--r-lg) 6px;
+  background: var(--c-paper-100);
+  color: var(--c-ink);
+  box-shadow: var(--sh-2);
+  pointer-events: auto;
+}
+.pdx-guide__bubble p {
+  margin: 0;
+  font: 400 var(--fs-sm)/1.35 var(--font-display);
+  padding-right: 22px;
+}
+.pdx-guide__close {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--c-ink-2);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.pdx-guide__close:hover { background: rgba(63, 39, 16, .12); }
+.pdx-guide__close:focus-visible { outline: 3px solid var(--c-wood-900); outline-offset: 1px; }
+
+@media (max-width: 520px) {
+  .pdx-guide { width: min(94vw, 330px); gap: 6px; bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .pdx-guide__face { width: 62px; height: 68px; }
+  .pdx-guide__bubble { padding: 8px 10px; }
+  .pdx-guide__bubble p { font-size: var(--fs-xs); padding-right: 20px; }
+  .pdx-guide__close { width: 30px; height: 30px; }
+}
+
+/* Pages without the mobile tab bar keep the guide off the very bottom edge. */
+.pdx-guide--no-tabbar { bottom: calc(16px + env(safe-area-inset-bottom)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pdx-guide { animation: none; }
+}
+
+@keyframes pdx-guide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

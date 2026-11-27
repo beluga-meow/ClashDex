@@ -1,0 +1,461 @@
+{
+  "schema": 1,
+  "verifiedOn": "2026-11-25",
+  "note": "Imported from layouts.json. Each entry keeps the in-game Copy Base link that shipped with the project; this archive cannot open the game, so links are labelled as supplied rather than re-tested. Town Halls with no genuine link stay empty on purpose.",
+  "categories": [
+    "War",
+    "Farming",
+    "Trophy",
+    "Hybrid",
+    "Anti-3-Star",
+    "Anti-Air",
+    "Anti-Ground",
+    "Progress Base"
+  ],
+  "bases": [
+    {
+      "id": "th18-fwa-war-base-th18",
+      "name": "TH18 FWA war base",
+      "th": 18,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "War layout links straight into the game. Copy the link, paste it in clan chat, then tap it.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH18%3AWB%3AAAAAAgAAAAMIFXlpMp2DcHS1uqUMNgA4",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th17-legend-base-th17",
+      "name": "TH17 Legend base",
+      "th": 17,
+      "categories": [
+        "Trophy"
+      ],
+      "tags": [
+        "Legend League"
+      ],
+      "note": "Compact Legend League layout that keeps trophies on defence.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH17%3AWB%3AAAAAMwAAAAJvKqSJR0K6j5vKXNzKC0Eo",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th17-rage-poison-base-th17",
+      "name": "TH17 rage + poison base",
+      "th": 17,
+      "categories": [
+        "Hybrid"
+      ],
+      "tags": [
+        "Anti 2 Stars"
+      ],
+      "note": "Rage and poison towers around the core, trap-heavy outside ring.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH17%3AWB%3AAAAAVAAAAAH2f9CNjVbV_n67TXdkH3fN",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th17-war-base-th17",
+      "name": "TH17 war base",
+      "th": 17,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "Spitters facing opposite directions, spring traps on the outside.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH17%3AHV%3AAAAAVAAAAAH2f7oBUtZeD0QGWoPfQHi9",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th16-double-poison-base-th16",
+      "name": "TH16 double poison base",
+      "th": 16,
+      "categories": [
+        "Hybrid"
+      ],
+      "tags": [
+        "Anti 2 Stars"
+      ],
+      "note": "Spread double poison with an isolated core and Town Hall.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AWB%3AAAAAVAAAAAHxKrqwCCkmwJBQ-jOYImzS",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th16-fwa-war-base-th16",
+      "name": "TH16 FWA war base",
+      "th": 16,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "Simple FWA-friendly war layout.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AWB%3AAAAAWQAAAAHYhYD8UAx4YzwvwSR5_kYp",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th16-legend-base-th16",
+      "name": "TH16 Legend base",
+      "th": 16,
+      "categories": [
+        "Trophy"
+      ],
+      "tags": [
+        "Legend League"
+      ],
+      "note": "Double rage tower legends base, built to stop root riders.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AHV%3AAAAAJAAAAAJCU3TZj_ywjB7Z3HV-yYxh",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th16-war-base-th16",
+      "name": "TH16 war base",
+      "th": 16,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "War layout with traps and spell towers tuned for the current meta.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AHV%3AAAAAJAAAAAJCU323bAtawUHHZHlbRNe1",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th15-anti-2-star-base-th15",
+      "name": "TH15 anti 2 star base",
+      "th": 15,
+      "categories": [
+        "War"
+      ],
+      "tags": [
+        "Anti 2 Stars"
+      ],
+      "note": "Keeps the third star away with a protected core.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH15%3AWB%3AAAAAKQAAAAKqSGULxKY-7_WFevDMPnKv",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th15-anti-lavaloon-base-th15",
+      "name": "TH15 anti Lavaloon base",
+      "th": 15,
+      "categories": [
+        "War",
+        "Anti-Air"
+      ],
+      "tags": [
+        "Anti Air"
+      ],
+      "note": "Built to drag air attacks away from the Town Hall.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH15%3AWB%3AAAAABQAAAAKWTKv7jBsiQhOK9cPwpZ5Q",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th15-fwa-war-base-th15",
+      "name": "TH15 FWA war base",
+      "th": 15,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "Simple FWA-friendly war layout.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH15%3AWB%3AAAAAVAAAAAHixZ2x1n8Q5kcjKac5Ta3R",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th15-legend-base-th15",
+      "name": "TH15 Legend base",
+      "th": 15,
+      "categories": [
+        "Trophy"
+      ],
+      "tags": [
+        "Legend League"
+      ],
+      "note": "Pathing-focused Legend layout for trophy pushes.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH15%3AWB%3AAAAAKQAAAAKqSGPbn2WewLUBEICnBiEx",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th14-war-base-th14",
+      "name": "TH14 war base",
+      "th": 14,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "War layout for Town Hall 14, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH14%3AWB%3AAAAAPQAAAAJQFTvvhxVFhpHEctRKa2RJ",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th13-war-base-th13",
+      "name": "TH13 war base",
+      "th": 13,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "War layout for Town Hall 13, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH13%3AWB%3AAAAANQAAAAJg3K_0TUhkZz6SfZeONbRt",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th12-war-base-th12",
+      "name": "TH12 war base",
+      "th": 12,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "War layout for Town Hall 12, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH12%3AWB%3AAAAAAAAAAAMJ-9kz6ATWMmoYhsM5X4Zo",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th11-war-base-th11",
+      "name": "TH11 war base",
+      "th": 11,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "War layout for Town Hall 11, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH11%3AWB%3AAAAAJQAAAAKdWWT-kVMWijtjXI3Ieeeu",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th10-war-base-th10",
+      "name": "TH10 war base",
+      "th": 10,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "War layout for Town Hall 10, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH10%3AWB%3AAAAASwAAAAHxz3UQ1NJeeTS0DGN61Gm",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    },
+    {
+      "id": "th9-war-base-th9",
+      "name": "TH9 war base",
+      "th": 9,
+      "categories": [
+        "War",
+        "Anti-3-Star"
+      ],
+      "tags": [
+        "Anti 3 Stars"
+      ],
+      "note": "War layout for Town Hall 9, copy the link straight into the game.",
+      "link": "https://link.clashofclans.com/en?action=OpenLayout&id=TH9%3AWB%3AAAAANQAAAAJg3suFcORqtzL2m38RiJuD",
+      "linkType": "copy-base",
+      "linkVerified": false,
+      "source": "Project layouts.json",
+      "added": null,
+      "updated": null,
+      "verified": false,
+      "unverified": [
+        "link tested in game",
+        "layout screenshot",
+        "release notes"
+      ]
+    }
+  ]
+}

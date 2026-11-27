@@ -178,7 +178,10 @@
      function is older than the normalization below. */
   const SMALL_CAPS = "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢꜰꜱ";
   const SMALL_CAPS_PLAIN = "abcdefghijklmnopqrstuvwxyzfs";
+  /* assets/js/name-fold.js holds the shared implementation; the inline version
+     stays as a fallback in case that file fails to load. */
   function foldName(value) {
+    if (window.PDXName && window.PDXName.foldValue) return window.PDXName.foldValue(value);
     const chars = Array.from(String(value == null ? "" : value), ch => {
       const i = SMALL_CAPS.indexOf(ch);
       return i === -1 ? ch : SMALL_CAPS_PLAIN.charAt(i);
@@ -186,6 +189,9 @@
     return chars.normalize("NFKD").replace(/\p{M}/gu, "").toLocaleLowerCase();
   }
   function normalizeNameQuery(value) {
+    if (window.PDXName && window.PDXName.foldValue) {
+      return window.PDXName.foldValue(value).normalize("NFKC").trim().replace(/\s+/g, " ");
+    }
     const converted = Array.from(String(value == null ? "" : value), ch => {
       const i = SMALL_CAPS.indexOf(ch);
       return i === -1 ? ch : SMALL_CAPS_PLAIN.charAt(i);
@@ -859,6 +865,8 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
       const players = b.dataset.tab === "players";
       pForm.hidden = !players;
       cForm.hidden = players;
+      pending = null;
+      searchToken++;
       out.innerHTML = "";
       say(players ? "Type a player name or tag. Add criteria to narrow it down." : "Type a clan name (3+ letters) or tag. Add criteria to narrow it down.");
     }));
@@ -906,9 +914,13 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
        first page does not hold every match, finish the search on demand with
        one extra request per Town Hall instead of dead-ending the result list. */
     let pending = null;
+    /* Every new search bumps the token. A slow "Show all" pass checks it before
+       painting, so results from an older search can never replace a newer one. */
+    let searchToken = 0;
 
     async function loadRemaining() {
       if (!pending) return;
+      const token = searchToken;
       const { q, exact, hits, found, seen } = pending;
       const btn = $("[data-load-rest]", out);
       if (btn) { btn.disabled = true; btn.textContent = "Loading matches…"; }
@@ -927,6 +939,7 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
         } catch (_) { /* one Town Hall failing must not end the search */ }
       }
       pending = null;
+      if (token !== searchToken) return;
       const list = sortHits(toHits(merged), q);
       paintHits(list, q, "");
       say(list.length + (list.length === 1 ? " matching player found." : " matching players found.") + " All matches loaded.", "ok");
@@ -961,6 +974,8 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
       }
 
       lock(pForm, true);
+      pending = null;
+      searchToken++;
       out.innerHTML = "";
       try {
         say("Searching every player record in the shared index…");
@@ -1010,6 +1025,8 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
       const raw = $("#cxCName", box).value.trim();
       if (!raw) { say("Enter a clan name (3+ letters) or a clan tag.", "err"); return; }
       lock(cForm, true);
+      pending = null;
+      searchToken++;
       out.innerHTML = "";
       say("Searching clans…");
       try {
@@ -1411,47 +1428,12 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
     });
   }
 
-  /* ============ 9. Clash Heroes Encyclopedia (archive card) ============ */
-  /* Real hero art when it ships in assets/heroes, drawn portrait as fallback. */
-  function heroArt(id) {
-    const art = window.PDX_ART && window.PDX_ART.heroes;
-    return (art && art[id]) || "./assets/heroes/" + id + ".svg";
-  }
-
-  function buildHeroes() {
-    const sec = $("#heroes");
-    if (!sec) return;
-    const roster = [
-      ["barbarian-king", "Barbarian King", "👑", "Ground tank"],
-      ["archer-queen", "Archer Queen", "🏹", "Ranged damage"],
-      ["grand-warden", "Grand Warden", "🧙", "Support"],
-      ["royal-champion", "Royal Champion", "🛡️", "Defence hunter"],
-      ["minion-prince", "Minion Prince", "🦇", "Air support"],
-      ["dragon-duke", "Dragon Duke", "🐲", "Melee brawler"]
-    ];
-
-    const box = div("cx-panel cx-app", "cxHeroes");
-    box.innerHTML =
-      '<div class="pdx-archive-wrap">' +
-        '<a class="pdx-archive-card" href="./heroes.html">' +
-          '<span class="pdx-archive-pic"><img src="./assets/heroes/heroes.svg" width="520" height="210" alt="Barbarian King, Archer Queen, Grand Warden, Minion Prince, Royal Champion and Dragon Duke" loading="lazy"></span>' +
-          '<span class="pdx-archive-copy">' +
-            '<span class="pdx-archive-kicker">THE PEKKADEX ARCHIVE</span>' +
-            '<h3>Clash Heroes Encyclopedia</h3>' +
-            '<p>Open the archive for every hero, their equipment, all hero skins and the village sceneries — with Skins and Sceneries tabs just like the game.</p>' +
-            '<span class="pdx-archive-cta">Open the encyclopedia →</span>' +
-          '</span>' +
-        '</a>' +
-        '<div class="pdx-archive-chips">' + roster.map(h => '<a class="pdx-archive-chip" href="./heroes.html#' + h[0] + '"><span class="pdx-archive-chip-art" aria-hidden="true"><img src="' + heroArt(h[0]) + '" width="30" height="30" alt="" loading="lazy" onerror="this.parentElement.textContent=\'' + h[2] + '\'"></span>' + esc(h[1]) + '</a>').join('') + '</div>' +
-        '<div class="pdx-archive-features">' +
-          '<div class="pdx-archive-feature"><b>⚔ Hero profiles</b><small>Roles, abilities, equipment and skins for all six heroes.</small></div>' +
-          '<div class="pdx-archive-feature"><b>🛠 Equipment</b><small>Every common and epic piece, with what it does in battle.</small></div>' +
-          '<div class="pdx-archive-feature"><b>🎨 Cosmetics</b><small>Skins and sceneries in one collection with hero filters.</small></div>' +
-        '</div>' +
-      '</div>';
-    swapIn(sec, box);
-    setHeading(sec, 'Clash <span>Heroes</span> Encyclopedia', "Heroes, equipment, skins and sceneries — all in the dedicated archive.");
-  }
+  /* ============ 9. Clash Heroes Encyclopedia ============ */
+  /* The homepage now keeps only the section title and the single link to the
+     dedicated archive (static markup in index.html). The full encyclopedia
+     lives on heroes.html, so nothing is injected here. */
+  function buildHeroes() {}
+  void buildHeroes;
 
   /* ============ 10. Mobile bottom menu (game style) ============ */
   function buildTabbar() {
