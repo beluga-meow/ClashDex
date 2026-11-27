@@ -56,6 +56,15 @@
     { kind: "army", th: 16, cat: "Ground",        tag: "", icon: "🧙", name: "Yeti + Witch Push",   note: "Strong mid-game ground army.", link: "" }
   ];
 
+  /* Community source for Town Hall base browsing. */
+  let BASE_SOURCES = {
+    homeVillage: "https://www.coc-prime.com/base-library",
+    townHallPattern: "https://www.coc-prime.com/base-library/browse/hv/th{th}",
+    minTownHall: 3,
+    maxTownHall: 19
+  };
+
+
   /* ============ 3. Small helpers ============ */
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -1253,8 +1262,26 @@ html.cx .pdx-archive-feature small{font-size:12px;line-height:1.4;color:#6f5130;
     };
     const draw = () => {
       shown = LAYOUTS.filter(x => x.kind === kind && (kind !== "base" || (x.v || "home") === village) && (!th || String(x.th) === th) && (cat === "All" || x.cat === cat) && (!tag || x.tag === tag)).sort(CMP[sort]);
-      grid.innerHTML = shown.length ? shown.map(card).join("")
-        : '<p class="cx-msg" style="grid-column:1/-1">No ' + (kind === "base" ? "base" : "troop") + " layouts for this filter yet.</p>";
+            const selectedTH = Number(th);
+      const canBrowse = kind === "base" && village === "home";
+      const browseUrl = canBrowse
+        ? (selectedTH >= BASE_SOURCES.minTownHall && selectedTH <= BASE_SOURCES.maxTownHall
+            ? BASE_SOURCES.townHallPattern.replace("{th}", selectedTH)
+            : BASE_SOURCES.homeVillage)
+        : "";
+
+      const emptyMessage = canBrowse && selectedTH > 0 && selectedTH < BASE_SOURCES.minTownHall
+        ? "Community layouts for TH1–TH2 are not listed yet."
+        : "No layouts found for this filter yet.";
+
+      grid.innerHTML = shown.length
+        ? shown.map(card).join("")
+        : '<div class="cx-msg" style="grid-column:1/-1;text-align:center;padding:24px;">' +
+          '<p>' + emptyMessage + '</p>' +
+          (browseUrl && !(selectedTH > 0 && selectedTH < BASE_SOURCES.minTownHall)
+            ? '<a href="' + browseUrl + '" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:12px;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700;">Browse Community Bases ↗</a>'
+            : '') +
+          '</div>';
       count.textContent = shown.length + (shown.length === 1 ? " layout" : " layouts");
     };
 
