@@ -136,8 +136,16 @@
     } catch (_) {
       throw new ApiError("offline", "Couldn't reach the search service. Check your connection and try again.");
     }
-    if (res.error || !res.data || typeof res.data.status !== "number") {
+    if (res.error || !res.data) {
       throw new ApiError("not-connected", "The search service didn't return a valid response. Check the coc Edge Function.");
+    }
+    if (typeof res.data.status !== "number") {
+      /* Rate limits and configuration errors come back as { error } with an
+         HTTP status the client cannot read, so keep the server's wording. */
+      const message = typeof res.data.error === "string" && res.data.error
+        ? res.data.error
+        : "The search service didn't return a valid response. Check the coc Edge Function.";
+      throw new ApiError("server", message);
     }
     return res.data;
   }
@@ -168,22 +176,28 @@
     return converted.normalize("NFKC").trim().replace(/\s+/g, " ");
   }
 
-  async function findInIndex(name, exact, th) {
+  async function findInIndex(name, exact, th, options) {
+    const opts = options || {};
     const r = await callEdge({
       action: "findPlayers",
       name: name,
       exact: !!exact,
       th: th ? Number(th) : null,
-      limit: 1000
+      limit: opts.limit || 1000,
+      offset: opts.offset || 0
     });
     if (r.status === 200 && r.data) return r.data;
+    if (r.status === 429) {
+      throw new ApiError("rate-limit", "Too many searches at once. Wait a minute, then search again.");
+    }
     if (r.status === 503) {
-      throw new ApiError("no-index", "The saved player index is not available yet. Check the Supabase SQL setup and deploy the latest coc Edge Function.");
+      throw new ApiError("no-index", "The saved player index is not available right now. This is a server problem, not a missing player. Try again shortly.");
     }
     if (r.status === 400) {
-      throw new ApiError("no-index", "Update the coc Edge Function to the latest version with saved-player name search.");
+      const message = r.data && typeof r.data.message === "string" ? r.data.message : "";
+      throw new ApiError("input", message || "That search isn't valid. Use at least one letter or number.");
     }
-    throw new ApiError("http-" + r.status, "Player name search failed. Try again in a moment.");
+    throw new ApiError("http-" + r.status, "Player name search failed. This is a server problem, not a missing player. Try again in a moment.");
   }
 
   async function api(path) {
@@ -287,11 +301,19 @@
     " · 🏆 " + num(m.trophies) + '</small></div><span class="cx-pill">TH ' + esc(m.townHallLevel == null ? "?" : m.townHallLevel) +
     '</span><button class="cx-btn blue sm" type="button" data-view="' + esc(m.tag) + '">View</button></div>';
 
-  const playerRow = p =>
-    '<div class="cx-row"><div class="grow"><strong>' + esc(p.name) + "</strong><small>" + esc(p.tag) +
+  /* The query the visible list belongs to, so each row can say how it matched. */
+  let listingQuery = "";
+  const playerRow = p => {
+    const rank = listingQuery && window.PDXSearch ? window.PDXSearch.matchRank(p.name, listingQuery) : null;
+    const label = rank == null || !window.PDXSearch ? "" : window.PDXSearch.matchLabel(rank);
+    const fresh = p.updated_at && window.PDXSearch ? window.PDXSearch.freshness(p.updated_at) : "";
+    return '<div class="cx-row"><div class="grow"><strong>' + esc(p.name) + "</strong><small>" + esc(p.tag) +
     (p.clan ? " · " + esc(p.clan) : "") + (p.role ? " · " + esc(roleName(p.role)) : "") +
-    " · 🏆 " + num(p.trophies) + '</small></div><span class="cx-pill">TH ' + esc(p.th == null ? "?" : p.th) +
-    '</span><button class="cx-btn blue sm" type="button" data-view="' + esc(p.tag) + '">View</button></div>';
+    " · 🏆 " + num(p.trophies) + (fresh ? " · indexed " + esc(fresh) : "") +
+    '</small></div><span class="cx-pill">TH ' + esc(p.th == null ? "?" : p.th) + "</span>" +
+    (label ? '<span class="cx-match">' + esc(label) + "</span>" : "") +
+    '<button class="cx-btn blue sm" type="button" data-view="' + esc(p.tag) + '">View</button></div>';
+  };
 
   function clanRow(c) {
     const type = ({ open: "Open", inviteOnly: "Invite only", closed: "Closed" }[c.type]) || "";
@@ -315,12 +337,13 @@
         '<button type="button" class="cx-tab" data-tab="clans" role="tab" aria-selected="false"><span aria-hidden="true">🛡️</span>Search clans</button></div>' +
       '<form id="cxPlayerForm" novalidate>' +
         '<label class="cx-search"><span class="cx-sr">Player name or tag</span><i aria-hidden="true">🔍</i>' +
-          '<input id="cxPQ" type="search" maxlength="30" enterkeyhint="search" placeholder="Find a Player (enter Name or #Tag)" autocomplete="off" autocapitalize="off" spellcheck="false"></label>' +
+          '<input id="cxPQ" type="search" maxlength="30" enterkeyhint="search" placeholder="Find a Player (enter Name or #Tag)" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-controls="cxSuggest" aria-expanded="false"></label>' +
+        '<ul class="cx-suggest" id="cxSuggest" role="listbox" aria-label="Player suggestions" hidden></ul>' +
         '<div class="cx-actions-row"><button type="button" class="cx-add" data-crit="cxPCrit" aria-expanded="false" aria-controls="cxPCrit"><b aria-hidden="true">+</b>Add criteria</button></div>' +
         '<div class="cx-crit" id="cxPCrit" hidden>' +
           '<label class="cx-check"><input type="checkbox" id="cxExact"><span>Only players with that exact name</span></label>' +
           '<label class="cx-field"><span>Town Hall</span><select id="cxPTH">' + th + "</select></label>" +
-          '<p class="cx-help">Searches all player records currently available in the PekkaDex index. Saved status does not affect ranking. Use a player tag to open an exact live profile.</p>' +
+          '<p class="cx-help">Searches every player saved in the PekkaDex index. A player enters the index when a clan&rsquo;s Members list or their profile is opened. Use a player tag to open an exact live profile.</p>' +
           '<button type="button" class="cx-close" data-crit-close="cxPCrit">Close</button></div>' +
         '<button class="cx-btn green cx-go" type="submit">Search player</button></form>' +
       '<form id="cxClanForm" novalidate hidden>' +
@@ -333,11 +356,14 @@
           '<label class="cx-field"><span>Clans I can join with</span><select id="cxCTH">' + th + "</select></label>" +
           '<button type="button" class="cx-close" data-crit-close="cxCCrit">Close</button></div>' +
         '<button class="cx-btn green cx-go" type="submit">Search clan</button></form>' +
+      '<p class="cx-coverage" id="cxCoverage" hidden></p>' +
       '<p class="cx-msg" id="cxMsg" aria-live="polite">Type a player name or tag. Add criteria to narrow it down.</p>' +
       '<div class="cx-results" id="cxOut"></div>';
 
     const msg = $("#cxMsg", box), out = $("#cxOut", box);
+    const coverage = $("#cxCoverage", box), suggest = $("#cxSuggest", box);
     const pForm = $("#cxPlayerForm", box), cForm = $("#cxClanForm", box);
+    const input = $("#cxPQ", box);
     const say = (t, kind) => { msg.textContent = t; msg.className = "cx-msg" + (kind ? " " + kind : ""); };
     const lock = (form, on) => {
       const b = $("button[type=submit]", form);
@@ -353,6 +379,252 @@
       const b = $('[data-crit="' + id + '"]', box);
       if (b) b.setAttribute("aria-expanded", open ? "true" : "false");
     };
+    const searchHelpers = () => window.PDXSearch || null;
+
+    /* ---- index coverage + state ---- */
+    const setCoverage = data => {
+      const api = searchHelpers();
+      if (!api || !data) { coverage.hidden = true; return; }
+      const text = api.coverageLine(data.index_total, data.newest_update);
+      coverage.textContent = text;
+      coverage.hidden = !text;
+    };
+
+    /* ---- shared result helpers: one search can span several index pages ---- */
+    const toHits = items => (items || []).map(i => ({
+      tag: i.tag, name: i.name, th: i.th, trophies: i.trophies,
+      role: i.role || "", match: i.match_type || "", updated_at: i.updated_at || "",
+      clan: (i.clan_memberships || []).map(c => c.clan_name || c.clan_tag).filter(Boolean).join(", ") || i.clan_name || i.clan_tag || ""
+    }));
+    const paintHits = (hits, q, note) => {
+      const api = searchHelpers();
+      listingQuery = q;
+      const list = api ? api.rankResults(hits, q) : hits;
+      out.innerHTML = '<div class="cx-list">' + list.map(playerRow).join("") + "</div>" + (note || "");
+      return list;
+    };
+    const moreNote = (found, shown, mode) =>
+      '<div class="cx-more-results"><p>' + found + " players match; showing " + shown + ".</p>" +
+      '<button class="cx-btn green sm" type="button" data-load-rest>' +
+      (mode === "offset" ? "Load more" : "Show all " + found + " matches") + "</button></div>";
+
+    const showEmpty = (query, data) => {
+      const api = searchHelpers();
+      listingQuery = "";
+      out.innerHTML = "";
+      const panel = div("cx-empty");
+      const text = document.createElement("p");
+      text.textContent = api
+        ? api.emptyMessage(query, { total: data && data.index_total, newest: data && data.newest_update })
+        : 'No indexed player name matches "' + query + '". Players become searchable after a clan\u2019s Members list is opened.';
+      const actions = div("cx-empty__actions");
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.className = "cx-btn gold sm";
+      retry.setAttribute("data-retry-search", "");
+      retry.textContent = "Search again";
+      const clans = document.createElement("button");
+      clans.type = "button";
+      clans.className = "cx-btn green sm";
+      clans.setAttribute("data-goto-clans", "");
+      clans.textContent = "Search a clan to index its members";
+      actions.append(retry, clans);
+      panel.append(text, actions);
+      out.append(panel);
+    };
+
+    const showFailure = err => {
+      listingQuery = "";
+      out.innerHTML = "";
+      const panel = div("cx-empty cx-empty--error");
+      const text = document.createElement("p");
+      text.textContent = errText(err);
+      const actions = div("cx-empty__actions");
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.className = "cx-btn gold sm";
+      retry.setAttribute("data-retry-search", "");
+      retry.textContent = "Try again";
+      actions.append(retry);
+      panel.append(text, actions);
+      out.append(panel);
+      say(errText(err), "err");
+    };
+
+    let pending = null;
+    let searchToken = 0;
+    let lastQuery = "";
+    let lastEmpty = "";
+
+    async function loadRemaining() {
+      if (!pending) return;
+      const token = searchToken;
+      const job = pending;
+      const btn = $("[data-load-rest]", out);
+      if (btn) { btn.disabled = true; btn.textContent = "Loading more…"; }
+      try {
+        if (job.mode === "offset") {
+          const page = await findInIndex(job.q, job.exact, job.th, { offset: job.offset });
+          if (token !== searchToken) return;
+          const merged = window.PDXSearch.mergeHits(job.hits, toHits(page.items || []));
+          job.hits = merged;
+          job.offset = page.next_offset || 0;
+          job.found = Number(page.total) || merged.length;
+          pending = page.next_offset ? job : null;
+          const list = paintHits(merged, job.q, pending ? moreNote(job.found, merged.length, "offset") : "");
+          say(list.length + " of " + job.found + " matching players shown." + (pending ? "" : " All matches loaded."), "ok");
+          return;
+        }
+        /* Older deployments cap one response at 100 rows. Finish the search
+           with one request per Town Hall instead of dead-ending the list. */
+        const merged = job.hits.slice();
+        const seen = job.seen;
+        for (let thv = 1; thv <= SETTINGS.MAX_TOWN_HALL && merged.length < job.found; thv++) {
+          say("Loading Town Hall " + thv + " of " + SETTINGS.MAX_TOWN_HALL + "…");
+          try {
+            const page = await findInIndex(job.q, job.exact, thv);
+            for (const item of (page && page.items) || []) {
+              const tag = item && item.tag;
+              if (!tag || seen.has(tag)) continue;
+              seen.add(tag);
+              merged.push(item);
+            }
+          } catch (_) { /* one Town Hall failing must not end the search */ }
+        }
+        if (token !== searchToken) return;
+        pending = null;
+        const list = paintHits(toHits(merged), job.q, "");
+        say(list.length + (list.length === 1 ? " matching player found." : " matching players found.") + " All matches loaded.", "ok");
+      } catch (err) {
+        if (token === searchToken) {
+          say(errText(err), "err");
+          if (btn && btn.isConnected) { btn.disabled = false; btn.textContent = job.mode === "offset" ? "Load more" : "Show all matches"; }
+        }
+      }
+    }
+
+    async function runPlayerSearch(override) {
+      const typed = String(override == null ? input.value : override).trim();
+      const q = searchHelpers() ? searchHelpers().normalizeQuery(typed) : normalizeNameQuery(typed);
+      const exact = $("#cxExact", box).checked;
+      const thv = $("#cxPTH", box).value;
+
+      if (!q) { say("Enter a player name or player tag.", "err"); return; }
+
+      if (isTagInput(q)) {
+        lock(pForm, true);
+        hideSuggest();
+        await loadPlayer(normTag(q));
+        lock(pForm, false);
+        return;
+      }
+      if (q.startsWith("#")) {
+        say("That player tag doesn't look right. Check the tag and try again.", "err");
+        return;
+      }
+      const invalid = searchHelpers() ? searchHelpers().isInvalidQuery(q) : !foldName(q).replace(/[^\p{L}\p{N}]/gu, "");
+      if (invalid) {
+        say("That search has no letters or numbers. Add the player name or a player tag.", "err");
+        return;
+      }
+
+      lastQuery = typed;
+      lock(pForm, true);
+      hideSuggest();
+      pending = null;
+      searchToken++;
+      out.innerHTML = "";
+      try {
+        say("Searching every player record in the shared index…");
+        const data = await findInIndex(q, exact, thv);
+        const items = (data && data.items) || [];
+        const total = Number(data && data.total);
+        const found = Number.isFinite(total) ? total : items.length;
+        setCoverage(data || {});
+
+        if (!items.length) {
+          lastEmpty = typed;
+          showEmpty(q, data || {});
+          say('No indexed player matched "' + q + '". The player may not be indexed yet — this is not the same as the player not existing.', "err");
+          return;
+        }
+
+        lastEmpty = "";
+        const hits = window.PDXSearch ? window.PDXSearch.rankResults(toHits(items), q) : toHits(items);
+        const perCall = Number(data && data.result_limit) || 0;
+        const hasOffset = data && data.next_offset != null && Number(data.next_offset) > 0;
+        const leftover = Math.max(0, found - hits.length);
+        pending = hasOffset && leftover > 0
+          ? { mode: "offset", q: q, exact: exact, th: thv, hits: toHits(items), offset: Number(data.next_offset), found: found }
+          : (perCall > 0 && perCall < 1000 && leftover > 0
+            ? { mode: "th", q: q, exact: exact, th: thv, hits: items, found: found, seen: new Set(items.map(i => i.tag).filter(Boolean)) }
+            : null);
+
+        const note = pending
+          ? moreNote(found, hits.length, pending.mode)
+          : (leftover > 0
+            ? '<div class="cx-more-results"><p>' + found + ' players match; the search service returns one page at a time.</p><p class="cx-help">Add a letter or pick a Town Hall to narrow it down.</p></div>'
+            : "");
+        paintHits(hits, q, note);
+
+        const shown = pending ? "Showing " + hits.length + " of " + found : String(found);
+        say(shown + (found === 1 ? " matching player found." : " matching players found.") +
+          " Matches ignore capitals, small-caps fonts, punctuation, spaces and emoji; numbers still count." +
+          (pending ? " Load more to see the rest." : (leftover > 0 ? " Narrow the search to see the rest." : "")), "ok");
+      } catch (err) {
+        showFailure(err);
+      } finally {
+        lock(pForm, false);
+      }
+    }
+
+    pForm.addEventListener("submit", event => {
+      event.preventDefault();
+      runPlayerSearch();
+    });
+
+    /* ---- suggestions: real index rows, debounced ---- */
+    let suggestTimer = 0, suggestToken = 0;
+    function hideSuggest() {
+      suggest.hidden = true;
+      suggest.innerHTML = "";
+      input.setAttribute("aria-expanded", "false");
+    }
+    input.addEventListener("input", () => {
+      clearTimeout(suggestTimer);
+      const typed = input.value.trim();
+      const q = searchHelpers() ? searchHelpers().normalizeQuery(typed) : normalizeNameQuery(typed);
+      const invalid = searchHelpers() ? searchHelpers().isInvalidQuery(q) : !q;
+      if (invalid || q.length < 3 || isTagInput(q)) { hideSuggest(); return; }
+      const token = ++suggestToken;
+      suggestTimer = setTimeout(async () => {
+        try {
+          const data = await findInIndex(q, false, "", { limit: 6 });
+          if (token !== suggestToken) return;
+          const rows = (data.items || []).slice(0, 6);
+          if (!rows.length) { hideSuggest(); return; }
+          suggest.innerHTML = rows.map(row =>
+            '<li role="option"><button type="button" data-suggest="' + esc(row.name) + '"><strong>' + esc(row.name) +
+            "</strong><small>" + esc(row.tag) + " · TH " + esc(row.th == null ? "?" : row.th) +
+            (row.clan_name ? " · " + esc(row.clan_name) : "") + "</small></button></li>").join("");
+          suggest.hidden = false;
+          input.setAttribute("aria-expanded", "true");
+        } catch (_) { if (token === suggestToken) hideSuggest(); }
+      }, 450);
+    });
+    input.addEventListener("keydown", event => {
+      if (event.key === "Escape") hideSuggest();
+    });
+    suggest.addEventListener("click", event => {
+      const button = event.target.closest("[data-suggest]");
+      if (!button) return;
+      input.value = button.dataset.suggest;
+      hideSuggest();
+      runPlayerSearch(button.dataset.suggest);
+    });
+    document.addEventListener("click", event => {
+      if (!box.contains(event.target)) hideSuggest();
+    });
 
     box.addEventListener("click", e => {
       const a = e.target.closest("[data-crit]");
@@ -365,6 +637,11 @@
       }
     });
 
+    const switchTab = name => {
+      const tab = $('.cx-tab[data-tab="' + name + '"]', box);
+      if (tab) tab.click();
+    };
+
     $$(".cx-tab", box).forEach(b => b.addEventListener("click", () => {
       $$(".cx-tab", box).forEach(x => { const on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-selected", on ? "true" : "false"); });
       const players = b.dataset.tab === "players";
@@ -372,6 +649,7 @@
       cForm.hidden = players;
       pending = null;
       searchToken++;
+      hideSuggest();
       out.innerHTML = "";
       say(players ? "Type a player name or tag. Add criteria to narrow it down." : "Type a clan name (3+ letters) or tag. Add criteria to narrow it down.");
     }));
@@ -388,142 +666,6 @@
         say(errText(e), "err");
       }
     }
-
-    /* ---- shared result helpers: one search can span several index pages ---- */
-    const toHits = items => (items || []).map(i => ({
-      tag: i.tag, name: i.name, th: i.th, trophies: i.trophies,
-      role: i.role || "", match: i.match_type || "",
-      clan: (i.clan_memberships || []).map(c => c.clan_name || c.clan_tag).filter(Boolean).join(", ") || i.clan_name || i.clan_tag || ""
-    }));
-    const sortHits = (hits, q) => {
-      // Neutral ordering: saved status is never considered. Name-match quality
-      // first, then alphabetically so equal matches have a predictable order.
-      const queryName = foldName(q).replace(/[^\p{L}\p{N}]/gu, "");
-      const matchScore = name => {
-        const candidate = foldName(name).replace(/[^\p{L}\p{N}]/gu, "");
-        if (candidate === queryName) return 0;
-        if (candidate.startsWith(queryName)) return 1;
-        if (candidate.includes(queryName)) return 2;
-        return 3;
-      };
-      hits.sort((a, b) => matchScore(a.name) - matchScore(b.name) ||
-        String(a.name || "").localeCompare(String(b.name || ""), undefined, { sensitivity: "base" }) ||
-        String(a.tag || "").localeCompare(String(b.tag || "")));
-      return hits;
-    };
-    const paintHits = (hits, q, note) => {
-      out.innerHTML = '<div class="cx-list">' + hits.map(playerRow).join("") + "</div>" + (note || "");
-    };
-
-    /* Older deployments of the coc function answer 100 rows per call. When the
-       first page does not hold every match, finish the search on demand with
-       one extra request per Town Hall instead of dead-ending the result list. */
-    let pending = null;
-    /* Every new search bumps the token. A slow "Show all" pass checks it before
-       painting, so results from an older search can never replace a newer one. */
-    let searchToken = 0;
-
-    async function loadRemaining() {
-      if (!pending) return;
-      const token = searchToken;
-      const { q, exact, hits, found, seen } = pending;
-      const btn = $("[data-load-rest]", out);
-      if (btn) { btn.disabled = true; btn.textContent = "Loading matches…"; }
-      const merged = hits.slice();
-      for (let thv = 1; thv <= SETTINGS.MAX_TOWN_HALL && merged.length < found; thv++) {
-        say("Loading Town Hall " + thv + " of " + SETTINGS.MAX_TOWN_HALL + "…");
-        try {
-          const page = await callEdge({ action: "findPlayers", name: q, exact: !!exact, th: thv, limit: 1000 });
-          if (page.status !== 200 || !page.data) continue;
-          for (const item of page.data.items || []) {
-            const tag = item && item.tag;
-            if (!tag || seen.has(tag)) continue;
-            seen.add(tag);
-            merged.push(item);
-          }
-        } catch (_) { /* one Town Hall failing must not end the search */ }
-      }
-      pending = null;
-      if (token !== searchToken) return;
-      const list = sortHits(toHits(merged), q);
-      paintHits(list, q, "");
-      say(list.length + (list.length === 1 ? " matching player found." : " matching players found.") + " All matches loaded.", "ok");
-    }
-
-    pForm.addEventListener("submit", async e => {
-      e.preventDefault();
-      const typed = $("#cxPQ", box).value.trim();
-      const q = normalizeNameQuery(typed);
-      const exact = $("#cxExact", box).checked;
-      const thv = $("#cxPTH", box).value;
-
-      if (!q) { say("Enter a player name or player tag.", "err"); return; }
-
-      // A player tag is always a direct live lookup.
-      if (isTagInput(q)) {
-        lock(pForm, true);
-        await loadPlayer(normTag(q));
-        lock(pForm, false);
-        return;
-      }
-      if (q.startsWith("#")) {
-        say("That player tag doesn't look right. Check the tag and try again.", "err");
-        return;
-      }
-      // Emoji, symbols and small-caps fonts are folded out for the match,
-      // so "⚡ᴄʜɪᴇꜰ" and "chief" reach the same players.
-      const folded = foldName(q).replace(/[^\p{L}\p{N}]/gu, "");
-      if (!folded) {
-        say("That search has no letters or numbers. Add the player name or a player tag.", "err");
-        return;
-      }
-
-      lock(pForm, true);
-      pending = null;
-      searchToken++;
-      out.innerHTML = "";
-      try {
-        say("Searching every player record in the shared index…");
-        const data = await findInIndex(q, exact, thv);
-        const items = (data && data.items) || [];
-        const total = Number(data && data.total);
-        const found = Number.isFinite(total) ? total : items.length;
-        const hits = sortHits(toHits(items), q);
-
-        if (!hits.length) {
-          say("No players in the shared index matched \"" + q + "\". Try fewer letters, a different spelling, or open a clan and add its Members to the index.", "err");
-          return;
-        }
-
-        /* result_limit tells the two server versions apart: the current
-           function filters in SQL and can return 1000 rows, while the deployed
-           one is capped at 100. Only the capped version needs Town Hall paging. */
-        const perCall = Number(data && data.result_limit) || 0;
-        const capped = perCall > 0 && perCall < 1000;
-        const more = found > hits.length;
-        pending = more && capped
-          ? { q: q, exact: exact, hits: items, found: found, seen: new Set(items.map(i => i.tag).filter(Boolean)) }
-          : null;
-        const note = more
-          ? (pending
-              ? '<div class="cx-more-results"><p>' + found + " players match. The search service returns " + hits.length + " at a time.</p>" +
-                '<button class="cx-btn green sm" type="button" data-load-rest>Show all ' + found + ' matches</button></div>'
-              : '<div class="cx-more-results"><p>' + found + ' players match; the first ' + hits.length + ' are below.</p>' +
-                '<p class="cx-help">One search answers with a single page. Add a letter or pick a Town Hall to narrow it down.</p></div>')
-          : "";
-        paintHits(hits, q, note);
-        const folding = data && data.total_scope
-          ? " Matches ignore capitals, small-caps fonts, full-width letters and emoji; numbers still count."
-          : " Matches ignore capitals, punctuation, spaces and emoji.";
-        say((more ? "Showing " + hits.length + " of " + found : String(found)) +
-          (found === 1 ? " matching player found." : " matching players found.") + folding +
-          (pending ? " Use Show all to load the rest." : (more ? " Narrow the search to see the rest." : "")), "ok");
-      } catch (err) {
-        say(errText(err), "err");
-      } finally {
-        lock(pForm, false);
-      }
-    });
 
     cForm.addEventListener("submit", async e => {
       e.preventDefault();
@@ -564,7 +706,8 @@
           (!thv || !c.requiredTownhallLevel || c.requiredTownhallLevel <= thv));
         if (!items.length) say("No clans matched. Try another name or loosen the criteria.", "err");
         else {
-          out.innerHTML = '<div class="cx-list">' + items.map(clanRow).join("") + "</div>";
+          out.innerHTML = '<div class="cx-list">' + items.map(clanRow).join("") + "</div>" +
+            '<p class="cx-help">Open Members on a clan to save its players to the shared index, then search any of their names.</p>';
           say(items.length + (items.length === 1 ? " clan found." : " clans found."), "ok");
         }
       } catch (err) {
@@ -575,10 +718,16 @@
 
     out.addEventListener("click", async e => {
       if (e.target.closest("[data-load-rest]")) { loadRemaining(); return; }
+      if (e.target.closest("[data-retry-search]")) {
+        if (lastQuery) runPlayerSearch(lastQuery);
+        else input.focus();
+        return;
+      }
+      if (e.target.closest("[data-goto-clans]")) { switchTab("clans"); return; }
       const memberButton = e.target.closest("[data-members]");
       if (memberButton) {
         const clanTag = memberButton.dataset.members;
-        say("Loading clan members and updating the shared directory…");
+        say("Loading clan members and updating the shared index…");
         try {
           const result = await callEdge({ action: "getClanMembers", clanTag: clanTag });
           if (result.status < 200 || result.status >= 300) {
@@ -589,8 +738,12 @@
             out.innerHTML = "";
             say("No members were returned for this clan.", "err");
           } else {
-            out.innerHTML = '<div class="cx-list">' + members.map(memberRow).join("") + "</div>";
-            say(members.length + " clan members loaded and added to the shared directory.", "ok");
+            const retry = lastEmpty
+              ? '<div class="cx-more-results"><p>' + esc(members.length) + ' players were saved to the shared index.</p>' +
+                '<button class="cx-btn green sm" type="button" data-retry-search>Search "' + esc(lastEmpty) + '" again</button></div>'
+              : '<p class="cx-help">' + esc(members.length) + " players were saved to the shared index.</p>";
+            out.innerHTML = '<div class="cx-list">' + members.map(memberRow).join("") + "</div>" + retry;
+            say(members.length + " clan members loaded and saved to the shared index.", "ok");
           }
         } catch (err) {
           say(errText(err), "err");
@@ -604,7 +757,7 @@
     });
 
     swapIn(sec, box);
-    setHeading(sec, null, "Search player names across the shared public index without saved-player priority, or open a profile by player tag. Open a clan Members list to add its players for everyone.");
+    setHeading(sec, null, "Search every player saved in the shared index, or open a profile by player tag. Opening a clan's Members list or a player profile adds that player to the index for everyone.");
   }
 
   /* ============ 9. Clash Heroes Encyclopedia ============ */

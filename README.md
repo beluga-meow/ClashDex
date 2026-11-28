@@ -201,63 +201,82 @@ of being invented.
 ## Player search
 
 The site calls one Supabase Edge Function, `coc`, at project
-`hrloxvshgehvkmpnnbyz`. The committed version searches the shared player index
-in a single SQL filter, so names match regardless of capitals, small-caps
-letters, full-width letters or emoji. The currently deployed version still
-walks the table and stops at 100 rows per call, which is why the site offered
-**Show all matches** until this deploy is made.
+`hrloxvshgehvkmpnnbyz`. Name search reads the shared `coc_player_index` table.
 
-You need a personal access token from
-<https://supabase.com/dashboard/account/tokens> (starts with `sbp_`).
+**What the index can and cannot do.** The official Clash of Clans API has no
+global "find player by name" endpoint, so a name can only find players that are
+already in the index. Players enter it from the official API when:
 
-1. In this project: **Settings → Project settings → Secrets**, add
-   `SUPABASE_ACCESS_TOKEN` with that token. Then ask the agent to deploy, or
-   run the commands below yourself.
-2. Locally, with the token in your shell (never commit it):
+- a clan's **Members** list is opened (up to 50 players per clan, saved with
+  their clan and role),
+- a **player profile is opened by tag** (the Edge Function now saves that
+  profile too — this source was missing and is why an opened player could never
+  be found by name afterwards),
+- the admin discovery script (`discover-clans.example.sh`, needs
+  `PEKKADEX_DISCOVERY_KEY`) walks clan search or ranked clans.
 
-   ```bash
-   npx --yes supabase@latest functions deploy coc \
-     --project-ref hrloxvshgehvkmpnnbyz
-   ```
+The Player Finder shows how many players the index holds and when its newest
+record was updated, so an empty result reads as "not indexed yet" rather than
+"this player does not exist". It never presents unrelated players as exact
+matches: each row is labelled Exact / Starts with / Contains / Similar, and
+duplicate names are listed separately by player tag.
 
-   The CLI asks for the token the first time; or pass it non-interactively
-   with `SUPABASE_ACCESS_TOKEN` set in the environment.
-3. Check the function's JWT setting before trusting a change: the site calls
-   it with the publishable key, which needs JWT verification left as it is
-   now (default). If the deploy is followed by `401` responses, redeploy the
-   same code with `--no-verify-jwt`.
-4. Verify the deploy from any terminal:
+At the time of the 2026-11-28 audit the live index held **465 players** and the
+reported name `janjan` was not one of them. Opening that player's clan Members
+list (or their profile by tag) is what makes the name searchable; there is no
+honest way to look up an arbitrary player name through the official API.
 
-   ```bash
-   curl -s -X POST \
-     "https://hrloxvshgehvkmpnnbyz.supabase.co/functions/v1/coc" \
-     -H "apikey: <publishable key from assets/js/supabase-config.js>" \
-     -H "Authorization: Bearer <publishable key>" \
-     -H "content-type: application/json" \
-     -d '{"action":"findPlayers","name":"ᴘᴇᴋᴋᴀ","limit":1000}'
-   ```
+### What the current code does
 
-   `result_limit` must read `1000` (not `100`) and the items must include the
-   P.E.K.K.A player. Until then the site keeps searching through the older
-   function with client-side folding and Town Hall paging.
+- Case-, small-caps-, full-width-, accent-, punctuation- and emoji-insensitive
+  matching, with numbers kept (`assets/js/name-fold.js`).
+- Exact, prefix, contains and fuzzy ranking; exhaustive "exact name" filter.
+- Up to 1000 rows per request, `offset`/`next_offset` pagination, and a
+  `Show all` fallback for an older deployment that returns 100 rows.
+- Debounced typeahead suggestions from real index rows, index coverage and
+  freshness, distinct states for invalid input, no match, rate limit, server
+  error and not-connected, plus Retry.
+- `tools/test-player-search.mjs` unit-tests the ranking and wording;
+  `tools/probe-live-search.mjs` checks the deployed function against the real
+  index and never invents test players.
+
+### Deploying the search function
+
+The deployed function is older than this repository (it reports
+`result_limit: 100`, no index coverage and no `next_offset`, and it answers a
+blank search with HTTP 200). To ship the current code you need a personal
+access token from <https://supabase.com/dashboard/account/tokens> (starts with
+`sbp_`), added under **Settings → Project settings → Secrets** as
+`SUPABASE_ACCESS_TOKEN`. Then run, or ask the agent to run:
+
+```bash
+npx --yes supabase@latest functions deploy coc \
+  --project-ref hrloxvshgehvkmpnnbyz
+
+npx --yes supabase@latest db push --project-ref hrloxvshgehvkmpnnbyz
+```
+
+After the deploy, `node tools/probe-live-search.mjs` must report no failures:
+`result_limit` 1000, `index_total`, `next_offset`, and HTTP 400 for a blank
+search. The site keeps working with the older function until then.
 
 ### Database migrations
 
-```bash
-npx supabase db push --project-ref hrloxvshgehvkmpnnbyz
-```
-
-- `20261125090000_player_name_search.sql` — `pg_trgm`, `name_raw`,
-  `name_folded`, `name_skeleton`, `name_codepoints`, sync trigger, GIN
-  indexes and the ranked `search_players()` function (exact > prefix >
-  substring > fuzzy, 3-character minimum).
+- `20261124000000_player_index_base.sql` — creates the tables that were made by
+  hand in the hosted project (`coc_player_index`, memberships, clan index,
+  `coc_api_rate_limit`) plus the rate-limit function, folding helpers, indexes
+  and service-role-only RLS, so a fresh clone can be set up from this repo.
+- `20261125090000_player_name_search.sql` — `pg_trgm`, folded/skeleton/codepoint
+  columns, GIN indexes and the ranked `search_players()` function.
 - `20261125091000_hero_wishlist.sql` — per-user cosmetic wishlist with RLS
   locked to the owner. No UI writes to it yet.
+- `20261128090000_player_search_sync_fix.sql` — the final trigger, so
+  `search_name` (the column the Edge Function filters on) is written on every
+  insert/update, and repairs rows that lost it.
 
 The Edge Function keeps using the service role, which bypasses RLS, so
-enabling RLS on the player index does not change how the site searches. Any
-direct anon read needs an explicit policy; see the notes at the end of the
-migration.
+service-role-only RLS does not change how the site searches. Any direct anon
+read needs an explicit policy; see the notes in the migration.
 
 ## Dropping in art
 

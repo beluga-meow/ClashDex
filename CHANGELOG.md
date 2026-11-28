@@ -1,5 +1,38 @@
 # Changelog
 
+## 2026-11-28 — Player Finder pipeline, exact matching, PWA installability
+
+### Player Finder
+- Root cause of "janjan is not found": the live shared index held about 465
+  players and did not contain that name. The pipeline only indexed players
+  when a clan's Members list was opened; **opening a player profile by tag
+  never saved that player**, and the repository had no base schema migration.
+- The `coc` Edge Function now indexes the profile returned by
+  `/players/#TAG`, keeps `search_name` correct, honours the "exact name"
+  filter (it was ignored before), adds `offset`/`next_offset` pagination and
+  reports `index_total` + `newest_update`.
+- New `supabase/migrations/20261124000000_player_index_base.sql` creates the
+  four tables, the rate-limit function and indexes that only existed by hand;
+  `20261128090000_player_search_sync_fix.sql` makes the trigger the final word
+  on `search_name` and repairs rows missing it.
+- UI: debounced suggestions from real index rows, coverage/freshness line,
+  per-row match quality (Exact / Starts with / Contains / Similar), index
+  freshness, distinct invalid / no-match / not-indexed / rate-limit / server
+  states with Retry, and "Search a clan to index its members". After Members
+  indexing, a "Search … again" button retries the failed name.
+- `assets/js/player-search.js` holds the tested ranking, freshness and
+  empty-state wording; `tools/test-player-search.mjs` (14 tests) and
+  `tools/probe-live-search.mjs` cover it. Duplicate names stay separate by tag.
+
+### PWA / install
+- Manifest now has a stable `id`, `scope`, language, categories, 192/512 PNG
+  icons and a maskable 512 icon (generated nav/gold shield artwork, not game
+  art), plus an `apple-touch-icon` and a matching navy `theme-color`.
+- Service worker cache bumped to `pekkadex-v26`; the offline fallback now only
+  serves `index.html` for navigations, not for missing images or JSON.
+- No APK exists in the repository and none is linked; the Install app entry
+  keeps offering the real PWA install flow and says so.
+
 ## 2026-11-28 — Village Tools, Attack Guides, encyclopedia extras, art upscale
 
 ### Home page

@@ -1213,3 +1213,62 @@ body.home-page [hidden] { display: none !important; }
   .timer-row__state { justify-self: start; }
   .encyclopedia-cta h3 { font-size: var(--fs-lg); }
 }
+
+/* ---- player finder: suggestions, coverage, match quality, empty states ---- */
+.cx-coverage { margin: 0; padding: 0 var(--s-2); color: var(--c-ink-3); font-size: var(--fs-xs); font-weight: 700; text-align: center; }
+.cx-coverage[hidden] { display: none; }
+
+.cx-suggest {
+  list-style: none;
+  margin: 0 0 var(--s-2);
+  padding: var(--s-1);
+  display: grid;
+  gap: 2px;
+  border: 2px solid var(--c-wood-500);
+  border-radius: var(--r-md);
+  background: #fffdf5;
+  box-shadow: 0 6px 0 rgba(63, 39, 16, .08);
+}
+.cx-suggest[hidden] { display: none; }
+.cx-suggest button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: var(--s-2);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--c-ink);
+  text-align: left;
+  cursor: pointer;
+}
+.cx-suggest button:hover,
+.cx-suggest button:focus-visible { background: rgba(47, 124, 200, .14); }
+.cx-suggest strong { font: 400 var(--fs-sm) var(--font-display); overflow-wrap: anywhere; }
+.cx-suggest small { color: var(--c-ink-2); font-size: var(--fs-xs); font-weight: 700; }
+
+.cx-match {
+  display: inline-block;
+  padding: 2px var(--s-2);
+  border: 2px solid var(--c-blue-500);
+  border-radius: var(--r-pill);
+  background: #e8f2ff;
+  color: #143d68;
+  font: 400 var(--fs-xs) / 1.3 var(--font-display);
+  white-space: nowrap;
+}
+
+.cx-empty {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  border: 2px dashed var(--c-wood-400);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, .5);
+}
+.cx-empty p { margin: 0; white-space: pre-line; color: var(--c-ink-2); font-size: var(--fs-sm); font-weight: 700; line-height: 1.55; }
+.cx-empty--error { border-color: #e08a72; background: #fff4f0; }
+.cx-empty--error p { color: #7c1d12; }
+.cx-empty__actions { display: flex; flex-wrap: wrap; gap: var(--s-1); }

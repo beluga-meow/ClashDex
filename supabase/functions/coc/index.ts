@@ -46,6 +46,14 @@ const SMALL_CAPS_TO = Array.from(
     "abcdefghijklmnopqrstuvwxyz"
 );
 
+/* Index coverage changes slowly; cache it for a minute so typing a name does
+   not run two extra count queries per keystroke. */
+let indexStatsCache: {
+    at: number;
+    total: number | null;
+    newest: string | null;
+} | null = null;
+
 const SMALL_CAPS_MAP = new Map(
     SMALL_CAPS_FROM.map((char, index) => [
         char,
@@ -452,6 +460,64 @@ Deno.serve(async (req: Request) => {
                 count: players.length,
                 error: null,
             };
+        }
+
+        /* A player opened by tag is a verified player record, so keep it.
+           This is the missing source that made name search look broken: the
+           index used to grow only when someone opened a clan's member list. */
+        async function indexPlayerProfile(profile: any) {
+            if (
+                !profile ||
+                typeof profile.tag !== "string" ||
+                typeof profile.name !== "string"
+            ) {
+                return null;
+            }
+
+            const record: Record<string, unknown> = {
+                player_tag: cleanTag(profile.tag),
+                name: profile.name.slice(0, 80),
+                search_name: normalizeText(profile.name),
+
+                town_hall_level:
+                    Number.isInteger(profile.townHallLevel)
+                        ? profile.townHallLevel
+                        : null,
+
+                trophies:
+                    Number.isInteger(profile.trophies)
+                        ? profile.trophies
+                        : null,
+
+                updated_at: new Date().toISOString(),
+            };
+
+            if (
+                profile.clan &&
+                typeof profile.clan.tag === "string"
+            ) {
+                record.clan_tag = cleanTag(profile.clan.tag);
+                record.clan_name =
+                    typeof profile.clan.name === "string"
+                        ? profile.clan.name
+                        : null;
+            }
+
+            const { error } = await supabase
+                .from("coc_player_index")
+                .upsert([record], {
+                    onConflict: "player_tag",
+                });
+
+            if (error) {
+                console.error(
+                    "Player profile index upsert failed:",
+                    error.message
+                );
+                return null;
+            }
+
+            return record.player_tag as string;
         }
 
         // ==========================================
@@ -1048,13 +1114,17 @@ Deno.serve(async (req: Request) => {
                 : MAX_RESULTS;
 
             const COLUMNS =
-                "player_tag,name,search_name,town_hall_level,trophies,role,clan_tag,clan_name";
+                "player_tag,name,search_name,town_hall_level,trophies,role,clan_tag,clan_name,updated_at";
 
             /* search_name is stored already folded (small caps, full-width
                letters, accents and emoji removed), so PostgREST can answer the
                name search with one index-friendly query. `name` is included in
                the filter for rows indexed before search_name existed. */
-            async function nameQuery(wildcard: string, limit: number) {
+            async function nameQuery(
+                wildcard: string,
+                limit: number,
+                offset = 0
+            ) {
                 let dbQuery = supabase
                     .from("coc_player_index")
                     .select(COLUMNS, { count: "exact" })
@@ -1065,7 +1135,10 @@ Deno.serve(async (req: Request) => {
                         ascending: false,
                         nullsFirst: false,
                     })
-                    .limit(limit);
+                    .order("player_tag", {
+                        ascending: true,
+                    })
+                    .range(offset, offset + limit - 1);
 
                 if (th !== null) {
                     dbQuery = dbQuery.eq(
@@ -1119,20 +1192,29 @@ Deno.serve(async (req: Request) => {
                     matchRank = 2;
                 }
 
-                // 4. Partial normalized match.
+                // 4. Name starts with the query.
+                else if (
+                    fullKey.startsWith(queryFull) ||
+                    textKey.startsWith(queryText)
+                ) {
+                    matchType = "Prefix Match";
+                    matchRank = 3;
+                }
+
+                // 5. Partial normalized match.
                 else if (
                     fullKey.includes(queryFull)
                 ) {
                     matchType = "Partial Match";
-                    matchRank = 3;
+                    matchRank = 4;
                 }
 
-                // 5. Partial letters-and-numbers match.
+                // 6. Partial letters-and-numbers match.
                 else if (
                     textKey.includes(queryText)
                 ) {
                     matchType = "Partial Match";
-                    matchRank = 4;
+                    matchRank = 5;
                 }
 
                 // 6. Similar spelling.
@@ -1151,12 +1233,18 @@ Deno.serve(async (req: Request) => {
 
                     if (distance !== null) {
                         matchType = "Similar Match";
-                        matchRank = 5;
+                        matchRank = 6;
                         similarity = distance;
                     }
                 }
 
                 if (!matchType) {
+                    return null;
+                }
+
+                /* "Only players with that exact name" must mean the folded
+                   name is equal — not merely a substring of it. */
+                if (body.exact === true && textKey !== queryText) {
                     return null;
                 }
 
@@ -1168,6 +1256,7 @@ Deno.serve(async (req: Request) => {
                     role: row.role || "",
                     clan_tag: row.clan_tag || "",
                     clan_name: row.clan_name || "",
+                    updated_at: row.updated_at || null,
 
                     match_type: matchType,
 
@@ -1178,11 +1267,17 @@ Deno.serve(async (req: Request) => {
 
             const matches: any[] = [];
 
+            const requestedOffset = Number(body.offset);
+
+            const offset = Number.isInteger(requestedOffset)
+                ? Math.max(0, requestedOffset)
+                : 0;
+
             const {
                 data: indexedRows,
                 count: matchedRows,
                 error: indexError,
-            } = await nameQuery(`%${queryText}%`, resultLimit);
+            } = await nameQuery(`%${queryText}%`, resultLimit, offset);
 
             if (indexError) {
                 console.error(
@@ -1274,7 +1369,16 @@ Deno.serve(async (req: Request) => {
                 );
             });
 
-            const total = sortedMatches.length;
+            /* count from the filtered query covers the whole index, not just
+               this page; when the exact filter trimmed rows, use what is left. */
+            const total = body.exact === true
+                ? sortedMatches.length
+                : Math.max(
+                    sortedMatches.length,
+                    typeof matchedRows === "number"
+                        ? matchedRows
+                        : 0
+                );
 
             const items = sortedMatches
                 .slice(0, resultLimit)
@@ -1350,9 +1454,61 @@ Deno.serve(async (req: Request) => {
                 }
             }
 
+            const statsNow = Date.now();
+
+            if (
+                !indexStatsCache ||
+                statsNow - indexStatsCache.at > 60_000
+            ) {
+                const [totalResult, newestResult] =
+                    await Promise.all([
+                        supabase
+                            .from("coc_player_index")
+                            .select("player_tag", {
+                                count: "exact",
+                                head: true,
+                            }),
+
+                        supabase
+                            .from("coc_player_index")
+                            .select("updated_at")
+                            .order("updated_at", {
+                                ascending: false,
+                                nullsFirst: false,
+                            })
+                            .limit(1),
+                    ]);
+
+                indexStatsCache = {
+                    at: statsNow,
+
+                    total:
+                        totalResult.error ||
+                        typeof totalResult.count !== "number"
+                            ? null
+                            : totalResult.count,
+
+                    newest:
+                        newestResult.error
+                            ? null
+                            : newestResult.data?.[0]?.updated_at ??
+                              null,
+                };
+            }
+
             return apiResponse(200, {
                 items,
                 total,
+
+                offset,
+                next_offset:
+                    offset + items.length < total
+                        ? offset + items.length
+                        : null,
+
+                index_total: indexStatsCache.total,
+                newest_update: indexStatsCache.newest,
+
                 scanned: scannedRows.length + fallbackRows,
 
                 directory_matches:
@@ -1443,6 +1599,25 @@ Deno.serve(async (req: Request) => {
             data = {
                 message: responseText,
             };
+        }
+
+        // ==========================================
+        // CACHE THE OPENED PLAYER PROFILE
+        // ==========================================
+
+        if (
+            response.ok &&
+            /^\/players\/[A-Za-z0-9%]+$/.test(target.pathname) &&
+            typeof data?.tag === "string"
+        ) {
+            try {
+                await indexPlayerProfile(data);
+            } catch (error) {
+                console.error(
+                    "Could not index the opened player profile:",
+                    error
+                );
+            }
         }
 
         // ==========================================
