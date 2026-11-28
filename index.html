@@ -13,7 +13,7 @@
   <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./assets/css/tokens.css?v=db87c23f">
   <link rel="stylesheet" href="./assets/css/components.css?v=8df6c753">
-  <link rel="stylesheet" href="./assets/css/home.css?v=97a0d8ed">
+  <link rel="stylesheet" href="./assets/css/home.css?v=8ced8416">
   <link rel="stylesheet" href="./assets/css/villager.css?v=acd85999">
 </head>
 <body class="home-page" data-guide="home">
@@ -38,6 +38,7 @@
       <a href="#attacks"><img class="nav-ico" src="./assets/icons/nav-attack.png" alt="" width="24" height="24" decoding="async">Attack</a>
       <a href="#heroes"><img class="nav-ico" src="./assets/icons/nav-heroes.png" alt="" width="24" height="24" decoding="async">Heroes</a>
       <a href="#account"><img class="nav-ico" src="./assets/icons/nav-account.png" alt="" width="24" height="24" decoding="async">Account</a>
+      <button class="nav-app" id="installApp" type="button"><svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-gear"></use></svg>Install app</button>
     </nav>
     <div class="header-actions">
       <a class="header-cta" href="./profile.html" data-profile-link aria-label="Open your profile"><svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-user"></use></svg></a>
@@ -193,6 +194,27 @@
       </div>
     </section>
 
+    <section class="section" id="village-tools">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Plan the grind</p>
+          <h2>Village <span>Tools</span></h2>
+          <p class="section-subtitle">Work out how long your upgrades will take, then track them while they run.</p>
+        </div>
+        <span class="section-badge">Your numbers only</span>
+      </div>
+      <div class="pdx-panel home-cta">
+        <div>
+          <h3>How long to max, and an upgrade tracker</h3>
+          <p class="pdx-note">Enter your own times and costs — PekkaDex ships no hidden Town Hall tables. The calculator adds builders, boosts and queues together, and the tracker keeps an eye on what is running.</p>
+        </div>
+        <div class="home-cta__actions">
+          <a class="pdx-btn" href="./upgrades.html">Open Village Tools</a>
+          <a class="pdx-btn pdx-btn--wood" href="./upgrades.html#tracker">Go to the tracker</a>
+        </div>
+      </div>
+    </section>
+
     <section class="section attack-section" id="attacks">
       <div class="section-heading">
         <div>
@@ -200,16 +222,28 @@
           <h2>Attack <span>Academy</span></h2>
           <p class="section-subtitle">AI attack analysis and the best attacks for every Town Hall.</p>
         </div>
-        <a class="text-link" href="./armies.html">Open the Army Library <span aria-hidden="true">→</span></a>
+        <div class="section-heading__links">
+          <a class="text-link" href="./attack-guides.html">Attack Guides &amp; Queen Walk <span aria-hidden="true">→</span></a>
+          <a class="text-link" href="./armies.html">Open the Army Library <span aria-hidden="true">→</span></a>
+        </div>
       </div>
       <p class="section-footnote" data-attacks-fallback>Attack analysis needs JavaScript. The Army Library lists every army composition with its Town Hall range and strategy.</p>
     </section>
 
     <section class="section" id="heroes">
       <div class="section-heading">
-        <div><h2>Clash <span>Heroes Encyclopedia</span></h2></div>
+        <div>
+          <p class="eyebrow">Six heroes, one archive</p>
+          <h2>Clash <span>Heroes Encyclopedia</span></h2>
+        </div>
+        <span class="section-badge">Heroes · Loadouts · Pets</span>
       </div>
-      <a class="button button-gold" href="./heroes.html">Open the Encyclopedia <span aria-hidden="true">→</span></a>
+      <div class="pdx-panel encyclopedia-cta">
+        <img class="encyclopedia-cta__banner" src="./assets/heroes/encyclopedia-banner.webp" alt="Portraits of the six Clash of Clans heroes: Barbarian King, Archer Queen, Grand Warden, Royal Champion, Minion Prince and Dragon Duke" width="1320" height="480" loading="lazy" decoding="async">
+        <h3>Every hero, their gear and their pets in one place</h3>
+        <p class="pdx-note">Portraits, hero equipment, loadout ideas, pets and cosmetics — with anything we could not confirm clearly labelled instead of guessed.</p>
+        <a class="pdx-btn encyclopedia-cta__btn" href="./heroes.html">Open the Encyclopedia</a>
+      </div>
     </section>
 
     <section class="section" id="events">
@@ -220,6 +254,19 @@
           <p class="section-subtitle">Clash of Clans news and PekkaDex updates.</p>
         </div>
         <span class="section-badge">Kingdom news</span>
+      </div>
+      <div class="pdx-panel event-timers">
+        <div class="event-timers__head">
+          <div>
+            <p class="eyebrow">Recurring in-game events</p>
+            <h3>What is running, and what is next</h3>
+          </div>
+          <span class="pdx-chip">Your local time</span>
+        </div>
+        <div class="timer-list" id="eventTimers">
+          <p class="pdx-note">The countdowns need JavaScript. Every window below is defined in UTC and shown in your own timezone.</p>
+        </div>
+        <p class="pdx-note event-timers__note">Supercell can move, shorten or extend any of these events, and PekkaDex cannot see your server's live schedule. Countdowns are a best-effort reminder, not an official timer.</p>
       </div>
       <div class="event-grid">
         <article class="event-card">
@@ -273,6 +320,8 @@
   <script src="./assets/js/supabase-config.js?v=f3dfcc9a"></script>
   <script src="./assets/js/art-data.js?v=59839121"></script>
   <script src="./assets/js/name-fold.js?v=d08912b4"></script>
+  <script src="./assets/js/install.js?v=719608c8"></script>
+  <script src="./assets/js/timers.js?v=921383de"></script>
   <script src="./assets/js/app.js?v=7ada2304"></script>
   <script src="./assets/js/attacks.js?v=3540c617"></script>
   <script src="./assets/js/profile-nav.js?v=08a83389"></script>

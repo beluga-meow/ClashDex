@@ -1,0 +1,147 @@
+/* PekkaDex — Attack Guides (attack-guides.html). tokens.css, components.css and
+   heroes.css (page chrome + .paper-panel) must load first. */
+
+.guides-page .encyclopedia { display: grid; gap: var(--s-4); }
+.guide-nav { margin-bottom: var(--s-2); }
+.guide-nav .pdx-tab {
+  flex: 1 1 150px;
+  min-height: 42px;
+  padding: var(--s-1) var(--s-3);
+  font-size: var(--fs-sm);
+  text-decoration: none;
+}
+
+.guide-skeleton { min-height: 220px; }
+
+#guideApp { display: grid; gap: var(--s-5); min-width: 0; }
+.guide-card { display: grid; gap: var(--s-4); min-width: 0; scroll-margin-top: var(--s-4); }
+.guide-card__head { display: grid; gap: var(--s-2); min-width: 0; }
+.guide-card__head h2 {
+  margin: 0;
+  color: var(--c-ink);
+  font: 400 var(--fs-2xl) / var(--lh-tight) var(--font-display);
+  overflow-wrap: anywhere;
+}
+.guide-card__lede { margin: 0; color: var(--c-ink-2); font-size: var(--fs-md); max-width: 72ch; }
+.guide-card__chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+/* ---------- queen walk parts ---------- */
+.guide-setup { display: grid; gap: var(--s-2); }
+.guide-setup .pdx-facts dd { max-width: 58ch; }
+
+.guide-parts { display: grid; gap: var(--s-4); }
+.guide-part {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+  border-top: 3px dashed var(--c-paper-300);
+}
+.guide-part:first-child { padding-top: 0; border-top: 0; }
+.guide-part__num {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: var(--line);
+  border-radius: 50%;
+  background: linear-gradient(var(--c-gold-300), var(--c-gold-500));
+  color: var(--c-ink);
+  font: 400 var(--fs-lg) / 1 var(--font-display);
+  box-shadow: 0 3px 0 var(--c-gold-700);
+}
+.guide-part h3 {
+  margin: 0 0 var(--s-2);
+  color: var(--c-ink);
+  font: 400 var(--fs-lg) / 1.2 var(--font-display);
+}
+.guide-part p { margin: 0 0 var(--s-2); color: var(--c-ink-2); line-height: var(--lh-body); }
+.guide-part p:last-child { margin-bottom: 0; }
+
+/* ---------- lists and two-column blocks ---------- */
+.guide-two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--s-4);
+}
+.guide-two-col section {
+  min-width: 0;
+  padding: var(--s-3);
+  border: var(--line-thin);
+  border-radius: var(--r-lg);
+  background: rgba(255, 255, 255, .55);
+}
+.guide-two-col h3 {
+  margin: 0 0 var(--s-2);
+  color: var(--c-ink);
+  font: 400 var(--fs-md) / 1.2 var(--font-display);
+}
+.guide-two-col--wide { align-items: start; }
+
+.guide-focus__list,
+.guide-mistakes,
+.guide-practice,
+.guide-risks,
+.guide-steps {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--c-ink-2);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+}
+.guide-focus__list li,
+.guide-mistakes li,
+.guide-practice li,
+.guide-risks li,
+.guide-steps li { margin-bottom: var(--s-2); }
+.guide-focus__list li:last-child,
+.guide-mistakes li:last-child,
+.guide-practice li:last-child,
+.guide-risks li:last-child,
+.guide-steps li:last-child { margin-bottom: 0; }
+.guide-focus__list li::marker { color: var(--c-gold-700); font-weight: 900; }
+.guide-steps { list-style: decimal; }
+
+/* ---------- merged army block ---------- */
+.guide-army {
+  display: grid;
+  gap: var(--s-2);
+  min-width: 0;
+  padding: var(--s-4);
+  border: var(--line);
+  border-radius: var(--r-lg);
+  background: linear-gradient(160deg, #fffaf0, #f5e3bd);
+}
+.guide-army h3 { margin: 0; color: var(--c-ink); font: 400 var(--fs-lg) / 1.2 var(--font-display); }
+.guide-army h4 {
+  margin: var(--s-2) 0 0;
+  color: var(--c-ink);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.guide-army .pdx-facts { margin: 0; }
+.guide-army .pdx-facts dd { max-width: 34ch; }
+.guide-army__link { justify-self: start; margin-top: var(--s-2); }
+
+.guide-unverified {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0;
+  padding-top: var(--s-3);
+  border-top: 2px dashed var(--c-paper-300);
+  color: var(--c-ink-3);
+  font-size: var(--fs-xs);
+}
+.guide-note { margin: 0; }
+
+@media (max-width: 560px) {
+  .guide-nav .pdx-tab { flex: 1 1 100%; }
+  .guide-part { grid-template-columns: 36px minmax(0, 1fr); gap: var(--s-2); }
+  .guide-part__num { width: 36px; height: 36px; font-size: var(--fs-md); }
+  .guide-card__head h2 { font-size: var(--fs-xl); }
+  .guide-army { padding: var(--s-3); }
+}

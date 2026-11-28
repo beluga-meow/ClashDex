@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="./assets/css/tokens.css?v=db87c23f">
   <link rel="stylesheet" href="./assets/css/components.css?v=8df6c753">
   <link rel="stylesheet" href="./assets/css/heroes.css?v=b022781a">
+  <link rel="stylesheet" href="./assets/css/heroes-extras.css?v=cd8b97a2">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -67,6 +68,9 @@
       <button class="pdx-tab" id="tab-heroes" type="button" role="tab" aria-selected="true" aria-controls="heroArea" tabindex="0" data-main="heroes">Heroes</button>
       <button class="pdx-tab" id="tab-equipment" type="button" role="tab" aria-selected="false" aria-controls="equipmentArea" tabindex="-1" data-main="equipment">Equipment</button>
       <button class="pdx-tab" id="tab-cosmetics" type="button" role="tab" aria-selected="false" aria-controls="cosmeticsArea" tabindex="-1" data-main="cosmetics">Cosmetics</button>
+      <button class="pdx-tab" id="tab-loadouts" type="button" role="tab" aria-selected="false" aria-controls="loadoutsArea" tabindex="-1" data-main="loadouts">Loadouts</button>
+      <button class="pdx-tab" id="tab-pets" type="button" role="tab" aria-selected="false" aria-controls="petsArea" tabindex="-1" data-main="pets">Pets</button>
+      <button class="pdx-tab" id="tab-guides" type="button" role="tab" aria-selected="false" aria-controls="guidesArea" tabindex="-1" data-main="guides">Guides</button>
     </nav>
 
     <!-- HEROES -->
@@ -131,6 +135,42 @@
       <div id="cosmeticContent" class="content-area" aria-busy="true"></div>
     </section>
 
+    <!-- LOADOUTS -->
+    <section id="loadoutsArea" class="paper-panel" role="tabpanel" aria-labelledby="tab-loadouts" tabindex="0" hidden>
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">TWO-PIECE PAIRS</p>
+          <h2>Suggested Loadouts</h2>
+        </div>
+        <p class="panel-heading__meta">Suggestions · not a tier list</p>
+      </div>
+      <div id="loadoutsContent" class="content-area"></div>
+    </section>
+
+    <!-- PETS -->
+    <section id="petsArea" class="paper-panel" role="tabpanel" aria-labelledby="tab-pets" tabindex="0" hidden>
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">PET HOUSE</p>
+          <h2>Hero Pets</h2>
+        </div>
+        <p class="panel-heading__meta">Town Hall 14+</p>
+      </div>
+      <div id="petsContent" class="content-area"></div>
+    </section>
+
+    <!-- GUIDES -->
+    <section id="guidesArea" class="paper-panel" role="tabpanel" aria-labelledby="tab-guides" tabindex="0" hidden>
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">BUILDING NOTES</p>
+          <h2>Supercharge, Squads &amp; Blacksmith</h2>
+        </div>
+        <p class="panel-heading__meta">Unlock notes</p>
+      </div>
+      <div id="guidesContent" class="content-area"></div>
+    </section>
+
     <p class="disclaimer">
       Unofficial fan-made reference. Not affiliated with, endorsed, sponsored or specifically approved by Supercell.
       Prices in the game vary by region and change over time, so this archive lists price tiers and never a buy button.
@@ -185,6 +225,7 @@
   <script src="./assets/js/supabase-config.js?v=f3dfcc9a"></script>
   <script src="./assets/js/profile-nav.js?v=08a83389"></script>
   <script src="./assets/js/equipment-levels.js?v=9276b1f0"></script>
-  <script src="./assets/js/heroes.js?v=f1b0f528"></script>
+  <script src="./assets/js/heroes-extras.js?v=af189b13"></script>
+  <script src="./assets/js/heroes.js?v=56828db9"></script>
 </body>
 </html>

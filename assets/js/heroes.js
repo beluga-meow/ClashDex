@@ -7,6 +7,9 @@
      #hero/barbarian-king         hero detail (legacy #barbarian-king works too)
      #hero/barbarian-king/skins   hero detail with a tab open
      #equipment                   equipment tab (optionally #equipment/<hero>)
+     #loadouts[/hero-id]          suggested equipment pairings (heroes-extras.js)
+     #pets                        Pet House facts and pets (heroes-extras.js)
+     #guides[/topic]              supercharge, squads, Blacksmith (heroes-extras.js)
      #cosmetics                   cosmetics (optionally #cosmetics/sceneries)
 */
 (() => {
@@ -22,6 +25,7 @@
     heroId: null,
     heroTab: "overview",
     eqHero: null,
+    extra: null,
     cosmetic: "skins",
     query: "",
     filters: { hero: "all", source: "all", season: "all", rarity: "all" },
@@ -105,6 +109,12 @@
     if (parts[0] === "cosmetics") {
       return { main: "cosmetics", cosmetic: parts[1] === "sceneries" ? "sceneries" : "skins" };
     }
+    if (parts[0] === "loadouts") {
+      const hero = parts[1] ? findHero(parts[1]) : null;
+      return { main: "loadouts", extra: { hero: hero ? hero.id : null } };
+    }
+    if (parts[0] === "pets") return { main: "pets" };
+    if (parts[0] === "guides") return { main: "guides", extra: { topic: parts[1] || null } };
     if (parts[0] === "heroes" || parts[0] === "hero") parts.shift();
     if (!parts.length) return { main: "heroes" };
     const hero = findHero(parts[0]);
@@ -123,6 +133,7 @@
     state.heroTab = route.heroTab || "overview";
     /* A search typed for skins should not silently hide every scenery. */
     if (route.main === "cosmetics" && route.cosmetic && route.cosmetic !== state.cosmetic) state.query = "";
+    state.extra = route.extra || null;
     state.cosmetic = route.cosmetic || "skins";
     if (route.main === "equipment" && route.eqHero) state.eqHero = route.eqHero;
     if (state.heroId && state.heroTab === "equipment" && !state.eqHero) state.eqHero = state.heroId;
@@ -151,6 +162,10 @@
     if (state.main === "heroes") renderHeroes();
     if (state.main === "equipment") renderEquipmentTab();
     if (state.main === "cosmetics") renderCosmetics();
+    if (state.main === "loadouts" || state.main === "pets" || state.main === "guides") {
+      /* heroes-extras.js owns these three panels and fetches their JSON lazily. */
+      if (window.pdxHeroExtras) window.pdxHeroExtras.render(state.main, state.extra);
+    }
   }
 
   function syncMainTabs() {
@@ -159,7 +174,14 @@
       tab.setAttribute("aria-selected", String(on));
       tab.tabIndex = on ? 0 : -1;
     });
-    const panels = { heroes: "#heroArea", equipment: "#equipmentArea", cosmetics: "#cosmeticsArea" };
+    const panels = {
+      heroes: "#heroArea",
+      equipment: "#equipmentArea",
+      cosmetics: "#cosmeticsArea",
+      loadouts: "#loadoutsArea",
+      pets: "#petsArea",
+      guides: "#guidesArea",
+    };
     Object.keys(panels).forEach(key => {
       const panel = $(panels[key]);
       if (panel) panel.hidden = key !== state.main;

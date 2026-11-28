@@ -186,8 +186,13 @@
         ${image ? `<img src="${image}" alt="Town Hall ${record.th}" width="128" height="128" loading="lazy" decoding="async">` : ""}
       </div>`;
     }
+    /* No army or layout screenshots exist in the repository, so the card
+       shows the real Town Hall artwork for the army's lowest Town Hall. It is
+       labelled as Town Hall art, never as a picture of the composition. */
+    const image = thImage(record.minTh);
     return `<div class="lib-card__media lib-card__media--army">
       <div class="lib-card__badges"><span class="pdx-badge">TH ${record.minTh}+</span></div>
+      ${image ? `<img src="${image}" alt="Town Hall ${record.minTh} artwork" width="128" height="128" loading="lazy" decoding="async">` : ""}
     </div>`;
   }
 

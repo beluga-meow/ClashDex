@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "verifiedOn": "2026-11-28",
+  "note": "Written for PekkaDex in our own words. Composition, troop counts and step-by-step plans are merged at render time from assets/data/armies.json so there is one source for those facts. The advice here is gameplay opinion, not patch-checked game data.",
+  "guides": [
+    {
+      "id": "queen-walk",
+      "title": "Queen Walk",
+      "lede": "Send the Archer Queen in with Healers behind her, let her clear one side of the base, and keep the rest of your army for the core.",
+      "hero": "archer-queen",
+      "relatedArmy": "qc-hybrid",
+      "healers": "4–5 Healers for most Town Halls; add one more if the entry side has two air defences covering it.",
+      "equipment": "Anything that keeps her alive or extends her range. The exact best pair depends on the base and on what you own — see the Loadouts tab in the Heroes Encyclopedia for suggestions.",
+      "spells": "Rage on the Healer cluster when she meets a defence, a Jump or Earthquake to open the next compartment, Freeze for a single-target Inferno Tower or a Scattershot.",
+      "parts": [
+        {
+          "title": "Part 1 — The basics",
+          "paragraphs": [
+            "A Queen Walk is the Archer Queen moving around the outside of an enemy village with several Healers behind her. The Healers replace the health she loses, so she can keep shooting instead of dying to the first defence that looks at her.",
+            "It works with the Archer Queen specifically because of two things. She attacks at range, unlike the Barbarian King, so she can shoot over walls and never has to break them. And her damage is high, unlike the Grand Warden, whose job is support rather than damage. Those two traits together are what make a walking hero useful: she reaches defences that are tucked behind walls and removes them while the Healers undo the damage she takes.",
+            "The point of the walk is not the Queen's own score. It is the hole she leaves. Every defence she clears on one side is a defence your main army does not have to deal with when it enters from another."
+          ]
+        },
+        {
+          "title": "Part 2 — Setting up the walk",
+          "paragraphs": [
+            "Scout the air-targeting defences first. Air Defences, Inferno Towers set to air, Wizard Towers, Archer Towers and the Air Sweeper are what end a walk, because those are the buildings that can reach the Healers. Count how many of them cover the side you want to walk, and choose an entry where the number is low and where the sweepers are not aimed at you.",
+            "Then choose the corner. Look for a side where the Queen can reach two or three defences without walking into the middle of the base, and where the buildings on the outside will not pull her away from the wall line you want her to follow.",
+            "Decide the Healer count before you deploy. Too few and she dies to focused fire; too many and your main army has no support left. Four or five is the usual range, and a sixth is worth it only when the entry side is covered by multiple air defences.",
+            "Pick equipment that matches the job: survivability if the walk has to cross fire, or range and damage if the walk only needs to break one compartment open. Take one Rage for the Healer cluster, one Jump or Earthquake if she has to move inward, and a Freeze for whichever defence is most likely to kill her."
+          ]
+        },
+        {
+          "title": "Part 3 — Running the attack",
+          "paragraphs": [
+            "Place the Queen first, on the corner you chose, and put the Healers down immediately behind her so they lock onto her rather than drifting to another troop. Watch the Healer group, not only the Queen: if the Healers are taking fire, the walk is already over.",
+            "Let her work along the edge. Rage the Healers when she meets a defence that out-damages them, and use her ability when a burst of damage lands rather than saving it for the end — the invisibility is what buys her the seconds to survive a Scattershot or an Inferno Tower.",
+            "Bring the main army in from the opposite side once she has taken out two or three defences and the funnel is open. If the Queen is still alive when the main army reaches the core, keep her moving toward the Town Hall instead of letting her stall on a wall.",
+            "Finish the compartment she opened with the troops that suit it. A Queen Walk is a setup tool; the army still has to do the damage to the core."
+          ]
+        }
+      ],
+      "mistakes": [
+        "Deploying the Healers before the Queen, so they heal a Wall Breaker instead of her.",
+        "Walking into two Air Defences at once and expecting the Healers to out-heal both.",
+        "Using the Queen's ability at full health, then losing her to the next defence with the ability already spent.",
+        "Letting the Queen walk so far that the main army arrives with nothing left to funnel it."
+      ],
+      "practice": [
+        "Walk one corner on a friendly challenge base and stop the walk after two defences. Repeat until you can judge when she is about to die.",
+        "Count the air-targeting defences on the entry side before every attack and write the number down; comparing it to the result teaches the limit faster than any guide.",
+        "Practise deploying Queen and Healers in one motion, because the Healers must lock on before the first volley lands."
+      ],
+      "verified": true,
+      "notes": "Strategy advice supplied by the site owner; troop and spell counts come from the linked army entry."
+    },
+    {
+      "id": "lavaloon",
+      "title": "LavaLoon",
+      "lede": "Lava Hounds soak the air defences while Balloons drop the defences underneath them.",
+      "hero": "grand-warden",
+      "relatedArmy": "lavaloon",
+      "focus": [
+        "Take out one Air Defence before the hounds go in, so the remaining ones have to split their fire.",
+        "Send hounds ahead of the balloons, never with them; the hounds exist to eat the first volley.",
+        "Keep a Haste for the balloon clump over the core and a Freeze for the last air defence still firing."
+      ],
+      "verified": true,
+      "notes": "Advice only; the composition and Town Hall range are read from armies.json."
+    },
+    {
+      "id": "hog-raid",
+      "title": "Hog Rider Raid",
+      "lede": "Hogs jump straight past the walls, so the attack is about killing the buildings that shred them before they land.",
+      "hero": "barbarian-king",
+      "relatedArmy": "hog-raid",
+      "focus": [
+        "Deal with the Giant Bombs and the King's altar area first; a single big bomb ends a hog pack.",
+        "Enter from the side with the fewest splash defences covering the path, not the shortest path.",
+        "Heal over the splash damage rather than at the start; the Heal Spell is for the moment the hogs clump on a Wizard Tower."
+      ],
+      "verified": true,
+      "notes": "Advice only; counts and plan come from armies.json."
+    },
+    {
+      "id": "qc-hybrid",
+      "title": "Queen Charge Hybrid",
+      "lede": "A Queen Charge takes the core apart, then Miner and Hog Rider pairs clean the rest from the inside out.",
+      "hero": "archer-queen",
+      "relatedArmy": "qc-hybrid",
+      "focus": [
+        "Charge toward the Eagle Artillery or the Town Hall, not toward the outside trash buildings.",
+        "Save one Rage for the charge and one Heal for the hybrid pack; mixing them up leaves one half of the attack unsupported.",
+        "Release the hybrid from the same side the charge opened, so it walks into a base with its defences already thinned."
+      ],
+      "verified": true,
+      "notes": "Advice only; composition and plan come from armies.json."
+    },
+    {
+      "id": "fireball-walk",
+      "title": "Fireball Warden Walk",
+      "lede": "The Grand Warden walks with the Fireball equipment to delete a compact cluster, then the main army takes the rest.",
+      "hero": "grand-warden",
+      "relatedArmy": "fireball-walk",
+      "focus": [
+        "Aim the Fireball at buildings that are close together; spread-out bases waste it.",
+        "Walk the Warden where his aura covers the troops that follow, not only where the Fireball lands.",
+        "Use the Freeze on whatever the Fireball did not remove, because the walk has little sustained damage of its own."
+      ],
+      "verified": true,
+      "notes": "Advice only; composition and plan come from armies.json."
+    },
+    {
+      "id": "mass-dragons",
+      "title": "Mass Dragons",
+      "lede": "A wide dragon line that overwhelms air defences with volume — the simplest air attack to learn and the easiest to funnel badly.",
+      "hero": "barbarian-king",
+      "relatedArmy": "mass-dragons",
+      "focus": [
+        "Lightning or Zap out one Air Defence on the entry side before the dragons commit.",
+        "Funnel with the heroes on both edges so the dragons do not spread around the base.",
+        "Rage the pack over the core and Freeze the last air defence or the Air Sweeper covering it."
+      ],
+      "verified": true,
+      "notes": "Advice only; composition and plan come from armies.json."
+    }
+  ]
+}

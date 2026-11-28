@@ -144,6 +144,7 @@ if (bases) {
 }
 
 const armies = read("armies.json");
+const armyIds = new Set();
 if (armies) {
   if (!armies.verifiedOn) errors.push("armies.json: missing verifiedOn");
   if (!Array.isArray(armies.armies)) errors.push("armies.json: armies[] must be an array");
@@ -155,6 +156,7 @@ if (armies) {
     if (!army.id) continue;
     if (seen.has(army.id)) errors.push(`${where}: duplicate id`);
     seen.add(army.id);
+    armyIds.add(army.id);
     if (!(army.minTh >= 1 && army.minTh <= 19)) errors.push(`${where}: minTh must be 1-19`);
     if (!(army.maxTh >= army.minTh && army.maxTh <= 19)) errors.push(`${where}: maxTh must be between minTh and 19`);
     if (!Array.isArray(army.categories) || !army.categories.length) errors.push(`${where}: categories[] is empty`);
@@ -165,6 +167,91 @@ if (armies) {
     if (!Array.isArray(army.strategy) || !army.strategy.length) errors.push(`${where}: strategy[] is empty`);
     if (army.copyArmy) errors.push(`${where}: copyArmy must stay null — there is no public CopyArmy web link`);
     checkMeta(where, army);
+  }
+}
+
+/* ------------------------------------------------------- attack guide hub */
+const attackGuides = read("attack-guides.json");
+if (attackGuides) {
+  if (!attackGuides.verifiedOn) errors.push("attack-guides.json: missing verifiedOn");
+  if (!Array.isArray(attackGuides.guides) || !attackGuides.guides.length) {
+    errors.push("attack-guides.json: guides[] is empty");
+  }
+  const seen = new Set();
+  for (const guide of attackGuides.guides || []) {
+    const where = `attack-guides.json/${guide.id || "?"}`;
+    need(where, guide, ["id", "title", "lede", "verified"]);
+    if (!guide.id) continue;
+    if (seen.has(guide.id)) errors.push(`${where}: duplicate id`);
+    seen.add(guide.id);
+    if (guide.relatedArmy && !armyIds.has(guide.relatedArmy)) {
+      errors.push(`${where}: relatedArmy "${guide.relatedArmy}" is not in armies.json`);
+    }
+    if (guide.id === "queen-walk" && (!Array.isArray(guide.parts) || guide.parts.length < 3)) {
+      errors.push(`${where}: the Queen Walk guide needs three parts`);
+    }
+    checkMeta(where, guide);
+  }
+}
+
+/* --------------------------------------------------------------- loadouts */
+const loadouts = read("loadouts.json");
+if (loadouts) {
+  if (!loadouts.verifiedOn) errors.push("loadouts.json: missing verifiedOn");
+  const seen = new Set();
+  for (const loadout of loadouts.loadouts || []) {
+    const where = `loadouts.json/${loadout.id || "?"}`;
+    need(where, loadout, ["id", "hero", "name", "bestFor", "reason", "items", "verified"]);
+    if (!loadout.id) continue;
+    if (seen.has(loadout.id)) errors.push(`${where}: duplicate id`);
+    seen.add(loadout.id);
+    if (!heroIds.has(loadout.hero)) errors.push(`${where}: unknown hero "${loadout.hero}"`);
+    if (!Array.isArray(loadout.items) || loadout.items.length !== 2) {
+      errors.push(`${where}: a loadout needs exactly two item ids`);
+    }
+    for (const itemId of loadout.items || []) {
+      if (!equipmentIds.has(itemId)) errors.push(`${where}: "${itemId}" is not in equipment.json`);
+    }
+    if (loadout.guide && attackGuides) {
+      const guideIds = new Set((attackGuides.guides || []).map(guide => guide.id));
+      if (!guideIds.has(loadout.guide)) errors.push(`${where}: unknown guide "${loadout.guide}"`);
+    }
+    checkMeta(where, loadout);
+  }
+}
+
+/* -------------------------------------------------------------------- pets */
+const pets = read("pets.json");
+if (pets) {
+  if (!pets.verifiedOn) errors.push("pets.json: missing verifiedOn");
+  if (!pets.petHouse) errors.push("pets.json: missing petHouse");
+  if (!Array.isArray(pets.pets) || pets.pets.length !== 12) {
+    errors.push(`pets.json: pets[] should list 12 pets (found ${(pets.pets || []).length})`);
+  }
+  if (pets.featured) need("pets.json/featured", pets.featured, ["id", "name", "facts", "verified"]);
+  const petIds = new Set((pets.pets || []).map(pet => pet.id));
+  for (const pet of pets.pets || []) {
+    const where = `pets.json/${pet.id || "?"}`;
+    need(where, pet, ["id", "name", "unlock", "order", "verified"]);
+    if (pet.verified === false && !pet.notes && !pet.detail) {
+      errors.push(`${where}: an unverified pet needs a note saying what is missing`);
+    }
+  }
+  for (const pairing of pets.pairings?.items || []) {
+    if (!heroIds.has(pairing.hero)) errors.push(`pets.json/pairings: unknown hero "${pairing.hero}"`);
+    for (const petId of pairing.petIds || []) {
+      if (!petIds.has(petId)) errors.push(`pets.json/pairings: unknown pet "${petId}"`);
+    }
+  }
+}
+
+/* --------------------------------------------------------- building guides */
+const guides = read("guides.json");
+if (guides) {
+  if (!guides.verifiedOn) errors.push("guides.json: missing verifiedOn");
+  if (!Array.isArray(guides.sections) || !guides.sections.length) errors.push("guides.json: sections[] is empty");
+  for (const section of guides.sections || []) {
+    need(`guides.json/${section.id || "?"}`, section, ["id", "name", "verified"]);
   }
 }
 

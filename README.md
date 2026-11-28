@@ -17,6 +17,8 @@ index.html                     home: players, bases, attacks, heroes, account
 bases.html                     Base Library (TH1–TH19 filters, categories, links)
 armies.html                    Army Library (TH1–TH19 filters, compositions, plans)
 heroes.html                    Clash Heroes Encyclopedia (skins + Scenery Shop)
+upgrades.html                  Village Tools: time-to-max calculator + upgrade tracker
+attack-guides.html             Attack Guides & Queen Walk hub
 profile.html                   your profile (stats, ranked / classic history)
 layouts.json                   real base/army share links in the Base Library
 manifest.webmanifest           PWA manifest
@@ -32,10 +34,18 @@ assets/
     villager.css               Lady Villager guide bubble
     home.css                   home page layout on the tokens (hero, sections, finder, attacks)
     profile.css                profile page layout on the tokens
+    tools.css                  Village Tools calculator, tracker and timeline
+    guides.css                 Attack Guides layout
+    heroes-extras.css          Loadouts, Pets and Guides tabs on heroes.html
   js/
     app.js                     home page: search, filters, theme, tab bar
     name-fold.js               shared name folding + match ranking (tested)
     heroes.js                  heroes page: routes, tabs, planner, galleries
+    heroes-extras.js           heroes page: Loadouts / Pets / Guides tabs (lazy JSON)
+    timers.js                  home page: recurring event countdowns (UTC -> local)
+    upgrades.js                Village Tools: calculator + upgrade tracker
+    attack-guides.js           Attack Guides page (merges armies.json)
+    install.js                 "Install app" menu entry (PWA install help)
     library.js                 bases.html + armies.html: filters, cards, details
     villager.js                Lady Villager guide (page-aware line, sign-out)
     art-data.js                generated index of shipped art (window.PDX_ART)
@@ -48,6 +58,10 @@ assets/
     sceneries.json             name, season, released, source, priceTier, art, verified
     bases.json                 th, categories, tags, Copy Base link, linkVerified
     armies.json                th range, categories, army, spells, strategy, verified
+    attack-guides.json         Queen Walk (3 parts) + 5 short guides, merged with armies.json
+    loadouts.json              suggested two-piece equipment pairs (verified: false)
+    pets.json                  Pet House facts, L.A.S.S.I stats, pet list, pairings
+    guides.json                supercharge, squads and Blacksmith notes
   heroes/                      one portrait per hero (webp + svg)
   equipment/ skins/ sceneries/ drop-in art
   townhalls/ builder-halls/    town hall and builder hall art
@@ -60,11 +74,48 @@ tools/
   stamp-versions.mjs           content-hash cache busting for ?v=
   test-search.mjs              name folding + ranking tests (node --test)
   build-art-manifest.py        regenerates art-data.js
+  make-banner.py               builds assets/heroes/encyclopedia-banner.webp from the portraits
+  upscale-art.py               Lanczos/alpha-bleed upscale of the small source art (idempotent)
   fetch-equipment-levels.py    refreshes the wiki equipment tables
 supabase/
   functions/coc/               deployed Clash of Clans proxy
   migrations/                  player name search + hero wishlist (RLS)
 ```
+
+## Village Tools, Attack Guides and the encyclopedia extras
+
+`upgrades.html` has two tabs and **no built-in Town Hall tables**: every time
+and cost is typed in by the visitor. The calculator spreads builder work over
+the builder count, runs the Laboratory and the "Other queue" rows in parallel,
+and takes the slowest of the three as the finish time; the what-if table shows
+the same builder total for 1–6 builders. The tracker keeps queued and running
+upgrades in `localStorage`, plans queued items greedily onto the earliest free
+builder lane, and draws a timeline (one lane per builder plus the Laboratory).
+Notifications only fire while the page is open, and the page says so.
+
+`attack-guides.html` holds the three-part Queen Walk guide and five shorter
+guides. Troop lists, spells and step plans are read from `armies.json` by the
+`relatedArmy` id, so the Army Library stays the single source for those facts.
+`assets/data/attack-guides.json` is only the guide prose.
+
+`heroes.html` has three extra tabs. Each one fetches its JSON on first open:
+`loadouts.json` (2-piece pairings that reference real `equipment.json` ids),
+`pets.json` (Pet House facts, the full L.A.S.S.I table, the other pets by name
+and unlock order only) and `guides.json` (supercharge, squads, Blacksmith).
+Unconfirmed records carry `"verified": false` and render an **Unverified** chip.
+
+`tools/upscale-art.py` resamples small art with alpha bleed, a light denoise,
+Lanczos scaling, two unsharp passes and a re-thresholded alpha edge. It only
+ships an upscale where the UI really shows the art large: the skin sheet
+(560px) and the full-screen scenery previews (800px). The equipment (400px),
+scenery thumbnail (560px) and hero portrait (568px) groups still exist in the
+script, but their cards render at 140–280px, so the repository keeps the
+originals — running every group tripled `assets/` for no visible gain. The
+default run is the two large-display groups; use `--only all` to upscale
+everything deliberately, and `--quality` to trade size for sharpness. It is
+idempotent and skips anything already at target size. **It cannot add detail
+that is not in the source**; when the real high-resolution files arrive, drop
+them in with the same names and the script will leave them alone.
 
 ## Checks
 

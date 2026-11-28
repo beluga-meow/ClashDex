@@ -1,0 +1,191 @@
+/* PekkaDex — Heroes Encyclopedia extra tabs (Loadouts · Pets · Guides).
+   Loaded only by heroes.html, after tokens.css, components.css and heroes.css. */
+
+.extras-grid { margin-top: var(--s-3); }
+.extras-grid--loadouts { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+
+.extras-subhead {
+  margin: var(--s-5) 0 var(--s-2);
+  color: var(--c-ink);
+  font: 400 var(--fs-lg) / 1.2 var(--font-display);
+}
+
+/* ---------- loadouts ---------- */
+.loadout-picker {
+  display: flex;
+  gap: var(--s-2);
+  margin: var(--s-3) 0;
+  padding-bottom: var(--s-2);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.loadout-pick {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  width: 96px;
+  padding: var(--s-2) var(--s-1);
+  border: var(--line-thin);
+  border-radius: var(--r-lg);
+  background: var(--c-paper-100);
+  color: var(--c-ink-2);
+  font: 400 var(--fs-xs) / 1.15 var(--font-display);
+  text-align: center;
+  cursor: pointer;
+}
+.loadout-pick img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: var(--r-sm);
+  background: radial-gradient(circle at 50% 40%, #ffe58b, #bd7a2b 80%);
+}
+.loadout-pick.is-on {
+  border-color: var(--c-wood-700);
+  background: linear-gradient(var(--c-gold-300), var(--c-gold-500));
+  color: var(--c-ink);
+  box-shadow: 0 3px 0 var(--c-gold-700);
+}
+.loadout-pick:focus-visible { outline: var(--focus); outline-offset: 2px; }
+
+.loadout-card { gap: 0; }
+.loadout-card__arts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  border-bottom: var(--line);
+  background: radial-gradient(circle at 50% 35%, #ffe58b, #bd7a2b 82%);
+}
+.loadout-art { margin: 0; display: grid; justify-items: center; padding: var(--s-2) var(--s-1); }
+.loadout-art img { width: 100%; max-width: 120px; height: auto; object-fit: contain; }
+.loadout-art figcaption {
+  margin-top: 2px;
+  color: var(--c-ink);
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.2;
+}
+.loadout-card__chips { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-bottom: var(--s-1); }
+.loadout-card__best { margin: 0; color: var(--c-ink-2); font-size: var(--fs-sm); }
+.loadout-card__best b { color: var(--c-ink); }
+.loadout-card__flag {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1);
+  margin: var(--s-2) 0 0;
+  color: var(--c-ink-3);
+  font-size: var(--fs-xs);
+}
+.loadout-card .pdx-btn { justify-self: start; margin-top: var(--s-2); }
+
+/* ---------- pets ---------- */
+.pets-house,
+.pet-feature {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+.pets-house h3,
+.pet-feature h3 { margin: 0; color: var(--c-ink); font: 400 var(--fs-lg) / 1.2 var(--font-display); }
+.pet-facts { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.pet-facts li {
+  display: grid;
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr);
+  gap: var(--s-2);
+  padding-bottom: var(--s-2);
+  border-bottom: 2px dashed var(--c-paper-300);
+  color: var(--c-ink-2);
+  font-size: var(--fs-sm);
+}
+.pet-facts b { color: var(--c-ink); }
+
+.pet-table td:last-child { white-space: normal; min-width: 220px; }
+.pet-table tr.is-unverified td { background: rgba(220, 61, 46, .06); }
+
+.pairing-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.pairing-card { display: grid; gap: var(--s-2); padding: var(--s-3); }
+.pairing-card__head { display: flex; align-items: center; gap: var(--s-2); }
+.pairing-card__head img {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  border: var(--line-thin);
+  border-radius: var(--r-sm);
+  background: radial-gradient(circle at 50% 40%, #ffe58b, #bd7a2b 80%);
+}
+.pairing-card .pdx-card__title { margin: 0; }
+.extras-flag {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  margin: var(--s-3) 0 0;
+  color: var(--c-ink-3);
+  font-size: var(--fs-xs);
+}
+
+/* ---------- guides ---------- */
+.extras-jump { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: var(--s-3) 0; }
+.extras-jump .pdx-chip { text-decoration: none; cursor: pointer; }
+.extras-jump .pdx-chip:hover { background: var(--c-gold-300); }
+.extras-guide {
+  display: grid;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+  scroll-margin-top: var(--s-3);
+}
+.extras-guide__head { display: grid; gap: var(--s-1); }
+.extras-guide h3 { margin: 0; color: var(--c-ink); font: 400 var(--fs-lg) / 1.2 var(--font-display); }
+.extras-guide p { margin: 0; color: var(--c-ink-2); line-height: var(--lh-body); }
+.extras-guide__note { color: var(--c-ink-3) !important; font-size: var(--fs-xs); }
+.extras-list { margin: 0; padding-left: 20px; color: var(--c-ink-2); font-size: var(--fs-sm); line-height: var(--lh-body); }
+.extras-list li { margin-bottom: var(--s-2); }
+.extras-list li:last-child { margin-bottom: 0; }
+
+/* Small tables inside the extras; tools.css is not loaded on heroes.html. */
+.tool-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.extras-table,
+.pet-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+}
+.extras-table caption,
+.pet-table caption {
+  padding-bottom: var(--s-2);
+  color: var(--c-ink-2);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-align: left;
+  text-transform: uppercase;
+}
+.extras-table th,
+.extras-table td,
+.pet-table th,
+.pet-table td {
+  padding: var(--s-2);
+  border-bottom: 2px dashed var(--c-paper-300);
+  text-align: left;
+  vertical-align: top;
+}
+.extras-table th,
+.pet-table th { color: var(--c-ink-2); font-size: var(--fs-xs); letter-spacing: .04em; text-transform: uppercase; }
+.extras-table td:first-child,
+.pet-table td:first-child { width: 64px; font-weight: 900; }
+.extras-table td:empty::after { content: "—"; color: var(--c-ink-3); }
+
+@media (max-width: 520px) {
+  .extras-grid--loadouts { grid-template-columns: minmax(0, 1fr); }
+  .loadout-pick { width: 82px; }
+  .pet-facts li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .extras-table th,
+  .extras-table td,
+  .pet-table th,
+  .pet-table td { padding: var(--s-1) 6px; font-size: var(--fs-xs); }
+}

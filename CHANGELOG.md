@@ -1,5 +1,85 @@
 # Changelog
 
+## 2026-11-28 — Village Tools, Attack Guides, encyclopedia extras, art upscale
+
+### Home page
+- The heroes section is now a `.pdx-panel` with a new
+  `assets/heroes/encyclopedia-banner.webp` (1320×480, built by
+  `tools/make-banner.py` from the six portraits already in the repo), a short
+  description and a centred gold “Open the Encyclopedia” button.
+- New **Recurring In-Game Events** panel powered by `assets/js/timers.js`:
+  Raid Weekend (Fri 07:00 → Mon 07:00 UTC), Clan Games (22nd 08:00 → 28th
+  08:00 UTC), weekly League Reset (Mon 05:00 UTC) and Season End / CWL /
+  Trader Refresh (1st, 08:00 UTC). Windows are computed in UTC, shown in the
+  visitor's timezone, refreshed every 15 seconds, and the panel says Supercell
+  can move events.
+- New **Village Tools** section linking `upgrades.html`, and the Attack Academy
+  heading now links **Attack Guides & Queen Walk** as well as the Army Library.
+
+### Village Tools (`upgrades.html`, `assets/js/upgrades.js`, `assets/css/tools.css`)
+- **How long to max** calculator with builders, builder/research time and cost
+  boosts, an optional longest single upgrade, and add/remove rows
+  (Builders | Laboratory | Other queue, d/h/m, gold, elixir, dark elixir).
+  Builder work = max(total builder time × (1 − saved) ÷ builders, longest × (1 − saved));
+  the lab and "Other" queues run in parallel and the finish is the slowest of
+  the three. Outputs total time, finish date, per-queue times, discounted
+  resources and a what-if table for 1–6 builders. “Load example numbers” is
+  clearly labelled sample data; Clear resets it.
+- **Upgrade Tracker** with queued/running items, progress bars, Collect,
+  Start now, Remove, a greedy builder-lane planner with a timeline (one lane
+  per builder plus the Laboratory), optional in-page notifications, send queue
+  to the calculator, copy/restore backup JSON and a two-step Clear.
+- Everything persists in `localStorage` behind try/catch. There are **no**
+  built-in Town Hall costs or timers.
+
+### Attack Guides (`attack-guides.html`, `assets/js/attack-guides.js`, `assets/data/attack-guides.json`)
+- Three-part Queen Walk guide (basics, setup, running the attack) plus common
+  mistakes and practice tips.
+- Short guides for LavaLoon, Hog Rider Raid, Queen Charge Hybrid, Fireball
+  Warden Walk and Mass Dragons. Their ids match `armies.json`; troop lists,
+  spells and step plans are merged from that file so there is one source.
+- Linked from `armies.html` and from the home page Attack Academy.
+
+### Heroes Encyclopedia (`heroes.html`, `assets/js/heroes-extras.js`)
+- Three new tabs routed by hash: `#loadouts/archer-queen`, `#pets`,
+  `#guides/squads`. Each loads its JSON lazily.
+- **Loadouts** (`loadouts.json`): 18 suggested two-piece pairs over the six
+  heroes, with real `equipment.json` art and ids, a hero picker and links to
+  the matching attack guide. Every card is marked as a suggestion
+  (`verified: false`).
+- **Pets** (`pets.json`): Pet House facts, max level by Town Hall, the full
+  L.A.S.S.I stat line, the other eleven pets by name and unlock order only,
+  and "which pet for which hero" suggestions. Unconfirmed records show an
+  **Unverified** chip.
+- **Guides** (`guides.json`): supercharge levels, squads (levels 2–5 on file,
+  unknown levels left blank) and the Blacksmith / hero equipment unlock table.
+
+### Art, tooling and housekeeping
+- `tools/upscale-art.py` added. It only ships an upscale where the page really
+  shows the art large: the **skin sheet** (560px, quality 82) and the
+  **full-screen scenery previews** in `assets/sceneries/alternates` (800px,
+  quality 86). Both use alpha bleed, light denoise, Lanczos, two unsharp
+  passes and a re-thresholded alpha edge.
+  Equipment cards, scenery thumbnails and hero portraits render at 140–280px,
+  so those groups were reverted to their original files — upscaling them
+  tripled the payload for no visible gain. The script still knows all five
+  groups; its default run is the two large-display groups, and `--only all`
+  remains available for a deliberate run.
+  Result: `assets/` is 12 MB instead of 20 MB (the originals were 4.7 MB).
+  It is idempotent and cannot add detail that the source does not have.
+- `tools/make-banner.py` builds the encyclopedia banner.
+- `tools/validate-data.mjs` now also checks `attack-guides.json`,
+  `loadouts.json`, `pets.json` and `guides.json` (including that loadout item
+  ids and guide army ids exist).
+- Army Library cards now show the Town Hall artwork for the army's lowest
+  Town Hall. There are still no layout screenshots in the repository, so no
+  card pretends to show one.
+- The home menu has an **Install app** entry (`assets/js/install.js`). There is
+  no Android APK, and the sheet says so honestly; it offers the real PWA
+  install route instead.
+- Service worker cache bumped to `pekkadex-v25`; all new CSS/JS tags are
+  cache-busted by `tools/stamp-versions.mjs`.
+
 ## 2026-11-27 — Home page and profile on the design system
 
 ### Removed the guessed coc-prime URLs

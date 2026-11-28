@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "verifiedOn": "2026-11-28",
+  "note": "Building and mechanic notes supplied by the site owner. Unlock tables list only the entries that were provided; levels that were not provided are left blank on purpose.",
+  "sections": [
+    {
+      "id": "supercharge",
+      "name": "Supercharge levels",
+      "eyebrow": "BUILDING UPGRADES",
+      "summary": "A temporary way to push a maxed building past its normal ceiling.",
+      "paragraphs": [
+        "Supercharge levels arrived in the September 2024 update. They are temporary upgrades for buildings that are already fully upgraded at the highest Town Hall level in the game.",
+        "A Builder performs a Supercharge on a max-level building just like a normal upgrade. It is not permanent: a Supercharge lasts until a new upgrade level becomes available for that building, at which point the normal upgrade takes over again."
+      ],
+      "bullets": [
+        "Only for max-level buildings at the highest Town Hall.",
+        "Performed by a Builder, so it competes with your other upgrades for build time.",
+        "Temporary — it ends when the building gets a new upgrade level."
+      ],
+      "verified": true,
+      "notes": "From the owner's material; no Supercharge costs or timers are on file, so none are shown."
+    },
+    {
+      "id": "squads",
+      "name": "Squads",
+      "eyebrow": "SQUAD BARRACKS",
+      "summary": "Squads give you a pre-built group of troops from the Squad Barracks.",
+      "paragraphs": [
+        "Squads become available once the Squad Barracks is built. The Squad Barracks unlocks at Town Hall 8, and it can be upgraded with each Town Hall level after that, unlocking one more squad each time.",
+        "Each squad deploys as a fixed group. The table below lists the squad levels whose contents were supplied."
+      ],
+      "table": {
+        "caption": "Squad levels on file",
+        "head": ["Level", "Squad", "Contents"],
+        "rows": [
+          { "level": 1, "name": "", "contents": "" },
+          { "level": 2, "name": "Giant Wizard Squad", "contents": "3 Giants + 5 Wizards" },
+          { "level": 3, "name": "Wall Breaker Squad", "contents": "5 Wall Breakers" },
+          { "level": 4, "name": "Minion Squad", "contents": "8 Minions" },
+          { "level": 5, "name": "Balloon Squad", "contents": "4 Balloons" },
+          { "level": 6, "name": "", "contents": "" }
+        ]
+      },
+      "verified": true,
+      "notes": "Levels without supplied contents are blank rather than guessed."
+    },
+    {
+      "id": "blacksmith",
+      "name": "Blacksmith and Hero Equipment",
+      "eyebrow": "HERO GEAR",
+      "summary": "The Blacksmith is where hero equipment is unlocked and upgraded.",
+      "paragraphs": [
+        "The Blacksmith unlocks at Town Hall 8 and can be upgraded with each Town Hall level. Opening the equipment menu on the Blacksmith shows every piece of equipment you currently have.",
+        "Equipment comes in two kinds. Active equipment has an ability you trigger yourself; passive equipment gives a constant effect without a button to press. Each hero can carry two pieces at a time.",
+        "Upgrading the Blacksmith unlocks more equipment. The table below lists the unlock order that was supplied."
+      ],
+      "table": {
+        "caption": "Blacksmith unlock order",
+        "head": ["Blacksmith level", "Unlocks"],
+        "rows": [
+          { "level": 1, "name": "Earthquake Boots", "contents": "" },
+          { "level": 2, "name": "Giant Arrow", "contents": "" },
+          { "level": 3, "name": "Metal Pants and Vampstache", "contents": "" },
+          { "level": 4, "name": "Rage Gem", "contents": "" },
+          { "level": 5, "name": "Healer Puppet and Noble Iron", "contents": "" },
+          { "level": 6, "name": "Healing Tome", "contents": "" }
+        ]
+      },
+      "verified": true,
+      "notes": "Unlock order from the owner's material. Equipment stats live in equipment.json and equipment-levels.json."
+    }
+  ]
+}

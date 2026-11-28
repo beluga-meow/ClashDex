@@ -1,0 +1,205 @@
+{
+  "schema": 1,
+  "verifiedOn": "2026-11-28",
+  "note": "Suggested two-piece pairings, not a tier list. Every item id exists in equipment.json so the art and names are the site's own data. These are opinions about what a pair is good for, not measured game stats.",
+  "loadouts": [
+    {
+      "id": "bk-wallbreaker",
+      "hero": "barbarian-king",
+      "name": "Wallbreaker",
+      "bestFor": "Opening a wall ring before a ground smash",
+      "reason": "One item cracks the walls the King would otherwise stall on, the other adds a burst of damage as he walks in behind the main army.",
+      "items": ["earthquake-boots", "giant-gauntlet"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing built from owned equipment; effect strength not measured."
+    },
+    {
+      "id": "bk-soak",
+      "hero": "barbarian-king",
+      "name": "Damage soak",
+      "bestFor": "Tanking under sustained point fire",
+      "reason": "A summoned helper and lifesteal keep him standing longer while the rest of the army works behind him.",
+      "items": ["barbarian-puppet", "vampstache"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; survivability depends on equipment levels."
+    },
+    {
+      "id": "bk-rush",
+      "hero": "barbarian-king",
+      "name": "Rage rush",
+      "bestFor": "Fast dives onto a single compartment",
+      "reason": "Speed and a spread of extra hits suit a short trip into the base rather than a long tank.",
+      "items": ["rage-vial", "spiky-ball"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; not tested against current balance."
+    },
+    {
+      "id": "aq-walk",
+      "hero": "archer-queen",
+      "name": "Walk sustain",
+      "bestFor": "Queen Walks that have to cross fire",
+      "reason": "Extra bodies and healing keep the walk alive when the Healer cluster is under pressure.",
+      "items": ["archer-puppet", "healer-puppet"],
+      "guide": "queen-walk",
+      "verified": false,
+      "notes": "Suggested pairing; the guide itself explains when a walk is viable."
+    },
+    {
+      "id": "aq-snipe",
+      "hero": "archer-queen",
+      "name": "Range sniper",
+      "bestFor": "Picking off defences from outside the wall line",
+      "reason": "Both items extend what she can hit without stepping into the base, which is the safest way to start a walk.",
+      "items": ["giant-arrow", "frozen-arrow"],
+      "guide": "queen-walk",
+      "verified": false,
+      "notes": "Suggested pairing; the ability charge cost is not modelled."
+    },
+    {
+      "id": "aq-dive",
+      "hero": "archer-queen",
+      "name": "Core dive",
+      "bestFor": "Queen Charges aimed at the Town Hall or Eagle Artillery",
+      "reason": "Invisibility and a second body let her commit deeper than a walk would allow.",
+      "items": ["invisibility-vial", "magic-mirror"],
+      "guide": "qc-hybrid",
+      "verified": false,
+      "notes": "Suggested pairing; requires timing practice."
+    },
+    {
+      "id": "gw-fireball",
+      "hero": "grand-warden",
+      "name": "Fireball walk",
+      "bestFor": "Deleting a compact cluster of defences",
+      "reason": "The damaging ability plus a rage boost turns one cast into a hole the main army can enter through.",
+      "items": ["fireball", "rage-gem"],
+      "guide": "fireball-walk",
+      "verified": false,
+      "notes": "Suggested pairing; blast radius depends on equipment level."
+    },
+    {
+      "id": "gw-support",
+      "hero": "grand-warden",
+      "name": "Army support",
+      "bestFor": "Keeping a large ground army alive through the core",
+      "reason": "Protection and a stat boost for the troops that follow him rather than damage of his own.",
+      "items": ["eternal-tome", "life-gem"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; aura numbers are not modelled here."
+    },
+    {
+      "id": "gw-march",
+      "hero": "grand-warden",
+      "name": "Sustain march",
+      "bestFor": "Long walks where the army trails behind",
+      "reason": "Healing and protection together cover a slow push, at the cost of the Warden's own damage.",
+      "items": ["healing-tome", "eternal-tome"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; both items share a defensive role."
+    },
+    {
+      "id": "rc-hunter",
+      "hero": "royal-champion",
+      "name": "Defence hunter",
+      "bestFor": "Sniping defences on the far side",
+      "reason": "Range plus a thrown ability lets her reach buildings the rest of the army cannot.",
+      "items": ["seeking-shield", "rocket-spear"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; ability damage not measured."
+    },
+    {
+      "id": "rc-chase",
+      "hero": "royal-champion",
+      "name": "Chase",
+      "bestFor": "Following fast troops into a base",
+      "reason": "Speed and a healing boost suit a hero that arrives after the tanks rather than before them.",
+      "items": ["haste-vial", "royal-gem"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; speed values not modelled."
+    },
+    {
+      "id": "rc-hogs",
+      "hero": "royal-champion",
+      "name": "Hog support",
+      "bestFor": "Hog Rider raids that need a follow-up hero",
+      "reason": "A summoned pack and chained hits add pressure while the hogs work the compartments.",
+      "items": ["hog-rider-puppet", "electro-boots"],
+      "guide": "hog-raid",
+      "verified": false,
+      "notes": "Suggested pairing; the guide covers the army, not the equipment."
+    },
+    {
+      "id": "mp-air",
+      "hero": "minion-prince",
+      "name": "Air support",
+      "bestFor": "Air attacks that want extra bodies",
+      "reason": "Summoned helpers and a ranged ability keep pressure on while the main air troops cross the base.",
+      "items": ["henchmen-puppet", "dark-orb"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; only three Prince items are on file, so pairs repeat."
+    },
+    {
+      "id": "mp-front",
+      "hero": "minion-prince",
+      "name": "Front line",
+      "bestFor": "Ground pushes where the Prince arrives early",
+      "reason": "Armour and extra bodies make him a better first-in hero than a damage pick would.",
+      "items": ["metal-pants", "henchmen-puppet"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; defensive values not modelled."
+    },
+    {
+      "id": "mp-pressure",
+      "hero": "minion-prince",
+      "name": "Orb pressure",
+      "bestFor": "Chip damage on a defended core",
+      "reason": "A ranged ability plus armour keeps him contributing without committing to a dive.",
+      "items": ["dark-orb", "metal-pants"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; not tested against current balance."
+    },
+    {
+      "id": "dd-brawler",
+      "hero": "dragon-duke",
+      "name": "Brawler",
+      "bestFor": "Melee pushes that need a second tank",
+      "reason": "Mobility and a cone of damage suit a hero that fights in the middle of the base.",
+      "items": ["rocket-backpack", "flame-blower"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; damage values not modelled."
+    },
+    {
+      "id": "dd-dive",
+      "hero": "dragon-duke",
+      "name": "Dive",
+      "bestFor": "Reaching a defence behind the first wall line",
+      "reason": "A jump plus chained hits let him cross a compartment and still hit something useful on arrival.",
+      "items": ["rocket-backpack", "electro-fangs"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; cooldown behaviour not verified."
+    },
+    {
+      "id": "dd-burn",
+      "hero": "dragon-duke",
+      "name": "Burn",
+      "bestFor": "Sustained damage on a stacked compartment",
+      "reason": "Two damage items with no mobility, which is fine when the army has already opened the base.",
+      "items": ["flame-blower", "electro-fangs"],
+      "guide": null,
+      "verified": false,
+      "notes": "Suggested pairing; no survivability item included."
+    }
+  ]
+}
