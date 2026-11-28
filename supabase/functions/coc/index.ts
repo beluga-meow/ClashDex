@@ -1123,16 +1123,20 @@ Deno.serve(async (req: Request) => {
             async function nameQuery(
                 wildcard: string,
                 limit: number,
-                offset = 0
+                offset = 0,
+                exactFirst = false
             ) {
+                /* exactFirst sorts by folded name, so every name equal to the
+                   query comes before longer names that start with it; without
+                   it the highest-trophy rows win the window. */
                 let dbQuery = supabase
                     .from("coc_player_index")
                     .select(COLUMNS, { count: "exact" })
                     .or(
                         `search_name.ilike.${wildcard},name.ilike.${wildcard}`
                     )
-                    .order("trophies", {
-                        ascending: false,
+                    .order(exactFirst ? "search_name" : "trophies", {
+                        ascending: exactFirst,
                         nullsFirst: false,
                     })
                     .order("player_tag", {
@@ -1273,11 +1277,20 @@ Deno.serve(async (req: Request) => {
                 ? Math.max(0, requestedOffset)
                 : 0;
 
+            /* Typeahead asks for prefix rows only, so names that merely contain
+               the query cannot crowd out the names that start with it. */
+            const prefixOnly = body.prefix === true;
+
             const {
                 data: indexedRows,
                 count: matchedRows,
                 error: indexError,
-            } = await nameQuery(`%${queryText}%`, resultLimit, offset);
+            } = await nameQuery(
+                prefixOnly ? `${queryText}%` : `%${queryText}%`,
+                resultLimit,
+                offset,
+                prefixOnly
+            );
 
             if (indexError) {
                 console.error(

@@ -15,7 +15,10 @@
   four tables, the rate-limit function and indexes that only existed by hand;
   `20261128090000_player_search_sync_fix.sql` makes the trigger the final word
   on `search_name` and repairs rows missing it.
-- UI: debounced suggestions from real index rows, coverage/freshness line,
+- UI: debounced suggestions from real index rows, ranked exact → prefix →
+  contains and drawn from both a prefix request and a wider one, so a short
+  prefix like "red" shows the Reds instead of six high-trophy names that merely
+  contain it; coverage/freshness line,
   per-row match quality (Exact / Starts with / Contains / Similar), index
   freshness, distinct invalid / no-match / not-indexed / rate-limit / server
   states with Retry, and "Search a clan to index its members". After Members

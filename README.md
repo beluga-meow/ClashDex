@@ -233,8 +233,10 @@ honest way to look up an arbitrary player name through the official API.
 - Exact, prefix, contains and fuzzy ranking; exhaustive "exact name" filter.
 - Up to 1000 rows per request, `offset`/`next_offset` pagination, and a
   `Show all` fallback for an older deployment that returns 100 rows.
-- Debounced typeahead suggestions from real index rows, index coverage and
-  freshness, distinct states for invalid input, no match, rate limit, server
+- Debounced typeahead suggestions from real index rows, ranked exact → prefix
+  → contains and merged from a `prefix` request plus a wider one, so a short
+  prefix shows the names that start with it, not only high-trophy names that
+  contain it. Index coverage and freshness, distinct states for invalid input, no match, rate limit, server
   error and not-connected, plus Retry.
 - `tools/test-player-search.mjs` unit-tests the ranking and wording;
   `tools/probe-live-search.mjs` checks the deployed function against the real

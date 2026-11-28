@@ -85,6 +85,31 @@ test("large result sets keep every row and stay ordered", () => {
   assert.equal(search.matchRank(ranked[0].name, "janjan"), 1);
 });
 
+test("suggestions prefer exact and prefix names over high-trophy substring hits", () => {
+  const rows = [
+    { name: "Redhawk", tag: "#4", trophies: 5400 },
+    { name: "redemption", tag: "#3", trophies: 5200 },
+    { name: "Red", tag: "#2", trophies: 100 },
+    { name: "Red", tag: "#1", trophies: 50 },
+    { name: "Barbarian", tag: "#5", trophies: 9999 },
+  ];
+  const picked = search.bestSuggestions(rows, "red", 6);
+  assert.deepEqual(picked.map(row => row.name), ["Red", "Red", "Redhawk", "redemption"]);
+  assert.equal(search.bestSuggestions(rows, "red", 2).length, 2);
+  assert.ok(!picked.some(row => row.name === "Barbarian"));
+});
+
+test("suggestions never repeat a tag and never fill the list with non-matches", () => {
+  const rows = [
+    { name: "Red", tag: "#A", trophies: 10 },
+    { name: "Red", tag: "#A", trophies: 10 },
+    { name: "Unrelated", tag: "#B", trophies: 9000 },
+  ];
+  const picked = search.bestSuggestions(rows, "red", 6);
+  assert.deepEqual(picked.map(row => row.tag), ["#A"]);
+  assert.deepEqual(search.bestSuggestions([], "red", 6), []);
+});
+
 test("mergeHits paginates without duplicating a player tag", () => {
   const first = [{ tag: "#A", name: "one" }];
   const merged = search.mergeHits(first, [{ tag: "#A", name: "one" }, { tag: "#B", name: "two" }]);

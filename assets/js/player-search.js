@@ -55,6 +55,24 @@
     });
   }
 
+  /* The six typeahead rows that best match what was typed: exact, then prefix,
+     then contains, then similar. Rows whose name does not match at all are
+     dropped rather than filling the list, and tags are never duplicated. */
+  function bestSuggestions(rows, query, limit) {
+    const max = Math.max(1, Number(limit) || 6);
+    const seen = new Set();
+    const out = [];
+    for (const row of rankResults(rows || [], query)) {
+      if (!row || !row.tag || !row.name) continue;
+      if (seen.has(row.tag)) continue;
+      if (matchRank(row.name, query) == null) continue;
+      seen.add(row.tag);
+      out.push(row);
+      if (out.length === max) break;
+    }
+    return out;
+  }
+
   /* "just now", "12 min ago", "3 h ago", "5 days ago", or "" when unknown. */
   function freshness(value, now) {
     const then = Date.parse(String(value || ""));
@@ -120,6 +138,7 @@
     matchRank,
     matchLabel,
     rankResults,
+    bestSuggestions,
     freshness,
     coverageLine,
     emptyMessage,

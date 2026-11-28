@@ -184,7 +184,8 @@
       exact: !!exact,
       th: th ? Number(th) : null,
       limit: opts.limit || 1000,
-      offset: opts.offset || 0
+      offset: opts.offset || 0,
+      prefix: !!opts.prefix
     });
     if (r.status === 200 && r.data) return r.data;
     if (r.status === 429) {
@@ -599,9 +600,18 @@
       const token = ++suggestToken;
       suggestTimer = setTimeout(async () => {
         try {
-          const data = await findInIndex(q, false, "", { limit: 6 });
+          /* Two windows: one restricted to names that start with the query
+             (so "red" shows the Reds, not high-trophy names that merely
+             contain it) and a wider one for names that only contain it. */
+          const [wide, prefixed] = await Promise.all([
+            findInIndex(q, false, "", { limit: 24 }),
+            findInIndex(q, false, "", { limit: 24, prefix: true }).catch(() => null)
+          ]);
           if (token !== suggestToken) return;
-          const rows = (data.items || []).slice(0, 6);
+          const candidates = ((wide && wide.items) || []).concat((prefixed && prefixed.items) || []);
+          const rows = window.PDXSearch
+            ? window.PDXSearch.bestSuggestions(candidates, q, 6)
+            : candidates.slice(0, 6);
           if (!rows.length) { hideSuggest(); return; }
           suggest.innerHTML = rows.map(row =>
             '<li role="option"><button type="button" data-suggest="' + esc(row.name) + '"><strong>' + esc(row.name) +
