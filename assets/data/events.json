@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "updated": "2026-11-28",
+  "note": "PekkaDex news only. In-game dates are never guessed here: Supercell owns that schedule, and the recurring event countdown on the homepage is a separate, clearly-labelled best-effort reminder.",
+  "events": [
+    {
+      "id": "home-refresh",
+      "date": "2026-11-28",
+      "kind": "update",
+      "badge": "PekkaDex update",
+      "title": "A daily pick and a clearer front page",
+      "body": "The homepage now leads with a rotating feature banner, quick links to the tools Chiefs open most, and one archive item chosen by the date. Nothing here is sponsored or promoted.",
+      "link": "./heroes.html#cosmetics/skins",
+      "linkLabel": "Open the archive"
+    },
+    {
+      "id": "art-cleanup",
+      "date": "2026-11-27",
+      "kind": "update",
+      "badge": "Archive fix",
+      "title": "Fewer placeholders in the cosmetics archive",
+      "body": "Skin, scenery and equipment cards now point at art that exists in the repository. Where a picture genuinely is not on file, the card keeps its labelled silhouette instead of showing a broken image.",
+      "link": "./heroes.html#cosmetics/skins",
+      "linkLabel": "Browse cosmetics"
+    },
+    {
+      "id": "planner-roadmap",
+      "date": "2026-11-24",
+      "kind": "roadmap",
+      "badge": "In development",
+      "title": "Attack Planner preview",
+      "body": "A manual planner is on the way: place the defences you can see, then read which of the ranked armies fits the base. It is not live yet, and the teaser says so.",
+      "link": "#planner",
+      "linkLabel": "See what is planned"
+    },
+    {
+      "id": "official-news",
+      "kind": "link",
+      "badge": "Official source",
+      "title": "Clash of Clans announcements",
+      "body": "Balance changes and event dates come from Supercell. PekkaDex links to the official site rather than republishing an announcement as its own.",
+      "link": "https://supercell.com/en/games/clashofclans/",
+      "linkLabel": "Visit Clash of Clans",
+      "external": true
+    }
+  ]
+}

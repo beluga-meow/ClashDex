@@ -5,17 +5,44 @@
   "petHouse": {
     "unlock": "Town Hall 14",
     "maxLevelByTh": [
-      { "th": 14, "maxLevel": 4 },
-      { "th": 15, "maxLevel": 8 },
-      { "th": 16, "maxLevel": 10 }
+      {
+        "th": 14,
+        "maxLevel": 4
+      },
+      {
+        "th": 15,
+        "maxLevel": 8
+      },
+      {
+        "th": 16,
+        "maxLevel": 10
+      }
     ],
     "facts": [
-      { "label": "Upgrade cost", "text": "Every Pet House upgrade costs Dark Elixir." },
-      { "label": "One at a time", "text": "Only one pet can be upgrading in the Pet House at once." },
-      { "label": "Instant finish", "text": "A Book of Heroes or a Hammer of Heroes finishes a pet upgrade instantly." },
-      { "label": "Speed up", "text": "Pet Potions speed pet upgrades up." },
-      { "label": "Pets added per Town Hall", "text": "Town Hall 15 adds 4 pets, Town Hall 16 adds 2, Town Hall 17 adds 1 and Town Hall 18 adds 1, for 12 in total." },
-      { "label": "Heroes only", "text": "Pets are assigned to heroes and fight alongside them." }
+      {
+        "label": "Upgrade cost",
+        "text": "Every Pet House upgrade costs Dark Elixir."
+      },
+      {
+        "label": "One at a time",
+        "text": "Only one pet can be upgrading in the Pet House at once."
+      },
+      {
+        "label": "Instant finish",
+        "text": "A Book of Heroes or a Hammer of Heroes finishes a pet upgrade instantly."
+      },
+      {
+        "label": "Speed up",
+        "text": "Pet Potions speed pet upgrades up."
+      },
+      {
+        "label": "Pets added per Town Hall",
+        "text": "Town Hall 15 adds 4 pets, Town Hall 16 adds 2, Town Hall 17 adds 1 and Town Hall 18 adds 1, for 12 in total."
+      },
+      {
+        "label": "Heroes only",
+        "text": "Pets are assigned to heroes and fight alongside them."
+      }
     ],
     "verified": true,
     "notes": "Supplied by the site owner; not re-checked against the game this session."
@@ -27,40 +54,208 @@
     "order": 1,
     "verified": true,
     "facts": [
-      { "label": "Movement", "text": "Ground" },
-      { "label": "Preferred target", "text": "Within 2.5 tiles of the hero" },
-      { "label": "Targets", "text": "Single target" },
-      { "label": "Hitpoints", "text": "Moderate" },
-      { "label": "Damage", "text": "High DPS" },
-      { "label": "Speed", "text": "32" },
-      { "label": "Jump", "text": "High jumper" }
+      {
+        "label": "Movement",
+        "text": "Ground"
+      },
+      {
+        "label": "Preferred target",
+        "text": "Within 2.5 tiles of the hero"
+      },
+      {
+        "label": "Targets",
+        "text": "Single target"
+      },
+      {
+        "label": "Hitpoints",
+        "text": "Moderate"
+      },
+      {
+        "label": "Damage",
+        "text": "High DPS"
+      },
+      {
+        "label": "Speed",
+        "text": "32"
+      },
+      {
+        "label": "Jump",
+        "text": "High jumper"
+      }
     ],
-    "notes": "Stat line supplied by the site owner. No level-by-level table is on file."
+    "notes": "Stat line supplied by the site owner. No level-by-level table is on file.",
+    "art": null
   },
   "pets": [
-    { "id": "lassi", "name": "L.A.S.S.I", "unlock": "Town Hall 14", "order": 1, "verified": true, "detail": "Full stat line above." },
-    { "id": "electro-owl", "name": "Electro Owl", "unlock": "Town Hall 14", "order": 2, "verified": false, "notes": "Name and unlock order only. Air/ranged behaviour and all stat values are not on file." },
-    { "id": "mighty-yak", "name": "Mighty Yak", "unlock": "Town Hall 14", "order": 3, "verified": false, "notes": "Name and unlock order only; stats not on file." },
-    { "id": "unicorn", "name": "Unicorn", "unlock": "Town Hall 14", "order": 4, "verified": false, "notes": "Name and unlock order only; stats not on file." },
-    { "id": "frosty", "name": "Frosty", "unlock": "Town Hall 15", "order": 5, "verified": false, "notes": "Name and unlock order only; stats not on file." },
-    { "id": "diggy", "name": "Diggy", "unlock": "Town Hall 15", "order": 6, "verified": false, "notes": "Name and unlock order only; stats not on file." },
-    { "id": "poison-lizard", "name": "Poison Lizard", "unlock": "Town Hall 15", "order": 7, "verified": false, "notes": "Name and unlock order only; stats not on file." },
-    { "id": "phoenix", "name": "Phoenix", "unlock": "Town Hall 15", "order": 8, "verified": false, "notes": "Name and unlock order only; stats not on file." },
-    { "id": "spirit-fox", "name": "Spirit Fox", "unlock": "Town Hall 16", "order": 9, "verified": false, "notes": "Name and unlock order only; stats not on file." },
-    { "id": "angry-jelly", "name": "Angry Jelly", "unlock": "Town Hall 16", "order": 10, "verified": false, "notes": "Name and unlock order only; stats not on file." },
-    { "id": "sneezy", "name": "Sneezy", "unlock": "Town Hall 17", "order": 11, "verified": false, "notes": "Name and unlock order only; stats not on file." },
-    { "id": "unconfirmed-th18", "name": "Town Hall 18 pet", "unlock": "Town Hall 18", "order": 12, "verified": false, "notes": "The owner's material says Town Hall 18 adds one more pet, but its name is not confirmed, so it is left unnamed." }
+    {
+      "id": "lassi",
+      "name": "L.A.S.S.I",
+      "unlock": "Town Hall 14",
+      "order": 1,
+      "verified": true,
+      "detail": "Full stat line above.",
+      "art": null,
+      "artMissing": true
+    },
+    {
+      "id": "electro-owl",
+      "name": "Electro Owl",
+      "unlock": "Town Hall 14",
+      "order": 2,
+      "verified": false,
+      "notes": "Name and unlock order only. Air/ranged behaviour and all stat values are not on file.",
+      "art": "./Hero_Pet_HV_Electro_Owl.webp",
+      "artMissing": false
+    },
+    {
+      "id": "mighty-yak",
+      "name": "Mighty Yak",
+      "unlock": "Town Hall 14",
+      "order": 3,
+      "verified": false,
+      "notes": "Name and unlock order only; stats not on file.",
+      "art": "./Hero_Pet_HV_Mighty_Yak_2_grass.webp",
+      "artMissing": false
+    },
+    {
+      "id": "unicorn",
+      "name": "Unicorn",
+      "unlock": "Town Hall 14",
+      "order": 4,
+      "verified": false,
+      "notes": "Name and unlock order only; stats not on file.",
+      "art": "./Hero_Pet_HV_Unicorn_2_grass.webp",
+      "artMissing": false
+    },
+    {
+      "id": "frosty",
+      "name": "Frosty",
+      "unlock": "Town Hall 15",
+      "order": 5,
+      "verified": false,
+      "notes": "Name and unlock order only; stats not on file.",
+      "art": "./Hero_Pet_HV_Frosty_3_grass.webp",
+      "artMissing": false
+    },
+    {
+      "id": "diggy",
+      "name": "Diggy",
+      "unlock": "Town Hall 15",
+      "order": 6,
+      "verified": false,
+      "notes": "Name and unlock order only; stats not on file.",
+      "art": "./Hero_Pet_HV_Diggy_2.webp",
+      "artMissing": false
+    },
+    {
+      "id": "poison-lizard",
+      "name": "Poison Lizard",
+      "unlock": "Town Hall 15",
+      "order": 7,
+      "verified": false,
+      "notes": "Name and unlock order only; stats not on file.",
+      "art": "./Hero_Pet_HV_Poison_Lizard_2.webp",
+      "artMissing": false
+    },
+    {
+      "id": "phoenix",
+      "name": "Phoenix",
+      "unlock": "Town Hall 15",
+      "order": 8,
+      "verified": false,
+      "notes": "Name and unlock order only; stats not on file.",
+      "art": "./Hero_Pet_HV_Phoenix_1_grass.webp",
+      "artMissing": false
+    },
+    {
+      "id": "spirit-fox",
+      "name": "Spirit Fox",
+      "unlock": "Town Hall 16",
+      "order": 9,
+      "verified": false,
+      "notes": "Name and unlock order only; stats not on file.",
+      "art": "./Hero_Pet_HV_Spirit_Fox_shadow.webp",
+      "artMissing": false
+    },
+    {
+      "id": "angry-jelly",
+      "name": "Angry Jelly",
+      "unlock": "Town Hall 16",
+      "order": 10,
+      "verified": false,
+      "notes": "Name and unlock order only; stats not on file.",
+      "art": "./Hero_Pet_HV_Angry_Jelly_03.webp",
+      "artMissing": false
+    },
+    {
+      "id": "sneezy",
+      "name": "Sneezy",
+      "unlock": "Town Hall 17",
+      "order": 11,
+      "verified": false,
+      "notes": "Name and unlock order only; stats not on file.",
+      "art": "./Icon_HV_Hero_Pets_Sneezy.webp",
+      "artMissing": false
+    },
+    {
+      "id": "unconfirmed-th18",
+      "name": "Town Hall 18 pet",
+      "unlock": "Town Hall 18",
+      "order": 12,
+      "verified": false,
+      "notes": "The owner's material says Town Hall 18 adds one more pet, but its name is not confirmed, so it is left unnamed.",
+      "art": null,
+      "artMissing": true
+    }
   ],
   "pairings": {
     "note": "Suggestions, not a tier list. They assume a maxed Pet House and a pet you actually own; a lower-level pet may be worse than a maxed one you already have.",
     "verified": false,
     "items": [
-      { "hero": "barbarian-king", "petIds": ["mighty-yak"], "reason": "A tanking pet in front of the King spreads the damage he takes." },
-      { "hero": "archer-queen", "petIds": ["lassi"], "reason": "A fast ground pet follows a walking Queen without lagging behind." },
-      { "hero": "grand-warden", "petIds": ["electro-owl"], "reason": "An air pet stays with a support hero who often trails the main push." },
-      { "hero": "royal-champion", "petIds": ["unicorn", "lassi"], "reason": "A pet with its own healing or speed suits a hero who hunts defences alone." },
-      { "hero": "minion-prince", "petIds": ["electro-owl"], "reason": "An air hero and an air pet keep the same path through the base." },
-      { "hero": "dragon-duke", "petIds": ["mighty-yak", "frosty"], "reason": "A melee hero benefits from a second body taking hits beside him." }
+      {
+        "hero": "barbarian-king",
+        "petIds": [
+          "mighty-yak"
+        ],
+        "reason": "A tanking pet in front of the King spreads the damage he takes."
+      },
+      {
+        "hero": "archer-queen",
+        "petIds": [
+          "lassi"
+        ],
+        "reason": "A fast ground pet follows a walking Queen without lagging behind."
+      },
+      {
+        "hero": "grand-warden",
+        "petIds": [
+          "electro-owl"
+        ],
+        "reason": "An air pet stays with a support hero who often trails the main push."
+      },
+      {
+        "hero": "royal-champion",
+        "petIds": [
+          "unicorn",
+          "lassi"
+        ],
+        "reason": "A pet with its own healing or speed suits a hero who hunts defences alone."
+      },
+      {
+        "hero": "minion-prince",
+        "petIds": [
+          "electro-owl"
+        ],
+        "reason": "An air hero and an air pet keep the same path through the base."
+      },
+      {
+        "hero": "dragon-duke",
+        "petIds": [
+          "mighty-yak",
+          "frosty"
+        ],
+        "reason": "A melee hero benefits from a second body taking hits beside him."
+      }
     ]
   }
 }

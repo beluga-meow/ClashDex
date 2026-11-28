@@ -204,6 +204,7 @@
     }
     queueSelect.value = row.queue;
     const queueWrap = calcField("Queue", queueSelect);
+    queueWrap.classList.add("tool-row__queue");
 
     const duration = document.createElement("fieldset");
     duration.className = "tool-row__field tool-row__duration";
@@ -236,6 +237,8 @@
       calcField("Dark elixir", resourceInput(row, "dark")),
     ];
     fields[0].classList.add("tool-row__cost");
+    fields[1].classList.add("tool-row__elixir");
+    fields[2].classList.add("tool-row__dark");
 
     const remove = document.createElement("button");
     remove.className = "pdx-btn pdx-btn--danger pdx-btn--sm tool-row__remove";
@@ -944,27 +947,10 @@
       }
     });
 
-    $("#trackRestoreToggle")?.addEventListener("click", () => {
-      const box = $("#trackRestore");
-      if (!box) return;
-      restoring = box.hidden;
-      box.hidden = !restoring;
-      $("#trackRestoreToggle").setAttribute("aria-expanded", String(restoring));
-      $("#trackRestoreToggle").textContent = restoring ? "Hide restore box" : "Restore from backup";
-    });
-
-    $("#trackRestoreApply")?.addEventListener("click", () => {
-      const raw = $("#trackRestoreText")?.value || "";
-      let parsed;
-      try {
-        parsed = JSON.parse(raw);
-      } catch (_) {
-        setStatus("That is not valid JSON, so nothing was restored.");
-        return;
-      }
+    function applyTrackBackup(parsed) {
       if (!parsed || !Array.isArray(parsed.items)) {
         setStatus("The backup has no items array, so nothing was restored.");
-        return;
+        return false;
       }
       const items = parsed.items
         .filter(item => item && typeof item === "object" && num(item.seconds, 0) > 0)
@@ -987,6 +973,63 @@
       saveTrack();
       tickTracker();
       setStatus(`Restored ${items.length} item${items.length === 1 ? "" : "s"} from the backup.`);
+      return true;
+    }
+
+    $("#trackExport")?.addEventListener("click", () => {
+      const payload = JSON.stringify({ ...trackState, savedAt: new Date().toISOString() }, null, 2);
+      const stamp = new Date().toISOString().slice(0, 10);
+      const blob = new Blob([payload], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `pekkadex-upgrade-tracker-${stamp}.json`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setStatus(`Backup file downloaded with ${trackState.items.length} item${trackState.items.length === 1 ? "" : "s"}.`);
+    });
+
+    $("#trackImport")?.addEventListener("change", async event => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (file.size > 512 * 1024) {
+        setStatus("That file is larger than 512 KB, so it was not read. Tracker backups are tiny JSON files.");
+        event.target.value = "";
+        return;
+      }
+      let parsed;
+      try {
+        parsed = JSON.parse(await file.text());
+      } catch (_) {
+        setStatus("That file is not valid JSON, so nothing was restored.");
+        event.target.value = "";
+        return;
+      }
+      applyTrackBackup(parsed);
+      event.target.value = "";
+    });
+
+    $("#trackRestoreToggle")?.addEventListener("click", () => {
+      const box = $("#trackRestore");
+      if (!box) return;
+      restoring = box.hidden;
+      box.hidden = !restoring;
+      $("#trackRestoreToggle").setAttribute("aria-expanded", String(restoring));
+      $("#trackRestoreToggle").textContent = restoring ? "Hide restore box" : "Restore from backup";
+    });
+
+    $("#trackRestoreApply")?.addEventListener("click", () => {
+      const raw = $("#trackRestoreText")?.value || "";
+      let parsed;
+      try {
+        parsed = JSON.parse(raw);
+      } catch (_) {
+        setStatus("That is not valid JSON, so nothing was restored.");
+        return;
+      }
+      applyTrackBackup(parsed);
     });
 
     $("#trackClear")?.addEventListener("click", () => {

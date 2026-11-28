@@ -173,14 +173,22 @@
          </div>`
       : "";
 
-    const rows = (pets.pets || []).map(pet => `
-      <tr${pet.verified === false ? ' class="is-unverified"' : ""}>
-        <td>${esc(pet.order)}</td>
-        <td><b>${esc(pet.name)}</b></td>
-        <td>${esc(pet.unlock)}</td>
-        <td>${pet.verified === false ? chip("Unverified") : chip("On file", true)}</td>
-        <td>${esc(pet.detail || pet.notes || "Details not confirmed")}</td>
-      </tr>`).join("");
+    /* Stacked cards instead of a five-column table: on a 360px phone the
+       Details column used to be pushed off the edge of the screen. */
+    const cards = (pets.pets || []).map(pet => `
+      <article class="pdx-card pet-card">
+        <span class="pdx-card__media pet-card__art">
+          ${pet.art
+            ? `<img src="${esc(pet.art)}" alt="${esc(pet.name)} pet art" width="220" height="220" loading="lazy" decoding="async">`
+            : `<span class="art-missing" role="img" aria-label="${esc(pet.name)} — art not on file">🐾</span>`}
+        </span>
+        <div class="pdx-card__body">
+          <p class="pdx-card__meta">Pet ${esc(pet.order)} · ${esc(pet.unlock)}</p>
+          <h3 class="pdx-card__title">${esc(pet.name)}</h3>
+          <p class="pet-card__status">${pet.verified === false ? chip("Unverified") : chip("On file", true)}</p>
+          <p class="pdx-note">${esc(pet.detail || pet.notes || "Details not confirmed")}</p>
+        </div>
+      </article>`).join("");
 
     const heroById = new Map((heroes.heroes || []).map(hero => [hero.id, hero]));
     const petById = new Map((pets.pets || []).map(pet => [pet.id, pet]));
@@ -211,14 +219,8 @@
       </div>
       ${featuredFacts}
       <h3 class="extras-subhead">Every pet, in unlock order</h3>
-      <p class="pdx-note">Only L.A.S.S.I has a full stat line on file. The other pets are listed by name and unlock order, and their table row says so instead of inventing numbers.</p>
-      <div class="tool-table-wrap">
-        <table class="tool-table pet-table">
-          <caption>Pets on file</caption>
-          <thead><tr><th scope="col">#</th><th scope="col">Pet</th><th scope="col">Unlocks</th><th scope="col">Status</th><th scope="col">Details</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
+      <p class="pdx-note">Only L.A.S.S.I has a full stat line on file. The other pets are listed by name and unlock order, and their card says so instead of inventing numbers.</p>
+      <div class="pdx-grid pet-grid">${cards}</div>
       <h3 class="extras-subhead">Which pet for which hero</h3>
       <p class="pdx-note">Suggestions, not a tier list. ${esc(pets.pairings?.note || "")}</p>
       <div class="pdx-grid pairing-grid">${pairings}</div>

@@ -1,0 +1,262 @@
+/* PekkaDex shared page chrome — header, drawer, bottom nav, image fallback.
+   Loaded on every page after tokens.css/components.css so one header design
+   replaces the old split between the homepage .site-header and the subpage
+   .sitebar. */
+
+/* ---------- one header, every page ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 72px;
+  max-width: 100%;
+  padding: var(--s-2) var(--s-4);
+  background: linear-gradient(var(--c-wood-400), var(--c-wood-500) 60%, var(--c-wood-700));
+  border-bottom: 4px solid var(--c-wood-900);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .3), 0 6px 16px rgba(0, 0, 0, .28);
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  flex: 0 1 auto;
+  min-width: 0;
+  min-height: var(--tap);
+  color: #fff;
+  font: 400 var(--fs-lg) var(--font-display);
+  letter-spacing: .02em;
+  line-height: 1.05;
+  text-decoration: none;
+  text-shadow: 0 2px 0 var(--c-wood-900);
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border: 3px solid var(--c-wood-900);
+  border-radius: var(--r-md);
+  background: linear-gradient(var(--c-gold-300), var(--c-gold-500));
+  color: var(--c-ink);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .6), 0 3px 0 var(--c-wood-900);
+  text-shadow: none;
+}
+.brand > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.brand-accent { color: var(--c-gold-300); }
+.brand small {
+  display: block;
+  margin-top: 2px;
+  color: #ffe9b8;
+  font: 800 9px / 1.2 var(--font-body);
+  letter-spacing: .13em;
+  text-shadow: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  margin-left: auto;
+}
+.main-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: var(--s-1) var(--s-2);
+  border-radius: var(--r-md);
+  color: #ffeab8;
+  font: 400 var(--fs-sm) / 1.1 var(--font-display);
+  letter-spacing: .02em;
+  text-decoration: none;
+  text-shadow: 0 2px 0 var(--c-wood-900);
+}
+.main-nav a:hover { background: rgba(0, 0, 0, .28); color: #fff; }
+.main-nav a[aria-current="page"] { background: rgba(0, 0, 0, .32); color: #fff; }
+.main-nav a:focus-visible { outline: var(--focus); outline-offset: 2px; }
+.nav-ico { width: 24px; height: 24px; flex: 0 0 24px; object-fit: contain; }
+.header-actions { display: flex; align-items: center; gap: var(--s-2); }
+.header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap);
+  height: var(--tap);
+  border: 3px solid var(--c-wood-900);
+  border-radius: 50%;
+  background: var(--c-paper-50);
+  color: var(--c-ink);
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .1), 0 3px 0 var(--c-wood-900);
+  text-decoration: none;
+}
+.header-actions .nav-app {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: var(--s-1) var(--s-3);
+  border: 3px solid var(--c-wood-900);
+  border-radius: var(--r-md);
+  background: linear-gradient(var(--c-gold-300), var(--c-gold-500));
+  color: var(--c-ink);
+  font: 400 var(--fs-sm) / 1.1 var(--font-display);
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--c-gold-700);
+}
+.header-actions .nav-app[hidden] { display: none; }
+.header-actions .nav-app:focus-visible { outline: var(--focus); outline-offset: 2px; }
+@media (max-width: 620px) { .header-actions .nav-app { display: none; } }
+.header-cta:hover { background: var(--c-paper-100); }
+.header-cta:focus-visible { outline: var(--focus); outline-offset: 2px; }
+.mobile-menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap);
+  min-height: var(--tap);
+  border: 3px solid var(--c-wood-900);
+  border-radius: var(--r-md);
+  background: linear-gradient(var(--c-gold-300), var(--c-gold-500));
+  color: var(--c-ink);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--c-gold-700);
+}
+.mobile-menu:focus-visible { outline: var(--focus); outline-offset: 2px; }
+
+@media (max-width: 1060px) {
+  .main-nav { display: none; }
+  .mobile-menu { display: inline-flex; margin-left: auto; }
+  .brand small { display: none; }
+}
+@media (max-width: 420px) {
+  .site-header { padding: var(--s-2); min-height: 64px; gap: var(--s-1); }
+  .brand { font-size: var(--fs-md); }
+  .brand-mark { width: 34px; height: 34px; flex-basis: 34px; }
+}
+
+/* ---------- full-screen menu drawer ---------- */
+.pdx-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: linear-gradient(160deg, #3a2410, #1d1208 65%);
+  color: #ffeab8;
+}
+.pdx-drawer[hidden] { display: none !important; }
+.pdx-drawer__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 4px solid #120b04;
+  background: linear-gradient(var(--c-wood-400), var(--c-wood-700));
+}
+.pdx-drawer__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  color: #ffe778;
+  font: 400 var(--fs-lg) var(--font-display);
+  text-shadow: 0 2px 0 var(--c-wood-900);
+}
+.pdx-drawer__list {
+  margin: 0;
+  padding: var(--s-3) var(--s-3) calc(var(--s-8) + env(safe-area-inset-bottom, 0px));
+  list-style: none;
+  overflow: auto;
+  overscroll-behavior: contain;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--s-2);
+  align-content: start;
+}
+.pdx-drawer__link {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 56px;
+  padding: var(--s-2) var(--s-3);
+  border: 3px solid #120b04;
+  border-radius: var(--r-md);
+  background: linear-gradient(var(--c-paper-100), var(--c-paper-200));
+  color: var(--c-ink);
+  font: 400 var(--fs-md) var(--font-display);
+  text-decoration: none;
+}
+.pdx-drawer__link:hover { filter: brightness(1.04); }
+.pdx-drawer__link:focus-visible { outline: 3px solid var(--c-gold-300); outline-offset: 2px; }
+.pdx-drawer__link[aria-current="page"] { background: linear-gradient(var(--c-gold-300), var(--c-gold-500)); }
+.pdx-drawer__link small { display: block; color: var(--c-ink-2); font: 700 11px / 1.2 var(--font-body); }
+.pdx-drawer__emoji { font-size: 22px; line-height: 1; }
+
+/* ---------- bottom nav: six slots on every page ---------- */
+.cx-tabbar a,
+.cx-tabbar button { -webkit-tap-highlight-color: transparent; }
+.cx-tabbar button {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 1px;
+  min-height: 48px;
+  padding: 3px 0;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: #ffeab8;
+  font: 400 11px / 1.1 var(--font-display);
+  text-shadow: 0 1px 0 var(--c-wood-800);
+  cursor: pointer;
+}
+.cx-tabbar .more-ico {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid currentColor;
+  border-radius: 8px;
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ---------- images that fail to load ---------- */
+.pdx-img--fallback {
+  object-fit: contain;
+  padding: 8%;
+  opacity: .9;
+}
+.pdx-media--fallback::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(255, 231, 120, .28), transparent 70%);
+  pointer-events: none;
+}
+
+/* ---------- shared responsive fixes ---------- */
+/* Selects and search fields go full width on a phone so their labels never
+   clip ("All sources (not…", "All seasons (not…"). */
+@media (max-width: 620px) {
+  .filter-bar__row { grid-template-columns: minmax(0, 1fr) !important; }
+  .filter-bar .pdx-select,
+  .filter-bar .pdx-input { width: 100%; }
+  .pdx-field > span { white-space: normal; overflow-wrap: anywhere; }
+}
+html, body { max-width: 100%; }
+body { overflow-x: clip; }
+
+/* Reduced motion: the drawer and cards stop animating. */
+@media (prefers-reduced-motion: reduce) {
+  .pdx-drawer__link,
+  .site-header,
+  .pdx-img--fallback { transition: none !important; animation: none !important; }
+}

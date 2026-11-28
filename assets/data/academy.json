@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "updated": "2026-11-28",
+  "note": "A PekkaDex learning path written from the guides already in this repository. It is opinion, not official Supercell coaching, and it names no game numbers.",
+  "stages": [
+    {
+      "n": 1,
+      "title": "Read the base before you cook",
+      "goal": "Decide which side of the base you can actually enter, before spending a single troop.",
+      "checks": [
+        "Count the compartments: one ring, two rings, or a core box.",
+        "Find the Air Defences and Air Sweepers, and note which side they cover.",
+        "Find the Eagle Artillery, Monolith and Scattershot and mark the square they own."
+      ],
+      "practice": { "label": "Look up the layout", "href": "./bases.html" }
+    },
+    {
+      "n": 2,
+      "title": "Build a funnel that holds",
+      "goal": "Make the outside ring walk inward instead of around, so the middle of the army stays together.",
+      "checks": [
+        "Clear one collector cluster on each side of your entry.",
+        "Let the funnel troops finish before the main army lands.",
+        "Watch the corner: a builder hut or a lone camp is often the leak."
+      ],
+      "practice": { "label": "Open the Army Library", "href": "./armies.html" }
+    },
+    {
+      "n": 3,
+      "title": "Use a hero dive with a purpose",
+      "goal": "Send the Queen or Warden at a specific defence, not at whatever is closest.",
+      "checks": [
+        "Name the target out loud: one Air Defence, the Eagle, or a compartment wall.",
+        "Have a way to pull the defending Clan Castle before the dive commits.",
+        "Keep a rage or freeze for the moment the dive meets splash damage."
+      ],
+      "practice": { "label": "Read the Queen Walk guide", "href": "#guide-queen-walk" }
+    },
+    {
+      "n": 4,
+      "title": "Time the spells, not the troops",
+      "goal": "Spells decide the middle of the attack; troop placement only decides the start.",
+      "checks": [
+        "Rage the part of the army that is already winning.",
+        "Freeze the defence that is actually killing the push, not the first one you see.",
+        "Save one spell for the last core compartment rather than opening with everything."
+      ],
+      "practice": { "label": "See army spell lists", "href": "./armies.html" }
+    },
+    {
+      "n": 5,
+      "title": "Plan the cleanup",
+      "goal": "Know what finishes the last 15 percent before the attack starts.",
+      "checks": [
+        "Reserve fast troops or a hero for the outside ring.",
+        "Do not send every troop into the core and leave the corners alone.",
+        "Keep one ability in reserve for the last defence."
+      ],
+      "practice": { "label": "Try the Attack Planner", "href": "./planner.html" }
+    },
+    {
+      "n": 6,
+      "title": "Review the replay like a coach",
+      "goal": "Turn one failed attack into a rule you use next war.",
+      "checks": [
+        "Find the exact second the funnel broke, not the moment the attack failed.",
+        "Write one sentence about what you will change next time.",
+        "Re-run the same base with one change, not five."
+      ],
+      "practice": { "label": "Compare armies", "href": "./armies.html" }
+    }
+  ]
+}

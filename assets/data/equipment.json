@@ -9,9 +9,13 @@
       "hero": "barbarian-king",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/barbarian-puppet.webp",
-      "effect": { "text": "Summons a group of Barbarians around the King when his ability is used.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_BK_Barbarian_Puppet.webp",
+      "effect": {
+        "text": "Summons a group of Barbarians around the King when his ability is used.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "rage-vial",
@@ -19,9 +23,13 @@
       "hero": "barbarian-king",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/rage-vial.webp",
-      "effect": { "text": "Drops a rage spell on the King when the ability triggers, boosting his damage and speed.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_BK_Rage_Vial.webp",
+      "effect": {
+        "text": "Drops a rage spell on the King when the ability triggers, boosting his damage and speed.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "earthquake-boots",
@@ -29,9 +37,13 @@
       "hero": "barbarian-king",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/earthquake-boots.webp",
-      "effect": { "text": "The King stomps on landing, damaging and slowing nearby buildings and walls.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_BK_Earthquake_Boots.webp",
+      "effect": {
+        "text": "The King stomps on landing, damaging and slowing nearby buildings and walls.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "vampstache",
@@ -39,9 +51,13 @@
       "hero": "barbarian-king",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/vampstache.webp",
-      "effect": { "text": "Every hit he lands heals him, which keeps him alive through long walks.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_BK_Vampstache.webp",
+      "effect": {
+        "text": "Every hit he lands heals him, which keeps him alive through long walks.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "giant-gauntlet",
@@ -49,9 +65,13 @@
       "hero": "barbarian-king",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/giant-gauntlet.webp",
-      "effect": { "text": "Greatly increases his size and damage, and his punches send out a shockwave.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Greatly increases his size and damage, and his punches send out a shockwave.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "spiky-ball",
@@ -59,9 +79,13 @@
       "hero": "barbarian-king",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/spiky-ball.webp",
-      "effect": { "text": "Throws a bouncing spiked ball that damages several defences in a line.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Throws a bouncing spiked ball that damages several defences in a line.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "archer-puppet",
@@ -69,9 +93,13 @@
       "hero": "archer-queen",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/archer-puppet.webp",
-      "effect": { "text": "Summons Archers to fight beside the Queen when her ability is used.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Summons Archers to fight beside the Queen when her ability is used.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "invisibility-vial",
@@ -79,9 +107,13 @@
       "hero": "archer-queen",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/invisibility-vial.webp",
-      "effect": { "text": "Extends and strengthens her cloak, keeping her hidden for longer.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Extends and strengthens her cloak, keeping her hidden for longer.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "giant-arrow",
@@ -89,9 +121,13 @@
       "hero": "archer-queen",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/giant-arrow.webp",
-      "effect": { "text": "Fires one huge arrow across the base that damages every building it crosses.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Fires one huge arrow across the base that damages every building it crosses.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "healer-puppet",
@@ -99,9 +135,13 @@
       "hero": "archer-queen",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/healer-puppet.webp",
-      "effect": { "text": "Summons Healers that follow and heal nearby troops.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Summons Healers that follow and heal nearby troops.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "frozen-arrow",
@@ -109,9 +149,13 @@
       "hero": "archer-queen",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/frozen-arrow.webp",
-      "effect": { "text": "Her arrows slow the buildings they hit, buying time for the push.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Her arrows slow the buildings they hit, buying time for the push.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "magic-mirror",
@@ -119,9 +163,13 @@
       "hero": "archer-queen",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/magic-mirror.webp",
-      "effect": { "text": "Creates a copy of the Queen that fights alongside her for a short time.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Creates a copy of the Queen that fights alongside her for a short time.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "eternal-tome",
@@ -129,9 +177,13 @@
       "hero": "grand-warden",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/eternal-tome.webp",
-      "effect": { "text": "The default book. Grants temporary invulnerability to nearby troops.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_GW_Eternal_Tome.webp",
+      "effect": {
+        "text": "The default book. Grants temporary invulnerability to nearby troops.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "life-gem",
@@ -139,9 +191,13 @@
       "hero": "grand-warden",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/life-gem.webp",
-      "effect": { "text": "Increases the health of troops inside the Warden's aura.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_GW_Life_Gem.webp",
+      "effect": {
+        "text": "Increases the health of troops inside the Warden's aura.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "rage-gem",
@@ -149,9 +205,13 @@
       "hero": "grand-warden",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/rage-gem.webp",
-      "effect": { "text": "Troops in the aura deal more damage while the ability is active.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_GW_Rage_Gem.webp",
+      "effect": {
+        "text": "Troops in the aura deal more damage while the ability is active.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "healing-tome",
@@ -159,9 +219,13 @@
       "hero": "grand-warden",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/healing-tome.webp",
-      "effect": { "text": "Heals friendly troops in range instead of only shielding them.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_GW_Healing_Tome.webp",
+      "effect": {
+        "text": "Heals friendly troops in range instead of only shielding them.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "fireball",
@@ -169,9 +233,13 @@
       "hero": "grand-warden",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/fireball-equipment.webp",
-      "effect": { "text": "Calls down a massive fireball that can wipe out a whole compartment.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_GW_Fireball.webp",
+      "effect": {
+        "text": "Calls down a massive fireball that can wipe out a whole compartment.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "lavaloon-puppet",
@@ -179,9 +247,13 @@
       "hero": "grand-warden",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/lavaloon-puppet.webp",
-      "effect": { "text": "Summons Lava Hounds and Balloons when the ability is used.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipement_LavaloonPuppet.webp",
+      "effect": {
+        "text": "Summons Lava Hounds and Balloons when the ability is used.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "seeking-shield",
@@ -189,9 +261,13 @@
       "hero": "royal-champion",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/seeking-shield.webp",
-      "effect": { "text": "Her signature throw: the shield bounces between four defences.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_RC_Seeking_Shield.webp",
+      "effect": {
+        "text": "Her signature throw: the shield bounces between four defences.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "royal-gem",
@@ -199,9 +275,13 @@
       "hero": "royal-champion",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/royal-gem.webp",
-      "effect": { "text": "Restores health and shields her when the ability is used.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_RC_Royal_Gem.webp",
+      "effect": {
+        "text": "Restores health and shields her when the ability is used.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "hog-rider-puppet",
@@ -209,9 +289,13 @@
       "hero": "royal-champion",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/hog-rider-puppet.webp",
-      "effect": { "text": "Summons Hog Riders that jump onto nearby defences.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Summons Hog Riders that jump onto nearby defences.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "haste-vial",
@@ -219,9 +303,13 @@
       "hero": "royal-champion",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/haste-vial.webp",
-      "effect": { "text": "Gives her a burst of speed and attack rate.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_RC_Haste_Vial.webp",
+      "effect": {
+        "text": "Gives her a burst of speed and attack rate.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "rocket-spear",
@@ -229,9 +317,13 @@
       "hero": "royal-champion",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/rocket-spear.webp",
-      "effect": { "text": "Launches a spear that explodes on impact for heavy area damage.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/HeroGear_RoyalChampion_RocketSpear_Equipment_02.webp",
+      "effect": {
+        "text": "Launches a spear that explodes on impact for heavy area damage.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "electro-boots",
@@ -239,9 +331,13 @@
       "hero": "royal-champion",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/electro-boots.webp",
-      "effect": { "text": "Her leaps chain lightning between nearby buildings.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_RC_ElectroBoots.webp",
+      "effect": {
+        "text": "Her leaps chain lightning between nearby buildings.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "henchmen-puppet",
@@ -249,9 +345,13 @@
       "hero": "minion-prince",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/henchmen-puppet.webp",
-      "effect": { "text": "Summons Minions that swarm the nearest defences.", "verified": false },
-      "verified": true
+      "art": null,
+      "effect": {
+        "text": "Summons Minions that swarm the nearest defences.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": true
     },
     {
       "id": "dark-orb",
@@ -259,9 +359,13 @@
       "hero": "minion-prince",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/dark-orb.webp",
-      "effect": { "text": "A slowing, damaging orb dropped on the strongest defence below.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipment_MP_DarkOrb.webp",
+      "effect": {
+        "text": "A slowing, damaging orb dropped on the strongest defence below.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "metal-pants",
@@ -269,9 +373,13 @@
       "hero": "minion-prince",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/metal-pants.webp",
-      "effect": { "text": "Heavy armour for his legs: more health and reduced knockback.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/HeroEquipment_MP_IronPants.webp",
+      "effect": {
+        "text": "Heavy armour for his legs: more health and reduced knockback.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "rocket-backpack",
@@ -279,9 +387,13 @@
       "hero": "dragon-duke",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/rocket-backpack.webp",
-      "effect": { "text": "Short rocket boosts that carry him over a wall.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/HG_DD_Rocket_BackPack.webp",
+      "effect": {
+        "text": "Short rocket boosts that carry him over a wall.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "flame-blower",
@@ -289,9 +401,13 @@
       "hero": "dragon-duke",
       "rarity": "Common",
       "maxLevel": 18,
-      "art": "./assets/equipment/flame-blower.webp",
-      "effect": { "text": "A cone of flame that damages several buildings in front of him.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/HG_DD_Flame%20Blower.webp",
+      "effect": {
+        "text": "A cone of flame that damages several buildings in front of him.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     },
     {
       "id": "electro-fangs",
@@ -299,9 +415,13 @@
       "hero": "dragon-duke",
       "rarity": "Epic",
       "maxLevel": 27,
-      "art": "./assets/equipment/electro-fangs.webp",
-      "effect": { "text": "Bites chain lightning between nearby defences.", "verified": false },
-      "verified": true
+      "art": "./assets/coc/hero-equipment/Hero_Equipement_DD_Electro_Fangs.webp",
+      "effect": {
+        "text": "Bites chain lightning between nearby defences.",
+        "verified": false
+      },
+      "verified": true,
+      "artMissing": false
     }
   ]
 }

@@ -809,30 +809,8 @@
 
     $("#closeAnnouncement")?.addEventListener("click", () => $("#announcement")?.remove());
 
-    const mobileMenu = $("#mobileMenu");
-    const mainNav = $("#mainNav");
-    const menuIsOpen = () => !!mainNav && (mainNav.classList.contains("open") || mainNav.classList.contains("active"));
-    const setMenuOpen = open => {
-      if (!mainNav || !mobileMenu) return;
-      mainNav.classList.toggle("open", !!open);
-      mainNav.classList.toggle("active", !!open);
-      mobileMenu.textContent = open ? "×" : "☰";
-      mobileMenu.setAttribute("aria-expanded", open ? "true" : "false");
-      mobileMenu.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
-    };
-    mobileMenu?.addEventListener("click", event => {
-      event.preventDefault();
-      event.stopPropagation();
-      setMenuOpen(!menuIsOpen());
-    });
-    $$("#mainNav a").forEach(link => link.addEventListener("click", () => setMenuOpen(false)));
-    document.addEventListener("click", event => {
-      if (menuIsOpen() && !mainNav.contains(event.target) && !mobileMenu?.contains(event.target)) setMenuOpen(false);
-    });
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && menuIsOpen()) setMenuOpen(false);
-    });
-    if (mobileMenu && mainNav) setMenuOpen(menuIsOpen());
+    /* Navigation lives in chrome.js now: one header, one drawer, one bottom
+       bar on every page. app.js no longer wires a second menu. */
 
     const modal = $("#modalBackdrop");
     const closeModal = () => { if (modal) modal.hidden = true; };

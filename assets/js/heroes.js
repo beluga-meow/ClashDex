@@ -28,6 +28,8 @@
     extra: null,
     cosmetic: "skins",
     query: "",
+    heroQuery: "",
+    heroTarget: "all",
     filters: { hero: "all", source: "all", season: "all", rarity: "all" },
     loadout: {},
   };
@@ -38,6 +40,18 @@
     .replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
   const icon = (name, cls = "pdx-ico") =>
     `<svg class="${cls}" aria-hidden="true" focusable="false"><use href="${SPRITE}#i-${name}"></use></svg>`;
+
+  /* Art that exists is an <img>; art that does not is a labelled silhouette.
+     The catalog sets art to null when tools/rebuild-art-paths.mjs could not
+     find the picture, so the page never asks for a 404 it knows about. */
+  function artMarkup(src, name, width = 240, height = 240, extra = "") {
+    if (!src) {
+      return `<span class="art-missing" role="img" aria-label="${esc(name)} — art not on file">
+        ${icon("heroes")}</span>`;
+    }
+    return `<img src="${esc(src)}" alt="${esc(name)}" width="${width}" height="${height}"
+      loading="lazy" decoding="async"${extra ? " " + extra : ""}>`;
+  }
   const titleCase = value => String(value).charAt(0).toUpperCase() + String(value).slice(1);
   const plural = (unit, count) => (unit === "scenery"
     ? (count === 1 ? "scenery" : "sceneries")
@@ -220,6 +234,96 @@
   }
 
   /* ---------------------------------------------------------- hero index */
+  function heroMatches(hero) {
+    const targetOk = state.heroTarget === "all" || hero.targets === state.heroTarget;
+    const needle = state.heroQuery.trim().toLowerCase();
+    if (!needle) return targetOk;
+    return targetOk && `${hero.name} ${hero.role} ${hero.targets} ${hero.unlock} ${hero.bio || ""}`
+      .toLowerCase().includes(needle);
+  }
+
+  function heroCardMarkup(hero) {
+    const gear = state.data.equipment.filter(item => item.hero === hero.id).length;
+    const skins = state.data.skins.filter(skin => skin.hero === hero.id).length;
+    return `<a class="pdx-card hero-card" href="#hero/${esc(hero.id)}" data-hero="${esc(hero.id)}">
+      <span class="pdx-card__media">
+        ${hero.verified === false ? '<span class="pdx-badge">Unverified</span>' : ""}
+        ${artMarkup(hero.art, `${hero.name} portrait`, 320, 320)}
+      </span>
+      <span class="pdx-card__body">
+        <span class="pdx-card__title">${esc(hero.name)}</span>
+        <span class="pdx-card__meta">${esc(hero.role)} · ${esc(hero.targets)}</span>
+        <span class="hero-card__facts">
+          <span>${gear} gear</span><span>${skins} skins</span><span>${esc(hero.unlock)}</span>
+        </span>
+        <span class="hero-card__cta">Open hero ${icon("chevron-right")}</span>
+      </span>
+    </a>`;
+  }
+
+  function heroIndexMarkup() {
+    const heroes = state.data.heroes.filter(heroMatches);
+    const targets = Array.from(new Set(state.data.heroes.map(hero => hero.targets)));
+    const chips = [{ key: "all", label: "All heroes" }].concat(targets.map(target => ({ key: target, label: target })));
+    return `
+      <section class="hero-hall" aria-labelledby="heroHallTitle">
+        <div class="hero-hall__copy">
+          <p class="eyebrow">THE ROSTER</p>
+          <h2 id="heroHallTitle">Six heroes, one archive</h2>
+          <p>Every hero page carries the ability, the gear with its per-level table, and the skins that ship with the site. Portraits are the real hero art, not redraws.</p>
+          <dl class="hero-hall__stats">
+            <div><dt>Heroes</dt><dd>${state.data.heroes.length}</dd></div>
+            <div><dt>Gear pieces</dt><dd>${state.data.equipment.length}</dd></div>
+            <div><dt>Skins</dt><dd>${state.data.skins.length}</dd></div>
+            <div><dt>Sceneries</dt><dd>${state.data.sceneries.length}</dd></div>
+          </dl>
+        </div>
+        <div class="hero-hall__lineup" aria-hidden="true">
+          ${state.data.heroes.map(hero => `<span class="hero-hall__face">${artMarkup(hero.art, "", 120, 120)}</span>`).join("")}
+        </div>
+      </section>
+
+      <div class="hero-tools">
+        <label class="pdx-field hero-tools__search">
+          <span>Search heroes</span>
+          <input class="pdx-input" id="heroSearch" type="search" value="${esc(state.heroQuery)}"
+            placeholder="Name, role or Town Hall" autocomplete="off" maxlength="60">
+        </label>
+        <div class="hero-chips" role="group" aria-label="Filter by what the hero can hit">
+          ${chips.map(chip => `<button class="hero-chip" type="button" data-hero-target="${esc(chip.key)}"
+            aria-pressed="${state.heroTarget === chip.key}">${esc(chip.label)}</button>`).join("")}
+        </div>
+      </div>
+      <p class="pdx-status" id="heroStatus" role="status" aria-live="polite">
+        ${heroes.length === state.data.heroes.length
+          ? `${heroes.length} heroes shown.`
+          : `${heroes.length} of ${state.data.heroes.length} heroes match.`}
+      </p>
+      <div class="pdx-grid hero-grid" id="heroGrid">
+        ${heroes.length ? heroes.map(heroCardMarkup).join("") : `<div class="pdx-empty"><b>No hero matches that search</b>
+          <p class="pdx-note">Try a shorter word or choose “All heroes”.</p></div>`}
+      </div>`;
+  }
+
+  function renderHeroIndexOnly() {
+    const heroes = state.data.heroes.filter(heroMatches);
+    const grid = $("#heroGrid");
+    const status = $("#heroStatus");
+    if (status) {
+      status.textContent = heroes.length === state.data.heroes.length
+        ? `${heroes.length} heroes shown.`
+        : `${heroes.length} of ${state.data.heroes.length} heroes match.`;
+    }
+    $$("[data-hero-target]").forEach(button => {
+      button.setAttribute("aria-pressed", String(button.dataset.heroTarget === state.heroTarget));
+    });
+    if (!grid) return;
+    grid.innerHTML = heroes.length
+      ? heroes.map(heroCardMarkup).join("")
+      : `<div class="pdx-empty"><b>No hero matches that search</b>
+          <p class="pdx-note">Try a shorter word or choose “All heroes”.</p></div>`;
+  }
+
   function renderHeroes() {
     const count = $("#heroCount");
     if (count) count.textContent = `${state.data.heroes.length} heroes`;
@@ -229,22 +333,7 @@
       state.heroId = null;
     }
     document.title = "Clash Heroes Encyclopedia — PekkaDex";
-    $("#heroContent").innerHTML = `
-      <p class="pdx-note">Pick a hero to open their page. Every portrait is the real hero art that ships with the site.</p>
-      <div class="pdx-grid hero-grid">
-        ${state.data.heroes.map(hero => `
-          <a class="pdx-card hero-card" href="#hero/${esc(hero.id)}" data-hero="${esc(hero.id)}">
-            <span class="pdx-card__media">
-              ${hero.verified === false ? '<span class="pdx-badge">Unverified</span>' : ""}
-              <img src="${esc(hero.art)}" alt="${esc(hero.name)} portrait" width="240" height="240" loading="lazy" decoding="async">
-            </span>
-            <span class="pdx-card__body">
-              <span class="pdx-card__title">${esc(hero.name)}</span>
-              <span class="pdx-card__meta">${esc(hero.role)} · ${esc(hero.unlock)}</span>
-              <span class="hero-card__cta">Open hero ${icon("chevron-right")}</span>
-            </span>
-          </a>`).join("")}
-      </div>`;
+    $("#heroContent").innerHTML = heroIndexMarkup();
   }
 
   function heroFacts(hero) {
@@ -264,7 +353,7 @@
       <div class="hero-detail">
         <a class="hero-back" href="#heroes">${icon("back")} All heroes</a>
         <header class="hero-head">
-          <span class="hero-head__art"><img src="${esc(hero.art)}" alt="${esc(hero.name)} portrait" width="320" height="320" decoding="async"></span>
+          <span class="hero-head__art">${artMarkup(hero.art, `${hero.name} portrait`, 320, 320)}</span>
           <div class="hero-head__copy">
             <p class="eyebrow">${esc(hero.role)}</p>
             <h2>${esc(hero.name)}</h2>
@@ -369,7 +458,7 @@
     const full = (state.loadout[hero.id] || []).length >= 2 && !picked;
     return `<article class="pdx-card eq-card" data-rarity="${esc(item.rarity)}">
       <span class="pdx-card__media eq-card__media">
-        <img src="${esc(item.art)}" alt="${esc(item.name)} icon" width="240" height="180" loading="lazy" decoding="async">
+        ${artMarkup(item.art, `${item.name} icon`, 240, 180)}
       </span>
       <div class="pdx-card__body">
         <span class="pdx-chip pdx-chip--${item.rarity.toLowerCase()}">${esc(item.rarity)}</span>
@@ -449,7 +538,7 @@
         ${state.data.heroes.map(entry => `
           <button class="hero-pick" type="button" data-eq-hero="${esc(entry.id)}"
             aria-pressed="${entry.id === hero.id}">
-            <img src="${esc(entry.art)}" alt="" width="52" height="52" loading="lazy" decoding="async">
+            ${artMarkup(entry.art, "", 52, 52)}
             <span>${esc(entry.name)}</span>
           </button>`).join("")}
       </div>
@@ -478,7 +567,7 @@
       : "";
     return `<label class="pdx-field"><span>${esc(label)}</span>
       <select class="pdx-select" id="${id}" ${values.length ? "" : "disabled"}>
-        <option value="all">${esc(allLabel)}${values.length ? "" : " (nothing tagged yet)"}</option>
+        <option value="all">${esc(allLabel)}${values.length ? "" : " (untagged)"}</option>
         ${options}
       </select></label>`;
   }
@@ -491,12 +580,13 @@
       <div class="filter-bar__row">
         <label class="pdx-field"><span>Search</span>
           <input class="pdx-input" id="filterQuery" type="search" value="${esc(state.query)}"
-            placeholder="Search ${state.cosmetic === "skins" ? "skins" : "sceneries"} by name" autocomplete="off">
+            placeholder="${state.cosmetic === "skins" ? "Skin name" : "Scenery name"}" autocomplete="off"
+            aria-label="Search ${state.cosmetic === "skins" ? "skins" : "sceneries"} by name">
         </label>
-        ${state.cosmetic === "skins" ? selectMarkup("filterHero", "Hero", "All heroes", options.hero, id => (heroById(id) || {}).name || id) : ""}
-        ${selectMarkup("filterSource", "Source", "All sources", options.source)}
-        ${selectMarkup("filterSeason", "Season", "All seasons", options.season)}
-        ${state.cosmetic === "skins" ? selectMarkup("filterRarity", "Rarity", "All rarities", options.rarity) : ""}
+        ${state.cosmetic === "skins" ? selectMarkup("filterHero", "Hero", "All", options.hero, id => (heroById(id) || {}).name || id) : ""}
+        ${selectMarkup("filterSource", "Source", "All", options.source)}
+        ${selectMarkup("filterSeason", "Season", "All", options.season)}
+        ${state.cosmetic === "skins" ? selectMarkup("filterRarity", "Rarity", "All", options.rarity) : ""}
       </div>
       <div class="filter-bar__row">
         <button class="pdx-btn pdx-btn--wood filter-clear" type="button" data-filter-reset>Clear filters</button>
@@ -540,7 +630,7 @@
     const owner = hero || heroById(skin.hero);
     return `<button class="pdx-card skin-card" type="button" data-skin="${esc(skin.id)}">
       <span class="pdx-card__media">
-        <img src="${esc(skin.thumb)}" alt="${esc(skin.name)} skin art" width="240" height="240" loading="lazy" decoding="async">
+        ${artMarkup(skin.thumb, `${skin.name} skin art`)}
       </span>
       <span class="pdx-card__body">
         <span class="pdx-card__title">${esc(skin.name)}</span>
@@ -552,7 +642,7 @@
   function sceneryCard(scenery) {
     return `<button class="pdx-card scenery-card" type="button" data-scenery="${esc(scenery.id)}">
       <span class="pdx-card__media">
-        <img src="${esc(scenery.thumb)}" alt="${esc(scenery.name)} scenery" width="320" height="200" loading="lazy" decoding="async">
+        ${artMarkup(scenery.thumb, `${scenery.name} scenery`, 320, 200)}
       </span>
       <span class="pdx-card__body">
         <span class="pdx-card__title">${esc(scenery.name)}</span>
@@ -631,7 +721,7 @@
     const hero = heroById(skin.hero);
     $("#skinSheetTitle").textContent = skin.name;
     $("#skinSheetBody").innerHTML = `
-      <div class="pdx-sheet__art"><img src="${esc(skin.art)}" alt="${esc(skin.name)} full art" width="480" height="360" decoding="async"></div>
+      <div class="pdx-sheet__art">${artMarkup(skin.art, `${skin.name} full art`, 480, 360)}</div>
       <dl class="pdx-facts">
         <div><dt>Hero</dt><dd>${esc(hero ? hero.name : "Unknown")}</dd></div>
         <div><dt>Release date</dt><dd>${esc(skin.released || "Not on file yet")}</dd></div>
@@ -651,7 +741,7 @@
     const scenery = state.data.sceneries.find(entry => entry.id === sceneryId);
     if (!scenery) return;
     $("#sceneryTitle").textContent = scenery.name;
-    $("#sceneryArt").innerHTML = `<img src="${esc(scenery.art)}" alt="${esc(scenery.name)} full preview" width="1200" height="800" decoding="async">`;
+    $("#sceneryArt").innerHTML = artMarkup(scenery.art, `${scenery.name} full preview`, 1200, 800);
     $("#sceneryDetails").innerHTML = `
       <p><b>Release date:</b> ${esc(scenery.released || "Not on file yet")} · <b>Season:</b> ${esc(scenery.season || "Not listed yet")}</p>
       <p><b>Price:</b> ${esc(scenery.priceTier || "Not verified yet")} · <b>Source:</b> ${esc(scenery.source || "Not listed yet")}</p>
@@ -729,11 +819,24 @@
         renderCosmetics();
         return;
       }
+
+      const heroTarget = target.closest("[data-hero-target]");
+      if (heroTarget) {
+        state.heroTarget = heroTarget.dataset.heroTarget;
+        renderHeroIndexOnly();
+        return;
+      }
     });
 
     document.addEventListener("input", event => {
       const input = event.target;
-      if (!(input instanceof HTMLInputElement) || input.id !== "filterQuery") return;
+      if (!(input instanceof HTMLInputElement)) return;
+      if (input.id === "heroSearch") {
+        state.heroQuery = input.value;
+        renderHeroIndexOnly();
+        return;
+      }
+      if (input.id !== "filterQuery") return;
       state.query = input.value.trim();
       const pos = input.selectionStart;
       renderGalleryOnly();

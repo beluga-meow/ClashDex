@@ -14,10 +14,13 @@
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
   <link rel="stylesheet" href="./assets/css/tokens.css?v=db87c23f">
   <link rel="stylesheet" href="./assets/css/components.css?v=8df6c753">
-  <link rel="stylesheet" href="./assets/css/home.css?v=cc10802e">
+  <link rel="stylesheet" href="./assets/css/chrome.css">
+  <script src="./assets/js/chrome.js"></script>
+  <script src="./assets/js/media.js" defer></script>
+  <link rel="stylesheet" href="./assets/css/home.css?v=da6b9d93">
   <link rel="stylesheet" href="./assets/css/villager.css?v=acd85999">
 </head>
-<body class="home-page" data-guide="home">
+<body class="home-page" data-guide="home" data-page="home">
   <a class="pdx-skip" href="#home">Skip to content</a>
 
   <div class="announcement" id="announcement">
@@ -27,22 +30,26 @@
   </div>
 
   <header class="site-header">
-    <a class="brand" href="#home" aria-label="PekkaDex home">
+    <a class="brand" href="./index.html" aria-label="PekkaDex home">
       <span class="brand-mark" aria-hidden="true"><svg class="pdx-ico" width="22" height="22" focusable="false"><use href="./assets/icons/icons.svg#i-attack"></use></svg></span>
       <span>PEKKA<span class="brand-accent">DEX</span><small>YOUR KINGDOM COMPANION</small></span>
     </a>
-    <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
-    <nav class="main-nav" id="mainNav">
-      <a class="active" href="#home"><img class="nav-ico" src="./assets/icons/nav-home.png" alt="" width="24" height="24" decoding="async">Home</a>
-      <a href="#player-finder"><img class="nav-ico" src="./assets/icons/nav-players.png" alt="" width="24" height="24" decoding="async">Players</a>
-      <a href="#bases"><img class="nav-ico" src="./assets/icons/nav-bases.png" alt="" width="24" height="24" decoding="async">Bases</a>
-      <a href="#attacks"><img class="nav-ico" src="./assets/icons/nav-attack.png" alt="" width="24" height="24" decoding="async">Attack</a>
-      <a href="#heroes"><img class="nav-ico" src="./assets/icons/nav-heroes.png" alt="" width="24" height="24" decoding="async">Heroes</a>
-      <a href="#account"><img class="nav-ico" src="./assets/icons/nav-account.png" alt="" width="24" height="24" decoding="async">Account</a>
-      <button class="nav-app" id="installApp" type="button"><svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-gear"></use></svg>Install app</button>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="./index.html" aria-current="page"><img class="nav-ico" src="./assets/icons/nav-home.png" alt="" width="24" height="24" decoding="async">Home</a>
+      <a href="./index.html#player-finder"><img class="nav-ico" src="./assets/icons/nav-players.png" alt="" width="24" height="24" decoding="async">Players</a>
+      <a href="./bases.html"><img class="nav-ico" src="./assets/icons/nav-bases.png" alt="" width="24" height="24" decoding="async">Bases</a>
+      <a href="./attack-guides.html"><img class="nav-ico" src="./assets/icons/nav-attack.png" alt="" width="24" height="24" decoding="async">Attack</a>
+      <a href="./heroes.html"><img class="nav-ico" src="./assets/icons/nav-heroes.png" alt="" width="24" height="24" decoding="async">Heroes</a>
+      <a href="./upgrades.html"><svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-gear"></use></svg>Tools</a>
     </nav>
+    <button class="mobile-menu" id="pdxMenuBtn" type="button" aria-label="Open the full menu" aria-expanded="false" aria-controls="pdxDrawer">☰</button>
     <div class="header-actions">
-      <a class="header-cta" href="./profile.html" data-profile-link aria-label="Open your profile"><svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-user"></use></svg></a>
+      <button class="nav-app" id="installApp" type="button" hidden>
+        <svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-gear"></use></svg>Install
+      </button>
+      <a class="header-cta" href="./profile.html" data-profile-link aria-label="Open your profile" title="Your profile">
+        <svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-user"></use></svg>
+      </a>
     </div>
   </header>
 
@@ -83,6 +90,95 @@
         <div class="hero-spark spark-one" aria-hidden="true">✦</div>
         <div class="hero-spark spark-two" aria-hidden="true">✧</div>
       </div>
+    </section>
+
+    <section class="banner" aria-label="PekkaDex highlights" data-banner>
+      <div class="banner__viewport">
+        <article class="banner__slide is-active" data-slide aria-roledescription="slide" aria-label="Highlight 1 of 3">
+          <div class="banner__copy">
+            <span class="banner__kicker">Featured archive</span>
+            <h2>Every hero, every skin, one archive</h2>
+            <p>Portraits, hero equipment, pets and cosmetics in one place. Anything PekkaDex cannot confirm stays labelled instead of guessed.</p>
+            <a class="pdx-btn pdx-btn--sm" href="./heroes.html">Open the Encyclopedia</a>
+          </div>
+          <div class="banner__art">
+            <img src="./assets/heroes/archer-queen.webp" alt="Archer Queen portrait from the PekkaDex archive" width="284" height="284" loading="eager" decoding="async">
+          </div>
+        </article>
+        <article class="banner__slide" data-slide hidden aria-roledescription="slide" aria-label="Highlight 2 of 3">
+          <div class="banner__copy">
+            <span class="banner__kicker">Plan the grind</span>
+            <h2>Know the wait before you start</h2>
+            <p>Enter your own upgrade times and costs. The calculator adds builders, boosts and queues together — no hidden Town Hall tables.</p>
+            <a class="pdx-btn pdx-btn--sm" href="./upgrades.html">Open Village Tools</a>
+          </div>
+          <div class="banner__art">
+            <img src="./assets/heroes/grand-warden.webp" alt="Grand Warden portrait from the PekkaDex archive" width="284" height="284" loading="lazy" decoding="async">
+          </div>
+        </article>
+        <article class="banner__slide" data-slide hidden aria-roledescription="slide" aria-label="Highlight 3 of 3">
+          <div class="banner__copy">
+            <span class="banner__kicker">Attack Academy</span>
+            <h2>A plan for every Town Hall</h2>
+            <p>Ranked attacks with an entry route, ability timing and the risks to watch — plus guides for Queen Walks and the rest of the toolkit.</p>
+            <a class="pdx-btn pdx-btn--sm" href="./attack-guides.html">Browse Attack Guides</a>
+          </div>
+          <div class="banner__art">
+            <img src="./assets/heroes/barbarian-king.webp" alt="Barbarian King portrait from the PekkaDex archive" width="284" height="284" loading="lazy" decoding="async">
+          </div>
+        </article>
+      </div>
+      <div class="banner__nav" data-banner-nav hidden>
+        <button class="banner__arrow" type="button" data-banner-prev aria-label="Previous highlight">‹</button>
+        <div class="banner__dots" data-banner-dots role="tablist" aria-label="Choose a highlight"></div>
+        <button class="banner__arrow" type="button" data-banner-next aria-label="Next highlight">›</button>
+      </div>
+      <p class="banner__status" data-banner-status role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="quick-tiles" aria-label="Quick actions">
+      <a class="quick-tile" href="./upgrades.html#tracker">
+        <span class="quick-tile__ico" aria-hidden="true"><svg class="pdx-ico" width="24" height="24" focusable="false"><use href="./assets/icons/icons.svg#i-gear"></use></svg></span>
+        <span class="quick-tile__body"><strong>Upgrade tracker</strong><small>Builders, boosts &amp; queues</small></span>
+      </a>
+      <a class="quick-tile" href="#planner">
+        <span class="quick-tile__ico" aria-hidden="true"><svg class="pdx-ico" width="24" height="24" focusable="false"><use href="./assets/icons/icons.svg#i-attack"></use></svg></span>
+        <span class="quick-tile__body"><strong>Attack planner</strong><small>Place a base, read the fit</small></span>
+        <span class="quick-tile__soon">Soon</span>
+      </a>
+      <a class="quick-tile" href="./bases.html">
+        <span class="quick-tile__ico" aria-hidden="true"><svg class="pdx-ico" width="24" height="24" focusable="false"><use href="./assets/icons/icons.svg#i-bases"></use></svg></span>
+        <span class="quick-tile__body"><strong>Base library</strong><small>Copy Base links</small></span>
+      </a>
+      <a class="quick-tile" href="#player-finder">
+        <span class="quick-tile__ico" aria-hidden="true"><svg class="pdx-ico" width="24" height="24" focusable="false"><use href="./assets/icons/icons.svg#i-search"></use></svg></span>
+        <span class="quick-tile__body"><strong>Player finder</strong><small>Tag or name lookup</small></span>
+      </a>
+    </section>
+
+    <section class="section pick-section" id="pick">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Fresh from the archive</p>
+          <h2>Pick <span>of the day</span></h2>
+          <p class="section-subtitle">One item from the verified archive, chosen by the date. No sponsorship, no promoted placement.</p>
+        </div>
+        <span class="section-badge">Rotates daily</span>
+      </div>
+      <article class="pick-card" data-pick>
+        <div class="pick-card__media" data-pick-media><span class="pick-card__loading">Loading today's pick…</span></div>
+        <div class="pick-card__body">
+          <div class="pick-meta">
+            <span class="pdx-chip pdx-chip--gold">Pick of the day</span>
+            <span class="pick-date" data-pick-date></span>
+          </div>
+          <h3 data-pick-title>One item from the archive</h3>
+          <p data-pick-text>Today's pick rotates through the skins, sceneries and pets catalogs. With JavaScript off, open the full archive instead.</p>
+          <div class="pick-card__actions">
+            <a class="pdx-btn pdx-btn--sm" data-pick-link href="./heroes.html">Open the Encyclopedia</a>
+          </div>
+        </div>
+      </article>
     </section>
 
     <section class="quick-stats" aria-label="PekkaDex features">
@@ -216,6 +312,40 @@
       </div>
     </section>
 
+    <section class="section" id="planner">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Draw it, then plan it</p>
+          <h2>Attack <span>Planner</span></h2>
+          <p class="section-subtitle">Place the defences you can see, then read which army on file fits the layout.</p>
+        </div>
+        <span class="section-badge">Live tool</span>
+      </div>
+      <div class="pdx-panel planner-teaser">
+        <div>
+          <h3>Plan the hit before the first troop lands</h3>
+          <p>The planner is live: mark defences on a 12×12 grid, drop a screenshot of the base behind it, set the enemy Town Hall, and PekkaDex ranks the armies on file that suit the counts.</p>
+          <ol class="planner-steps">
+            <li><b aria-hidden="true">1</b><span><strong>Draw the base.</strong> Tap a defence, then tap the square it sits on.</span></li>
+            <li><b aria-hidden="true">2</b><span><strong>Read the counts.</strong> See how many defences can hit air or ground.</span></li>
+            <li><b aria-hidden="true">3</b><span><strong>Pick the army.</strong> Compare the ranked compositions and their TH range.</span></li>
+          </ol>
+          <div class="planner-teaser__actions">
+            <a class="pdx-btn pdx-btn--sm" href="./planner.html">Open the Attack Planner</a>
+            <span class="pdx-chip">Manual · no image AI</span>
+          </div>
+          <p class="planner-teaser__note">The score counts which defences can hit air or ground. It does not read the screenshot or know levels, walls or defending heroes.</p>
+        </div>
+        <div class="planner-board" aria-hidden="true">
+          <span class="is-wall"></span><span class="is-wall"></span><span class="is-defence"></span><span class="is-wall"></span><span class="is-wall"></span>
+          <span class="is-wall"></span><span></span><span></span><span></span><span class="is-wall"></span>
+          <span class="is-defence"></span><span></span><span class="is-core"></span><span></span><span class="is-defence"></span>
+          <span class="is-wall"></span><span></span><span></span><span></span><span class="is-wall"></span>
+          <span class="is-wall"></span><span class="is-defence"></span><span class="is-wall"></span><span class="is-defence"></span><span class="is-wall"></span>
+        </div>
+      </div>
+    </section>
+
     <section class="section attack-section" id="attacks">
       <div class="section-heading">
         <div>
@@ -269,7 +399,7 @@
         </div>
         <p class="pdx-note event-timers__note">Supercell can move, shorten or extend any of these events, and PekkaDex cannot see your server's live schedule. Countdowns are a best-effort reminder, not an official timer.</p>
       </div>
-      <div class="event-grid">
+      <div class="event-grid" id="eventGrid">
         <article class="event-card">
           <div class="event-symbol" aria-hidden="true"><svg class="pdx-ico" width="26" height="26" focusable="false"><use href="./assets/icons/icons.svg#i-spark"></use></svg></div>
           <div>
@@ -319,16 +449,17 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./assets/js/supabase-config.js?v=f3dfcc9a"></script>
-  <script src="./assets/js/art-data.js?v=59839121"></script>
+  <script src="./assets/js/art-data.js?v=50d87b44"></script>
   <script src="./assets/js/name-fold.js?v=d08912b4"></script>
   <script src="./assets/js/player-search.js?v=c058e3c3"></script>
   <script src="./assets/js/install.js?v=719608c8"></script>
   <script src="./assets/js/timers.js?v=921383de"></script>
-  <script src="./assets/js/app.js?v=1bfe0359"></script>
-  <script src="./assets/js/attacks.js?v=3540c617"></script>
+  <script src="./assets/js/app.js?v=43879792"></script>
+  <script src="./assets/js/attacks.js?v=9a6657c5"></script>
   <script src="./assets/js/profile-nav.js?v=08a83389"></script>
   <script src="./assets/js/auth.js?v=d96030e2"></script>
   <script src="./assets/js/villager.js?v=897be543"></script>
+  <script src="./assets/js/home.js?v=c45eb605" defer></script>
   <script>
   if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js?v=21").then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!window.__r){window.__r=1;location.reload()}})}
   </script>

@@ -1,0 +1,331 @@
+{
+  "schema": 1,
+  "updated": "2026-11-28",
+  "note": "Fan art and edits already present in the PekkaDex repository. Captions are PekkaDex captions, not quotes from Supercell. No image is generated or borrowed from outside the repo.",
+  "memes": [
+    {
+      "id": "scouter-meme",
+      "src": "scouter_meme.webp",
+      "title": "Scouter check",
+      "caption": "Reading the enemy base like a power level.",
+      "tags": []
+    },
+    {
+      "id": "sweating",
+      "src": "sweating.webp",
+      "title": "When the clan war timer starts",
+      "caption": "Two attacks left, one hour to go.",
+      "tags": []
+    },
+    {
+      "id": "thinking",
+      "src": "Thinking.webp",
+      "title": "Choosing a war army",
+      "caption": "Five minutes of thinking, three seconds of deploying.",
+      "tags": []
+    },
+    {
+      "id": "traumatized-1",
+      "src": "Traumatized_1.webp",
+      "title": "After the 99% war attack",
+      "caption": "The replay is still there. It always will be.",
+      "tags": []
+    },
+    {
+      "id": "traumatized-2",
+      "src": "Traumatized_2.webp",
+      "title": "Second attack, same base",
+      "caption": "Different plan, same result.",
+      "tags": []
+    },
+    {
+      "id": "sure-grandma",
+      "src": "Sure_grandma.webp",
+      "title": "Sure, one more upgrade",
+      "caption": "The builder will be free in nine days.",
+      "tags": []
+    },
+    {
+      "id": "homework-problems",
+      "src": "Homework_problems.webp",
+      "title": "Homework vs Clan Games",
+      "caption": "The deadline is the same and only one has a reward.",
+      "tags": []
+    },
+    {
+      "id": "he-is-so-cool",
+      "src": "He%20is%20so%20cool.webp",
+      "title": "The hero walk",
+      "caption": "No plan, no funnel, just vibes.",
+      "tags": []
+    },
+    {
+      "id": "goblin-chair",
+      "src": "Goblin%20Chair.webp",
+      "title": "Goblin builder",
+      "caption": "He is not fixing anything, he is inspecting it.",
+      "tags": []
+    },
+    {
+      "id": "dad-and-son",
+      "src": "Dad%20and%20son.webp",
+      "title": "Passing the account down",
+      "caption": "The village stays in the family.",
+      "tags": []
+    },
+    {
+      "id": "attack-on-walls",
+      "src": "Attack_on_Walls.webp",
+      "title": "Attack on Walls",
+      "caption": "The wall breakers have a plan. It is not a good one.",
+      "tags": []
+    },
+    {
+      "id": "barbarian-unravel",
+      "src": "Barbarian%20unravel.webp",
+      "title": "Barbarian unravel",
+      "caption": "When the rage spell wears off.",
+      "tags": []
+    },
+    {
+      "id": "mirror",
+      "src": "Mirror.webp",
+      "title": "Mirror match",
+      "caption": "Same base, same army, different outcome.",
+      "tags": []
+    },
+    {
+      "id": "jjqueen",
+      "src": "JJQueen.webp",
+      "title": "Queen walk, but stylish",
+      "caption": "The Archer Queen takes the long way round.",
+      "tags": []
+    },
+    {
+      "id": "hog-panel-meme-1080x1920",
+      "src": "Hog_Panel_Meme_1080x1920.webp",
+      "title": "Hog Rider panel",
+      "caption": "The hog does not stop for anyone.",
+      "tags": []
+    },
+    {
+      "id": "stonk-meme-1960x1080",
+      "src": "stonk_meme_1960x1080.webp",
+      "title": "Loot stonks",
+      "caption": "Elixir up, trophies down.",
+      "tags": []
+    },
+    {
+      "id": "absolute-cinema-colored",
+      "src": "absolute_cinema_colored.webp",
+      "title": "Absolute cinema",
+      "caption": "A three-star attack in full colour.",
+      "tags": []
+    },
+    {
+      "id": "absolute-cinema-b-w",
+      "src": "absolute_cinema_B%26W.webp",
+      "title": "Absolute cinema, no colour",
+      "caption": "Same attack, award-season edit.",
+      "tags": []
+    },
+    {
+      "id": "after-all-why-not",
+      "src": "after_all_why_not.webp",
+      "title": "After all, why not",
+      "caption": "One more gem spend cannot hurt.",
+      "tags": []
+    },
+    {
+      "id": "cursed-image-aq-jojo-meme-2000x2000",
+      "src": "Cursed_Image_AQ_JoJo_Meme_2000x2000.webp",
+      "title": "Cursed Queen",
+      "caption": "The pose is the strategy.",
+      "tags": []
+    },
+    {
+      "id": "movie-theater-barb-9x16",
+      "src": "Movie_theater_barb_9x16.webp",
+      "title": "Barb at the movies",
+      "caption": "He brought his own popcorn and a wall breaker.",
+      "tags": []
+    },
+    {
+      "id": "maradona-hand-of-god-16x9",
+      "src": "Maradona_hand_of_god_16x9.webp",
+      "title": "Hand of God",
+      "caption": "The deployment was not a foul, the referee checked.",
+      "tags": []
+    },
+    {
+      "id": "wc-moment-recreate-messi-world-cup",
+      "src": "WC_moment_recreate%EF%BC%9AMessi_World_Cup.webp",
+      "title": "World Cup recreation",
+      "caption": "A football celebration, Clash style.",
+      "tags": []
+    },
+    {
+      "id": "god-of-war-laufey-cover-parody",
+      "src": "%20God_of_War%EF%BC%9ALaufey_cover_parody.webp",
+      "title": "Cover parody",
+      "caption": "A poster redraw from the archive.",
+      "tags": []
+    },
+    {
+      "id": "odyssey-poster-recreation",
+      "src": "Odyssey_Poster_Recreation.webp",
+      "title": "Odyssey poster",
+      "caption": "The village gets the epic treatment.",
+      "tags": []
+    },
+    {
+      "id": "spongeb-o-b-4x5",
+      "src": "SpongeB.O.B_4x5.webp",
+      "title": "SpongeB.O.B",
+      "caption": "A deep-sea crossover nobody asked for.",
+      "tags": []
+    },
+    {
+      "id": "anime-football",
+      "src": "anime%20football.webp",
+      "title": "Anime football",
+      "caption": "The sports arc begins.",
+      "tags": []
+    },
+    {
+      "id": "cyberpunk",
+      "src": "cyberpunk.webp",
+      "title": "Cyberpunk village",
+      "caption": "Neon, rain and a very expensive scenery.",
+      "tags": []
+    },
+    {
+      "id": "flowers",
+      "src": "flowers.webp",
+      "title": "Flowers",
+      "caption": "A quiet village between wars.",
+      "tags": []
+    },
+    {
+      "id": "idol",
+      "src": "idol.webp",
+      "title": "Idol stage",
+      "caption": "The Grand Warden takes the mic.",
+      "tags": []
+    },
+    {
+      "id": "isekai",
+      "src": "isekai.webp",
+      "title": "Isekai arrival",
+      "caption": "Reincarnated as a Town Hall 1.",
+      "tags": []
+    }
+  ],
+  "emotes": [
+    {
+      "id": "aq-emote",
+      "src": "assets/coc/community/emotes/AQ_emote.webp",
+      "title": "Archer Queen emote"
+    },
+    {
+      "id": "archer-emote",
+      "src": "assets/coc/community/emotes/Archer_emote.webp",
+      "title": "Archer emote"
+    },
+    {
+      "id": "bk-emote",
+      "src": "assets/coc/community/emotes/BK_emote.webp",
+      "title": "Barbarian King emote"
+    },
+    {
+      "id": "barb-emote",
+      "src": "assets/coc/community/emotes/Barb_emote.webp",
+      "title": "Barbarian emote"
+    },
+    {
+      "id": "barb-emote-set-1",
+      "src": "assets/coc/community/emotes/Barb_emote_set_1.webp",
+      "title": "Barbarian emote set 1"
+    },
+    {
+      "id": "barb-emote-set-2",
+      "src": "assets/coc/community/emotes/Barb_emote_set_2.webp",
+      "title": "Barbarian emote set 2"
+    },
+    {
+      "id": "barb-emote-set-3",
+      "src": "assets/coc/community/emotes/Barb_emote_set_3.webp",
+      "title": "Barbarian emote set 3"
+    },
+    {
+      "id": "barb-emote-set-4",
+      "src": "assets/coc/community/emotes/Barb_emote_set_4.webp",
+      "title": "Barbarian emote set 4"
+    },
+    {
+      "id": "barb-emote-set-5",
+      "src": "assets/coc/community/emotes/Barb_emote_set_5.webp",
+      "title": "Barbarian emote set 5"
+    },
+    {
+      "id": "drag-emote",
+      "src": "assets/coc/community/emotes/Drag_emote.webp",
+      "title": "Dragon emote"
+    },
+    {
+      "id": "duke-emote",
+      "src": "assets/coc/community/emotes/Duke_emote.webp",
+      "title": "Dragon Duke emote"
+    },
+    {
+      "id": "edrag-emote",
+      "src": "assets/coc/community/emotes/Edrag_emote.webp",
+      "title": "Electro Dragon emote"
+    },
+    {
+      "id": "skeleton-emote",
+      "src": "assets/coc/community/emotes/Skeleton_emote.webp",
+      "title": "Skeleton emote"
+    },
+    {
+      "id": "superdrag-emote",
+      "src": "assets/coc/community/emotes/SuperDrag_emote.webp",
+      "title": "Super Dragon emote"
+    },
+    {
+      "id": "valkyrie-emote",
+      "src": "assets/coc/community/emotes/Valkyrie_emote.webp",
+      "title": "Valkyrie emote"
+    },
+    {
+      "id": "witch-emote",
+      "src": "assets/coc/community/emotes/Witch_emote.webp",
+      "title": "Witch emote"
+    },
+    {
+      "id": "witch-emote-2",
+      "src": "assets/coc/community/emotes/Witch_emote_2.webp",
+      "title": "Witch emote 2"
+    },
+    {
+      "id": "wizard-emote",
+      "src": "assets/coc/community/emotes/Wizard_emote.webp",
+      "title": "Wizard emote"
+    },
+    {
+      "id": "golem-emote",
+      "src": "assets/coc/community/emotes/golem_emote.webp",
+      "title": "Golem emote"
+    },
+    {
+      "id": "pekka-emote",
+      "src": "assets/coc/community/emotes/pekka_emote.webp",
+      "title": "P.E.K.K.A emote"
+    },
+    {
+      "id": "titan-emote",
+      "src": "assets/coc/community/emotes/titan_emote.webp",
+      "title": "Electro Titan emote"
+    }
+  ]
+}

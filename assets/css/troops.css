@@ -1,0 +1,86 @@
+/* PekkaDex — Troop Library styles. Loaded after heroes.css. */
+
+.troop-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+.troop-bar .pdx-status { margin: 0 0 var(--s-2); }
+@media (max-width: 620px) { .troop-bar { grid-template-columns: minmax(0, 1fr); } }
+
+.troop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--s-3);
+}
+@media (max-width: 560px) {
+  .troop-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+}
+
+.troop-card {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: var(--s-2);
+  min-width: 0;
+  padding: var(--s-2);
+  border: 3px solid var(--c-wood-700);
+  border-radius: var(--r-md);
+  background: linear-gradient(var(--c-paper-50), var(--c-paper-100));
+  box-shadow: 0 3px 0 var(--c-wood-800);
+}
+.troop-card__art {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
+  border: 3px solid var(--c-wood-800);
+  border-radius: var(--r-sm);
+  background: radial-gradient(circle at 50% 38%, #ffe778, #b8793b);
+}
+.troop-card__art img { width: 100%; height: 100%; object-fit: contain; }
+.troop-card__silhouette { color: rgba(0, 0, 0, .35); }
+.troop-card__silhouette svg { width: 40px; height: 40px; }
+.troop-card__body { min-width: 0; display: grid; align-content: start; gap: 3px; }
+.troop-card__body .pdx-chip { justify-self: start; font-size: 10px; }
+.troop-card__title { margin: 0; font: 400 var(--fs-md) / 1.1 var(--font-display); color: var(--c-ink); }
+.troop-card__role { margin: 0; color: #8a5a12; font-size: var(--fs-xs); font-weight: 900; text-transform: uppercase; letter-spacing: .04em; }
+.troop-card__use { margin: 2px 0 0; color: var(--c-ink-2); font-size: var(--fs-xs); line-height: 1.45; }
+.troop-card__used { margin: 3px 0 0; color: var(--c-ink-2); font-size: var(--fs-xs); line-height: 1.35; }
+.troop-card__used b { color: var(--c-wood-600); }
+.troop-card__used--none { color: #8a6a3e; font-style: italic; }
+
+/* ---------- squads ---------- */
+.squad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--s-3);
+}
+.squad-card {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) 84px;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2);
+  border: 3px solid var(--c-wood-700);
+  border-radius: var(--r-md);
+  background: linear-gradient(var(--c-paper-50), var(--c-paper-100));
+  box-shadow: 0 3px 0 var(--c-wood-800);
+}
+.squad-card__icon img { width: 64px; height: 64px; object-fit: contain; display: block; }
+.squad-card__info img {
+  width: 84px;
+  height: 56px;
+  object-fit: cover;
+  border: 2px solid var(--c-wood-700);
+  border-radius: var(--r-sm);
+  display: block;
+}
+.squad-card__body h3 { margin: 0 0 2px; font: 400 var(--fs-md) / 1.1 var(--font-display); color: var(--c-ink); }
+.squad-card__body .pdx-note { margin: 0; }
+@media (max-width: 400px) {
+  .squad-card { grid-template-columns: 52px minmax(0, 1fr); }
+  .squad-card__info { display: none; }
+}

@@ -18,7 +18,10 @@ bases.html                     Base Library (TH1–TH19 filters, categories, lin
 armies.html                    Army Library (TH1–TH19 filters, compositions, plans)
 heroes.html                    Clash Heroes Encyclopedia (skins + Scenery Shop)
 upgrades.html                  Village Tools: time-to-max calculator + upgrade tracker
-attack-guides.html             Attack Guides & Queen Walk hub
+attack-guides.html             Attack Guides & Queen Walk hub + the six-stage Academy
+troops.html                    Troop Library (elixir, dark, Super Troops, squads)
+planner.html                   Attack Planner: manual grid, vision board, army fit score
+memes.html                     Memes & Emotes gallery with a full-screen viewer
 profile.html                   your profile (stats, ranked / classic history)
 layouts.json                   real base/army share links in the Base Library
 manifest.webmanifest           PWA manifest
@@ -36,6 +39,10 @@ assets/
     profile.css                profile page layout on the tokens
     tools.css                  Village Tools calculator, tracker and timeline
     guides.css                 Attack Guides layout
+    academy.css                Attack Academy path and Town Hall picks
+    troops.css                 Troop Library cards and squads
+    planner.css                Attack Planner grid, palette and fit panel
+    memes.css                  Memes & Emotes gallery and viewer
     heroes-extras.css          Loadouts, Pets and Guides tabs on heroes.html
   js/
     app.js                     home page: search, filters, theme, tab bar
@@ -45,6 +52,13 @@ assets/
     timers.js                  home page: recurring event countdowns (UTC -> local)
     upgrades.js                Village Tools: calculator + upgrade tracker
     attack-guides.js           Attack Guides page (merges armies.json)
+    academy.js                 Attack Academy path + Town Hall army picks
+    troops.js                  Troop Library (derives "seen in" from armies.json)
+    planner.js                 Attack Planner grid, vision board and fit score
+    memes.js                   Memes & Emotes gallery and viewer
+    chrome.js                  one header drawer (13 destinations) + bottom tabs
+    media.js                   global image-error silhouette fallback
+    home.js                    homepage slider, events, daily pick, reveal
     install.js                 "Install app" menu entry (PWA install help)
     library.js                 bases.html + armies.html: filters, cards, details
     villager.js                Lady Villager guide (page-aware line, sign-out)
@@ -62,6 +76,10 @@ assets/
     loadouts.json              suggested two-piece equipment pairs (verified: false)
     pets.json                  Pet House facts, L.A.S.S.I stats, pet list, pairings
     guides.json                supercharge, squads and Blacksmith notes
+    events.json                PekkaDex news shown on the homepage
+    memes.json                 meme and emote gallery index (repo art only)
+    troops.json                troop roles, Super Troops, squads
+    academy.json               six-stage Attack Academy path
   heroes/                      one portrait per hero (webp + svg)
   equipment/ skins/ sceneries/ drop-in art
   townhalls/ builder-halls/    town hall and builder hall art

@@ -1,5 +1,60 @@
 # Changelog
 
+## 2026-11-28 — Seven-phase rebuild: one chrome, gallery, troops, academy, planner
+
+### Phase 1 — foundations
+- One sticky header on all seven pages, owned by `chrome.css`; the duplicate
+  block in `home.css` is gone. `.cx-tabbar` is built once by `chrome.js`.
+- `media.js` swaps a broken image for a labelled silhouette everywhere.
+- Art matcher rewritten (`tools/rebuild-art-paths.mjs`): word splitting,
+  hero-marker guard, render-suffix trim, alias table, URL-encoding. Skins
+  66 → 70, sceneries 40 → 50, equipment 15 → 20, pets 10; 0 missing paths.
+- Attack cards merged into one ranked list; Village Tools rows are responsive;
+  pet cards, filter labels, focus states and skeleton loaders fixed.
+
+### Phase 2 — homepage
+- Rotating feature banner (3 real hero portraits), PekkaDex-only `events.json`
+  news, a deterministic pick of the day, four quick tiles, a planner teaser and
+  an IntersectionObserver reveal that respects `prefers-reduced-motion`.
+
+### Phase 3 — navigation, gallery, encyclopedia
+- Drawer now lists **13 destinations**; each one exists and marks the current
+  page with `aria-current`. The menu button carries `aria-expanded`.
+- New `memes.html`: 31 memes plus 21 emotes, search, hash-routed tabs and a
+  full-screen viewer. `assets/data/memes.json` only points at art already in
+  the repository; no picture is generated or hotlinked.
+- `heroes.html` index redesigned into a hero hall (roster totals, portraits,
+  target filter, search) with gear/skin counts on every card.
+
+### Phase 4 — troops
+- New `troops.html` and `troops.json`: 42 troops, 16 Super Troops with their
+  real repository icons, and 12 squads with banner and info art. "Seen in" is
+  derived from `armies.json`; housing space, levels and damage are deliberately
+  absent because they are not verified data.
+
+### Phase 5 — attack academy
+- `attack-guides.html` opens with a six-stage Academy path (`academy.json`) and
+  a Town Hall picker that ranks only armies whose TH range covers that base.
+
+### Phase 6 — attack planner
+- New `planner.html`: a 12×12 board, 12 defence tokens (air / ground / both),
+  an optional screenshot drawn behind the grid (never analysed, never
+  uploaded), a live air-vs-ground count, a rough fit score for the armies on
+  file, copyable plan text and a `localStorage` save.
+- The homepage planner teaser now links the live tool and says what the score
+  does and does not know.
+
+### Phase 7 — Village Tools backup
+- The tracker can download its backup as a dated JSON file and import one,
+  alongside the existing copy/paste restore. Notification alerts and the
+  builder-lane planner are unchanged.
+
+### Checks
+- `node --check` on every script, every JSON parsed, `validate-data.mjs` now
+  also validates the gallery, troop and academy files (52 gallery images,
+  42 troops, 0 warnings), and every local `src`/`href` on the touched pages
+  resolves.
+
 ## 2026-11-28 — Player Finder pipeline, exact matching, PWA installability
 
 ### Player Finder

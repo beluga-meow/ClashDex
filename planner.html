@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7a4a22">
+  <meta name="description" content="PekkaDex Attack Planner — trace a war base on a grid, mark the defences you can see, and read which army on file fits the layout.">
+  <title>Attack Planner — PekkaDex</title>
+  <link rel="canonical" href="https://beluga-meow.github.io/ClashDex/planner.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PekkaDex">
+  <meta property="og:title" content="Attack Planner — PekkaDex">
+  <meta property="og:description" content="Place the defences you can see, then see which Army Library composition fits the layout.">
+  <meta property="og:url" content="https://beluga-meow.github.io/ClashDex/planner.html">
+  <meta property="og:image" content="https://beluga-meow.github.io/ClashDex/assets/townhalls/th-17.webp">
+  <meta name="twitter:card" content="summary">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap">
+  <link rel="stylesheet" href="./assets/css/tokens.css?v=db87c23f">
+  <link rel="stylesheet" href="./assets/css/components.css?v=8df6c753">
+  <link rel="stylesheet" href="./assets/css/chrome.css">
+  <script src="./assets/js/chrome.js"></script>
+  <script src="./assets/js/media.js" defer></script>
+  <link rel="stylesheet" href="./assets/css/heroes.css?v=f06e0e9c">
+  <link rel="stylesheet" href="./assets/css/planner.css">
+</head>
+<body class="heroes-page planner-page" data-page="planner">
+  <a class="pdx-skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="./index.html" aria-label="PekkaDex home">
+      <span class="brand-mark" aria-hidden="true"><svg class="pdx-ico" width="22" height="22" focusable="false"><use href="./assets/icons/icons.svg#i-bases"></use></svg></span>
+      <span>PEKKA<span class="brand-accent">DEX</span><small>ATTACK PLANNER</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="./index.html"><img class="nav-ico" src="./assets/icons/nav-home.png" alt="" width="24" height="24" decoding="async">Home</a>
+      <a href="./index.html#player-finder"><img class="nav-ico" src="./assets/icons/nav-players.png" alt="" width="24" height="24" decoding="async">Players</a>
+      <a href="./bases.html"><img class="nav-ico" src="./assets/icons/nav-bases.png" alt="" width="24" height="24" decoding="async">Bases</a>
+      <a href="./attack-guides.html"><img class="nav-ico" src="./assets/icons/nav-attack.png" alt="" width="24" height="24" decoding="async">Attack</a>
+      <a href="./heroes.html"><img class="nav-ico" src="./assets/icons/nav-heroes.png" alt="" width="24" height="24" decoding="async">Heroes</a>
+      <a href="./upgrades.html"><svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-gear"></use></svg>Tools</a>
+    </nav>
+    <button class="mobile-menu" id="pdxMenuBtn" type="button" aria-label="Open the full menu" aria-expanded="false" aria-controls="pdxDrawer">☰</button>
+    <div class="header-actions">
+      <button class="nav-app" id="installApp" type="button" hidden>
+        <svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-gear"></use></svg>Install
+      </button>
+      <a class="header-cta" href="./profile.html" data-profile-link aria-label="Open your profile" title="Your profile">
+        <svg class="pdx-ico" width="22" height="22" aria-hidden="true" focusable="false"><use href="./assets/icons/icons.svg#i-user"></use></svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="encyclopedia" id="main">
+    <section class="intro">
+      <p class="eyebrow">DRAW IT, THEN PLAN IT</p>
+      <h1>Attack Planner</h1>
+      <p>Load a screenshot of the base you are facing, mark the defences you can see on the grid, and read which army on file fits the layout. It is a drawing board with a rough fit score — not image recognition, and not a prediction.</p>
+      <p class="intro__stamp">Saved on this device only · no upload leaves your browser</p>
+    </section>
+
+    <section class="paper-panel planner">
+      <div class="planner-layout">
+        <div class="planner-board-wrap">
+          <div class="planner-toolbar">
+            <label class="pdx-field">
+              <span>Enemy Town Hall</span>
+              <select class="pdx-select" id="plannerTh">
+                <option value="1">Town Hall 1</option><option value="2">Town Hall 2</option><option value="3">Town Hall 3</option><option value="4">Town Hall 4</option><option value="5">Town Hall 5</option><option value="6">Town Hall 6</option><option value="7">Town Hall 7</option><option value="8">Town Hall 8</option><option value="9">Town Hall 9</option><option value="10">Town Hall 10</option><option value="11">Town Hall 11</option><option value="12">Town Hall 12</option><option value="13">Town Hall 13</option><option value="14">Town Hall 14</option><option value="15">Town Hall 15</option><option value="16">Town Hall 16</option><option value="17">Town Hall 17</option><option value="18">Town Hall 18</option><option value="19">Town Hall 19</option>
+              </select>
+            </label>
+            <label class="pdx-field planner-vision">
+              <span>Vision board (optional screenshot)</span>
+              <input class="pdx-input" id="plannerShot" type="file" accept="image/*">
+            </label>
+            <label class="pdx-field planner-opacity">
+              <span>Screenshot opacity</span>
+              <input id="plannerOpacity" type="range" min="0" max="90" step="5" value="45">
+            </label>
+            <div class="planner-toolbar__actions">
+              <button class="pdx-btn pdx-btn--wood pdx-btn--sm" id="plannerClearShot" type="button">Remove screenshot</button>
+              <button class="pdx-btn pdx-btn--danger pdx-btn--sm" id="plannerReset" type="button">Reset board</button>
+            </div>
+          </div>
+
+          <div class="planner-board-shell">
+            <div class="planner-board" id="plannerBoard" role="group" aria-label="Base plan grid, 12 by 12"></div>
+            <div class="planner-board__shot" id="plannerShotLayer" aria-hidden="true"></div>
+          </div>
+          <p class="pdx-note planner-hint" id="plannerHint">Pick a defence below, then tap a square to place it. Tap a placed defence to remove it.</p>
+        </div>
+
+        <div class="planner-side">
+          <h2 class="planner-subhead">Defences</h2>
+          <div class="planner-palette" id="plannerPalette" role="group" aria-label="Choose a defence"></div>
+
+          <h2 class="planner-subhead">Placed <span id="plannerCount">0</span></h2>
+          <div class="planner-placed" id="plannerPlaced"></div>
+
+          <h2 class="planner-subhead">What the counts say</h2>
+          <div class="planner-balance" id="plannerBalance"></div>
+
+          <h2 class="planner-subhead">Armies that fit</h2>
+          <div class="planner-picks" id="plannerPicks" aria-live="polite"></div>
+          <div class="planner-actions">
+            <button class="pdx-btn pdx-btn--wood pdx-btn--sm" id="plannerCopy" type="button">Copy the plan</button>
+            <span class="pdx-status" id="plannerStatus" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="pdx-note planner-disclaimer">
+        The fit score counts which of the defences you placed can hit air or ground, then ranks Army Library entries whose Town Hall range covers this base.
+        It does not know levels, walls, the Clan Castle or the defending heroes, and it is not machine vision: the screenshot is only drawn behind the grid.
+      </p>
+    </section>
+
+    <p class="disclaimer">
+      Unofficial fan-made tool. Not affiliated with, endorsed, sponsored or specifically approved by Supercell.
+      Your board is stored in this browser's localStorage and is never uploaded.
+    </p>
+  </main>
+
+  <footer class="heroes-footer">
+    <a href="./index.html">Return to PekkaDex</a>
+    <a href="./armies.html">Army Library</a>
+    <a href="./attack-guides.html">Attack Guides</a>
+    <span>PEKKADEX · ATTACK PLANNER</span>
+  </footer>
+
+  <script src="./assets/js/planner.js?v=9c36fe23"></script>
+</body>
+</html>

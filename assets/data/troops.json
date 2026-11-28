@@ -1,0 +1,459 @@
+{
+  "schema": 1,
+  "updated": "2026-11-28",
+  "note": "Troop roles and usage notes are PekkaDex summaries. Housing space, levels and damage numbers are deliberately not listed: they change with balance updates and are not part of the verified data set. Super Troop icons are the art already in the repository.",
+  "troops": [
+    {
+      "id": "barbarian",
+      "name": "Barbarian",
+      "kind": "elixir",
+      "role": "Cheap swarm",
+      "use": "The first troop in the game. Numbers beat quality; they clear the outside ring while something tankier walks behind.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "archer",
+      "name": "Archer",
+      "kind": "elixir",
+      "role": "Ranged swarm",
+      "use": "Ranged chip damage behind a tank. They are also the reason a Queen Walk needs a clean edge to work.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "giant",
+      "name": "Giant",
+      "kind": "elixir",
+      "role": "Defence-seeker tank",
+      "use": "Walks straight at the nearest defence. Everything else in the army is there to keep up with him.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "goblin",
+      "name": "Goblin",
+      "kind": "elixir",
+      "role": "Loot runner",
+      "use": "Ignores everything except resources. The classic farm-then-leave troop.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "wall-breaker",
+      "name": "Wall Breaker",
+      "kind": "elixir",
+      "role": "Wall opener",
+      "use": "Opens the compartment you actually want. Deploy them after the tank has pulled the splash.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "balloon",
+      "name": "Balloon",
+      "kind": "elixir",
+      "role": "Air siege",
+      "use": "Slow, fragile, enormous damage. It needs a Lava Hound or a Warden to reach the core.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "wizard",
+      "name": "Wizard",
+      "kind": "elixir",
+      "role": "Splash damage",
+      "use": "Clears skeletons and clustered buildings behind a tank. Fragile to any splash defence.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "healer",
+      "name": "Healer",
+      "kind": "elixir",
+      "role": "Sustain",
+      "use": "Keeps a Queen Walk or a tank push alive. Healing does not stack well past a couple of healers.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "dragon",
+      "name": "Dragon",
+      "kind": "elixir",
+      "role": "Air tank",
+      "use": "One big flying body that ignores walls. Mass Dragons is the classic first air army.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "pekka",
+      "name": "P.E.K.K.A",
+      "kind": "elixir",
+      "role": "Heavy melee",
+      "use": "Slow, huge single-target damage. Gets distracted easily, so funnel her first.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "baby-dragon",
+      "name": "Baby Dragon",
+      "kind": "elixir",
+      "role": "Air splash",
+      "use": "Strong alone, weaker in a group. Best used on the outside to pick off collectors.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "miner",
+      "name": "Miner",
+      "kind": "elixir",
+      "role": "Burrower",
+      "use": "Travels underground and surfaces under defences, ignoring walls entirely.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "electro-dragon",
+      "name": "Electro Dragon",
+      "kind": "elixir",
+      "role": "Chain air damage",
+      "use": "Chains lightning between buildings. Slow, so it needs a funnel and a rage.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "yeti",
+      "name": "Yeti",
+      "kind": "elixir",
+      "role": "Bruiser",
+      "use": "Tanky melee that spawns smaller bodies when it is hurt. Good in smash attacks.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "dragon-rider",
+      "name": "Dragon Rider",
+      "kind": "elixir",
+      "role": "Fast air siege",
+      "use": "Flies quickly and hits hard, but it is expensive and needs a plan for air defences.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "root-rider",
+      "name": "Root Rider",
+      "kind": "elixir",
+      "role": "Wall-free tank",
+      "use": "A ground tank that walks through walls. The core of most modern smash armies.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "hog-rider",
+      "name": "Hog Rider",
+      "kind": "dark",
+      "role": "Defence-seeker",
+      "use": "Jumps walls and goes straight for defences. Dies instantly to a giant bomb.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "minion",
+      "name": "Minion",
+      "kind": "dark",
+      "role": "Air swarm",
+      "use": "Cheap flying chip. Excellent for cleaning up the last few percent.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "valkyrie",
+      "name": "Valkyrie",
+      "kind": "dark",
+      "role": "Spinning melee",
+      "use": "Splash melee that shreds clustered buildings. Funnel her or she circles the base.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "golem",
+      "name": "Golem",
+      "kind": "dark",
+      "role": "Tank",
+      "use": "The original wall of hit points. Splits into smaller golems when destroyed.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "witch",
+      "name": "Witch",
+      "kind": "dark",
+      "role": "Skeleton summoner",
+      "use": "Keeps spawning skeletons. Slow, but she creates her own funnel.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "lava-hound",
+      "name": "Lava Hound",
+      "kind": "dark",
+      "role": "Air tank",
+      "use": "Absorbs air-defence fire and drops lava pups when it dies. Made for LavaLoon.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "bowler",
+      "name": "Bowler",
+      "kind": "dark",
+      "role": "Bouncing splash",
+      "use": "Rocks bounce between buildings. Strong in a tight core, weak on spread bases.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "ice-golem",
+      "name": "Ice Golem",
+      "kind": "dark",
+      "role": "Freeze tank",
+      "use": "Freezes defences on death. Used to buy a few seconds for the main push.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "headhunter",
+      "name": "Headhunter",
+      "kind": "dark",
+      "role": "Hero killer",
+      "use": "Targets heroes specifically. Deploy her once the defending hero is committed.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "super-barbarian",
+      "name": "Super Barbarian",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "Bigger Barbarian with far more hit points and damage. Uses the Barbarian slot.",
+      "art": "Icon_HV_Super_Barbarian.webp",
+      "base": "Barbarian"
+    },
+    {
+      "id": "super-archer",
+      "name": "Super Archer",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "Longer range and more damage than an Archer. Uses the Archer slot.",
+      "art": "Icon_HV_Super_Archer.webp",
+      "base": "Archer"
+    },
+    {
+      "id": "super-giant",
+      "name": "Super Giant",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A Giant that hits harder and survives longer. Uses the Giant slot.",
+      "art": "Icon_HV_Super_Giant.webp",
+      "base": "Giant"
+    },
+    {
+      "id": "super-wall-breaker",
+      "name": "Super Wall Breaker",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A much larger wall breaker with a bigger blast. Uses the Wall Breaker slot.",
+      "art": "Icon_HV_Super_Wall_Breaker%20.webp",
+      "base": "Wall Breaker"
+    },
+    {
+      "id": "super-wizard",
+      "name": "Super Wizard",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "Faster, harder-hitting splash. Uses the Wizard slot.",
+      "art": "Icon_HV_Super_Wizard.webp",
+      "base": "Wizard"
+    },
+    {
+      "id": "super-dragon",
+      "name": "Super Dragon",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A bigger Dragon with a heavier breath. Uses the Dragon slot.",
+      "art": "Icon_HV_Super_Dragon.webp",
+      "base": "Dragon"
+    },
+    {
+      "id": "super-minion",
+      "name": "Super Minion",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A tougher Minion with a longer range. Uses the Minion slot.",
+      "art": "Icon_HV_Super_Minion.webp",
+      "base": "Minion"
+    },
+    {
+      "id": "super-hog-rider",
+      "name": "Super Hog Rider",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A Hog Rider that survives splash better. Uses the Hog Rider slot.",
+      "art": "Icon_HV_Super_Hog_Rider.webp",
+      "base": "Hog Rider"
+    },
+    {
+      "id": "super-valkyrie",
+      "name": "Super Valkyrie",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A Valkyrie with a wider spin and more health. Uses the Valkyrie slot.",
+      "art": "Icon_HV_Super_Valkyrie.webp",
+      "base": "Valkyrie"
+    },
+    {
+      "id": "super-witch",
+      "name": "Super Witch",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "Summons a much bigger skeleton. Uses the Witch slot.",
+      "art": "Icon_HV_Super_Witch.webp",
+      "base": "Witch"
+    },
+    {
+      "id": "super-bowler",
+      "name": "Super Bowler",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "Bouncing rocks with more power. Uses the Bowler slot.",
+      "art": "Icon_HV_Super_Bowler.webp",
+      "base": "Bowler"
+    },
+    {
+      "id": "super-ice-hound",
+      "name": "Super Ice Hound",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "An air tank that freezes on death. Uses the Lava Hound slot.",
+      "art": "Icon_HV_Super_Ice_Hound.webp",
+      "base": "Lava Hound"
+    },
+    {
+      "id": "inferno-dragon",
+      "name": "Inferno Dragon",
+      "kind": "elixir",
+      "role": "Single-target air",
+      "use": "Ramps up damage on one target. Best sent at a core defence after the air defences are busy.",
+      "art": null,
+      "base": null
+    },
+    {
+      "id": "super-inferno-dragon",
+      "name": "Super Inferno Dragon",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A heavier Inferno Dragon beam. Uses the Inferno Dragon slot.",
+      "art": "Icon_HV_Super_Inferno_Dragon.webp",
+      "base": "Inferno Dragon"
+    },
+    {
+      "id": "super-miner",
+      "name": "Super Miner",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A Miner that burrows faster and hits harder. Uses the Miner slot.",
+      "art": "Icon_HV_Super_Miner.webp",
+      "base": "Miner"
+    },
+    {
+      "id": "rocket-balloon",
+      "name": "Rocket Balloon",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A Balloon with a rocket boost. Uses the Balloon slot.",
+      "art": "Icon_HV_Super_Rocket_Balloon.webp",
+      "base": "Balloon"
+    },
+    {
+      "id": "sneaky-goblin",
+      "name": "Sneaky Goblin",
+      "kind": "super",
+      "role": "Super troop",
+      "use": "A Goblin that stays invisible until it attacks. Uses the Goblin slot.",
+      "art": "Icon_HV_Sneaky_Goblin.webp",
+      "base": "Goblin"
+    }
+  ],
+  "squads": [
+    {
+      "id": "baby-dragon",
+      "name": "Baby Dragon Squad",
+      "icon": "icon_baby_dragon_squad.webp",
+      "info": "info_squad_baby_dragon.webp"
+    },
+    {
+      "id": "balloon",
+      "name": "Balloon Squad",
+      "icon": "icon_balloon_squad.webp",
+      "info": "info_squad_balloon.webp"
+    },
+    {
+      "id": "barcher",
+      "name": "Barcher Squad",
+      "icon": "icon_barcher_squad.webp",
+      "info": "info_squad_barcher.webp"
+    },
+    {
+      "id": "dragon",
+      "name": "Dragon Squad",
+      "icon": "icon_dragon_squad.webp",
+      "info": "info_squad_dragon.webp"
+    },
+    {
+      "id": "giant-wizard",
+      "name": "Giant Wizard Squad",
+      "icon": "icon_giant_wizard_squad.webp",
+      "info": "info_squad_giant_wizard.webp"
+    },
+    {
+      "id": "golem-witch",
+      "name": "Golem Witch Squad",
+      "icon": "icon_golem_witch_squad.webp",
+      "info": "info_squad_golem_witch.webp"
+    },
+    {
+      "id": "healer",
+      "name": "Healer Squad",
+      "icon": "icon_healer_squad.webp",
+      "info": "info_squad_healer.webp"
+    },
+    {
+      "id": "hog-rider",
+      "name": "Hog Rider Squad",
+      "icon": "icon_hog_rider_squad.webp",
+      "info": "info_squad_hog_rider.webp"
+    },
+    {
+      "id": "miner",
+      "name": "Miner Squad",
+      "icon": "icon_miner_squad.webp",
+      "info": "info_squad_miner.webp"
+    },
+    {
+      "id": "minion",
+      "name": "Minion Squad",
+      "icon": "icon_minion_squad.webp",
+      "info": "info_squad_minion.webp"
+    },
+    {
+      "id": "pekka-etitan",
+      "name": "PEKKA eTitan Squad",
+      "icon": "icon_pekka_etitan_squad.webp",
+      "info": "info_squad_pekka_etitan.webp"
+    },
+    {
+      "id": "wall-breaker",
+      "name": "Wall Breaker Squad",
+      "icon": "icon_wall_breaker_squad.webp",
+      "info": "info_squad_wall_breaker.webp"
+    }
+  ]
+}

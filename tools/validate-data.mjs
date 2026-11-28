@@ -23,7 +23,15 @@ const fileExists = path => {
   if (!path) return false;
   if (/^https?:/i.test(path)) return true;
   const clean = path.replace(/^\.\//, "").split("?")[0];
-  return existsSync(new URL(clean, ROOT));
+  if (existsSync(new URL(clean, ROOT))) return true;
+  /* Some art files ship with spaces or full-width punctuation in the name;
+     the data stores those URL-encoded, so try the encoded form too. */
+  try {
+    const encoded = decodeURIComponent(clean).split("/").map(encodeURIComponent).join("/");
+    return existsSync(new URL(encoded, ROOT));
+  } catch (_) {
+    return false;
+  }
 };
 
 const need = (where, obj, keys) => {
@@ -31,7 +39,12 @@ const need = (where, obj, keys) => {
     if (obj[key] === undefined) errors.push(`${where}: missing "${key}"`);
   }
 };
+/* null is a real state now: tools/rebuild-art-paths.mjs sets it when the art
+   is not in the repo, and the UI draws a silhouette. A missing key or a path
+   that does not resolve is still an error. */
+let artMissing = 0;
 const needImage = (where, path) => {
+  if (path === null) { artMissing++; return; }
   if (!path) { errors.push(`${where}: missing image path`); return; }
   if (!fileExists(path)) errors.push(`${where}: image not found at ${path}`);
 };
@@ -255,6 +268,66 @@ if (guides) {
   }
 }
 
+/* ------------------------------------------------------------ meme gallery */
+const memes = read("memes.json");
+if (memes) {
+  if (!memes.updated) errors.push("memes.json: missing updated");
+  for (const key of ["memes", "emotes"]) {
+    if (!Array.isArray(memes[key]) || !memes[key].length) errors.push(`memes.json: ${key}[] is empty`);
+    const seen = new Set();
+    for (const item of memes[key] || []) {
+      const where = `memes.json/${key}/${item.id || "?"}`;
+      need(where, item, ["id", "src", "title"]);
+      if (!item.id) continue;
+      if (seen.has(item.id)) errors.push(`${where}: duplicate id`);
+      seen.add(item.id);
+      if (item.src && !fileExists(item.src)) errors.push(`${where}: image not found at ${item.src}`);
+    }
+  }
+}
+
+/* ------------------------------------------------------------ troop library */
+const troops = read("troops.json");
+if (troops) {
+  if (!troops.updated) errors.push("troops.json: missing updated");
+  if (!Array.isArray(troops.troops) || !troops.troops.length) errors.push("troops.json: troops[] is empty");
+  const names = new Set((troops.troops || []).map(troop => troop.name));
+  const seen = new Set();
+  for (const troop of troops.troops || []) {
+    const where = `troops.json/${troop.id || "?"}`;
+    need(where, troop, ["id", "name", "kind", "role", "use"]);
+    if (!troop.id) continue;
+    if (seen.has(troop.id)) errors.push(`${where}: duplicate id`);
+    seen.add(troop.id);
+    if (!["elixir", "dark", "super"].includes(troop.kind)) errors.push(`${where}: kind must be elixir, dark or super`);
+    if (troop.kind === "super" && !troop.base) errors.push(`${where}: a Super Troop needs its base troop`);
+    if (troop.base && !names.has(troop.base)) errors.push(`${where}: base "${troop.base}" is not a troop in this file`);
+    if (troop.art !== null && !troop.art) errors.push(`${where}: art must be a path or null`);
+    if (troop.art) needImage(where, troop.art);
+  }
+  for (const squad of troops.squads || []) {
+    const where = `troops.json/squads/${squad.id || "?"}`;
+    need(where, squad, ["id", "name", "icon", "info"]);
+    if (squad.icon) needImage(where, squad.icon);
+    if (squad.info) needImage(where, squad.info);
+  }
+}
+
+/* --------------------------------------------------------- attack academy */
+const academy = read("academy.json");
+if (academy) {
+  if (!academy.updated) errors.push("academy.json: missing updated");
+  if (!Array.isArray(academy.stages) || academy.stages.length !== 6) {
+    errors.push(`academy.json: stages[] should list 6 stages (found ${(academy.stages || []).length})`);
+  }
+  for (const stage of academy.stages || []) {
+    const where = `academy.json/stage-${stage.n ?? "?"}`;
+    need(where, stage, ["n", "title", "goal", "checks"]);
+    if (!Array.isArray(stage.checks) || !stage.checks.length) errors.push(`${where}: checks[] is empty`);
+    if (stage.practice) need(`${where}.practice`, stage.practice, ["label", "href"]);
+  }
+}
+
 /* ---------------------------------------------------------------- report */
 for (const warning of warnings) console.warn(`warning: ${warning}`);
 if (errors.length) {
@@ -266,5 +339,8 @@ console.log(
   `data ok — ${heroes?.heroes?.length || 0} heroes, ${equipment?.equipment?.length || 0} equipment, ` +
   `${skins?.skins?.length || 0} skins, ${sceneries?.sceneries?.length || 0} sceneries, ` +
   `${bases?.bases?.length || 0} bases, ${armies?.armies?.length || 0} armies, ` +
+  `${(memes?.memes?.length || 0) + (memes?.emotes?.length || 0)} gallery images, ` +
+  `${troops?.troops?.length || 0} troops, ` +
+  `${artMissing} entr${artMissing === 1 ? "y" : "ies"} without art (silhouette), ` +
   `${warnings.length} warning(s)`
 );

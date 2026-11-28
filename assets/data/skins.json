@@ -13,8 +13,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-awakened-king.webp",
-      "thumb": "./assets/skins/barbarian-king-awakened-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -24,7 +24,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-beast-king",
@@ -35,8 +36,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-beast-king.webp",
-      "thumb": "./assets/skins/barbarian-king-beast-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Beast_King_2.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Beast_King_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -46,7 +47,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-berserker-king",
@@ -57,8 +59,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-berserker-king.webp",
-      "thumb": "./assets/skins/barbarian-king-berserker-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -68,7 +70,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-bruiser-king",
@@ -79,8 +82,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-bruiser-king.webp",
-      "thumb": "./assets/skins/barbarian-king-bruiser-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -90,7 +93,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-champion-king",
@@ -101,8 +105,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-champion-king.webp",
-      "thumb": "./assets/skins/barbarian-king-champion-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Champion_King_1_no_flame.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Champion_King_1_no_flame.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -112,7 +116,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-chess-king",
@@ -123,8 +128,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-chess-king.webp",
-      "thumb": "./assets/skins/barbarian-king-chess-king.webp",
+      "art": "./Hero_Skin_BK_Chess_King_1_shadow.webp",
+      "thumb": "./Hero_Skin_BK_Chess_King_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -134,7 +139,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-clash-a-rama-king",
@@ -145,8 +151,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-clash-a-rama-king.webp",
-      "thumb": "./assets/skins/barbarian-king-clash-a-rama-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -156,7 +162,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-clockwork-king",
@@ -167,8 +174,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-clockwork-king.webp",
-      "thumb": "./assets/skins/barbarian-king-clockwork-king.webp",
+      "art": "./Hero_Skin_BK_Clockwork_King_1_grass.webp",
+      "thumb": "./Hero_Skin_BK_Clockwork_King_1_grass.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -178,7 +185,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-dark-ages-king",
@@ -189,8 +197,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-dark-ages-king.webp",
-      "thumb": "./assets/skins/barbarian-king-dark-ages-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -200,7 +208,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-desert-king",
@@ -211,8 +220,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-desert-king.webp",
-      "thumb": "./assets/skins/barbarian-king-desert-king.webp",
+      "art": "./BarbarianKing_DesertNights_f41_6k.webp",
+      "thumb": "./BarbarianKing_DesertNights_f41_6k.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -222,7 +231,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-dragon-king",
@@ -233,8 +243,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-dragon-king.webp",
-      "thumb": "./assets/skins/barbarian-king-dragon-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Dragon_King_2_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Dragon_King_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -244,7 +254,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-dragonscale-king",
@@ -255,8 +266,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-dragonscale-king.webp",
-      "thumb": "./assets/skins/barbarian-king-dragonscale-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -266,7 +277,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-egypt-king",
@@ -277,8 +289,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-egypt-king.webp",
-      "thumb": "./assets/skins/barbarian-king-egypt-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -288,7 +300,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-fury-king",
@@ -299,8 +312,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-fury-king.webp",
-      "thumb": "./assets/skins/barbarian-king-fury-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -310,7 +323,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-future-king",
@@ -321,8 +335,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-future-king.webp",
-      "thumb": "./assets/skins/barbarian-king-future-king.webp",
+      "art": "./Hero_Skin_BK_Future_King_3_shadow.webp",
+      "thumb": "./Hero_Skin_BK_Future_King_3_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -332,7 +346,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-ghost-king",
@@ -343,8 +358,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-ghost-king.webp",
-      "thumb": "./assets/skins/barbarian-king-ghost-king.webp",
+      "art": "./Hero_Skin_BK_Ghost_King_1.webp",
+      "thumb": "./Hero_Skin_BK_Ghost_King_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -354,7 +369,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-gingerbread-king",
@@ -365,8 +381,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-gingerbread-king.webp",
-      "thumb": "./assets/skins/barbarian-king-gingerbread-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Gingerbread_King_3_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Gingerbread_King_3_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -376,7 +392,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-gladiator-king",
@@ -387,8 +404,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-gladiator-king.webp",
-      "thumb": "./assets/skins/barbarian-king-gladiator-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -398,7 +415,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-goblin-king",
@@ -409,8 +427,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-goblin-king.webp",
-      "thumb": "./assets/skins/barbarian-king-goblin-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Goblin_King_1_BG.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Goblin_King_1_BG.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -420,7 +438,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-ice-king-2",
@@ -431,8 +450,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-ice-king-2.webp",
-      "thumb": "./assets/skins/barbarian-king-ice-king-2.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -442,7 +461,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-jelly-king",
@@ -453,8 +473,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-jelly-king.webp",
-      "thumb": "./assets/skins/barbarian-king-jelly-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -464,7 +484,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-jolly-king",
@@ -475,8 +496,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-jolly-king.webp",
-      "thumb": "./assets/skins/barbarian-king-jolly-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -486,7 +507,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-jungle-king",
@@ -497,8 +519,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-jungle-king.webp",
-      "thumb": "./assets/skins/barbarian-king-jungle-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Jungle_King_1_grass.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Jungle_King_1_grass.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -508,7 +530,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-king-of-the-north",
@@ -519,8 +542,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-king-of-the-north.webp",
-      "thumb": "./assets/skins/barbarian-king-king-of-the-north.webp",
+      "art": "./Hero_Skin_BK_King_of_the_North_1.webp",
+      "thumb": "./Hero_Skin_BK_King_of_the_North_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -530,7 +553,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-lunar-king",
@@ -541,8 +565,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-lunar-king.webp",
-      "thumb": "./assets/skins/barbarian-king-lunar-king.webp",
+      "art": "./Hero_Skin_BK_Lunar_King_2_shadow.webp",
+      "thumb": "./Hero_Skin_BK_Lunar_King_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -552,7 +576,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-magic-king",
@@ -563,8 +588,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-magic-king.webp",
-      "thumb": "./assets/skins/barbarian-king-magic-king.webp",
+      "art": "./Hero_Skin_BK_Magic_King_2.webp",
+      "thumb": "./Hero_Skin_BK_Magic_King_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -574,7 +599,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-majestic-king",
@@ -585,8 +611,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-majestic-king.webp",
-      "thumb": "./assets/skins/barbarian-king-majestic-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -596,7 +622,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-monkey-king",
@@ -607,8 +634,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-monkey-king.webp",
-      "thumb": "./assets/skins/barbarian-king-monkey-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -618,7 +645,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-painter-king",
@@ -629,8 +657,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-painter-king.webp",
-      "thumb": "./assets/skins/barbarian-king-painter-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Painter_King_4.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Painter_King_4.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -640,7 +668,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-party-king",
@@ -651,8 +680,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-party-king.webp",
-      "thumb": "./assets/skins/barbarian-king-party-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -662,7 +691,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-pirate-king",
@@ -673,8 +703,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-pirate-king.webp",
-      "thumb": "./assets/skins/barbarian-king-pirate-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -684,7 +714,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-pixel-king",
@@ -695,8 +726,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-pixel-king.webp",
-      "thumb": "./assets/skins/barbarian-king-pixel-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Pixel_King_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Pixel_King_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -706,7 +737,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-primal-king",
@@ -717,8 +749,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-primal-king.webp",
-      "thumb": "./assets/skins/barbarian-king-primal-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -728,7 +760,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-renegade-king",
@@ -739,8 +772,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-renegade-king.webp",
-      "thumb": "./assets/skins/barbarian-king-renegade-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -750,7 +783,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-rogue-king",
@@ -761,8 +795,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-rogue-king.webp",
-      "thumb": "./assets/skins/barbarian-king-rogue-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -772,7 +806,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-shadow-king",
@@ -783,8 +818,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-shadow-king.webp",
-      "thumb": "./assets/skins/barbarian-king-shadow-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Shadow_King_1_grass.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Shadow_King_1_grass.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -794,7 +829,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-skeleton-king",
@@ -805,8 +841,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-skeleton-king.webp",
-      "thumb": "./assets/skins/barbarian-king-skeleton-king.webp",
+      "art": "./assets/skins/BK_Skeleton_Kingdom_Pose_01_Purple_NS.webp",
+      "thumb": "./assets/skins/BK_Skeleton_Kingdom_Pose_01_Purple_NS.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -816,7 +852,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-space-king",
@@ -827,8 +864,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-space-king.webp",
-      "thumb": "./assets/skins/barbarian-king-space-king.webp",
+      "art": "./Hero_Skin_BK_Space_King_1.webp",
+      "thumb": "./Hero_Skin_BK_Space_King_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -838,7 +875,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-stringshedder-king",
@@ -849,8 +887,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-stringshedder-king.webp",
-      "thumb": "./assets/skins/barbarian-king-stringshedder-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -860,7 +898,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-summer-king",
@@ -871,8 +910,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-summer-king.webp",
-      "thumb": "./assets/skins/barbarian-king-summer-king.webp",
+      "art": "./assets/skins/Hero_Skin_BK_Summer_King_2.webp",
+      "thumb": "./assets/skins/Hero_Skin_BK_Summer_King_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -882,7 +921,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "barbarian-king-warrior-king",
@@ -893,8 +933,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-warrior-king.webp",
-      "thumb": "./assets/skins/barbarian-king-warrior-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -904,7 +944,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "barbarian-king-zeus-king",
@@ -915,8 +956,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/barbarian-king-zeus-king.webp",
-      "thumb": "./assets/skins/barbarian-king-zeus-king.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -926,7 +967,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-bassbow-queen",
@@ -937,8 +979,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-bassbow-queen.webp",
-      "thumb": "./assets/skins/archer-queen-bassbow-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -948,7 +990,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-blizzard-queen",
@@ -959,8 +1002,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-blizzard-queen.webp",
-      "thumb": "./assets/skins/archer-queen-blizzard-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -970,7 +1013,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-champion-queen",
@@ -981,8 +1025,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-champion-queen.webp",
-      "thumb": "./assets/skins/archer-queen-champion-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Champion_Queen_1.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Champion_Queen_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -992,7 +1036,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-chess-queen",
@@ -1003,8 +1048,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-chess-queen.webp",
-      "thumb": "./assets/skins/archer-queen-chess-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Chess_Queen_2_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Chess_Queen_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1014,7 +1059,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-clash-a-rama-queen",
@@ -1025,8 +1071,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-clash-a-rama-queen.webp",
-      "thumb": "./assets/skins/archer-queen-clash-a-rama-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1036,7 +1082,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-clockwork-queen",
@@ -1047,8 +1094,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-clockwork-queen.webp",
-      "thumb": "./assets/skins/archer-queen-clockwork-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1058,7 +1105,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-dark-ages-queen",
@@ -1069,8 +1117,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-dark-ages-queen.webp",
-      "thumb": "./assets/skins/archer-queen-dark-ages-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1080,7 +1128,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-dragon-queen",
@@ -1091,8 +1140,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-dragon-queen.webp",
-      "thumb": "./assets/skins/archer-queen-dragon-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Dragon_Queen_1_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Dragon_Queen_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1102,7 +1151,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-dragonscale-queen",
@@ -1113,8 +1163,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-dragonscale-queen.webp",
-      "thumb": "./assets/skins/archer-queen-dragonscale-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1124,7 +1174,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-egypt-queen",
@@ -1135,8 +1186,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-egypt-queen.webp",
-      "thumb": "./assets/skins/archer-queen-egypt-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1146,7 +1197,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-fury-queen-2",
@@ -1157,8 +1209,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-fury-queen-2.webp",
-      "thumb": "./assets/skins/archer-queen-fury-queen-2.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1168,7 +1220,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-fury-queen",
@@ -1179,8 +1232,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-fury-queen.webp",
-      "thumb": "./assets/skins/archer-queen-fury-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1190,7 +1243,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-future-queen",
@@ -1201,8 +1255,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-future-queen.webp",
-      "thumb": "./assets/skins/archer-queen-future-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Future_Queen_2.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Future_Queen_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1212,7 +1266,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-ghost-queen",
@@ -1223,8 +1278,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-ghost-queen.webp",
-      "thumb": "./assets/skins/archer-queen-ghost-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Ghost_Queen_1.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Ghost_Queen_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1234,7 +1289,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-gingerbread-queen",
@@ -1245,8 +1301,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-gingerbread-queen.webp",
-      "thumb": "./assets/skins/archer-queen-gingerbread-queen.webp",
+      "art": "./Hero_Skin_AQ_Gingerbread_Queen_2_shadow.webp",
+      "thumb": "./Hero_Skin_AQ_Gingerbread_Queen_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1256,7 +1312,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-gladiator-queen",
@@ -1267,8 +1324,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-gladiator-queen.webp",
-      "thumb": "./assets/skins/archer-queen-gladiator-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1278,7 +1335,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-goblin-queen",
@@ -1289,8 +1347,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-goblin-queen.webp",
-      "thumb": "./assets/skins/archer-queen-goblin-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1300,7 +1358,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-heart-hunter-queen",
@@ -1311,8 +1370,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-heart-hunter-queen.webp",
-      "thumb": "./assets/skins/archer-queen-heart-hunter-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Heart_Hunter_Queen_1.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Heart_Hunter_Queen_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1322,7 +1381,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-ice-queen-2",
@@ -1333,8 +1393,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-ice-queen-2.webp",
-      "thumb": "./assets/skins/archer-queen-ice-queen-2.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Ice_Queen_2.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Ice_Queen_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1344,7 +1404,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-jolly-queen",
@@ -1355,8 +1416,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-jolly-queen.webp",
-      "thumb": "./assets/skins/archer-queen-jolly-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Jolly_Queen_2.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Jolly_Queen_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1366,7 +1427,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-jungle-queen",
@@ -1377,8 +1439,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-jungle-queen.webp",
-      "thumb": "./assets/skins/archer-queen-jungle-queen.webp",
+      "art": "./Hero_Skin_AQ_Jungle_Queen_1.webp",
+      "thumb": "./Hero_Skin_AQ_Jungle_Queen_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1388,7 +1450,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-lunar-queen",
@@ -1399,8 +1462,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-lunar-queen.webp",
-      "thumb": "./assets/skins/archer-queen-lunar-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1410,7 +1473,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-magic-queen",
@@ -1421,8 +1485,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-magic-queen.webp",
-      "thumb": "./assets/skins/archer-queen-magic-queen.webp",
+      "art": "./Hero_Skin_AQ_Magic_Queen_1_shadow.webp",
+      "thumb": "./Hero_Skin_AQ_Magic_Queen_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1432,7 +1496,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-majestic-queen",
@@ -1443,8 +1508,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-majestic-queen.webp",
-      "thumb": "./assets/skins/archer-queen-majestic-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1454,7 +1519,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-medusa-queen",
@@ -1465,8 +1531,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-medusa-queen.webp",
-      "thumb": "./assets/skins/archer-queen-medusa-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1476,7 +1542,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-p-e-q-q-a-queen",
@@ -1487,8 +1554,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-p-e-q-q-a-queen.webp",
-      "thumb": "./assets/skins/archer-queen-p-e-q-q-a-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1498,7 +1565,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-painter-queen",
@@ -1509,8 +1577,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-painter-queen.webp",
-      "thumb": "./assets/skins/archer-queen-painter-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1520,7 +1588,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-party-queen",
@@ -1531,8 +1600,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-party-queen.webp",
-      "thumb": "./assets/skins/archer-queen-party-queen.webp",
+      "art": "./Hero_Skin_AQ_Party_Queen_1_shadow.webp",
+      "thumb": "./Hero_Skin_AQ_Party_Queen_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1542,7 +1611,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-phantom-queen",
@@ -1553,8 +1623,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-phantom-queen.webp",
-      "thumb": "./assets/skins/archer-queen-phantom-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1564,7 +1634,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-pirate-queen",
@@ -1575,8 +1646,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-pirate-queen.webp",
-      "thumb": "./assets/skins/archer-queen-pirate-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1586,7 +1657,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-pixel-queen",
@@ -1597,8 +1669,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-pixel-queen.webp",
-      "thumb": "./assets/skins/archer-queen-pixel-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Pixel_Queen_1_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Pixel_Queen_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1608,7 +1680,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-primal-queen",
@@ -1619,8 +1692,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-primal-queen.webp",
-      "thumb": "./assets/skins/archer-queen-primal-queen.webp",
+      "art": "./Hero_Skin_AQ_Primal_Queen_1.webp",
+      "thumb": "./Hero_Skin_AQ_Primal_Queen_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1630,7 +1703,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-queen-of-the-dunes",
@@ -1641,8 +1715,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-queen-of-the-dunes.webp",
-      "thumb": "./assets/skins/archer-queen-queen-of-the-dunes.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1652,7 +1726,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-queen-of-the-north",
@@ -1663,8 +1738,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-queen-of-the-north.webp",
-      "thumb": "./assets/skins/archer-queen-queen-of-the-north.webp",
+      "art": "./Hero_Skin_AQ_Queen_of_the_North_2.webp",
+      "thumb": "./Hero_Skin_AQ_Queen_of_the_North_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1674,7 +1749,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-renegade-queen",
@@ -1685,8 +1761,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-renegade-queen.webp",
-      "thumb": "./assets/skins/archer-queen-renegade-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1696,7 +1772,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-rogue-queen",
@@ -1707,8 +1784,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-rogue-queen.webp",
-      "thumb": "./assets/skins/archer-queen-rogue-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1718,7 +1795,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-shadow-queen",
@@ -1729,8 +1807,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-shadow-queen.webp",
-      "thumb": "./assets/skins/archer-queen-shadow-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Shadow_Queen_2_grass.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Shadow_Queen_2_grass.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1740,7 +1818,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-skeleton-queen",
@@ -1751,8 +1830,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-skeleton-queen.webp",
-      "thumb": "./assets/skins/archer-queen-skeleton-queen.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1762,7 +1841,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "archer-queen-space-queen",
@@ -1773,8 +1853,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-space-queen.webp",
-      "thumb": "./assets/skins/archer-queen-space-queen.webp",
+      "art": "./Hero_Skin_AQ_Space_Queen_1.webp",
+      "thumb": "./Hero_Skin_AQ_Space_Queen_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1784,7 +1864,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-spooky-queen",
@@ -1795,8 +1876,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-spooky-queen.webp",
-      "thumb": "./assets/skins/archer-queen-spooky-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Spooky_Queen_2_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Spooky_Queen_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1806,7 +1887,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-summer-queen",
@@ -1817,8 +1899,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-summer-queen.webp",
-      "thumb": "./assets/skins/archer-queen-summer-queen.webp",
+      "art": "./Hero_Skin_AQ_Summer_Queen_2_shadow.webp",
+      "thumb": "./Hero_Skin_AQ_Summer_Queen_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1828,7 +1910,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "archer-queen-warrior-queen",
@@ -1839,8 +1922,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/archer-queen-warrior-queen.webp",
-      "thumb": "./assets/skins/archer-queen-warrior-queen.webp",
+      "art": "./assets/skins/Hero_Skin_AQ_Warrior_Queen_1_grass.webp",
+      "thumb": "./assets/skins/Hero_Skin_AQ_Warrior_Queen_1_grass.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1850,7 +1933,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-champion-warden",
@@ -1861,8 +1945,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-champion-warden.webp",
-      "thumb": "./assets/skins/grand-warden-champion-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1872,7 +1956,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-clash-a-rama-warden",
@@ -1883,8 +1968,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-clash-a-rama-warden.webp",
-      "thumb": "./assets/skins/grand-warden-clash-a-rama-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1894,7 +1979,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-clockwork-warden",
@@ -1905,8 +1991,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-clockwork-warden.webp",
-      "thumb": "./assets/skins/grand-warden-clockwork-warden.webp",
+      "art": "./assets/skins/Hero_Skin_GW_Clockwork_Warden_1_grass.webp",
+      "thumb": "./assets/skins/Hero_Skin_GW_Clockwork_Warden_1_grass.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1916,7 +2002,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-dark-ages-warden",
@@ -1927,8 +2014,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-dark-ages-warden.webp",
-      "thumb": "./assets/skins/grand-warden-dark-ages-warden.webp",
+      "art": "./Hero_Skin_GW_Dark_Ages_Warden_1_shadow.webp",
+      "thumb": "./Hero_Skin_GW_Dark_Ages_Warden_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1938,7 +2025,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-dragon-warden",
@@ -1949,8 +2037,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-dragon-warden.webp",
-      "thumb": "./assets/skins/grand-warden-dragon-warden.webp",
+      "art": "./assets/skins/Hero_Skin_GW_Dragon_Warden_3.webp",
+      "thumb": "./assets/skins/Hero_Skin_GW_Dragon_Warden_3.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -1960,7 +2048,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-dragonscale-warden",
@@ -1971,8 +2060,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-dragonscale-warden.webp",
-      "thumb": "./assets/skins/grand-warden-dragonscale-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -1982,7 +2071,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-egypt-warden",
@@ -1993,8 +2083,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-egypt-warden.webp",
-      "thumb": "./assets/skins/grand-warden-egypt-warden.webp",
+      "art": "./assets/skins/Hero_Skin_GW_Egypt_Warden_2.webp",
+      "thumb": "./assets/skins/Hero_Skin_GW_Egypt_Warden_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2004,7 +2094,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-eternal-warden",
@@ -2015,8 +2106,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-eternal-warden.webp",
-      "thumb": "./assets/skins/grand-warden-eternal-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2026,7 +2117,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-fury-warden",
@@ -2037,8 +2129,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-fury-warden.webp",
-      "thumb": "./assets/skins/grand-warden-fury-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2048,7 +2140,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-future-warden",
@@ -2059,8 +2152,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-future-warden.webp",
-      "thumb": "./assets/skins/grand-warden-future-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2070,7 +2163,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-ghost-warden",
@@ -2081,8 +2175,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-ghost-warden.webp",
-      "thumb": "./assets/skins/grand-warden-ghost-warden.webp",
+      "art": "./assets/skins/Hero_Skin_GW_Ghost_Warden_2.webp",
+      "thumb": "./assets/skins/Hero_Skin_GW_Ghost_Warden_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2092,7 +2186,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-gingerbread-warden",
@@ -2103,8 +2198,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-gingerbread-warden.webp",
-      "thumb": "./assets/skins/grand-warden-gingerbread-warden.webp",
+      "art": "./assets/skins/Hero_Skin_GW_Gingerbread_Warden_1.webp",
+      "thumb": "./assets/skins/Hero_Skin_GW_Gingerbread_Warden_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2114,7 +2209,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-gladiator-warden",
@@ -2125,8 +2221,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-gladiator-warden.webp",
-      "thumb": "./assets/skins/grand-warden-gladiator-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2136,7 +2232,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-ice-warden-2",
@@ -2147,8 +2244,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-ice-warden-2.webp",
-      "thumb": "./assets/skins/grand-warden-ice-warden-2.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2158,7 +2255,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-ivan-warden",
@@ -2169,8 +2267,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-ivan-warden.webp",
-      "thumb": "./assets/skins/grand-warden-ivan-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2180,7 +2278,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-jolly-warden",
@@ -2191,8 +2290,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-jolly-warden.webp",
-      "thumb": "./assets/skins/grand-warden-jolly-warden.webp",
+      "art": "./Hero_Skin_GW_Jolly_Warden_2.webp",
+      "thumb": "./Hero_Skin_GW_Jolly_Warden_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2202,7 +2301,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-jungle-warden",
@@ -2213,8 +2313,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-jungle-warden.webp",
-      "thumb": "./assets/skins/grand-warden-jungle-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2224,7 +2324,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-keystriker-warden",
@@ -2235,8 +2336,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-keystriker-warden.webp",
-      "thumb": "./assets/skins/grand-warden-keystriker-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2246,7 +2347,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-magic-warden",
@@ -2257,8 +2359,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-magic-warden.webp",
-      "thumb": "./assets/skins/grand-warden-magic-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2268,7 +2370,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-majestic-warden",
@@ -2279,8 +2382,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-majestic-warden.webp",
-      "thumb": "./assets/skins/grand-warden-majestic-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2290,7 +2393,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-painter-warden",
@@ -2301,8 +2405,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-painter-warden.webp",
-      "thumb": "./assets/skins/grand-warden-painter-warden.webp",
+      "art": "./Hero_Skin_GW_Painter_Warden_2_shadow.webp",
+      "thumb": "./Hero_Skin_GW_Painter_Warden_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2312,7 +2416,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-party-warden",
@@ -2323,8 +2428,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-party-warden.webp",
-      "thumb": "./assets/skins/grand-warden-party-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2334,7 +2439,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-pirate-warden",
@@ -2345,8 +2451,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-pirate-warden.webp",
-      "thumb": "./assets/skins/grand-warden-pirate-warden.webp",
+      "art": "./Hero_Skin_GW_Pirate_Warden_1.webp",
+      "thumb": "./Hero_Skin_GW_Pirate_Warden_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2356,7 +2462,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-pixel-warden",
@@ -2367,8 +2474,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-pixel-warden.webp",
-      "thumb": "./assets/skins/grand-warden-pixel-warden.webp",
+      "art": "./Hero_Skin_GW_Pixel_Warden_shadow.webp",
+      "thumb": "./Hero_Skin_GW_Pixel_Warden_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2378,7 +2485,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-poseidon-warden",
@@ -2389,8 +2497,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-poseidon-warden.webp",
-      "thumb": "./assets/skins/grand-warden-poseidon-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2400,7 +2508,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-primal-warden",
@@ -2411,8 +2520,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-primal-warden.webp",
-      "thumb": "./assets/skins/grand-warden-primal-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2422,7 +2531,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-river-warden",
@@ -2433,8 +2543,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-river-warden.webp",
-      "thumb": "./assets/skins/grand-warden-river-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2444,7 +2554,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-shadow-warden",
@@ -2455,8 +2566,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-shadow-warden.webp",
-      "thumb": "./assets/skins/grand-warden-shadow-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2466,7 +2577,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-shaman-warden",
@@ -2477,8 +2589,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-shaman-warden.webp",
-      "thumb": "./assets/skins/grand-warden-shaman-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2488,7 +2600,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-skeleton-warden",
@@ -2499,8 +2612,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-skeleton-warden.webp",
-      "thumb": "./assets/skins/grand-warden-skeleton-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2510,7 +2623,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-space-warden",
@@ -2521,8 +2635,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-space-warden.webp",
-      "thumb": "./assets/skins/grand-warden-space-warden.webp",
+      "art": "./assets/skins/Hero_Skin_GW_Space_Warden_2.webp",
+      "thumb": "./assets/skins/Hero_Skin_GW_Space_Warden_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2532,7 +2646,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "grand-warden-summer-warden",
@@ -2543,8 +2658,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-summer-warden.webp",
-      "thumb": "./assets/skins/grand-warden-summer-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2554,7 +2669,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-warrior-warden",
@@ -2565,8 +2681,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-warrior-warden.webp",
-      "thumb": "./assets/skins/grand-warden-warrior-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2576,7 +2692,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "grand-warden-winter-warden",
@@ -2587,8 +2704,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/grand-warden-winter-warden.webp",
-      "thumb": "./assets/skins/grand-warden-winter-warden.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2598,7 +2715,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-champions-champion",
@@ -2609,8 +2727,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-champions-champion.webp",
-      "thumb": "./assets/skins/royal-champion-champions-champion.webp",
+      "art": "./Hero_Skin_RC_Champions_Champion_2_shadow.webp",
+      "thumb": "./Hero_Skin_RC_Champions_Champion_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2620,7 +2738,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-clash-a-rama-champion",
@@ -2631,8 +2750,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-clash-a-rama-champion.webp",
-      "thumb": "./assets/skins/royal-champion-clash-a-rama-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2642,7 +2761,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-cursed-champion",
@@ -2653,8 +2773,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-cursed-champion.webp",
-      "thumb": "./assets/skins/royal-champion-cursed-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2664,7 +2784,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-dark-ages-champion",
@@ -2675,8 +2796,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-dark-ages-champion.webp",
-      "thumb": "./assets/skins/royal-champion-dark-ages-champion.webp",
+      "art": "./assets/skins/Hero_Skin_RC_Dark_Ages_Champion_3.webp",
+      "thumb": "./assets/skins/Hero_Skin_RC_Dark_Ages_Champion_3.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2686,7 +2807,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-dragon-champion",
@@ -2697,8 +2819,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-dragon-champion.webp",
-      "thumb": "./assets/skins/royal-champion-dragon-champion.webp",
+      "art": "./assets/skins/Hero_Skin_RC_Dragon_Champion_3.webp",
+      "thumb": "./assets/skins/Hero_Skin_RC_Dragon_Champion_3.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2708,7 +2830,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-dragonscale-champion",
@@ -2719,8 +2842,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-dragonscale-champion.webp",
-      "thumb": "./assets/skins/royal-champion-dragonscale-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2730,7 +2853,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-egypt-champion",
@@ -2741,8 +2865,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-egypt-champion.webp",
-      "thumb": "./assets/skins/royal-champion-egypt-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2752,7 +2876,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-explorer-champion",
@@ -2763,8 +2888,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-explorer-champion.webp",
-      "thumb": "./assets/skins/royal-champion-explorer-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2774,7 +2899,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-fury-champion",
@@ -2785,8 +2911,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-fury-champion.webp",
-      "thumb": "./assets/skins/royal-champion-fury-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2796,7 +2922,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-future-champion",
@@ -2807,8 +2934,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-future-champion.webp",
-      "thumb": "./assets/skins/royal-champion-future-champion.webp",
+      "art": "./Hero_Skin_RC_Future_Champion_2_shadow.webp",
+      "thumb": "./Hero_Skin_RC_Future_Champion_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2818,7 +2945,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-ghost-champion",
@@ -2829,8 +2957,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-ghost-champion.webp",
-      "thumb": "./assets/skins/royal-champion-ghost-champion.webp",
+      "art": "./assets/skins/Hero_Skin_RC_Ghost_Champion_1.webp",
+      "thumb": "./assets/skins/Hero_Skin_RC_Ghost_Champion_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2840,7 +2968,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-gingerbread-champion",
@@ -2851,8 +2980,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-gingerbread-champion.webp",
-      "thumb": "./assets/skins/royal-champion-gingerbread-champion.webp",
+      "art": "./Hero_Skin_RC_Gingerbread_Champion_2_shadow.webp",
+      "thumb": "./Hero_Skin_RC_Gingerbread_Champion_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2862,7 +2991,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-gladiator-champion",
@@ -2873,8 +3003,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-gladiator-champion.webp",
-      "thumb": "./assets/skins/royal-champion-gladiator-champion.webp",
+      "art": "./Hero_Skin_RC_Gladiator_Champion_2_shadow.webp",
+      "thumb": "./Hero_Skin_RC_Gladiator_Champion_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2884,7 +3014,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-goblin-champion",
@@ -2895,8 +3026,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-goblin-champion.webp",
-      "thumb": "./assets/skins/royal-champion-goblin-champion.webp",
+      "art": "./assets/skins/Hero_Skin_RC_Goblin_Champion_3_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_RC_Goblin_Champion_3_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2906,7 +3037,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-hades-champion",
@@ -2917,8 +3049,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-hades-champion.webp",
-      "thumb": "./assets/skins/royal-champion-hades-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2928,7 +3060,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-ice-champion-2",
@@ -2939,8 +3072,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-ice-champion-2.webp",
-      "thumb": "./assets/skins/royal-champion-ice-champion-2.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -2950,7 +3083,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-jolly-champion",
@@ -2961,8 +3095,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-jolly-champion.webp",
-      "thumb": "./assets/skins/royal-champion-jolly-champion.webp",
+      "art": "./assets/skins/Hero_Skin_RC_Jolly_Champion_1_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_RC_Jolly_Champion_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2972,7 +3106,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-jungle-champion",
@@ -2983,8 +3118,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-jungle-champion.webp",
-      "thumb": "./assets/skins/royal-champion-jungle-champion.webp",
+      "art": "./Hero_Skin_RC_Jungle_Champion_1_shadow.webp",
+      "thumb": "./Hero_Skin_RC_Jungle_Champion_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -2994,7 +3129,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-magic-champion",
@@ -3005,8 +3141,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-magic-champion.webp",
-      "thumb": "./assets/skins/royal-champion-magic-champion.webp",
+      "art": "./Hero_Skin_RC_Magic_Champion_1.webp",
+      "thumb": "./Hero_Skin_RC_Magic_Champion_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -3016,7 +3152,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-majestic-champion",
@@ -3027,8 +3164,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-majestic-champion.webp",
-      "thumb": "./assets/skins/royal-champion-majestic-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3038,7 +3175,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-mirage-champion",
@@ -3049,8 +3187,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-mirage-champion.webp",
-      "thumb": "./assets/skins/royal-champion-mirage-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3060,7 +3198,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-nomad-champion",
@@ -3071,8 +3210,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-nomad-champion.webp",
-      "thumb": "./assets/skins/royal-champion-nomad-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3082,7 +3221,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-painter-champion",
@@ -3093,8 +3233,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-painter-champion.webp",
-      "thumb": "./assets/skins/royal-champion-painter-champion.webp",
+      "art": "./Hero_Skin_RC_Painter_Champion_1.webp",
+      "thumb": "./Hero_Skin_RC_Painter_Champion_1.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -3104,7 +3244,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-party-champion",
@@ -3115,8 +3256,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-party-champion.webp",
-      "thumb": "./assets/skins/royal-champion-party-champion.webp",
+      "art": "./assets/skins/Hero_Skin_RC_Party_Champion_1_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_RC_Party_Champion_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -3126,7 +3267,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-pirate-champion",
@@ -3137,8 +3279,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-pirate-champion.webp",
-      "thumb": "./assets/skins/royal-champion-pirate-champion.webp",
+      "art": "./assets/skins/Hero_Skin_RC_Pirate_Champion_2_shadow.webp",
+      "thumb": "./assets/skins/Hero_Skin_RC_Pirate_Champion_2_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -3148,7 +3290,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-pixel-champion",
@@ -3159,8 +3302,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-pixel-champion.webp",
-      "thumb": "./assets/skins/royal-champion-pixel-champion.webp",
+      "art": "./Hero_Skin_RC_Pixel_Champion_shadow.webp",
+      "thumb": "./Hero_Skin_RC_Pixel_Champion_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -3170,7 +3313,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-primal-champion",
@@ -3181,8 +3325,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-primal-champion.webp",
-      "thumb": "./assets/skins/royal-champion-primal-champion.webp",
+      "art": "./Hero_Skin_RC_Primal_Champion_2.webp",
+      "thumb": "./Hero_Skin_RC_Primal_Champion_2.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -3192,7 +3336,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-red-champion",
@@ -3203,8 +3348,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-red-champion.webp",
-      "thumb": "./assets/skins/royal-champion-red-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3214,7 +3359,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-rogue-champion",
@@ -3225,8 +3371,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-rogue-champion.webp",
-      "thumb": "./assets/skins/royal-champion-rogue-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3236,7 +3382,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-shadow-champion",
@@ -3247,8 +3394,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-shadow-champion.webp",
-      "thumb": "./assets/skins/royal-champion-shadow-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3258,7 +3405,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-skeleton-champion",
@@ -3269,8 +3417,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-skeleton-champion.webp",
-      "thumb": "./assets/skins/royal-champion-skeleton-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3280,7 +3428,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-space-champion",
@@ -3291,8 +3440,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-space-champion.webp",
-      "thumb": "./assets/skins/royal-champion-space-champion.webp",
+      "art": "./assets/skins/Hero_Skin_RC_Space_Champion_3.webp",
+      "thumb": "./assets/skins/Hero_Skin_RC_Space_Champion_3.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -3302,7 +3451,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-summer-champion",
@@ -3313,8 +3463,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-summer-champion.webp",
-      "thumb": "./assets/skins/royal-champion-summer-champion.webp",
+      "art": "./Hero_Skin_RC_Summer_Champion_1_shadow.webp",
+      "thumb": "./Hero_Skin_RC_Summer_Champion_1_shadow.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -3324,7 +3474,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "royal-champion-warrior-champion",
@@ -3335,8 +3486,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-warrior-champion.webp",
-      "thumb": "./assets/skins/royal-champion-warrior-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3346,7 +3497,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-winter-champion",
@@ -3357,8 +3509,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-winter-champion.webp",
-      "thumb": "./assets/skins/royal-champion-winter-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3368,7 +3520,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "royal-champion-yeti-champion",
@@ -3379,8 +3532,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/royal-champion-yeti-champion.webp",
-      "thumb": "./assets/skins/royal-champion-yeti-champion.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3390,7 +3543,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-armored-prince",
@@ -3401,8 +3555,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-armored-prince.webp",
-      "thumb": "./assets/skins/minion-prince-armored-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3412,7 +3566,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-beatsmasher-prince",
@@ -3423,8 +3578,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-beatsmasher-prince.webp",
-      "thumb": "./assets/skins/minion-prince-beatsmasher-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3434,7 +3589,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-clash-a-rama-prince",
@@ -3445,8 +3601,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-clash-a-rama-prince.webp",
-      "thumb": "./assets/skins/minion-prince-clash-a-rama-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3456,7 +3612,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-dragonscale-prince",
@@ -3467,8 +3624,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-dragonscale-prince.webp",
-      "thumb": "./assets/skins/minion-prince-dragonscale-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3478,7 +3635,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-frost-prince",
@@ -3489,8 +3647,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-frost-prince.webp",
-      "thumb": "./assets/skins/minion-prince-frost-prince.webp",
+      "art": "./assets/skins/MinionPrince_FrostAge_f60_3k_noGroundshadows.webp",
+      "thumb": "./assets/skins/MinionPrince_FrostAge_f60_3k_noGroundshadows.webp",
       "verified": false,
       "unverified": [
         "season",
@@ -3500,7 +3658,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": false
     },
     {
       "id": "minion-prince-fury-prince",
@@ -3511,8 +3670,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-fury-prince.webp",
-      "thumb": "./assets/skins/minion-prince-fury-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3522,7 +3681,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-genie-prince",
@@ -3533,8 +3693,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-genie-prince.webp",
-      "thumb": "./assets/skins/minion-prince-genie-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3544,7 +3704,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-lava-prince",
@@ -3555,8 +3716,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-lava-prince.webp",
-      "thumb": "./assets/skins/minion-prince-lava-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3566,7 +3727,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-majestic-prince",
@@ -3577,8 +3739,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-majestic-prince.webp",
-      "thumb": "./assets/skins/minion-prince-majestic-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3588,7 +3750,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-midas-prince",
@@ -3599,8 +3762,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-midas-prince.webp",
-      "thumb": "./assets/skins/minion-prince-midas-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3610,7 +3773,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-nightmare-prince",
@@ -3621,8 +3785,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-nightmare-prince.webp",
-      "thumb": "./assets/skins/minion-prince-nightmare-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3632,7 +3796,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-ox-prince",
@@ -3643,8 +3808,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-ox-prince.webp",
-      "thumb": "./assets/skins/minion-prince-ox-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3654,7 +3819,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "minion-prince-skeleton-prince",
@@ -3665,8 +3831,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/minion-prince-skeleton-prince.webp",
-      "thumb": "./assets/skins/minion-prince-skeleton-prince.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3676,7 +3842,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "dragon-duke-fury-duke",
@@ -3687,8 +3854,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/dragon-duke-fury-duke.webp",
-      "thumb": "./assets/skins/dragon-duke-fury-duke.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3698,7 +3865,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "dragon-duke-hydra-duke",
@@ -3709,8 +3877,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/dragon-duke-hydra-duke.webp",
-      "thumb": "./assets/skins/dragon-duke-hydra-duke.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3720,7 +3888,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "dragon-duke-imprisoned-duke",
@@ -3731,8 +3900,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/dragon-duke-imprisoned-duke.webp",
-      "thumb": "./assets/skins/dragon-duke-imprisoned-duke.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3742,7 +3911,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "dragon-duke-majestic-duke",
@@ -3753,8 +3923,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/dragon-duke-majestic-duke.webp",
-      "thumb": "./assets/skins/dragon-duke-majestic-duke.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3764,7 +3934,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "dragon-duke-showmaster-duke",
@@ -3775,8 +3946,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/dragon-duke-showmaster-duke.webp",
-      "thumb": "./assets/skins/dragon-duke-showmaster-duke.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3786,7 +3957,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     },
     {
       "id": "dragon-duke-skeleton-duke",
@@ -3797,8 +3969,8 @@
       "rarity": null,
       "priceTier": null,
       "obtainable": null,
-      "art": "./assets/skins/dragon-duke-skeleton-duke.webp",
-      "thumb": "./assets/skins/dragon-duke-skeleton-duke.webp",
+      "art": null,
+      "thumb": null,
       "verified": false,
       "unverified": [
         "season",
@@ -3808,7 +3980,8 @@
         "priceTier",
         "obtainable"
       ],
-      "released": null
+      "released": null,
+      "artMissing": true
     }
   ]
 }
