@@ -4,7 +4,7 @@
 (() => {
   "use strict";
 
-  const state = { troops: [], squads: [], armies: [], kind: "all", query: "", status: "loading" };
+  const state = { troops: [], squads: [], armies: [], usage: new Map(), kind: "all", query: "", status: "loading" };
   const $ = (selector, root = document) => root.querySelector(selector);
   const esc = value => String(value == null ? "" : value)
     .replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
@@ -24,28 +24,73 @@
     return KINDS.some(entry => entry.key === hash) ? hash : "all";
   }
 
-  /* Which armies on file mention this troop. Super Troops inherit their base
-     troop's matches because armies.json lists the base troop. */
-  function usedIn(troop) {
-    const needles = [troop.name, troop.base].filter(Boolean);
-    if (troop.base === "hog-rider") needles.push("Hog Rider");
-    return state.armies.filter(army => {
-      const text = `${army.army || ""} ${army.spells || ""} ${army.strategy || ""}`.toLowerCase();
-      return needles.some(needle => text.includes(String(needle).toLowerCase()));
+  /* ------------------------------------------------- composition matching */
+  /* "Seen in" comes from the army's composition field only. Strategy prose,
+     hero names and risk notes are ignored, and a segment belongs to its
+     longest troop name, so "Sneaky Goblins" never credits plain Goblin and
+     "Minion Prince" never credits Minion. */
+  const HERO_TERMS = /\b(minion prince|dragon duke|archer queen|barbarian king|grand warden|royal champion)\b/gi;
+  const ALIASES = { valkyrie: ["valks"] };
+
+  const escapeRe = value => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  function nameForms(name) {
+    const forms = [name, `${name}s`, `${name}es`];
+    if (/[^aeiou]y$/i.test(name)) forms.push(`${name.slice(0, -1)}ies`);
+    return forms;
+  }
+
+  function troopPattern(troop) {
+    const names = [troop.name].concat(ALIASES[troop.id] || []);
+    const forms = names.reduce((all, name) => all.concat(nameForms(name)), []);
+    return new RegExp(`\\b(?:${forms.map(escapeRe).join("|")})\\b`, "i");
+  }
+
+  function compositionSegments(army) {
+    return String(army.army || "").split(/[·+,/|]/).map(part => part.trim()).filter(Boolean);
+  }
+
+  function buildUsage(troops, armies) {
+    const index = new Map(troops.map(troop => [troop.id, []]));
+    const patterns = troops
+      .map(troop => ({ id: troop.id, pattern: troopPattern(troop) }))
+      .sort((a, b) => b.pattern.source.length - a.pattern.source.length);
+    armies.forEach(army => {
+      const credited = new Set();
+      compositionSegments(army).forEach(segment => {
+        const cleaned = segment.replace(HERO_TERMS, " ");
+        if (!cleaned.trim()) return;
+        const hit = patterns.find(entry => entry.pattern.test(cleaned));
+        if (hit && !credited.has(hit.id)) {
+          credited.add(hit.id);
+          index.get(hit.id).push(army);
+        }
+      });
     });
+    return index;
+  }
+
+  function usedIn(troop) {
+    return state.usage.get(troop.id) || [];
   }
 
   function troopCard(troop) {
     const uses = usedIn(troop);
+    const kindLabel = troop.kind === "dark" ? "Dark Elixir" : troop.kind === "super" ? "Super Troop" : "Elixir";
+    /* The chip already says "Super Troop", so the role line says what it
+       replaces instead of repeating the label. */
+    const role = troop.kind === "super" && troop.base
+      ? `Replaces ${troop.base}`
+      : (troop.role || "").toLowerCase() === kindLabel.toLowerCase() ? "" : troop.role;
     const art = troop.art
       ? `<img src="./${esc(troop.art)}" alt="" width="160" height="160" loading="lazy" decoding="async">`
       : `<span class="troop-card__silhouette" role="img" aria-label="Art not on file for ${esc(troop.name)}">${icon("attack")}</span>`;
     return `<article class="troop-card" data-troop="${esc(troop.id)}">
       <span class="troop-card__art">${art}</span>
       <div class="troop-card__body">
-        <span class="pdx-chip pdx-chip--${troop.kind === "super" ? "gold" : troop.kind === "dark" ? "epic" : "rare"}">${esc(troop.kind === "dark" ? "Dark Elixir" : troop.kind === "super" ? "Super Troop" : "Elixir")}</span>
+        <span class="pdx-chip pdx-chip--${troop.kind === "super" ? "gold" : troop.kind === "dark" ? "epic" : "rare"}">${esc(kindLabel)}</span>
         <h3 class="troop-card__title">${esc(troop.name)}</h3>
-        <p class="troop-card__role">${esc(troop.role)}</p>
+        ${role ? `<p class="troop-card__role">${esc(role)}</p>` : ""}
         <p class="troop-card__use">${esc(troop.use)}</p>
         ${uses.length
           ? `<p class="troop-card__used"><b>Seen in</b> ${uses.slice(0, 4).map(army => esc(army.name)).join(" · ")}${uses.length > 4 ? ` +${uses.length - 4}` : ""}</p>`
@@ -138,6 +183,7 @@
       state.troops = troops.troops || [];
       state.squads = troops.squads || [];
       state.armies = armies.armies || [];
+      state.usage = buildUsage(state.troops, state.armies);
       state.status = "ready";
       state.kind = hashState();
       setKind(state.kind, { hash: false });

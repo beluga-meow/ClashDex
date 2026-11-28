@@ -770,38 +770,7 @@
     setHeading(sec, null, "Search every player saved in the shared index, or open a profile by player tag. Opening a clan's Members list or a player profile adds that player to the index for everyone.");
   }
 
-  /* ============ 9. Clash Heroes Encyclopedia ============ */
-  /* The homepage now keeps only the section title and the single link to the
-     dedicated archive (static markup in index.html). The full encyclopedia
-     lives on heroes.html, so nothing is injected here. */
-  function buildHeroes() {}
-  void buildHeroes;
-
-  /* ============ 10. Mobile bottom menu (game style) ============ */
-  function buildTabbar() {
-    if ($(".cx-tabbar")) return;
-    const items = [["home", "home", "Home"], ["player-finder", "players", "Players"], ["bases", "bases", "Bases"],
-      ["attacks", "attack", "Attack"], ["heroes", "heroes", "Heroes"], ["account", "account", "Account"]];
-    const nav = document.createElement("nav");
-    nav.className = "cx-tabbar";
-    nav.setAttribute("aria-label", "Quick navigation");
-    nav.innerHTML = items.map(i => '<a href="#' + i[0] + '" data-s="' + i[0] + '"><img class="tab-ico" src="./assets/icons/nav-' + i[1] + '.png" alt="" width="28" height="28">' + i[2] + "</a>").join("");
-    document.body.appendChild(nav);
-    const links = $$("a", nav);
-    const setOn = id => links.forEach(a => a.classList.toggle("on", a.dataset.s === id));
-    setOn("home");
-    if ("IntersectionObserver" in window) {
-      const targets = [[$(".hero"), "home"]].concat(items.slice(1).map(i => [document.getElementById(i[0]), i[0]]));
-      const io = new IntersectionObserver(entries => entries.forEach(en => {
-        if (!en.isIntersecting) return;
-        const t = targets.find(x => x[0] === en.target);
-        if (t) setOn(t[1]);
-      }), { rootMargin: "-45% 0px -50% 0px" });
-      targets.forEach(t => { if (t[0]) io.observe(t[0]); });
-    }
-  }
-
-  /* ============ 11. Start ============ */
+  /* ============ 10. Start ============ */
   function start(){
     // Shared site interactions
     const year = $("#year");
@@ -827,8 +796,6 @@
 
     safe("hero", decorateHero);
     safe("finder", buildFinder);
-    safe("heroes", buildHeroes);
-    safe("tabbar", buildTabbar);
     safe("copy", plainCopy);
     safe("disclaimer", addDisclaimer);
     /* Other page scripts can ask for the same toast with a pdx:toast event. */

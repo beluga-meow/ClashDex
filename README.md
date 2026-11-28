@@ -53,7 +53,7 @@ assets/
     upgrades.js                Village Tools: calculator + upgrade tracker
     attack-guides.js           Attack Guides page (merges armies.json)
     academy.js                 Attack Academy path + Town Hall army picks
-    troops.js                  Troop Library (derives "seen in" from armies.json)
+    troops.js                  Troop Library ("seen in" parsed from army compositions only)
     planner.js                 Attack Planner grid, vision board and fit score
     memes.js                   Memes & Emotes gallery and viewer
     chrome.js                  one header drawer (13 destinations) + bottom tabs

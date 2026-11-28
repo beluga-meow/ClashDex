@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-11-28 — Troop usage accuracy and dead code removal
+
+- `troops.js` no longer substring-matches the whole army record. "Seen in"
+  now splits the composition field into segments and credits only the longest
+  troop name in each, so strategy prose, hero names (Minion Prince, Dragon
+  Duke) and other troops' names (Sneaky Goblins, Super Barbarians) can no
+  longer credit the base troop.
+- Removed the dead `buildTabbar()` path in `app.js` (the site chrome owns the
+  bottom bar) plus the empty `buildHeroes()` stub, and deleted the unused
+  `assets/js/heroes-encyclopedia.js`.
+
 ## 2026-11-28 — Seven-phase rebuild: one chrome, gallery, troops, academy, planner
 
 ### Phase 1 — foundations
